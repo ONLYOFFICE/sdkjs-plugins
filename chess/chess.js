@@ -300,7 +300,11 @@
             return { image: canvas.toDataURL("image/png"), data: this.fen };
         },
 
-        calculate_to_fen : function()
+		getData: function()
+		{
+			return this.fen;
+		},
+	   calculate_to_fen : function()
         {
             this.fen = "";
             for (var i = 0; i < 8; i++)
@@ -502,7 +506,7 @@
     {
         if (id == 0)
         {
-            var _code = "window.g_asc_plugins.api.AddImageUrl(\"" + this.chess.getResult(300, 300).image + "\");";
+            var _code = "window.g_asc_plugins.api.asc_addOleObject(\"" + this.chess.getResult(300, 300).image + "\", \"" + this.chess.getData() + "\",  \"" + window.Asc.plugin.guid + "\");";
             window.Asc.plugin_sendMessage("close", _code);
         }
         else
