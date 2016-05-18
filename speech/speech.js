@@ -26,6 +26,10 @@
 
 	window.Asc.plugin.button = function(id)
 	{
+		if (-1 == id)
+		{
+			responsiveVoice.cancel();
+		}
 		window.Asc.plugin_sendMessage("close", "");
 	};
 
