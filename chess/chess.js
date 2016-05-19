@@ -492,10 +492,7 @@
         }
     };
 
-    window.Asc.plugin = { };
     window.Asc.plugin.chess = new CChessBoard("chess");
-
-    window.Asc.plugin.guid = "{FFE1F462-1EA2-4391-990D-4CC84940B754}";
 
     window.Asc.plugin.init = function(text)
     {

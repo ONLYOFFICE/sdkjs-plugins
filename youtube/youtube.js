@@ -1,10 +1,7 @@
 (function(window, undefined){
 
-	window.Asc.plugin = {};
 	window.Asc.plugin.url = "";
 	window.Asc.plugin.player = null;
-	
-	window.Asc.plugin.guid = "{38E022EA-AD92-45FC-B22B-49DF39746DB4}";
 
 	window.Asc.plugin.init = function(text)
 	{

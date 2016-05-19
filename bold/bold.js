@@ -1,9 +1,5 @@
 (function(window, undefined){
 
-    window.Asc.plugin = {};
-
-    window.Asc.plugin.guid = "{14E46CC2-5E56-429C-9D55-1032B596D928}";
-
     window.Asc.plugin.init = function()
     {
         this.button(-1);

@@ -1,9 +1,6 @@
 (function(window, undefined){
 
     window.hints = [];
-    window.Asc.plugin = {};
-
-    window.Asc.plugin.guid = "{B631E142-E40B-4B4C-90B9-2D00222A286E}";
 
     window.Asc.plugin.init = function(text)
     {
