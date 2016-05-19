@@ -1,27 +1,27 @@
 window.Asc.plugin = {
-    name : "youtube",
-    guid : "{38E022EA-AD92-45FC-B22B-49DF39746DB4}",
+    "name" : "youtube",
+    "guid" : "{38E022EA-AD92-45FC-B22B-49DF39746DB4}",
 
-    variations : [
+    "variations" : [
         {
-            description : "youtube",
-            url         : "youtube/index.html",
+            "description" : "youtube",
+            "url"         : "youtube/index.html",
 
-            icons           : ["youtube/icon.png", "youtube/icon@2x.png"],
-            isViewer        : true,
-            EditorsSupport  : ["word", "cell", "slide"],
+            "icons"           : ["youtube/icon.png", "youtube/icon@2x.png"],
+            "isViewer"        : true,
+            "EditorsSupport"  : ["word", "cell", "slide"],
 
-            isVisual        : true,
-            isModal         : true,
-            isInsideMode    : false,
+            "isVisual"        : true,
+            "isModal"         : true,
+            "isInsideMode"    : false,
 
-            initDataType    : "ole",
-            initData        : "",
+            "initDataType"    : "ole",
+            "initData"        : "",
 
-            isUpdateOleOnResize : true,
+            "isUpdateOleOnResize" : true,
 
-            buttons         : [ { text: "Ok", primary: true },
-                                { text: "Cancel", primary: false } ]
+            "buttons"        : [ { "text": "Ok", "primary": true },
+                                { "text": "Cancel", "primary": false } ]
         }
     ]
 };

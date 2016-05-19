@@ -1,26 +1,26 @@
 window.Asc.plugin = {
-    name : "speech",
-    guid : "{D71C2EF0-F15B-47C7-80E9-86D671F9C595}",
+    "name" : "speech",
+    "guid" : "{D71C2EF0-F15B-47C7-80E9-86D671F9C595}",
 
-    variations : [
+    "variations" : [
         {
-            description : "speech",
-            url         : "speech/index.html",
+            "description" : "speech",
+            "url"         : "speech/index.html",
 
-            icons           : ["speech/icon.png", "speech/icon@2x.png"],
-            isViewer        : true,
-            EditorsSupport  : ["word", "cell", "slide"],
+            "icons"           : ["speech/icon.png", "speech/icon@2x.png"],
+            "isViewer"        : true,
+            "EditorsSupport"  : ["word", "cell", "slide"],
 
-            isVisual        : false,
-            isModal         : false,
-            isInsideMode    : false,
+            "isVisual"        : false,
+            "isModal"         : false,
+            "isInsideMode"    : false,
 
-            initDataType    : "text",
-            initData        : "",
+            "initDataType"    : "text",
+            "initData"        : "",
 
-            isUpdateOleOnResize : false,
+            "isUpdateOleOnResize" : false,
 
-            buttons         : [ ]
+            "buttons"         : [ ]
         }
     ]
 };

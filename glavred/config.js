@@ -1,26 +1,26 @@
 window.Asc.plugin = {
-    name : "glavred",
-    guid : "{B631E142-E40B-4B4C-90B9-2D00222A286E}",
+    "name" : "glavred",
+    "guid" : "{B631E142-E40B-4B4C-90B9-2D00222A286E}",
 
-    variations : [
+    "variations" : [
         {
-            description : "glavred",
-            url         : "glavred/index.html",
+            "description" : "glavred",
+            "url"         : "glavred/index.html",
 
-            icons           : ["glavred/icon.png", "glavred/icon@2x.png"],
-            isViewer        : true,
-            EditorsSupport  : ["word", "cell", "slide"],
+            "icons"           : ["glavred/icon.png", "glavred/icon@2x.png"],
+            "isViewer"        : true,
+            "EditorsSupport"  : ["word", "cell", "slide"],
 
-            isVisual        : true,
-            isModal         : true,
-            isInsideMode    : false,
+            "isVisual"        : true,
+            "isModal"         : true,
+            "isInsideMode"    : false,
 
-            initDataType    : "text",
-            initData        : "",
+            "initDataType"    : "text",
+            "initData"        : "",
 
-            isUpdateOleOnResize : false,
+            "isUpdateOleOnResize" : false,
 
-            buttons         : [ { text: "Ok", primary: true } ]
+            "buttons"         : [ { "text": "Ok", "primary": true } ]
         }
     ]
 };
