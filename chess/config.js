@@ -7,7 +7,7 @@ window.Asc.plugin = {
             "description" : "chess",
             "url"         : "chess(fen)/index.html",
 
-            "icons"           : ["chess\(fen\)/icon.png", "chess\(fen\)/icon@2x.png"],
+            "icons"           : ["chess%28fen%29/icon.png", "chess%28fen%29/icon@2x.png"],
             "isViewer"        : true,
             "EditorsSupport"  : ["word", "cell", "slide"],
 
