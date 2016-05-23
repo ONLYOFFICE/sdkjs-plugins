@@ -71,11 +71,11 @@
 				var _url = "http://img.youtube.com/vi/" + _id + "/0.jpg";
 				_code = "window.g_asc_plugins.api.asc_addOleObject(\"" + _url + "\", \"" + this.url + "\",  \"" + window.Asc.plugin.guid + "\");";
 			}
-			window.Asc.plugin_sendMessage("close", _code);
+			this.executeCommand("close", _code);
 		}
 		else
 		{
-			window.Asc.plugin_sendMessage("close", "");
+			this.executeCommand("close", "");
 		}
 	};
 

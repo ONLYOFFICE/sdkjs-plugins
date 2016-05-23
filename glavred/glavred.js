@@ -64,7 +64,7 @@
 
     window.Asc.plugin.button = function(id)
     {
-        window.Asc.plugin_sendMessage("close", "");
+        this.executeCommand("close", "");
     };
 
 })(window, undefined);

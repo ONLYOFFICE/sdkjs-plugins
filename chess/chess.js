@@ -81,6 +81,12 @@
                     setTimeout(function()
                     {
                         _this.isInit = true;
+
+                        if (window.Asc.plugin.info.resize === true)
+                        {
+                            return window.Asc.plugin.button(0);
+                        }
+
                         _this.draw(true);
                     }, 0);
                 }
@@ -503,12 +509,25 @@
     {
         if (id == 0)
         {
-            var _code = "window.g_asc_plugins.api.asc_addOleObject(\"" + this.chess.getResult(300, 300).image + "\", \"" + this.chess.getData() + "\",  \"" + window.Asc.plugin.guid + "\");";
-            window.Asc.plugin_sendMessage("close", _code);
+            var _info = window.Asc.plugin.info;
+
+            var _method = (_info.objectId === undefined) ? "asc_addOleObject" : "asc_editOleObject";
+
+            _info.width = _info.width ? _info.width : 70;
+            _info.height = _info.height ? _info.height : 70;
+
+            _info.widthPix = (_info.mmToPx * _info.width) >> 0;
+            _info.heightPix = (_info.mmToPx * _info.height) >> 0;
+
+            _info.imgSrc = this.chess.getResult(_info.widthPix, _info.heightPix).image;
+            _info.data = this.chess.getData();
+
+            var _code = "window.g_asc_plugins.api." + _method + "(" + JSON.stringify(_info) + ");";
+            this.executeCommand("close", _code);
         }
         else
         {
-            window.Asc.plugin_sendMessage("close", "");
+            this.executeCommand("close", "");
         }
     };
 

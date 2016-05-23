@@ -1,6 +1,6 @@
 window.Asc.plugin = {
     "name" : "chess(fen)",
-    "guid" : "{FFE1F462-1EA2-4391-990D-4CC84940B754}",
+    "guid" : "asc.{FFE1F462-1EA2-4391-990D-4CC84940B754}",
 
     "variations" : [
         {

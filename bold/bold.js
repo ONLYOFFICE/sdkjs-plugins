@@ -7,7 +7,7 @@
 
     window.Asc.plugin.button = function(id)
     {
-        window.Asc.plugin_sendMessage("close", "window.g_asc_plugins.api.put_TextPrBold(true);");
+        this.executeCommand("close", "window.g_asc_plugins.api.put_TextPrBold(true);");
     };
 
 })(window, undefined);

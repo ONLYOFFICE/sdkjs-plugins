@@ -7,6 +7,11 @@
     // init(data);
     // button(id)
 
+    window.plugin_sendMessage = function sendMessage(data)
+    {
+        window.parent.postMessage(data, "*");
+    };
+
     function onMessage(event)
     {
         if (!window.Asc.plugin)
@@ -14,29 +19,57 @@
 
         if (typeof(event.data) == "string")
         {
-            var i1 = event.data.indexOf(";");
-            if (-1 == i1)
+            var pluginData = {};
+            try
+            {
+                pluginData = JSON.parse(event.data);
+            }
+            catch(err)
+            {
+                pluginData = {};
+            }
+
+            if (pluginData.guid != window.Asc.plugin.guid)
                 return;
 
-            var guid = event.data.substr(0, i1);
-            if (guid != window.Asc.plugin.guid)
-                return;
+            var type = pluginData.type;
 
-            var i2 = event.data.indexOf(";", i1 + 1);
-            if (-1 == i2)
-                return;
+            if (type == "init")
+                window.Asc.plugin.info = pluginData;
 
-            var name = event.data.substr(i1 + 1, i2 - i1 - 1);
-            var value = event.data.substr(i2 + 1);
+            switch (type)
+            {
+                case "init":
+                {
+                    window.Asc.plugin.executeCommand = function(type, data)
+                    {
+                        window.Asc.plugin.info.type = type;
+                        window.Asc.plugin.info.data = data;
 
-            if (window.Asc.plugin[name])
-                window.Asc.plugin[name](value);
+                        var _message = "";
+                        try
+                        {
+                            _message = JSON.stringify(window.Asc.plugin.info);
+                        }
+                        catch(err)
+                        {
+                            _message = "{ \"" + type + "\" : \"" + data + "\" }";
+                        }
+                        window.plugin_sendMessage(_message);
+                    };
+
+                    window.Asc.plugin.init(window.Asc.plugin.info.data);
+                    break;
+                }
+                case "button":
+                {
+                    window.Asc.plugin.button(parseInt(pluginData.button));
+                    break;
+                }
+                default:
+                    break;
+            }
         }
-    }
-
-    function sendMessage(name, data)
-    {
-        window.parent.postMessage(window.Asc.plugin.guid + ";" + name + ";" + data, "*");
     }
 
     if (window.addEventListener)
@@ -50,9 +83,10 @@
 
     window.onload = function()
     {
-        sendMessage("initialize", "");
+        var obj = {
+            type : "initialize",
+            guid : window.Asc.plugin.guid
+        };
+        window.plugin_sendMessage(JSON.stringify(obj));
     };
-
-    window.Asc.plugin_sendMessage = sendMessage;
-
 })(window, undefined);

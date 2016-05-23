@@ -1,6 +1,6 @@
 window.Asc.plugin = {
     "name" : "bold",
-    "guid" : "{14E46CC2-5E56-429C-9D55-1032B596D928}",
+    "guid" : "asc.{14E46CC2-5E56-429C-9D55-1032B596D928}",
 
     "variations" : [
         {

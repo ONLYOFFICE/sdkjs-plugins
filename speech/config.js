@@ -1,6 +1,6 @@
 window.Asc.plugin = {
     "name" : "speech",
-    "guid" : "{D71C2EF0-F15B-47C7-80E9-86D671F9C595}",
+    "guid" : "asc.{D71C2EF0-F15B-47C7-80E9-86D671F9C595}",
 
     "variations" : [
         {

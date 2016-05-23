@@ -30,7 +30,7 @@
 		{
 			responsiveVoice.cancel();
 		}
-		window.Asc.plugin_sendMessage("close", "");
+		this.executeCommand("close", "");
 	};
 
 })(window, undefined);

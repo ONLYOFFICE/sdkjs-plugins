@@ -1,6 +1,6 @@
 window.Asc.plugin = {
     "name" : "youtube",
-    "guid" : "{38E022EA-AD92-45FC-B22B-49DF39746DB4}",
+    "guid" : "asc.{38E022EA-AD92-45FC-B22B-49DF39746DB4}",
 
     "variations" : [
         {

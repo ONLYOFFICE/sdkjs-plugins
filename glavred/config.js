@@ -1,6 +1,6 @@
 window.Asc.plugin = {
     "name" : "glavred",
-    "guid" : "{B631E142-E40B-4B4C-90B9-2D00222A286E}",
+    "guid" : "asc.{B631E142-E40B-4B4C-90B9-2D00222A286E}",
 
     "variations" : [
         {
