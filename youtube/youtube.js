@@ -79,6 +79,7 @@
                 _info.width = _info.width ? _info.width : 100;
                 _info.height = _info.height ? _info.height : 70;
 
+                // TODO: load image & get size
                 _info.widthPix = (_info.mmToPx * _info.width) >> 0;
                 _info.heightPix = (_info.mmToPx * _info.height) >> 0;
 
