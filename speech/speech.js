@@ -1,10 +1,6 @@
 (function(window, undefined){
 
-	window.Asc.plugin = {};
-
-	window.Asc.plugin.guid = "{D71C2EF0-F15B-47C7-80E9-86D671F9C595}";
-
-	window.Asc.plugin.init = function(text)
+ 	window.Asc.plugin.init = function(text)
 	{
 		function StartCallback()
 		{

@@ -66,10 +66,27 @@
 			var _ids = this.url.split("/");
 			var _id = _ids[_ids.length - 1];
 
+			if (0 == _id.indexOf("watch?v="))
+			    _id = _id.substr(8);
+
+            var _url = "http://img.youtube.com/vi/" + _id + "/0.jpg";
 			if (_id)
 			{
-				var _url = "http://img.youtube.com/vi/" + _id + "/0.jpg";
-				_code = "window.g_asc_plugins.api.asc_addOleObject(\"" + _url + "\", \"" + this.url + "\",  \"" + window.Asc.plugin.guid + "\");";
+			    var _info = window.Asc.plugin.info;
+
+                var _method = (_info.objectId === undefined) ? "asc_addOleObject" : "asc_editOleObject";
+
+                _info.width = _info.width ? _info.width : 100;
+                _info.height = _info.height ? _info.height : 70;
+
+                _info.widthPix = (_info.mmToPx * _info.width) >> 0;
+                _info.heightPix = (_info.mmToPx * _info.height) >> 0;
+
+                _info.imgSrc = _url;
+                _info.data = this.url;
+
+                var _code = "window.g_asc_plugins.api." + _method + "(" + JSON.stringify(_info) + ");";
+                this.executeCommand("close", _code);
 			}
 			this.executeCommand("close", _code);
 		}

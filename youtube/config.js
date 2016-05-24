@@ -18,7 +18,7 @@ window.Asc.plugin = {
             "initDataType"    : "ole",
             "initData"        : "",
 
-            "isUpdateOleOnResize" : true,
+            "isUpdateOleOnResize" : false,
 
             "buttons"        : [ { "text": "Ok", "primary": true },
                                 { "text": "Cancel", "primary": false } ]
