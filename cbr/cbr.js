@@ -56,8 +56,8 @@
             var rates = JSON.parse(value).rates;
             var keys = Object.keys(rates);
             console.log(rates);
-            command += 'var oDocument = window.g_asc_plugins.api.GetDocument();';
-            command += 'var oTable = window.g_asc_plugins.api.CreateTable(2,' + keys.length + ');';
+            command += 'var oDocument = Api.GetDocument();';
+            command += 'var oTable = Api.CreateTable(2,' + keys.length + ');';
             command += 'oDocument.Push(oTable);';
             command += 'oTable.SetWidth("twips", 4311);';
             command += 'oTable.SetTableLook(true, true, false, false, true, false);'
@@ -77,7 +77,7 @@
               command += 'oParagraph.SetJc("center");';
               command += 'oRun = oParagraph.AddText("' + rates[keys[i]] + '");';
             }
-            command += 'window.g_asc_plugins.api.asc_Recalculate();';
+            command += 'Api.asc_Recalculate();';
           } catch (e) {
           }
         }

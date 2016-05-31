@@ -86,7 +86,7 @@
                 _info.imgSrc = _url;
                 _info.data = this.url;
 
-                var _code = "window.g_asc_plugins.api." + _method + "(" + JSON.stringify(_info) + ");";
+                var _code = "Api." + _method + "(" + JSON.stringify(_info) + ");";
                 this.executeCommand("close", _code);
 			}
 			this.executeCommand("close", _code);

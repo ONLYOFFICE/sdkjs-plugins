@@ -522,7 +522,7 @@
             _info.imgSrc = this.chess.getResult(_info.widthPix, _info.heightPix).image;
             _info.data = this.chess.getData();
 
-            var _code = "window.g_asc_plugins.api." + _method + "(" + JSON.stringify(_info) + ");";
+            var _code = "Api." + _method + "(" + JSON.stringify(_info) + ");";
             this.executeCommand("close", _code);
         }
         else
