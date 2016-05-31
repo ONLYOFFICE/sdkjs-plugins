@@ -58,7 +58,6 @@
             console.log(rates);
             command += 'var oDocument = Api.GetDocument();';
             command += 'var oTable = Api.CreateTable(2,' + keys.length + ');';
-            command += 'oDocument.Push(oTable);';
             command += 'oTable.SetWidth("twips", 4311);';
             command += 'oTable.SetTableLook(true, true, false, false, true, false);'
             command += 'var oRow, oCell, oCellContent, oParagraph;'
@@ -77,7 +76,8 @@
               command += 'oParagraph.SetJc("center");';
               command += 'oRun = oParagraph.AddText("' + rates[keys[i]] + '");';
             }
-            command += 'Api.asc_Recalculate();';
+            command += 'oDocument.InsertContent([oTable]);';
+            window.Asc.plugin.info.recalculate = true;
           } catch (e) {
           }
         }
