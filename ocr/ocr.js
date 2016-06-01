@@ -1,5 +1,20 @@
 (function(window, undefined){
 
+    var entityMap = {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': '&quot;',
+        "'": '&#39;',
+        "/": '&#x2F;'
+    };
+
+    function escapeHtml(string) {
+        return String(string).replace(/[&<>"'\/]/g, function (s) {
+            return entityMap[s];
+        });
+    }
+
     window.Asc.plugin.arrParsedData = [];
 
     window.Asc.plugin.init = function(){
@@ -94,41 +109,55 @@
         if (id == 0){
             var sScript = '';
             sScript += 'var oDocument = Api.GetDocument();';
-            sScript += 'oDocument.CreateNewHistoryPoint();';
-            sScript += 'var oParagraph, oRun, arrInsertResult = [], oTextPr;';
+            sScript += '\noDocument.CreateNewHistoryPoint();';
+            sScript += '\nvar oParagraph, oRun, arrInsertResult = [], oTextPr;';
             var arrParsedData = window.Asc.plugin.arrParsedData;
             for(var i = 0; i < arrParsedData.length; ++i){
                 var oCurData = arrParsedData[i];
                 for(var j = 0;  j < oCurData.paragraphs.length; ++j){
                     var oCurParagraph = oCurData.paragraphs[j];
-                    sScript += 'oParagraph = Api.CreateParagraph();';
-                    sScript += 'arrInsertResult.push(oParagraph);';
+                    sScript += '\noParagraph = Api.CreateParagraph();';
+                    sScript += '\narrInsertResult.push(oParagraph);';
 
                     for(var t = 0; t < oCurParagraph.lines.length; ++t){
                         var oCurLine = oCurParagraph.lines[t];
                         if(t > 0 &&  t < oCurParagraph.lines.length - 1){
-                            sScript += 'oParagraph.AddLineBreak();';
+                            sScript += '\noParagraph.AddLineBreak();';
                         }
                         for(var k = 0; k < oCurLine.words.length; ++k){
                             var oWord = oCurLine.words[k];
-                            sScript += 'oRun = oParagraph.AddText(\'' + oWord.text + (k < oCurLine.words.length - 1 ? ' ' : '') + '\');';
-                            sScript += 'oTextPr = oRun.GetTextPr();';
+                            var sText = oWord.text + (k < oCurLine.words.length - 1 ? ' ' : '');
+                            sText = escapeHtml(sText);
+                            sScript += '\noRun = oParagraph.AddText(\'' + sText + '\');';
+                            sScript += '\noTextPr = oRun.GetTextPr();';
                             var arrFontName = oWord.font_name.split('_');
                             var sFontName = '';
                             for(var s = 0; s < arrFontName.length; ++s ){
-                                sFontName += arrFontName[s];
-                                if(s <  arrFontName.length - 1){
-                                    sFontName += ' ';
+                                if(arrFontName[s] === 'Bold'){
+                                    sScript += '\noTextPr.SetBold(true);';
+                                }
+                                else if(arrFontName[s] === 'Italic'){
+                                    sScript += '\noTextPr.SetItalic(true);';
+                                }
+                                else if(arrFontName[s] === 'Strikeout'){
+                                    sScript += '\noTextPr.SetStrikeout(true);';
+                                }
+                                else{
+
+                                    if(sFontName != ''){
+                                        sFontName += ' ';
+                                    }
+                                    sFontName += arrFontName[s];
                                 }
                             }
-                            sScript += 'oTextPr.SetFontFamily(\'' + sFontName + '\');';
-                            sScript += 'oTextPr.SetFontSize(' + ((oWord.font_size * 2 )>> 0) + ');';
-                            sScript += 'oRun.OnChangeTextPr(oTextPr);';
+                            sScript += '\noTextPr.SetFontFamily(\'' + sFontName + '\');';
+                            sScript += '\noTextPr.SetFontSize(' + ((oWord.font_size * 2 )>> 0) + ');';
+                            sScript += '\noRun.OnChangeTextPr(oTextPr);';
                         }
                     }
                 }
             }
-            sScript += 'oDocument.InsertContent(arrInsertResult);';
+            sScript += '\noDocument.InsertContent(arrInsertResult);';
             window.Asc.plugin.info.recalculate = true;
             this.executeCommand("close", sScript);
         }
