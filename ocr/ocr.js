@@ -1,18 +1,8 @@
 (function(window, undefined){
-
-    var entityMap = {
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': '&quot;',
-        "'": '&#39;',
-        "/": '&#x2F;'
-    };
-
     function escapeHtml(string) {
-        return String(string).replace(/[&<>"'\/]/g, function (s) {
-            return entityMap[s];
-        });
+        var res = string;
+        res = res.replace(/'/g,'\\\'');
+        return res;
     }
 
     window.Asc.plugin.arrParsedData = [];
