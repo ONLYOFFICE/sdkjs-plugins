@@ -8,7 +8,9 @@
 		this.url = text;
 		if (this.url == "")
 		{
-			document.body.innerHTML = "<div> PASTE URL FROM CLIPBOARD (Ctrl + V) <div>";
+			document.body.innerHTML = ("<div style=\"font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#848484;font-size:20px;" +
+				"background:#F4F4F4;display:table;width:100%;height:100%;text-align:center;\">" +
+				"<span style=\"display:table-cell;vertical-align: middle;\"> PASTE URL FROM CLIBOARD (Ctrl + V) </span></div>");
 		}
 		else
 		{
@@ -19,6 +21,8 @@
 			document.body.innerHTML = _data;
 
 			play();
+
+			document.onpaste = function(e){};
 		}
 	};
 	
@@ -28,6 +32,9 @@
 		if (_clipboard && _clipboard.getData)
 		{
 			window.Asc.plugin.url   = _clipboard.getData("text/plain");
+			var _paramsIndex = window.Asc.plugin.url.indexOf("&");
+			if (_paramsIndex > 0 && _paramsIndex < window.Asc.plugin.url.length)
+				window.Asc.plugin.url = window.Asc.plugin.url.substr(0, _paramsIndex);
 
 			var _data = "<video style=\"width:100%; height:100%;\">";
 			_data += "<source type=\"video/youtube\" src=\"" + window.Asc.plugin.url + "\" type=\"video/mp4\"  id=\"player1\"" +
@@ -39,6 +46,8 @@
 		}
 		if (e.preventDefault)
 			e.preventDefault();
+
+		document.onpaste = function(e){};
 		return false;
 	};
 
