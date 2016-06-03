@@ -4,11 +4,16 @@
 
     window.Asc.plugin.init = function(text)
     {
+        text = text.split("\n").join("<br>");
+
         document.getElementById("id_text").innerHTML = text;
 
         if (text == "")
         {
-            document.getElementById("id_text").innerHTML = "please select text before run plugin!";
+            document.body.innerHTML = ("<div style=\"font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#848484;font-size:20px;" +
+                    "background:#F4F4F4;display:table;width:100%;height:100%;text-align:center;\">" +
+                    "<span style=\"display:table-cell;vertical-align: middle;\">please select text before run plugin!</span></div>");
+            //document.getElementById("id_text").innerHTML = "please select text before run plugin!";
             return;
         }
 
@@ -17,8 +22,8 @@
             if (result.status == 'ok')
             {
                 document.getElementById("id_score").innerHTML =
-                    "<span style='font-size: 30px;'>" + result.score + "<span>" +
-                    "<span style='font-size: 12px;'> балла из 10 по шкале Главреда";
+                    "<span style='font-size: 30px;position:absolute;bottom:0;left:20px;width:100%;'>" + result.score +
+                    "<span style='font-size: 12px;'> балла из 10 по шкале Главреда" + "</span></span>";
 
                 var len = result.fragments.length;
                 var output = "";
