@@ -1,7 +1,7 @@
 (function(window, undefined)
 {
 	window.Asc.plugin.text_init = "";
-	window.Asc.plugin.init = function(text)
+	window.Asc.plugin.init      = function(text)
 	{
 		window.Asc.plugin.text_init = text;
 		function StartCallback()
@@ -17,16 +17,28 @@
 		{
 			var voicelist = responsiveVoice.getVoices();
 
-			var _data = [];
+			var _data  = [];
 			var _langs = responsiveVoice.responsivevoices;
 
-			var _map = {};
-			_map["en"] = _map["gb"];
+			var _map   = {};
+			_map["en"] = ["gb"];
+			_map["ko"] = ["kr"];
 			for (var i = 0; i < _langs.length; i++)
 			{
-				if (_langs[i].flag == lang || _langs[i].flag == _map[lang])
+				if (_langs[i].flag == lang)
 				{
-					_data.push({ index : i, gender : _langs[i].gender });
+					_data.push({index : i, gender : _langs[i].gender});
+				}
+				else if (_map[lang])
+				{
+					for (var k = 0; k < _map[lang].length; k++)
+					{
+						if (_langs[i].flag == _map[lang][k])
+						{
+							_data.push({index : i, gender : _langs[i].gender});
+							break;
+						}
+					}
 				}
 			}
 
@@ -51,7 +63,7 @@
 		{
 			setTimeout(function()
 			{
-				var xhr = new XMLHttpRequest();
+				var xhr  = new XMLHttpRequest();
 				var _url = "https://translate.yandex.net/api/v1.5/tr.json/detect?";
 				_url += "key=trnsl.1.1.20160604T115612Z.107ebb05a7757bcc.804e900f347ddfbeadd7ca5999bd5cb6ca32805b";
 				_url += "&text=";
