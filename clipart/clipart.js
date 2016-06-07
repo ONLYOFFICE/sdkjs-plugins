@@ -2,8 +2,34 @@
 
     var nAmount = 20;//Count images on page
     var sLastQuery = 'play';
-    var arrSelected = [];
     var widthPix = 185;
+    function createScriptFromArray(aSelected){
+        var sScript = '';
+        if(aSelected.length > 0){
+            var sScript = '';
+            if(aSelected.length > 0){
+                sScript += 'var oDocument = Api.GetDocument();';
+                sScript += '\noDocument.CreateNewHistoryPoint();';
+                sScript += '\nvar oParagraph, oRun, arrInsertResult = [], oImage;';
+
+                for(var i = 0;  i < aSelected.length; ++i) {
+                    var oElement = aSelected[i];
+                    sScript += '\noParagraph = Api.CreateParagraph();';
+                    sScript += '\narrInsertResult.push(oParagraph);';
+                    var sSrc = oElement.svg.png_full_lossy;
+                    var dKoeff = widthPix/oElement.dimensions.png_full_lossy.width;
+                    var nEmuWidth = ((oElement.dimensions.png_full_lossy.width/96)*914400*dKoeff) >> 0;
+                    var nEmuHeight = ((oElement.dimensions.png_full_lossy.height/96)*914400*dKoeff) >> 0;
+                    sScript += '\n oImage = Api.CreateImage(\'' + sSrc + '\', ' + nEmuWidth + ', ' + nEmuHeight + ');';
+                    sScript += '\noParagraph.AddDrawing(oImage);';
+
+                }
+                sScript += '\noDocument.InsertContent(arrInsertResult);';
+            }
+        }
+        return sScript;
+    }
+
     window.Asc.plugin.init = function () {
 
         function loadClipArtPage(nIndex, sQuery) {
@@ -18,7 +44,6 @@
         }
 
         function fillTableFromResponse(aPayLoad) {
-            arrSelected.length = 0;
             $('#image_container').empty();
             var oImgElement;
             for (var i = 0; i < aPayLoad.length; ++i) {
@@ -39,8 +64,8 @@
                 oImgElement.click(
                     function (e) {
                         var oElement = aPayLoad[parseInt(this.dataset.index)];
-                        arrSelected.push(oElement);
-                        window.Asc.plugin.button(0);
+                        window.Asc.plugin.info.recalculate = true;
+                        window.Asc.plugin.executeCommand("command", createScriptFromArray([oElement]));
                     }
                 );
                 $('#image_container').append(oImgElement);
@@ -71,28 +96,6 @@
     };
 
     window.Asc.plugin.button = function (id) {
-        var sScript = '';
-        if(arrSelected.length > 0){
-            sScript += 'var oDocument = Api.GetDocument();';
-            sScript += '\noDocument.CreateNewHistoryPoint();';
-            sScript += '\nvar oParagraph, oRun, arrInsertResult = [], oImage;';
-
-            for(var i = 0;  i < arrSelected.length; ++i) {
-                var oElement = arrSelected[i];
-                sScript += '\noParagraph = Api.CreateParagraph();';
-                sScript += '\narrInsertResult.push(oParagraph);';
-                var sSrc = oElement.svg.png_full_lossy;
-                var dKoeff = widthPix/oElement.dimensions.png_full_lossy.width;
-                var nEmuWidth = ((oElement.dimensions.png_full_lossy.width/96)*914400*dKoeff) >> 0;
-                var nEmuHeight = ((oElement.dimensions.png_full_lossy.height/96)*914400*dKoeff) >> 0;
-                sScript += '\n oImage = Api.CreateImage(\'' + sSrc + '\', ' + nEmuWidth + ', ' + nEmuHeight + ');';
-                sScript += '\noParagraph.AddDrawing(oImage);';
-
-            }
-            sScript += '\noDocument.InsertContent(arrInsertResult);';
-            window.Asc.plugin.info.recalculate = true;
-            this.executeCommand("close", sScript);
-        }
-        this.executeCommand("close", sScript);
+            this.executeCommand("close", '');
     };
 })(window);

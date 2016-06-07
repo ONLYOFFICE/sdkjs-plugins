@@ -20,7 +20,7 @@ window.Asc.plugin = {
 
             "isUpdateOleOnResize" : false,
 
-            "buttons"         : [ { "text": "Ok", "primary": true } ]
+            "buttons"         : [ { "text": "Close", "primary": true } ]
         }
     ]
 };
