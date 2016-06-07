@@ -1,7 +1,9 @@
 (function(window, undefined){
     function escapeHtml(string) {
         var res = string;
-        res = res.replace(/'/g,'\\\'');
+        res = res.replace(/[\', \", \\,]/g, function (sSymbol) {
+            return '\\' + sSymbol;
+        });
         return res;
     }
 
