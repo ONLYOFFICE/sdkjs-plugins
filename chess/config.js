@@ -22,6 +22,25 @@ window.Asc.plugin = {
 
             "buttons"         : [ { "text": "Ok", "primary": true },
                                 { "text": "Cancel", "primary": false } ]
+        },
+        {
+            "description" : "about",
+            "url"         : "chess(fen)/index_about.html",
+
+            "icons"           : ["chess%28fen%29/icon.png", "chess%28fen%29/icon@2x.png"],
+            "isViewer"        : true,
+            "EditorsSupport"  : ["word", "cell", "slide"],
+
+            "isVisual"        : true,
+            "isModal"         : true,
+            "isInsideMode"    : false,
+
+            "initDataType"    : "none",
+            "initData"        : "",
+
+            "isUpdateOleOnResize" : false,
+
+            "buttons"         : [ { "text": "Ok", "primary": true } ]
         }
     ]
 };

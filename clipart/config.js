@@ -13,7 +13,7 @@ window.Asc.plugin = {
 
             "isVisual"        : true,
             "isModal"         : false,
-            "isInsideMode"    : false,
+            "isInsideMode"    : true,
 
             "initDataType"    : "none",
             "initData"        : "",

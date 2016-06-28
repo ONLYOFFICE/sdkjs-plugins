@@ -49,7 +49,7 @@
             for (var i = 0; i < aPayLoad.length; ++i) {
                 oImgElement = $('<img>');
                 oImgElement.attr('src', aPayLoad[i].svg.png_thumb);
-                oImgElement.attr('width', widthPix + 'px');
+                //oImgElement.attr('width', widthPix + 'px');
                 oImgElement.attr('data-index', i + '');
                 oImgElement.mouseover(
                     function (e) {
