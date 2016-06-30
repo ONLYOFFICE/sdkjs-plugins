@@ -16,10 +16,9 @@
                     var oElement = aSelected[i];
                     sScript += '\noParagraph = Api.CreateParagraph();';
                     sScript += '\narrInsertResult.push(oParagraph);';
-                    var sSrc = oElement.svg.png_full_lossy;
-                    var dKoeff = widthPix/oElement.dimensions.png_full_lossy.width;
-                    var nEmuWidth = ((oElement.dimensions.png_full_lossy.width/96)*914400*dKoeff) >> 0;
-                    var nEmuHeight = ((oElement.dimensions.png_full_lossy.height/96)*914400*dKoeff) >> 0;
+                    var sSrc = oElement.svg.png_thumb;
+                    var nEmuWidth = ((oElement.dimensions.png_thumb.width/96)*914400) >> 0;
+                    var nEmuHeight = ((oElement.dimensions.png_thumb.height/96)*914400) >> 0;
                     sScript += '\n oImage = Api.CreateImage(\'' + sSrc + '\', ' + nEmuWidth + ', ' + nEmuHeight + ');';
                     sScript += '\noParagraph.AddDrawing(oImage);';
 
@@ -32,6 +31,15 @@
 
     window.Asc.plugin.init = function () {
 
+        function updateSearchBar(){
+            $('#search_input').width($('#search_form').innerWidth() - $('#search_button').outerWidth(true) - 8);
+        }
+
+		$( window ).resize(function(){
+            updateSearchBar();
+		});
+        updateSearchBar();
+	
         function loadClipArtPage(nIndex, sQuery) {
             $.ajax({
                 method: 'GET',
@@ -46,10 +54,16 @@
         function fillTableFromResponse(aPayLoad) {
             $('#image_container').empty();
             var oImgElement;
+			var nContainerWidth = $('#image_container')[0].clientWidth;
             for (var i = 0; i < aPayLoad.length; ++i) {
                 oImgElement = $('<img>');
                 oImgElement.attr('src', aPayLoad[i].svg.png_thumb);
-                //oImgElement.attr('width', widthPix + 'px');
+				
+				if(aPayLoad[i].dimensions.png_thumb.width > nContainerWidth){
+					var fKoeff = nContainerWidth/aPayLoad[i].dimensions.png_thumb.width;
+					oImgElement.attr('width', ((aPayLoad[i].dimensions.png_thumb.width*fKoeff) >> 0) + 'px');
+					oImgElement.attr('height', ((aPayLoad[i].dimensions.png_thumb.height*fKoeff) >> 0)+ 'px');
+				}
                 oImgElement.attr('data-index', i + '');
                 oImgElement.mouseover(
                     function (e) {
@@ -77,15 +91,23 @@
         }
 
         function fillPaginationList(nPagesCount, currentPage) {
-            $('#pagination_div').pagination({
-                items: nPagesCount,
-                itemsOnPage: 1,
-                currentPage: currentPage,
-                cssStyle: 'light-theme',
-                onPageClick: function (nPageNumber, event) {
+			$("#pagination_div").paginate({
+				count 		: nPagesCount,
+				start 		: currentPage,
+				display     : 7,
+				border					: true,
+				border_color			: '#fff',
+				text_color  			: '#fff',
+				background_color    	: 'black',	
+				border_hover_color		: '#ccc',
+				text_hover_color  		: '#000',
+				background_hover_color	: '#fff', 
+				images					: false,
+				mouse					: 'press',
+				onChange     			: function (nPageNumber) {
                     loadClipArtPage(nPageNumber, sLastQuery)
                 }
-            });
+			});
         }
 
         $('#search_button').click(function (e) {
@@ -93,6 +115,8 @@
             loadClipArtPage(1, sLastQuery);
         });
         loadClipArtPage(1, sLastQuery);
+		
+		
     };
 
     window.Asc.plugin.button = function (id) {

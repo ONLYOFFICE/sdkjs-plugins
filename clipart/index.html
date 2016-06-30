@@ -4,21 +4,21 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script src="https://cdn.rawgit.com/flaviusmatis/simplePagination.js/master/jquery.simplePagination.js"></script>
+	<script src="http://tympanus.net/jPaginate/jquery.paginate.js"></script>
+	<link rel="stylesheet" type="text/css" href="http://tympanus.net/jPaginate/css/style.css">
     <script src="../pluginBase.js"></script>
     <script src="config.js"></script>
     <script src="clipart.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/flaviusmatis/simplePagination.js/master/simplePagination.css">
 </head>
 <body style="width: 100%;height: 100%; margin: 0px;">
 <div style="position:fixed; width: 100%;height: 100%; display: flex; flex-direction: column;">
     <div style='height: 30px; width: 100%; background-color: transparent;'>
-        <form id="search_form" onclick="return false;">
+        <form id="search_form" onclick="return false;" style="width: 100%;">
             <input id="search_input">
             <button id="search_button">Search</button>
         </form>
     </div>
-    <div class="pagination-holder clearfix" id="pagination_div">
+    <div id="pagination_div" style="width: 100%">
     </div>
     <div style='overflow-y:scroll;left:0;top:0;width:100%;flex:1;' id="image_container">
     </div>
