@@ -47,7 +47,6 @@
   };
 
   window.Asc.plugin.button = function (id) {
-    //if (id == 0) {
       var t = this;
       loadCurrency($('#DP').datepicker('getDate'), null, function (value) {
         var command = '';
@@ -56,35 +55,18 @@
             var rates = JSON.parse(value).rates;
             var keys = Object.keys(rates);
             console.log(rates);
-            command += 'var oDocument = Api.GetDocument();';
-            command += 'var oTable = Api.CreateTable(2,' + keys.length + ');';
-            command += 'oTable.SetWidth("twips", 4311);';
-            command += 'oTable.SetTableLook(true, true, false, false, true, false);'
-            command += 'var oRow, oCell, oCellContent, oParagraph;'
-            for (var i = 0; i < keys.length; ++i) {
-              command += 'oRow = oTable.GetRow(' + i + ');';
-              command += 'oCell = oRow.GetCell(0);';
-              command += 'oCell.SetWidth("twips", 1637);';
-              command += 'oCellContent = oCell.GetContent();';
-              command += 'oParagraph = oCellContent.GetElement(0);';
-              command += 'oParagraph.SetJc("center");';
-              command += 'oRun = oParagraph.AddText("' + keys[i] + '");';
-              command += 'oCell = oRow.GetCell(1);';
-              command += 'oCell.SetWidth("twips", 1637);';
-              command += 'oCellContent = oCell.GetContent();';
-              command += 'oParagraph = oCellContent.GetElement(0);';
-              command += 'oParagraph.SetJc("center");';
-              command += 'oRun = oParagraph.AddText("' + rates[keys[i]] + '");';
-            }
-            command += 'oDocument.InsertContent([oTable]);';
+            
+			command += 'var oSheet = Api.GetActiveSheet();';
+			for (var i = 0; i < keys.length; ++i) {
+				command += 'oSheet.GetRange("A' + (i + 1) + '").SetValue("' + keys[i] + '");';
+				command += 'oSheet.GetRange("B' + (i + 1) + '").SetValue("' + rates[keys[i]] + '");';
+			}
+			
             window.Asc.plugin.info.recalculate = true;
           } catch (e) {
           }
         }
         t.executeCommand('close', command);
       });
-    //} else {
-    //  this.executeCommand('close', '');
-    //}
   };
 })(window, undefined);
