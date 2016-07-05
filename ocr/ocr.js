@@ -141,8 +141,7 @@
                                 }
                             }
                             sScript += '\noTextPr.SetFontFamily(\'' + sFontName + '\');';
-                            sScript += '\noTextPr.SetFontSize(' + ((oWord.font_size * 2 )>> 0) + ');';
-                            sScript += '\noRun.OnChangeTextPr(oTextPr);';
+                            sScript += '\noTextPr.SetFontSize(' + ((oWord.font_size * 2 )>> 0) + ');';                        
                         }
                     }
                 }
