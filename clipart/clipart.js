@@ -102,6 +102,7 @@
 				border_hover_color		: '#ccc',
 				text_hover_color  		: '#000',
 				background_hover_color	: '#fff', 
+				item_count_display      : false,
 				images					: false,
 				mouse					: 'press',
 				onChange     			: function (nPageNumber) {
