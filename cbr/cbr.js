@@ -1,5 +1,5 @@
 (function (window, undefined) {
-  var apiCurrency = 'http://api.fixer.io/';
+  var apiCurrency = 'https://api.fixer.io/';
 
   function formatDate(date) {
     var month = '' + (date.getMonth() + 1);
