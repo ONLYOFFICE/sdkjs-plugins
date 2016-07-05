@@ -25,8 +25,7 @@
                 window.Asc.plugin.arrParsedData.length = 0;
                 var oFileReader = new FileReader();
                 var nIndex = 0;
-                arrImages = [];
-                $('#main_container').mask({'label':''});
+                arrImages = [];                
                 $('#status_label').text('Loading images');
                 oFileReader.onloadend = function() {
                     var oImgElement = document.createElement('img');
@@ -82,8 +81,7 @@
                             if(arrImagesCopy.length > 0){
                                 fTesseractCall();
                             }
-                            else{
-                                $('#main_container').unmask();
+                            else{                             
                                 $('#status_label').text('');
                                 document.getElementById('recognize_button').removeAttribute('disabled');
                                 document.getElementById('lang_select').removeAttribute('disabled');
