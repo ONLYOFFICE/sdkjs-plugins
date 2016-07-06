@@ -16,7 +16,7 @@
                     var oElement = aSelected[i];
                     sScript += '\noParagraph = Api.CreateParagraph();';
                     sScript += '\narrInsertResult.push(oParagraph);';
-                    var sSrc = oElement.svg.png_thumb;
+                    var sSrc = oElement.svg.png_full_lossy;
                     var nEmuWidth = ((oElement.dimensions.png_thumb.width/96)*914400) >> 0;
                     var nEmuHeight = ((oElement.dimensions.png_thumb.height/96)*914400) >> 0;
                     sScript += '\n oImage = Api.CreateImage(\'' + sSrc + '\', ' + nEmuWidth + ', ' + nEmuHeight + ');';
