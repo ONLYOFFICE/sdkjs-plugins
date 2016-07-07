@@ -59,8 +59,7 @@
 			responsiveVoice.speak(window.Asc.plugin.text_init, voicelist[_index].name, {onstart : StartCallback, onend : EndCallback});
 		}
 
-		responsiveVoice.OnVoiceReady = function()
-		{
+		responsiveVoice.AddEventListener("OnReady", function() {
 			setTimeout(function()
 			{
 				var xhr  = new XMLHttpRequest();
@@ -91,7 +90,7 @@
 				};
 				xhr.send(null);
 			}, 1);
-		};
+		});
 	};
 
 	window.Asc.plugin.button = function(id)
