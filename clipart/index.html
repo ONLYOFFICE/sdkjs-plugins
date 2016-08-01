@@ -4,24 +4,222 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-	<script src="https://jhuet.github.io/jPaginate-fork/jquery.paginate.js"></script>
-	<link rel="stylesheet" type="text/css" href="https://jhuet.github.io/jPaginate-fork/css/style.css">
+    <script src='https://noraesae.github.io/perfect-scrollbar/perfect-scrollbar.min.js'></script>
     <script src="../pluginBase.js"></script>
     <script src="config.js"></script>
     <script src="clipart.js"></script>
+    <link type="text/css" href="../plugins.css">
+    <style>
+        #search-id{
+            border: none;
+            padding: 0px;
+            margin: 0px;
+            height: 20px;
+            width: 100%;
+            outline: none;
+        }
+
+        #search-button-id{
+            padding: 0;
+            border: 0;
+            margin: 0;
+            background-color: rgba(0,0,0,0);
+            background-image: url('icon_search.png');
+            width: 20px;
+            height: 20px;
+            vert-align: middle;
+            display: inline-block;
+            border-image-width: 0;
+
+        }
+
+        #search-table-container-id{
+            height: 20px;
+            width: 100%;
+        }
+
+        #search-container-id{
+            border: 1px solid rgb(207, 207, 207);
+            box-shadow: inset 0 1px 2px #eee;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        td{
+            padding: 0;
+            border-spacing:0;
+            vertical-align: middle;
+            margin: 0;
+        }
+        #input-cell-id{
+            width: 100%;
+            padding: 0 4px;
+            height: 20px;
+            background-color: #ffffff;
+
+        }
+        #button-cell-id{
+            padding: 0px;
+            height: 20px;
+            vertical-align: bottom;
+        }
+        table{
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+        #main-container-id{
+            background-color: rgb(244, 244, 244);
+            height: 100%;
+
+            overflow: hidden;
+        }
+        html, body {
+            min-height: 100% !important;
+            height: 100%;
+            overflow-y:hidden;
+        }
+
+        #main-search-container-id{
+            background-color: rgb(244, 244, 244);
+        }
+        #preview-images-container-id{
+            width: auto;
+            margin-left: 5px;
+            margin-right: 15px;
+        }
+
+        #pagination-container-id{
+            height: 50px;
+            position: relative;
+            background-color: rgb(244, 244, 244);
+        }
+
+
+
+        .pagination-button-div{
+            display: table-cell;
+            font-size: 11px;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            height: 22px;
+            cursor: pointer;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .pagination-button-div p{
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .noselect{
+            -khtml-user-select: none;
+            user-select: none;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .pagination-button-div:hover {
+            background-color: #d8dadc !important;
+        }
+        .pagination-button-div-selected{
+            background-color: #7d858c !important;
+        }
+        .pagination-button-div-selected:hover{
+            background-color: #7d858c !important;
+        }
+
+        .pagination-button-div-selected p{
+            color: #ffffff;
+        }
+
+        #search-button-id:focus{
+            outline: none;
+        }
+        p{
+            margin: auto;
+        }
+
+        .ps-container .ps-scrollbar-y-rail {
+            position: absolute; /* please don't change 'position' */
+            right: 3px; /* there must be 'right' for ps-scrollbar-y-rail */
+            width: 10px;
+        }
+
+         .ps-scrollbar-y {
+            position: absolute; /* please don't change 'position' */
+            right: 0; /* there must be 'right' for ps-scrollbar-y */
+            width: 9px;
+            background-color: rgb(241, 241, 241);
+            -webkit-border-radius: 2px;
+            -moz-border-radius: 2px;
+            border-radius: 2px;
+            visibility: visible;
+            display: block;
+            box-sizing: border-box;
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAANCAQAAAAz1Zf0AAAAIUlEQVR42mNgAILz/0GQAQo+/gdBBqLAqE5ydH5k+sgEANHgUH2JtDRHAAAAAElFTkSuQmCC);
+            background-repeat: no-repeat;
+            background-position: 0 center;
+            border: 1px solid #cfcfcf;
+        }
+
+        .ps-container .ps-scrollbar-y-rail:hover .ps-scrollbar-y, .ps-container .ps-scrollbar-y-rail.hover .ps-scrollbar-y {
+            background-color: rgb(207, 207, 207);
+            background-position: -7px center;
+        }
+
+        .ps-container.ps-in-scrolling .ps-scrollbar-y-rail .ps-scrollbar-y{
+            background-color: #adadad;
+            border-color: #adadad;
+            background-position: -7px center;
+        }
+
+    </style>
 </head>
-<body style="width: 100%;height: 100%; margin: 0px;">
-<div style="position:fixed; width: 100%;height: 100%; display: flex; flex-direction: column;">
-    <div style='height: 30px; width: 100%; background-color: transparent;'>
-        <form id="search_form" onclick="return false;" style="width: 100%;">
-            <input id="search_input">
-            <button id="search_button">Search</button>
-        </form>
+<body style="width: 100%;height: 100%; margin: 0;">
+    <div id="main-container-id" >
+        <div id="main-search-container-id" style="height: 50px">
+            <form onsubmit="return false" id="search-form-id">
+                <div id="search-container-id" style="position: absolute; top: 10px">
+                    <table id="search-table-container-id" style="height: 20px;">
+                        <tbody>
+                        <tr>
+                            <td id="input-cell-id">
+                                    <input id="search-id" type="text">
+                            </td>
+                            <td id="button-cell-id">
+                                <button type="submit" id="search-button-id" class="noselect">
+                                    <img src="icon_search.png" alt="submit" style="width: 100%; height: 100%; vertical-align: middle"/>
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+        <div id="scrollable-container-id" style="position: relative; height: calc(100% - 100px); overflow: hidden">
+            <div id="preview-images-container-id" style="display: block; position: absolute;">
+            </div>
+        </div>
+        <div id="pagination-container-id" style=" display: table; width: 100%; text-align: center; ">
+            <div id="pagination-table-container-id" style="display:table-cell; vertical-align: middle; text-align: center;  ">
+                <table style="margin:auto" id="pagination-table-id">
+                    <tr>
+                        <td style="height: auto; vertical-align: middle">
+                            <div class="pagination-button-div noselect" id="navigation-first-page-id" style="width:22px; height:22px;"><p><<</p></div>
+                            <div class="pagination-button-div noselect" id="navigation-prev-page-id" style="width:22px; height:22px;"><p><</p></div>
+                        </td>
+                        <td style="height: auto; vertical-align: middle" id="pages-cell-id">
+
+                        </td>
+                        <td style="height: auto; vertical-align: middle">
+                            <div class="pagination-button-div noselect" id="navigation-next-page-id" style="width:22px; height:22px;"><p>></p></div>
+                            <div class="pagination-button-div noselect" id="navigation-last-page-id" style="width:22px; height:22px;"><p>>></p></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
     </div>
-    <div id="pagination_div" style="width: 100%">
-    </div>
-    <div style='overflow-y:scroll;left:0;top:0;width:100%;flex:1;' id="image_container">
-    </div>
-</div>
 </body>
 </html>
