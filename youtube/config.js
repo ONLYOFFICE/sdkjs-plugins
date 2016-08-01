@@ -21,7 +21,11 @@ window.Asc.plugin = {
             "isUpdateOleOnResize" : false,
 
             "buttons"        : [ { "text": "Ok", "primary": true },
-                                { "text": "Cancel", "primary": false } ]
+                                { "text": "Cancel", "primary": false } ],
+
+            "size" : [350, 90],
+            "maximumSize" : [],
+            "minimumSize" : []
         }
     ]
 };

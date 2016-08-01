@@ -62,7 +62,7 @@
 
                     window.Asc.plugin.resizeWindow = function(width, height)
                     {
-                        var data = "{width:" + width + ",height:" + height + "}";
+                        var data = "{\"width\":" + width + ",\"height\":" + height + "}";
 
                         window.Asc.plugin.info.type = "resize";
                         window.Asc.plugin.info.data = data;
