@@ -17,77 +17,57 @@
 	var _userAgent = navigator.userAgent.toLowerCase();
 	var isIE = (_userAgent.indexOf("msie") > -1 || _userAgent.indexOf("trident") > -1 || _userAgent.indexOf("edge") > -1);
 
+	var _contentDiv = null;
+
 	window.Asc.plugin.init = function(text)
 	{
+		document.getElementById("textbox_button").onclick = function(e)
+		{
+			if (null == _contentDiv)
+			{
+				var _table     = document.getElementsByTagName("table")[0];
+				var _row       = _table.insertRow(_table.rows.length);
+				_row.innerHTML = "<td colspan=\"2\" style=\"background-color:transparent;height:100%;\"><div id=\"content\" style=\"width:100%;height:100%;\"></td>";
+				_contentDiv = document.getElementById("content");
+
+				window.Asc.plugin.resizeWindow(620, 480);
+			}
+
+			if (true)
+			{
+				window.Asc.plugin.url = document.getElementById("textbox_url").value;
+
+				if (window.Asc.plugin.player)
+					window.Asc.plugin.player.pluginApi.stopVideo();
+
+				var _data = "<video style=\"width:100%; height:100%;\">";
+				_data += "<source type=\"video/youtube\" src=\"" + window.Asc.plugin.url + "\" type=\"video/mp4\"  id=\"player1\"" +
+					" poster=\"\" controls=\"controls\" preload=\"none\" /></video>";
+
+				_contentDiv.innerHTML = _data;
+
+				play();
+			}
+		};
+
 		this.url = text;
 		if (this.url == "")
 		{
-			document.body.innerHTML = ("<div style=\"font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#848484;font-size:20px;" +
-				"background:#F4F4F4;display:table;width:100%;height:100%;text-align:center;z-index:10;\">" +
-				"<span style=\"display:table-cell;vertical-align: middle;\"> PASTE URL FROM CLIBOARD (Ctrl + V) </span></div>");
-				
-			if (isIE)
-			{
-				document.body.innerHTML = "<textarea id=\"focus_id\" style=\"position:absolute;left:0px;top:0px;z-index:-1;\"></textarea>" + document.body.innerHTML;
-				document.addEventListener("focus", document_focus, true);
-			}				
+			this.resizeWindow(350, 90);
 		}
 		else
 		{
-			var _data = "<video style=\"width:100%; height:100%;\">";
-			_data += "<source type=\"video/youtube\" src=\"" + window.Asc.plugin.url + "\" type=\"video/mp4\"  id=\"player1\"" +
-				" poster=\"\" controls=\"controls\" preload=\"none\" /></video>";
-
-			document.body.innerHTML = _data;
-
-			play();
-
-			document.onpaste = function(e){};
+			document.getElementById("textbox_url").value = this.url;
+			document.getElementById("textbox_button").onclick();
 		}
 	};
 	
-	function _onPaste(e)
-	{
-		if (isIE)
-			document.removeEventListener("focus", document_focus, true);
-		
-		var _clipboard = (e && e.clipboardData) ? e.clipboardData : window.clipboardData;
-		if (_clipboard && _clipboard.getData)
-		{
-			var _dataType = isIE ? "Text" : "text/plain";
-			window.Asc.plugin.url   = _clipboard.getData(_dataType);
-			var _paramsIndex = window.Asc.plugin.url.indexOf("&");
-			if (_paramsIndex > 0 && _paramsIndex < window.Asc.plugin.url.length)
-				window.Asc.plugin.url = window.Asc.plugin.url.substr(0, _paramsIndex);
-
-			var _data = "<video style=\"width:100%; height:100%;\">";
-			_data += "<source type=\"video/youtube\" src=\"" + window.Asc.plugin.url + "\" type=\"video/mp4\"  id=\"player1\"" +
-				" poster=\"\" controls=\"controls\" preload=\"none\" /></video>";
-
-			document.body.innerHTML = _data;
-
-			play();
-		}
-		if (e.preventDefault)
-			e.preventDefault();
-
-		document.onpaste = function(e){};
-		return false;
-	};
-	
-	if (!isIE)
-		document.onpaste = _onPaste;
-	else
-		document.addEventListener("paste", _onPaste);
-
 	function play()
 	{
-		if (window.Asc.plugin.player)
-			window.Asc.plugin.player.pluginApi.stopVideo();
-
 		$('audio,video').mediaelementplayer({
 			//mode: 'shim',
-			success: function(player, node) {
+			success : function(player, node)
+			{
 				window.Asc.plugin.player = player;
 				$('#' + node.id + '-mode').html('mode: ' + player.pluginType);
 			}
@@ -132,6 +112,23 @@
 		else
 		{
 			this.executeCommand("close", "");
+		}
+	};
+
+	window.onresize = function(e)
+	{
+		var _plugin = document.getElementById("me_youtube_0_container");
+		if (_plugin)
+		{
+			var _pluginContainer = document.getElementById("mep_0");
+			if (_pluginContainer)
+			{
+				_pluginContainer.style.width = "100%";
+				_pluginContainer.style.height = "100%";
+			}
+
+			_plugin.style.width = "100%";
+			_plugin.style.height = "100%";
 		}
 	};
 
