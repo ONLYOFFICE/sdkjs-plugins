@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html style="height:100%;">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>youtube</title>
+	<script src="build/jquery.js"></script>	
+	<script src="build/mediaelement-and-player.min.js"></script>
+	<link rel="stylesheet" href="build/mediaelementplayer.min.css" />
+	
+	<script type="text/javascript" src="../pluginBase.js"></script>
+	<script type="text/javascript" src="config.js"></script>
+	<script type="text/javascript" src="youtube.js"></script>
+
+	<link rel="stylesheet" href="../plugins.css" />
+	<style>
+		.input_error {
+			display: none;
+			float: left;
+			position: relative;
+		}
+
+		.input_error:before {
+			content: '';
+			position: absolute;
+			right: 3px;
+			top: 3px;
+			width: 16px;
+			height: 16px;
+			background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuNWWFMmUAAACvSURBVDhPrZNRDoIwEER7COA6HgJPpAnHM4oXQdFE/VDfNrsfpQvGhkneT2dmky40rK77pq6ggx4eyhF2UGnMF4EWBvjMcIFW46nEgLcGl5BMOoSDGmR6EjZNz0GyjdbjALlfFjR5HnRajwNkSVnI5HnQaz0OkE1nIZPnwVPrxQNGrc9f4Qcnra+zxAbKP6OIg/IfyYSxhasGPcTzyyYC9pjO8IIbHGAPy4/pf4XwBSVejZ5wzd0zAAAAAElFTkSuQmCC);
+		}
+	</style>
+</head>
+<body style="width:100%;height:100%;margin:0;padding:15px;overflow:hidden;box-sizing:border-box;">
+
+<table style="width:100%;height:100%;box-sizing:border-box;margin:0;padding:0;border-collapse:separate;border-spacing:0px;">
+
+	<tr>
+		<td class="defaultlable" style="padding-bottom:7px;" colspan="2">Paste youtube video URL</td>
+	</tr>
+
+	<tr>
+		<td style="width:90%;padding-bottom:15px;">
+			<input type="text" class="form-control" style="width:100%;float:left;position:relative;" id="textbox_url"/>
+			<div id="input_error_id" class="input_error" style="width:0px;height:16px;"></div>
+		</td>
+		<td style="width:10%;padding-bottom:15px;padding-left:10px;">
+			<button class="btn-text-default" style="width:100%;" id="textbox_button">OK</button>
+		</td>
+	</tr>
+
+	<!--
+    <tr>
+        <td colspan="2" style="background-color:#FFFF00;height:100%;">
+        </td>
+    </tr>
+    -->
+
+</table>
+</body>
+</html>
+</html>
