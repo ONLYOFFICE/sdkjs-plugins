@@ -1,6 +1,6 @@
 (function(window, undefined){
 
-    window.hints = [];
+    var hints = [];
 
     window.Asc.plugin.init = function(text)
     {
@@ -13,7 +13,6 @@
             document.body.innerHTML = ("<div style=\"font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#848484;font-size:20px;" +
                     "background:#F4F4F4;display:table;width:100%;height:100%;text-align:center;\">" +
                     "<span style=\"display:table-cell;vertical-align: middle;\">please select text before run plugin!</span></div>");
-            //document.getElementById("id_text").innerHTML = "please select text before run plugin!";
             return;
         }
 
@@ -31,7 +30,7 @@
                 for (var i = 0; i < len; i++)
                 {
                     var fragment = result.fragments[i];
-                    window.hints.push("<h1>" + fragment.hint.name + "</h1><br/>" + fragment.hint.description);
+                    hints.push("<h1>" + fragment.hint.name + "</h1><br/>" + fragment.hint.description);
 
                     if (last != fragment.start)
                         output += text.substr(last, fragment.start - last);
@@ -56,7 +55,7 @@
 
                         this.className = "active current";
                         var hintIndex = parseInt(this.getAttribute("id").substr("4"));
-                        document.getElementById("id_hint").innerHTML = window.hints[hintIndex];
+                        document.getElementById("id_hint").innerHTML = hints[hintIndex];
                     };
                 }
             }

@@ -131,7 +131,7 @@
 			if (client.readyState == 4 && client.status == 200)
 			{
 				_templates_code[_indexTmp] = client.responseText;
-				template_run(_indexTmp);
+				window.template_run(_indexTmp);
 			}
 		};
 		client.send();
