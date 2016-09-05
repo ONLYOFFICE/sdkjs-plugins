@@ -78,7 +78,7 @@
                 pluginData = {};
             }
 
-            if (pluginData.type = "plugin_init")
+            if (pluginData.type == "plugin_init")
                 eval(pluginData.data);
         }
     }
