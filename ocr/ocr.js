@@ -7,7 +7,7 @@
         return res;
     }
 
-    window.Asc.plugin.arrParsedData = [];
+    var arrParsedData = [];
 
     window.Asc.plugin.init = function(){
 
@@ -52,7 +52,7 @@
                 while (oTextContainer.firstChild) {
                     oTextContainer.removeChild(oTextContainer.firstChild);
                 }
-                window.Asc.plugin.arrParsedData.length = 0;
+                arrParsedData.length = 0;
                 var oFileReader = new FileReader();
                 var nIndex = 0;
                 arrImages = [];                
@@ -89,7 +89,7 @@
                 while (oTextContainer.firstChild) {
                     oTextContainer.removeChild(oTextContainer.firstChild);
                 }
-                window.Asc.plugin.arrParsedData.length = 0;
+                arrParsedData.length = 0;
                 document.getElementById('recognize-button').setAttribute('disabled', '');
                 document.getElementById('lang-select').setAttribute('disabled', '');
                 var fTesseractCall = function(){
@@ -101,7 +101,7 @@
                     }, lang: $('#lang-select option:selected')[0].value}, function (err, result) {
                         if(!err){
                             document.getElementById('text-container-div').appendChild($(result.html)[0]);
-                            window.Asc.plugin.arrParsedData.push(result);
+                            arrParsedData.push(result);
                             updateScroll();
                             if(arrImagesCopy.length > 0){
                                 fTesseractCall();
@@ -126,7 +126,7 @@
             sScript += 'var oDocument = Api.GetDocument();';
             sScript += '\noDocument.CreateNewHistoryPoint();';
             sScript += '\nvar oParagraph, oRun, arrInsertResult = [], oTextPr;';
-            var arrParsedData = window.Asc.plugin.arrParsedData;
+
             for(var i = 0; i < arrParsedData.length; ++i){
                 var oCurData = arrParsedData[i];
                 for(var j = 0;  j < oCurData.paragraphs.length; ++j){
