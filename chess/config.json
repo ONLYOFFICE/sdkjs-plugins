@@ -1,13 +1,13 @@
-window.Asc.plugin = {
+{
     "name" : "chess(fen)",
     "guid" : "asc.{FFE1F462-1EA2-4391-990D-4CC84940B754}",
 
     "variations" : [
         {
             "description" : "chess",
-            "url"         : "chess(fen)/index.html",
+            "url"         : "chess/index.html",
 
-            "icons"           : ["chess%28fen%29/icon.png", "chess%28fen%29/icon@2x.png"],
+            "icons"           : ["chess/icon.png", "chess/icon@2x.png"],
             "isViewer"        : true,
             "EditorsSupport"  : ["word", "cell", "slide"],
 
@@ -25,9 +25,9 @@ window.Asc.plugin = {
         },
         {
             "description" : "About",
-            "url"         : "chess(fen)/index_about.html",
+            "url"         : "chess/index_about.html",
 
-            "icons"           : ["chess%28fen%29/icon.png", "chess%28fen%29/icon@2x.png"],
+            "icons"           : ["chess/icon.png", "chess/icon@2x.png"],
             "isViewer"        : true,
             "EditorsSupport"  : ["word", "cell", "slide"],
 
@@ -45,4 +45,4 @@ window.Asc.plugin = {
             "size" : [392, 147]
         }
     ]
-};
+}

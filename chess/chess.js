@@ -506,7 +506,7 @@
         }
     };
 
-    var window.g_board = new CChessBoard("chess");
+    window.g_board = new CChessBoard("chess");
 
     window.Asc.plugin.init = function(text)
     {
