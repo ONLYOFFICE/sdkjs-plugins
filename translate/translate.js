@@ -1,6 +1,6 @@
 (function(window, undefined){
 
-	window.Asc.plugin.translate_data = "";
+	var translate_data = "";
 	var languages = [];
 
 	var isInit = false;
@@ -93,7 +93,7 @@
 		document.getElementById("translateresult_id").innerHTML = "";
 		updateScroll();
 
-		if (window.Asc.plugin.translate_data == "")
+		if (translate_data == "")
 			return;
 
 		var _lang = "";
@@ -112,7 +112,7 @@
 		var _url = "https://translate.yandex.net/api/v1.5/tr.json/translate?";
 		_url += "key=trnsl.1.1.20160604T115612Z.107ebb05a7757bcc.804e900f347ddfbeadd7ca5999bd5cb6ca32805b";
 		_url += "&text=";
-		_url += window.Asc.plugin.translate_data;
+		_url += translate_data;
 		_url += ("&lang=" + _lang);
 		_url += "&format=plain";
 		xhr.open('POST', _url, true);
@@ -150,7 +150,7 @@
 
 		text = text.replace(/;/g, "%3B");
 
-		window.Asc.plugin.translate_data = text;
+		translate_data = text;
 
 		if (!isInit)
 		{

@@ -1,39 +1,25 @@
 (function(window, undefined){
 
-	window.Asc.plugin.url = "";
-	window.Asc.plugin.player = null;
+	var url = "";
+	var player = null;
+	var _contentDiv = null;
 	
-	function document_focus(e)
-	{
-		if (e.target.id == "focus_id")
-			return;
-		
-		var _elem = document.getElementById("focus_id");
-		if (_elem)
-			_elem.focus();
-		
-	}
-
 	function validateYoutubeUrl(url)
 	{
         var p = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
         return (url.match(p)) ? true : false;
     }
 
-	var _userAgent = navigator.userAgent.toLowerCase();
-	var isIE = (_userAgent.indexOf("msie") > -1 || _userAgent.indexOf("trident") > -1 || _userAgent.indexOf("edge") > -1);
-
-	var _contentDiv = null;
-
 	window.Asc.plugin.init = function(text)
 	{
 	    var _textbox = document.getElementById("textbox_url");
 	    _textbox.onkeyup = function(e)
 	    {
-	        if (e.keyCode == 13)
+	        if (e.keyCode == 13) // click on Enter
                 document.getElementById("textbox_button").onclick();
 	    };
 
+		// clear validation on input/paste
         _textbox.oninput = _textbox.onpaste = function(e)
         {
             this.style.borderColor = "";
@@ -69,13 +55,13 @@
 
 			if (true)
 			{
-				window.Asc.plugin.url = _url;
+				url = _url;
 
-				if (window.Asc.plugin.player)
-					window.Asc.plugin.player.pluginApi.stopVideo();
+				if (player)
+					player.pluginApi.stopVideo();
 
 				var _data = "<video style=\"width:100%; height:100%;\">";
-				_data += "<source type=\"video/youtube\" src=\"" + window.Asc.plugin.url + "\" type=\"video/mp4\"  id=\"player1\"" +
+				_data += "<source type=\"video/youtube\" src=\"" + url + "\" type=\"video/mp4\"  id=\"player1\"" +
 					" poster=\"\" controls=\"controls\" preload=\"none\" /></video>";
 
 				_contentDiv.innerHTML = _data;
@@ -84,14 +70,14 @@
 			}
 		};
 
-		this.url = text;
-		if (this.url == "")
+		url = text;
+		if (url == "")
 		{
 			this.resizeWindow(350, 90, 350, 90, 350, 90);
 		}
 		else
 		{
-			document.getElementById("textbox_url").value = this.url;
+			document.getElementById("textbox_url").value = url;
 			document.getElementById("textbox_button").onclick();
 		}
 	};
@@ -100,9 +86,9 @@
 	{
 		$('audio,video').mediaelementplayer({
 			//mode: 'shim',
-			success : function(player, node)
+			success : function(_player, _node)
 			{
-				window.Asc.plugin.player = player;
+				player = _player;
 				$('#' + node.id + '-mode').html('mode: ' + player.pluginType);
 			}
 		});
@@ -110,22 +96,22 @@
 
 	window.Asc.plugin.button = function(id)
 	{
-		if (window.Asc.plugin.player)
-			window.Asc.plugin.player.pluginApi.stopVideo();
+		if (player)
+			player.pluginApi.stopVideo();
 
 		if (id == 0)
 		{
-		    if ("" == this.url)
-		        this.url = document.getElementById("textbox_url").value;
+		    if ("" == url)
+		        url = document.getElementById("textbox_url").value;
 
-            if (!validateYoutubeUrl(this.url))
+            if (!validateYoutubeUrl(url))
             {
                 document.getElementById("textbox_url").style.borderColor = "#d9534f";
                 document.getElementById("input_error_id").style.display = "block";
                 return;
             }
 
-			var _ids = this.url.split("/");
+			var _ids = url.split("/");
 			var _id = _ids[_ids.length - 1];
 
 			if (0 == _id.indexOf("watch?v="))
@@ -146,7 +132,7 @@
                 _info.heightPix = (_info.mmToPx * _info.height) >> 0;
 
                 _info.imgSrc = _url;
-                _info.data = this.url;
+                _info.data = url;
 
                 var _code = "Api." + _method + "(" + JSON.stringify(_info) + ");";
                 this.executeCommand("close", _code);

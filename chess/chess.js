@@ -1,5 +1,6 @@
 (function(window, undefined){
 
+    // chess board implementation
     function CChessBoard(div_name)
     {
         this.name = div_name;                                           // parent div name
@@ -84,6 +85,7 @@
 
                         if (window.Asc.plugin.info.resize === true)
                         {
+                            // simple resize ole object. close plugin
                             return window.Asc.plugin.button(0);
                         }
 
@@ -504,11 +506,11 @@
         }
     };
 
-    window.Asc.plugin.chess = new CChessBoard("chess");
+    var window.g_board = new CChessBoard("chess");
 
     window.Asc.plugin.init = function(text)
     {
-        window.Asc.plugin.chess.init(text);
+        window.g_board.init(text);
     };
 
     window.Asc.plugin.button = function(id)
@@ -525,8 +527,8 @@
             _info.widthPix = (_info.mmToPx * _info.width) >> 0;
             _info.heightPix = (_info.mmToPx * _info.height) >> 0;
 
-            _info.imgSrc = this.chess.getResult(_info.widthPix, _info.heightPix).image;
-            _info.data = this.chess.getData();
+            _info.imgSrc = window.g_board.getResult(_info.widthPix, _info.heightPix).image;
+            _info.data = window.g_board.getData();
 
             var _code = "Api." + _method + "(" + JSON.stringify(_info) + ");";
             this.executeCommand("close", _code);
@@ -539,9 +541,8 @@
 
     window.Asc.plugin.onExternalMouseUp = function()
     {
-        var _board = window.Asc.plugin.chess;
-        if (_board.track != "")
-            _board.onmouseup(null);
+        if (window.g_board.track != "")
+            window.g_board.onmouseup(null);
     };
 
 })(window, undefined);

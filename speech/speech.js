@@ -1,9 +1,10 @@
 (function(window, undefined)
 {
-	window.Asc.plugin.text_init = "";
+	var text_init = "";
+
 	window.Asc.plugin.init      = function(text)
 	{
-		window.Asc.plugin.text_init = text;
+		text_init = text;
 		function StartCallback()
 		{
 		}
@@ -13,7 +14,7 @@
 			window.Asc.plugin.button(-1);
 		}
 
-		function _Run(lang)
+		function Run(lang)
 		{
 			var voicelist = responsiveVoice.getVoices();
 
@@ -56,17 +57,18 @@
 				}
 			}
 
-			responsiveVoice.speak(window.Asc.plugin.text_init, voicelist[_index].name, {onstart : StartCallback, onend : EndCallback});
+			responsiveVoice.speak(text_init, voicelist[_index].name, {onstart : StartCallback, onend : EndCallback});
 		}
 
 		responsiveVoice.AddEventListener("OnReady", function() {
 			setTimeout(function()
 			{
+				// detect language with yandex translate api
 				var xhr  = new XMLHttpRequest();
 				var _url = "https://translate.yandex.net/api/v1.5/tr.json/detect?";
 				_url += "key=trnsl.1.1.20160604T115612Z.107ebb05a7757bcc.804e900f347ddfbeadd7ca5999bd5cb6ca32805b";
 				_url += "&text=";
-				_url += window.Asc.plugin.text_init;
+				_url += text_init;
 				xhr.open('POST', _url, true);
 				xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 				xhr.onreadystatechange = function()
@@ -76,16 +78,16 @@
 						try
 						{
 							var _obj = JSON.parse(this.responseText);
-							_Run(_obj.lang);
+							Run(_obj.lang);
 						}
 						catch (err)
 						{
-							_Run("en");
+							Run("en");
 						}
 					}
 					else if (401 == this.readyState || 404 == this.readyState || 413 == this.readyState || 422 == this.readyState || 501 == this.readyState)
 					{
-						_Run("en");
+						Run("en");
 					}
 				};
 				xhr.send(null);
@@ -96,9 +98,8 @@
 	window.Asc.plugin.button = function(id)
 	{
 		if (-1 == id)
-		{
 			responsiveVoice.cancel();
-		}
+
 		this.executeCommand("close", "");
 	};
 
