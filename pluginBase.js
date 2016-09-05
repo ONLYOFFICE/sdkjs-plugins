@@ -5,7 +5,7 @@
 
     function CopyObj(Obj, ObjectExt)
     {
-        if( !Obj || !('object' == typeof(Obj) || 'array' == typeof(Obj)) )
+        if( !Obj || !("object" == typeof(Obj) || "array" == typeof(Obj)) )
         {
             return Obj;
         }
@@ -17,7 +17,7 @@
             if(Obj.hasOwnProperty(p))
             {
                 v = Obj[p];
-                if (v && 'object' === typeof v)
+                if (v && "object" === typeof v)
                 {
                     c[p] = CopyObj(v);
                 }
