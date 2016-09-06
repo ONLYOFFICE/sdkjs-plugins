@@ -1,4 +1,4 @@
-[![License](https://img.shields.io/badge/License-MIT-green.svg?style=flat)](https://opensource.org/licenses/MIT)    ![Release](https://img.shields.io/badge/Release-v4.0.1-blue.svg?style=flat)
+[![License](https://img.shields.io/badge/License-MIT-green.svg?style=flat)](https://opensource.org/licenses/MIT)    ![Release](https://img.shields.io/badge/Release-v4.1.1-blue.svg?style=flat)
 
 ## sdkjs-plugins
 

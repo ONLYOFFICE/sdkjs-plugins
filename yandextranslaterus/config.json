@@ -1,4 +1,4 @@
-window.Asc.plugin = {
+{
     "name" : "Yandex Translate to Russian",
     "guid" : "asc.{D3E759F7-3947-4BD6-B066-E184BBEDC675}",
 
@@ -23,4 +23,4 @@ window.Asc.plugin = {
             "buttons"         : []
         }
     ]
-};
+}
