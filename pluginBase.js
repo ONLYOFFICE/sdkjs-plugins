@@ -40,6 +40,8 @@
             if (xhr.status == 200)
             {
                 var objConfig = xhr.response;
+                if ((typeof objConfig) == "string")
+                    objConfig = JSON.parse(objConfig);
 
                 // extend window.Asc.plugin object
                 CopyObj(objConfig, window.Asc.plugin);
