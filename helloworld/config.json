@@ -1,4 +1,4 @@
-window.Asc.plugin = {
+{
     "name"       : "hello world",
     "guid"       : "asc.{0616AE85-5DBE-4B6B-A0A9-455C4F1503AD}",
     "baseUrl"    : "",
@@ -39,4 +39,4 @@ window.Asc.plugin = {
             "size" : [392, 147]
         }
     ]
-};
+}

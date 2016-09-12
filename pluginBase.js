@@ -1,23 +1,72 @@
 (function(window, undefined){
 
-    var g_isMouseSendEnabled = false;
-
     window.Asc = window.Asc || {};
-    window.Asc.plugin = null;
+    window.Asc.plugin = {};
 
-    // должны быть методы
-    // init(data);
-    // button(id)
-
-    window.plugin_sendMessage = function sendMessage(data)
+    function CopyObj(Obj, ObjectExt)
     {
-        window.parent.postMessage(data, "*");
+        if( !Obj || !("object" == typeof(Obj) || "array" == typeof(Obj)) )
+        {
+            return Obj;
+        }
+
+        var c = (ObjectExt === undefined) ? {} : ObjectExt;
+        var p, v;
+        for(p in Obj)
+        {
+            if(Obj.hasOwnProperty(p))
+            {
+                v = Obj[p];
+                if (v && "object" === typeof v)
+                {
+                    c[p] = CopyObj(v);
+                }
+                else
+                {
+                    c[p] = v;
+                }
+            }
+        }
+        return c;
+    }
+
+    window.onload = function()
+    {
+        var xhr = new XMLHttpRequest();
+        xhr.open("get", "./config.json", true);
+        xhr.responseType = "json";
+        xhr.onload = function()
+        {
+            if (xhr.status == 200)
+            {
+                var objConfig = xhr.response;
+                if ((typeof objConfig) == "string")
+                    objConfig = JSON.parse(objConfig);
+
+                // extend window.Asc.plugin object
+                CopyObj(objConfig, window.Asc.plugin);
+
+                var obj = {
+                    type : "initialize",
+                    guid : window.Asc.plugin.guid
+                };
+
+                window.parent.postMessage(JSON.stringify(obj), "*");
+            }
+        };
+        xhr.send();
     };
 
     function onMessage(event)
     {
         if (!window.Asc.plugin)
             return;
+
+        if (window.plugin_onMessage)
+        {
+            window.plugin_onMessage(event);
+            return;
+        }
 
         if (typeof(event.data) == "string")
         {
@@ -31,90 +80,8 @@
                 pluginData = {};
             }
 
-            if (pluginData.guid != window.Asc.plugin.guid)
-                return;
-
-            var type = pluginData.type;
-
-            if (type == "init")
-                window.Asc.plugin.info = pluginData;
-
-            switch (type)
-            {
-                case "init":
-                {
-                    window.Asc.plugin.executeCommand = function(type, data)
-                    {
-                        window.Asc.plugin.info.type = type;
-                        window.Asc.plugin.info.data = data;
-
-                        var _message = "";
-                        try
-                        {
-                            _message = JSON.stringify(window.Asc.plugin.info);
-                        }
-                        catch(err)
-                        {
-                            _message = "{ \"" + type + "\" : \"" + data + "\" }";
-                        }
-                        window.plugin_sendMessage(_message);
-                    };
-
-                    window.Asc.plugin.resizeWindow = function(width, height, minW, minH, maxW, maxH)
-                    {
-                        if (undefined == minW)
-                            minW = 0;
-                        if (undefined == minH)
-                            minH = 0;
-                        if (undefined == maxW)
-                            maxW = 0;
-                        if (undefined == maxH)
-                            maxH = 0;
-
-                        var data = "{\"width\":" + width +
-                            ",\"height\":" + height +
-                            ",\"minw\":" + minW +
-                            ",\"minh\":" + minH +
-                            ",\"maxw\":" + maxW +
-                            ",\"maxh\":" + maxH + "}";
-
-                        window.Asc.plugin.info.type = "resize";
-                        window.Asc.plugin.info.data = data;
-
-                        var _message = "";
-                        try
-                        {
-                            _message = JSON.stringify(window.Asc.plugin.info);
-                        }
-                        catch(err)
-                        {
-                            _message = "{ \"" + type + "\" : \"" + data + "\" }";
-                        }
-                        window.plugin_sendMessage(_message);
-                    };
-
-                    window.Asc.plugin.init(window.Asc.plugin.info.data);
-                    break;
-                }
-                case "button":
-                {
-                    window.Asc.plugin.button(parseInt(pluginData.button));
-                    break;
-                }
-                case "enableMouseEvent":
-                {
-                    g_isMouseSendEnabled = pluginData.isEnabled;
-                    break;
-                }
-                case "onExternalMouseUp":
-                {
-                    if (window.Asc.plugin.onExternalMouseUp)
-                        window.Asc.plugin.onExternalMouseUp();
-                    break;
-                }
-                default:
-                    break;
-            }
+            if (pluginData.type == "plugin_init")
+                eval(pluginData.data);
         }
     }
 
@@ -126,36 +93,5 @@
     {
         window.attachEvent("onmessage", onMessage);
     }
-
-    window.onload = function()
-    {
-        var obj = {
-            type : "initialize",
-            guid : window.Asc.plugin.guid
-        };
-        window.plugin_sendMessage(JSON.stringify(obj));
-    };
-
-    window.onmousemove = function(e)
-    {
-        if (!g_isMouseSendEnabled || !window.Asc.plugin || !window.Asc.plugin.executeCommand)
-            return;
-
-        var _x = (undefined === e.clientX) ? e.pageX : e.clientX;
-        var _y = (undefined === e.clientY) ? e.pageY : e.clientY;
-
-        window.Asc.plugin.executeCommand("onmousemove", "{ \"x\": " + _x + ", \"y\": " + _y + " }");
-
-    };
-    window.onmouseup   = function(e)
-    {
-        if (!g_isMouseSendEnabled || !window.Asc.plugin || !window.Asc.plugin.executeCommand)
-            return;
-
-        var _x = (undefined === e.clientX) ? e.pageX : e.clientX;
-        var _y = (undefined === e.clientY) ? e.pageY : e.clientY;
-
-        window.Asc.plugin.executeCommand("onmouseup", "{ \"x\": " + _x + ", \"y\": " + _y + " }");
-    };
 
 })(window, undefined);

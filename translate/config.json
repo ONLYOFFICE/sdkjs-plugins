@@ -1,4 +1,4 @@
-window.Asc.plugin = {
+{
     "name" : "Yandex Translate",
     "guid" : "asc.{7327FC95-16DA-41D9-9AF2-0E7F449F687D}",
 
@@ -12,8 +12,8 @@ window.Asc.plugin = {
             "EditorsSupport"  : ["word", "cell", "slide"],
 
             "isVisual"        : true,
-            "isModal"         : true,
-            "isInsideMode"    : false,
+            "isModal"         : false,
+            "isInsideMode"    : true,
 
             "initDataType"    : "text",
             "initData"        : "",
@@ -25,4 +25,4 @@ window.Asc.plugin = {
             "initOnSelectionChanged" : true
         }
     ]
-};
+}

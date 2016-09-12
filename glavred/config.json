@@ -1,4 +1,4 @@
-window.Asc.plugin = {
+{
     "name" : "glavred",
     "guid" : "asc.{B631E142-E40B-4B4C-90B9-2D00222A286E}",
 
@@ -23,4 +23,4 @@ window.Asc.plugin = {
             "buttons"         : [ { "text": "Ok", "primary": true } ]
         }
     ]
-};
+}
