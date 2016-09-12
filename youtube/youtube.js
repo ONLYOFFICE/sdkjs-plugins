@@ -89,7 +89,7 @@
 			success : function(_player, _node)
 			{
 				player = _player;
-				$('#' + node.id + '-mode').html('mode: ' + player.pluginType);
+				$('#' + _node.id + '-mode').html('mode: ' + player.pluginType);
 			}
 		});
 	}
