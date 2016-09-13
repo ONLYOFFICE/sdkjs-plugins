@@ -79,6 +79,53 @@
                 _this.loadedImagesCounter++;
                 if (12 == _this.loadedImagesCounter)
                 {
+                    // mozilla bug!!!
+                    var _userAgent = navigator.userAgent.toLowerCase();
+                    var isIE =  (_userAgent.indexOf("msie") > -1 ||
+                                _userAgent.indexOf("trident") > -1 ||
+                                _userAgent.indexOf("edge") > -1);
+
+                    var isMozilla = !isIE && (_userAgent.indexOf("firefox") > -1);
+                    if (isMozilla)
+                    {
+                        var _timerCount = 100;
+                        var _timerIndex = 0;
+                        var _timerId = setInterval(function(){
+
+                            _timerIndex++;
+                            var _allComplete = true;
+
+                            var _board = window.g_board;
+                            for (var ii = 0; ii < _board.images.length; ii++)
+                            {
+                                if (_board.images[ii].complete === false)
+                                {
+                                    _allComplete = false;
+                                    break;
+                                }
+                            }
+
+                            if (_allComplete || (_timerIndex > _timerCount))
+                            {
+                                clearInterval(_timerId);
+                                setTimeout(function()
+                                {
+                                    _this.isInit = true;
+
+                                    if (window.Asc.plugin.info.resize === true)
+                                    {
+                                        // simple resize ole object. close plugin
+                                        return window.Asc.plugin.button(0);
+                                    }
+
+                                    _this.draw(true);
+                                }, 0);
+                            }
+
+                        }, 10);
+                        return;
+                    }
+
                     setTimeout(function()
                     {
                         _this.isInit = true;
