@@ -101,8 +101,7 @@
 
 		if (id == 0)
 		{
-		    if ("" == url)
-		        url = document.getElementById("textbox_url").value;
+	        url = document.getElementById("textbox_url").value;
 
             if (!validateYoutubeUrl(url))
             {
