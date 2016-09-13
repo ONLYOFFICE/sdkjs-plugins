@@ -142,6 +142,15 @@
             var nW = $('#pagination-table-container-id').width() - $('#pagination-table-id').width();
             var nMaxCountPages = (nW/22)>>0;
 
+			if(nLastPageCount === 0)
+			{
+				$('#pagination-table-id').hide();
+				return;
+			}
+			else
+			{
+				$('#pagination-table-id').show();
+			}
             var nStart, nEnd;
             if(nLastPageCount <= nMaxCountPages){
                 nStart = 0;
