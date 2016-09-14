@@ -248,6 +248,7 @@
                         window.Asc.plugin.executeCommand("command", createScriptFromArray([oElement]));
                     }
                 );
+                oImgElement.on('dragstart', function(event) { event.preventDefault(); });
                 oDivElement.append(oImgElement);
                 oContainer.append(oDivElement);
             }
