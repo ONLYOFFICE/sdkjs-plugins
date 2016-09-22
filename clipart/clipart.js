@@ -142,6 +142,15 @@
             var nW = $('#pagination-table-container-id').width() - $('#pagination-table-id').width();
             var nMaxCountPages = (nW/22)>>0;
 
+			if(nLastPageCount === 0)
+			{
+				$('#pagination-table-id').hide();
+				return;
+			}
+			else
+			{
+				$('#pagination-table-id').show();
+			}
             var nStart, nEnd;
             if(nLastPageCount <= nMaxCountPages){
                 nStart = 0;
@@ -239,6 +248,7 @@
                         window.Asc.plugin.executeCommand("command", createScriptFromArray([oElement]));
                     }
                 );
+                oImgElement.on('dragstart', function(event) { event.preventDefault(); });
                 oDivElement.append(oImgElement);
                 oContainer.append(oDivElement);
             }
