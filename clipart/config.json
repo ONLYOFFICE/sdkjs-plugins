@@ -8,7 +8,7 @@
             "url"         : "clipart/index.html",
 
             "icons"           : ["clipart/icon.png", "clipart/icon@2x.png"],
-            "isViewer"        : true,
+            "isViewer"        : false,
             "EditorsSupport"  : ["word", "slide", "cell"],
 
             "isVisual"        : true,
