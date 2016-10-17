@@ -93,26 +93,24 @@
                 document.getElementById('recognize-button').setAttribute('disabled', '');
                 document.getElementById('lang-select').setAttribute('disabled', '');
                 var fTesseractCall = function(){
-                    Tesseract.recognize(arrImagesCopy.splice(0, 1)[0], {progress:function (progress) {
-                        if(progress && progress.recognized){
-                            var nPercent =  (100*(progress.recognized + nStartFilesCount - arrImagesCopy.length - 1)/nStartFilesCount) >> 0;
+                    Tesseract.recognize(arrImagesCopy.splice(0, 1)[0], {lang: $('#lang-select option:selected')[0].value}).progress(function (progress) {
+                        if(progress && progress.status === "recognizing text"){
+                            var nPercent =  (100*(progress.progress + nStartFilesCount - arrImagesCopy.length - 1)/nStartFilesCount) >> 0;
                             $('#status-label').text('Recognizing: '+ nPercent + '%');
                         }
-                    }, lang: $('#lang-select option:selected')[0].value}, function (err, result) {
-                        if(!err){
-                            document.getElementById('text-container-div').appendChild($(result.html)[0]);
+                    }).catch(function(err){						
+                                $('#status-label').text('');
+                                document.getElementById('recognize-button').removeAttribute('disabled');
+                                document.getElementById('lang-select').removeAttribute('disabled');
+						
+					}).then(function(result){						
+						 document.getElementById('text-container-div').appendChild($(result.html)[0]);
                             arrParsedData.push(result);
                             updateScroll();
                             if(arrImagesCopy.length > 0){
                                 fTesseractCall();
                             }
-                            else{                             
-                                $('#status-label').text('');
-                                document.getElementById('recognize-button').removeAttribute('disabled');
-                                document.getElementById('lang-select').removeAttribute('disabled');
-                            }
-                        }
-                    })
+					});
                 };
                 $('#status-label').text('Recognizing: 0%');
                 fTesseractCall();
