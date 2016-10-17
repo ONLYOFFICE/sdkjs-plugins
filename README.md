@@ -2,7 +2,7 @@
 
 ## sdkjs-plugins
 
-The add-ons for [ONLYOFFICE Document Server][2] and ONLYOFFICE Desktop Editors. Used for the developers to add specific functions to the editors which are not directly related to the OOXML format.
+The add-ons for [ONLYOFFICE Document Server][2] and [ONLYOFFICE Desktop Editors][3]. Used for the developers to add specific functions to the editors which are not directly related to the OOXML format.
 
 ## Project Information
 
@@ -24,6 +24,7 @@ If you have any problems with or questions about [ONLYOFFICE Document Server][2]
 
   [1]: http://dev.onlyoffice.org
   [2]: https://github.com/ONLYOFFICE/DocumentServer
+  [3]: https://github.com/ONLYOFFICE/DesktopEditors
 
 ## License
 
