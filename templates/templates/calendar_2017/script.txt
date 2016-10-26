@@ -1,0 +1,1149 @@
+var oDocument, oSection, oTextPr, oParaPr, oRun, oTable, oYearStyle;
+var oParagraph, oTableRow, oCell, oMonthStyle, oDayStyle, oDateStyle;
+var nWeekDay, nRowNum, oTableInner;
+var oCellWithMonthsTable; 
+
+var oDocument = Api.GetDocument();
+
+// page settings
+oSection = oDocument.GetFinalSection();
+oSection.SetPageMargins(2016, 432, 1080, 432);
+oSection.SetPageSize(15840, 12240, false);
+
+// default text properties
+oTextPr = oDocument.GetDefaultTextPr();
+oTextPr.SetFontSize(18);
+oTextPr.SetLanguage("en-US");
+oTextPr.SetFontFamily("Calibri");
+oTextPr.SetSpacing(0);
+oTextPr.SetPosition(0);
+oTextPr.SetColor(0x60, 0x3B, 0x17, false);
+
+
+// default paragraph properties
+oParaPr = oDocument.GetDefaultParaPr();
+oParaPr.SetSpacingLine(240, "auto");
+oParaPr.SetSpacingBefore(0);
+oParaPr.SetSpacingAfter(0);
+
+// year
+oYearStyle = oDocument.CreateStyle("Year");
+
+oParaPr = oYearStyle.GetParaPr();
+oParaPr.SetJc("right");
+oParaPr.SetIndRight(360);
+oParaPr.SetSpacingAfter(600);
+
+oTextPr = oYearStyle.GetTextPr();
+oTextPr.SetBold(true);
+oTextPr.SetFontSize(96);
+oTextPr.SetFontFamily("Georgia");
+
+oParagraph = oDocument.GetElement(0);
+oParagraph.SetStyle(oYearStyle);
+oParagraph.AddText("2017");
+
+
+// months
+oMonthStyle = oDocument.CreateStyle("MONTHS");
+
+oParaPr = oMonthStyle.GetParaPr();
+oParaPr.SetJc("left");
+oParaPr.SetIndRight(0);
+oParaPr.SetIndLeft(101);
+oParaPr.SetSpacingLine(228, "auto");
+oParaPr.SetSpacingAfter(0);
+
+oTextPr = oMonthStyle.GetTextPr();
+oTextPr.SetBold(true);
+oTextPr.SetCaps(true);
+oTextPr.SetFontSize(21);
+oTextPr.SetFontFamily("Georgia");
+
+
+// day
+oDayStyle = oDocument.CreateStyle("Days");
+
+oParaPr = oDayStyle.GetParaPr();
+oParaPr.SetJc("center");
+oParaPr.SetIndRight(0);
+oParaPr.SetIndLeft(0);
+oParaPr.SetSpacingAfter(0);
+oParaPr.SetSpacingBefore(40);
+
+oTextPr = oDayStyle.GetTextPr();
+oTextPr.SetBold(false);
+oTextPr.SetCaps(false);
+oTextPr.SetFontSize(20);
+oTextPr.SetFontFamily("Georgia");
+
+
+// date
+oDateStyle = oDocument.CreateStyle("Date");
+
+oParaPr = oDateStyle.GetParaPr();
+oParaPr.SetJc("center");
+oParaPr.SetIndRight(0);
+oParaPr.SetIndLeft(0);
+oParaPr.SetSpacingAfter(40);
+oParaPr.SetSpacingBefore(40);
+
+
+// table
+oTable = Api.CreateTable(11, 8);
+oDocument.Push(oTable);
+oTable.SetTableLayout("autofit");
+oTable.SetTableCellMarginRight(0);
+oTable.SetTableCellMarginLeft(0);
+//oTable.SetWidth("twips", 11216);
+oTable.SetTableLook(true, true, false, false, true, false);
+
+// row 1
+oTableRow = oTable.GetRow(0);
+oTableRow.SetHeight("atLeast", 202);
+
+// col 1 .. 11 width
+oCell = oTable.GetRow(0).GetCell(0);
+oCell.SetWidth("twips", 72);
+oCell.SetTextDirection("lrtb");
+oCell.SetShd("clear", 0x60, 0x3B, 0x17, false);
+oCell.SetNoWrap(false);
+oCell = oTable.GetRow(0).GetCell(1);
+oCell.SetWidth("twips", 2246);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oMonthStyle);
+oParagraph.AddText("JANUARY");
+
+oCell = oTable.GetRow(0).GetCell(2);
+oCell.SetWidth("twips", 648);
+oCell = oTable.GetRow(0).GetCell(3);
+oCell.SetWidth("twips", 72);
+oCell.SetTextDirection("lrtb");
+oCell.SetShd("clear", 0x60, 0x3B, 0x17, false);
+oCell.SetNoWrap(false);
+oCell = oTable.GetRow(0).GetCell(4);
+oCell.SetWidth("twips", 2246);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oMonthStyle);
+oParagraph.AddText("FEBRUARY");
+
+oCell = oTable.GetRow(0).GetCell(5);
+oCell.SetWidth("twips", 648);
+oCell = oTable.GetRow(0).GetCell(6);
+oCell.SetWidth("twips", 72);
+oCell.SetTextDirection("lrtb");
+oCell.SetShd("clear", 0x60, 0x3B, 0x17, false);
+oCell.SetNoWrap(false);
+oCell = oTable.GetRow(0).GetCell(7);
+oCell.SetWidth("twips", 2246);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oMonthStyle);
+oParagraph.AddText("MARCH");
+
+oCell = oTable.GetRow(0).GetCell(8);
+oCell.SetWidth("twips", 648);
+oCell = oTable.GetRow(0).GetCell(9);
+oCell.SetWidth("twips", 72);
+oCell.SetTextDirection("lrtb");
+oCell.SetShd("clear", 0x60, 0x3B, 0x17, false);
+oCell.SetNoWrap(false);
+oCell = oTable.GetRow(0).GetCell(10);
+oCell.SetWidth("twips", 2246);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oMonthStyle);
+oParagraph.AddText("APRIL");
+
+
+/// Jan
+// month table
+oTableInner = Api.CreateTable(7, 7);
+
+oTableInner.SetTableLayout("fixed");
+oTableInner.SetTableCellMarginRight(0);
+oTableInner.SetTableCellMarginLeft(0);
+oTableInner.SetWidth("twips", 2246);
+oTableInner.SetTableLook(true, true, false, false, true, false);
+
+// cells
+oCell = oTableInner.GetRow(0).GetCell(0);
+oCell.SetWidth("twips", 318);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("s");
+
+oCell = oTableInner.GetRow(0).GetCell(1);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("m");
+
+oCell = oTableInner.GetRow(0).GetCell(2);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("t");
+
+oCell = oTableInner.GetRow(0).GetCell(3);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("w");
+
+oCell = oTableInner.GetRow(0).GetCell(4);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("t");
+
+oCell = oTableInner.GetRow(0).GetCell(5);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("f");
+
+oCell = oTableInner.GetRow(0).GetCell(6);
+oCell.SetWidth("twips", 318);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("s");
+
+
+nWeekDay = 0;
+nRowNum = 1;
+for (var i = 1; i <= 31; i++) {
+	if (nWeekDay > 6) {
+		nRowNum = nRowNum + 1;
+		nWeekDay = 0;
+	}
+	oTableInner.GetRow(nRowNum).GetCell(nWeekDay).GetContent().GetElement(0).SetStyle(oDateStyle);
+	oTableInner.GetRow(nRowNum).GetCell(nWeekDay).GetContent().GetElement(0).AddText("" + i);
+	nWeekDay = nWeekDay + 1;
+}
+oTableInner.GetRow(6).GetCell(0).GetContent().GetElement(0).SetStyle(oDateStyle);
+
+oCellWithMonthsTable = oTable.GetRow(1).GetCell(1).GetContent();
+oCellWithMonthsTable.Push(oTableInner);
+oCellWithMonthsTable.RemoveElement(0);
+
+
+/// feb
+// month table
+oTableInner = Api.CreateTable(7, 7);
+
+oTableInner.SetTableLayout("fixed");
+oTableInner.SetTableCellMarginRight(0);
+oTableInner.SetTableCellMarginLeft(0);
+oTableInner.SetWidth("twips", 2246);
+oTableInner.SetTableLook(true, true, false, false, true, false);
+
+// cells
+oCell = oTableInner.GetRow(0).GetCell(0);
+oCell.SetWidth("twips", 318);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("s");
+
+oCell = oTableInner.GetRow(0).GetCell(1);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("m");
+
+oCell = oTableInner.GetRow(0).GetCell(2);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("t");
+
+oCell = oTableInner.GetRow(0).GetCell(3);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("w");
+
+oCell = oTableInner.GetRow(0).GetCell(4);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("t");
+
+oCell = oTableInner.GetRow(0).GetCell(5);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("f");
+
+oCell = oTableInner.GetRow(0).GetCell(6);
+oCell.SetWidth("twips", 318);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("s");
+
+
+nWeekDay = 3;
+nRowNum = 1;
+for (var i = 1; i <= 28; i++) {
+	if (nWeekDay > 6) {
+		nRowNum = nRowNum + 1;
+		nWeekDay = 0;
+	}
+	oTableInner.GetRow(nRowNum).GetCell(nWeekDay).GetContent().GetElement(0).SetStyle(oDateStyle);
+	oTableInner.GetRow(nRowNum).GetCell(nWeekDay).GetContent().GetElement(0).AddText("" + i);
+	nWeekDay = nWeekDay + 1;
+}
+oTableInner.GetRow(6).GetCell(0).GetContent().GetElement(0).SetStyle(oDateStyle);
+
+oCellWithMonthsTable = oTable.GetRow(1).GetCell(4).GetContent();
+oCellWithMonthsTable.Push(oTableInner);
+oCellWithMonthsTable.RemoveElement(0);
+
+
+
+/// march
+// month table
+oTableInner = Api.CreateTable(7, 7);
+
+oTableInner.SetTableLayout("fixed");
+oTableInner.SetTableCellMarginRight(0);
+oTableInner.SetTableCellMarginLeft(0);
+oTableInner.SetWidth("twips", 2246);
+oTableInner.SetTableLook(true, true, false, false, true, false);
+
+// cells
+oCell = oTableInner.GetRow(0).GetCell(0);
+oCell.SetWidth("twips", 318);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("s");
+
+oCell = oTableInner.GetRow(0).GetCell(1);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("m");
+
+oCell = oTableInner.GetRow(0).GetCell(2);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("t");
+
+oCell = oTableInner.GetRow(0).GetCell(3);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("w");
+
+oCell = oTableInner.GetRow(0).GetCell(4);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("t");
+
+oCell = oTableInner.GetRow(0).GetCell(5);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("f");
+
+oCell = oTableInner.GetRow(0).GetCell(6);
+oCell.SetWidth("twips", 318);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("s");
+
+
+nWeekDay = 3;
+nRowNum = 1;
+for (var i = 1; i <= 31; i++) {
+	if (nWeekDay > 6) {
+		nRowNum = nRowNum + 1;
+		nWeekDay = 0;
+	}
+	oTableInner.GetRow(nRowNum).GetCell(nWeekDay).GetContent().GetElement(0).SetStyle(oDateStyle);
+	oTableInner.GetRow(nRowNum).GetCell(nWeekDay).GetContent().GetElement(0).AddText("" + i);
+	nWeekDay = nWeekDay + 1;
+}
+oTableInner.GetRow(6).GetCell(0).GetContent().GetElement(0).SetStyle(oDateStyle);
+
+oCellWithMonthsTable = oTable.GetRow(1).GetCell(7).GetContent();
+oCellWithMonthsTable.Push(oTableInner);
+oCellWithMonthsTable.RemoveElement(0);
+
+
+/// april
+// month table
+oTableInner = Api.CreateTable(7, 7);
+
+oTableInner.SetTableLayout("fixed");
+oTableInner.SetTableCellMarginRight(0);
+oTableInner.SetTableCellMarginLeft(0);
+oTableInner.SetWidth("twips", 2246);
+oTableInner.SetTableLook(true, true, false, false, true, false);
+
+// cells
+oCell = oTableInner.GetRow(0).GetCell(0);
+oCell.SetWidth("twips", 318);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("s");
+
+oCell = oTableInner.GetRow(0).GetCell(1);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("m");
+
+oCell = oTableInner.GetRow(0).GetCell(2);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("t");
+
+oCell = oTableInner.GetRow(0).GetCell(3);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("w");
+
+oCell = oTableInner.GetRow(0).GetCell(4);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("t");
+
+oCell = oTableInner.GetRow(0).GetCell(5);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("f");
+
+oCell = oTableInner.GetRow(0).GetCell(6);
+oCell.SetWidth("twips", 318);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("s");
+
+
+nWeekDay = 6;
+nRowNum = 1;
+for (var i = 1; i <= 30; i++) {
+	if (nWeekDay > 6) {
+		nRowNum = nRowNum + 1;
+		nWeekDay = 0;
+	}
+	oTableInner.GetRow(nRowNum).GetCell(nWeekDay).GetContent().GetElement(0).SetStyle(oDateStyle);
+	oTableInner.GetRow(nRowNum).GetCell(nWeekDay).GetContent().GetElement(0).AddText("" + i);
+	nWeekDay = nWeekDay + 1;
+}
+oTableInner.GetRow(6).GetCell(0).GetContent().GetElement(0).SetStyle(oDateStyle);
+
+oCellWithMonthsTable = oTable.GetRow(1).GetCell(10).GetContent();
+oCellWithMonthsTable.Push(oTableInner);
+oCellWithMonthsTable.RemoveElement(0);
+// end of row 1 - 2
+
+
+
+// row 2 space
+oTableRow = oTable.GetRow(2);
+oTableRow.SetHeight("atLeast", 346);
+
+// row 3 (MAY JUNE JULY AUGUST)
+oTableRow = oTable.GetRow(3);
+oTableRow.SetHeight("atLeast", 202);
+
+// col 1 .. 11 width
+oCell = oTable.GetRow(3).GetCell(0);
+oCell.SetWidth("twips", 72);
+oCell.SetTextDirection("lrtb");
+oCell.SetShd("clear", 0x60, 0x3B, 0x17, false);
+oCell.SetNoWrap(false);
+oCell = oTable.GetRow(3).GetCell(1);
+oCell.SetWidth("twips", 2246);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oMonthStyle);
+oParagraph.AddText("MAY");
+
+oCell = oTable.GetRow(3).GetCell(2);
+oCell.SetWidth("twips", 648);
+oCell = oTable.GetRow(3).GetCell(3);
+oCell.SetWidth("twips", 72);
+oCell.SetTextDirection("lrtb");
+oCell.SetShd("clear", 0x60, 0x3B, 0x17, false);
+oCell.SetNoWrap(false);
+oCell = oTable.GetRow(3).GetCell(4);
+oCell.SetWidth("twips", 2246);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oMonthStyle);
+oParagraph.AddText("JUNE");
+
+oCell = oTable.GetRow(3).GetCell(5);
+oCell.SetWidth("twips", 648);
+oCell = oTable.GetRow(3).GetCell(6);
+oCell.SetWidth("twips", 72);
+oCell.SetTextDirection("lrtb");
+oCell.SetShd("clear", 0x60, 0x3B, 0x17, false);
+oCell.SetNoWrap(false);
+oCell = oTable.GetRow(3).GetCell(7);
+oCell.SetWidth("twips", 2246);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oMonthStyle);
+oParagraph.AddText("JULY");
+
+oCell = oTable.GetRow(3).GetCell(8);
+oCell.SetWidth("twips", 648);
+oCell = oTable.GetRow(3).GetCell(9);
+oCell.SetWidth("twips", 72);
+oCell.SetTextDirection("lrtb");
+oCell.SetShd("clear", 0x60, 0x3B, 0x17, false);
+oCell.SetNoWrap(false);
+oCell = oTable.GetRow(3).GetCell(10);
+oCell.SetWidth("twips", 2246);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oMonthStyle);
+oParagraph.AddText("AUGUST");
+
+
+/// MAY
+// month table
+oTableInner = Api.CreateTable(7, 7);
+
+oTableInner.SetTableLayout("fixed");
+oTableInner.SetTableCellMarginRight(0);
+oTableInner.SetTableCellMarginLeft(0);
+oTableInner.SetWidth("twips", 2246);
+oTableInner.SetTableLook(true, true, false, false, true, false);
+
+// cells
+oCell = oTableInner.GetRow(0).GetCell(0);
+oCell.SetWidth("twips", 318);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("s");
+
+oCell = oTableInner.GetRow(0).GetCell(1);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("m");
+
+oCell = oTableInner.GetRow(0).GetCell(2);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("t");
+
+oCell = oTableInner.GetRow(0).GetCell(3);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("w");
+
+oCell = oTableInner.GetRow(0).GetCell(4);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("t");
+
+oCell = oTableInner.GetRow(0).GetCell(5);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("f");
+
+oCell = oTableInner.GetRow(0).GetCell(6);
+oCell.SetWidth("twips", 318);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("s");
+
+
+nWeekDay = 1;
+nRowNum = 1;
+for (var i = 1; i <= 31; i++) {
+	if (nWeekDay > 6) {
+		nRowNum = nRowNum + 1;
+		nWeekDay = 0;
+	}
+	oTableInner.GetRow(nRowNum).GetCell(nWeekDay).GetContent().GetElement(0).SetStyle(oDateStyle);
+	oTableInner.GetRow(nRowNum).GetCell(nWeekDay).GetContent().GetElement(0).AddText("" + i);
+	nWeekDay = nWeekDay + 1;
+}
+oTableInner.GetRow(6).GetCell(0).GetContent().GetElement(0).SetStyle(oDateStyle);
+
+oCellWithMonthsTable = oTable.GetRow(4).GetCell(1).GetContent();
+oCellWithMonthsTable.Push(oTableInner);
+oCellWithMonthsTable.RemoveElement(0);
+
+
+
+/// JUNE
+// month table
+oTableInner = Api.CreateTable(7, 7);
+
+oTableInner.SetTableLayout("fixed");
+oTableInner.SetTableCellMarginRight(0);
+oTableInner.SetTableCellMarginLeft(0);
+oTableInner.SetWidth("twips", 2246);
+oTableInner.SetTableLook(true, true, false, false, true, false);
+
+// cells
+oCell = oTableInner.GetRow(0).GetCell(0);
+oCell.SetWidth("twips", 318);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("s");
+
+oCell = oTableInner.GetRow(0).GetCell(1);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("m");
+
+oCell = oTableInner.GetRow(0).GetCell(2);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("t");
+
+oCell = oTableInner.GetRow(0).GetCell(3);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("w");
+
+oCell = oTableInner.GetRow(0).GetCell(4);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("t");
+
+oCell = oTableInner.GetRow(0).GetCell(5);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("f");
+
+oCell = oTableInner.GetRow(0).GetCell(6);
+oCell.SetWidth("twips", 318);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("s");
+
+
+nWeekDay = 4;
+nRowNum = 1;
+for (var i = 1; i <= 30; i++) {
+	if (nWeekDay > 6) {
+		nRowNum = nRowNum + 1;
+		nWeekDay = 0;
+	}
+	oTableInner.GetRow(nRowNum).GetCell(nWeekDay).GetContent().GetElement(0).SetStyle(oDateStyle);
+	oTableInner.GetRow(nRowNum).GetCell(nWeekDay).GetContent().GetElement(0).AddText("" + i);
+	nWeekDay = nWeekDay + 1;
+}
+oTableInner.GetRow(6).GetCell(0).GetContent().GetElement(0).SetStyle(oDateStyle);
+
+oCellWithMonthsTable = oTable.GetRow(4).GetCell(4).GetContent();
+oCellWithMonthsTable.Push(oTableInner);
+oCellWithMonthsTable.RemoveElement(0);
+
+
+
+/// JULY
+// month table
+oTableInner = Api.CreateTable(7, 7);
+
+oTableInner.SetTableLayout("fixed");
+oTableInner.SetTableCellMarginRight(0);
+oTableInner.SetTableCellMarginLeft(0);
+oTableInner.SetWidth("twips", 2246);
+oTableInner.SetTableLook(true, true, false, false, true, false);
+
+// cells
+oCell = oTableInner.GetRow(0).GetCell(0);
+oCell.SetWidth("twips", 318);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("s");
+
+oCell = oTableInner.GetRow(0).GetCell(1);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("m");
+
+oCell = oTableInner.GetRow(0).GetCell(2);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("t");
+
+oCell = oTableInner.GetRow(0).GetCell(3);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("w");
+
+oCell = oTableInner.GetRow(0).GetCell(4);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("t");
+
+oCell = oTableInner.GetRow(0).GetCell(5);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("f");
+
+oCell = oTableInner.GetRow(0).GetCell(6);
+oCell.SetWidth("twips", 318);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("s");
+
+
+nWeekDay = 6;
+nRowNum = 1;
+for (var i = 1; i <= 31; i++) {
+	if (nWeekDay > 6) {
+		nRowNum = nRowNum + 1;
+		nWeekDay = 0;
+	}
+	oTableInner.GetRow(nRowNum).GetCell(nWeekDay).GetContent().GetElement(0).SetStyle(oDateStyle);
+	oTableInner.GetRow(nRowNum).GetCell(nWeekDay).GetContent().GetElement(0).AddText("" + i);
+	nWeekDay = nWeekDay + 1;
+}
+oTableInner.GetRow(6).GetCell(0).GetContent().GetElement(0).SetStyle(oDateStyle);
+
+oCellWithMonthsTable = oTable.GetRow(4).GetCell(7).GetContent();
+oCellWithMonthsTable.Push(oTableInner);
+oCellWithMonthsTable.RemoveElement(0);
+
+
+/// AUGUST
+// month table
+oTableInner = Api.CreateTable(7, 7);
+
+oTableInner.SetTableLayout("fixed");
+oTableInner.SetTableCellMarginRight(0);
+oTableInner.SetTableCellMarginLeft(0);
+oTableInner.SetWidth("twips", 2246);
+oTableInner.SetTableLook(true, true, false, false, true, false);
+
+// cells
+oCell = oTableInner.GetRow(0).GetCell(0);
+oCell.SetWidth("twips", 318);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("s");
+
+oCell = oTableInner.GetRow(0).GetCell(1);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("m");
+
+oCell = oTableInner.GetRow(0).GetCell(2);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("t");
+
+oCell = oTableInner.GetRow(0).GetCell(3);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("w");
+
+oCell = oTableInner.GetRow(0).GetCell(4);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("t");
+
+oCell = oTableInner.GetRow(0).GetCell(5);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("f");
+
+oCell = oTableInner.GetRow(0).GetCell(6);
+oCell.SetWidth("twips", 318);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("s");
+
+
+nWeekDay = 2;
+nRowNum = 1;
+for (var i = 1; i <= 31; i++) {
+	if (nWeekDay > 6) {
+		nRowNum = nRowNum + 1;
+		nWeekDay = 0;
+	}
+	oTableInner.GetRow(nRowNum).GetCell(nWeekDay).GetContent().GetElement(0).SetStyle(oDateStyle);
+	oTableInner.GetRow(nRowNum).GetCell(nWeekDay).GetContent().GetElement(0).AddText("" + i);
+	nWeekDay = nWeekDay + 1;
+}
+oTableInner.GetRow(6).GetCell(0).GetContent().GetElement(0).SetStyle(oDateStyle);
+
+oCellWithMonthsTable = oTable.GetRow(4).GetCell(10).GetContent();
+oCellWithMonthsTable.Push(oTableInner);
+oCellWithMonthsTable.RemoveElement(0);
+// end of row 3 - 4
+
+
+
+
+// row 2 space
+oTableRow = oTable.GetRow(5);
+oTableRow.SetHeight("atLeast", 346);
+
+// row 3 (SEPTEMBER OCTOBER NOVEMBER DECEMBER)
+oTableRow = oTable.GetRow(6);
+oTableRow.SetHeight("atLeast", 202);
+
+// col 1 .. 11 width
+oCell = oTable.GetRow(6).GetCell(0);
+oCell.SetWidth("twips", 72);
+oCell.SetTextDirection("lrtb");
+oCell.SetShd("clear", 0x60, 0x3B, 0x17, false);
+oCell.SetNoWrap(false);
+oCell = oTable.GetRow(6).GetCell(1);
+oCell.SetWidth("twips", 2246);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oMonthStyle);
+oParagraph.AddText("SEPTEMBER");
+
+oCell = oTable.GetRow(6).GetCell(2);
+oCell.SetWidth("twips", 648);
+oCell = oTable.GetRow(6).GetCell(3);
+oCell.SetWidth("twips", 72);
+oCell.SetTextDirection("lrtb");
+oCell.SetShd("clear", 0x60, 0x3B, 0x17, false);
+oCell.SetNoWrap(false);
+oCell = oTable.GetRow(6).GetCell(4);
+oCell.SetWidth("twips", 2246);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oMonthStyle);
+oParagraph.AddText("OCTOBER");
+
+oCell = oTable.GetRow(6).GetCell(5);
+oCell.SetWidth("twips", 648);
+oCell = oTable.GetRow(6).GetCell(6);
+oCell.SetWidth("twips", 72);
+oCell.SetTextDirection("lrtb");
+oCell.SetShd("clear", 0x60, 0x3B, 0x17, false);
+oCell.SetNoWrap(false);
+oCell = oTable.GetRow(6).GetCell(7);
+oCell.SetWidth("twips", 2246);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oMonthStyle);
+oParagraph.AddText("NOVEMBER");
+
+oCell = oTable.GetRow(6).GetCell(8);
+oCell.SetWidth("twips", 648);
+oCell = oTable.GetRow(6).GetCell(9);
+oCell.SetWidth("twips", 72);
+oCell.SetTextDirection("lrtb");
+oCell.SetShd("clear", 0x60, 0x3B, 0x17, false);
+oCell.SetNoWrap(false);
+oCell = oTable.GetRow(6).GetCell(10);
+oCell.SetWidth("twips", 2246);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oMonthStyle);
+oParagraph.AddText("DECEMBER");
+
+
+/// SEPTEMBER
+// month table
+oTableInner = Api.CreateTable(7, 7);
+
+oTableInner.SetTableLayout("fixed");
+oTableInner.SetTableCellMarginRight(0);
+oTableInner.SetTableCellMarginLeft(0);
+oTableInner.SetWidth("twips", 2246);
+oTableInner.SetTableLook(true, true, false, false, true, false);
+
+// cells
+oCell = oTableInner.GetRow(0).GetCell(0);
+oCell.SetWidth("twips", 318);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("s");
+
+oCell = oTableInner.GetRow(0).GetCell(1);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("m");
+
+oCell = oTableInner.GetRow(0).GetCell(2);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("t");
+
+oCell = oTableInner.GetRow(0).GetCell(3);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("w");
+
+oCell = oTableInner.GetRow(0).GetCell(4);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("t");
+
+oCell = oTableInner.GetRow(0).GetCell(5);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("f");
+
+oCell = oTableInner.GetRow(0).GetCell(6);
+oCell.SetWidth("twips", 318);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("s");
+
+
+nWeekDay = 5;
+nRowNum = 1;
+for (var i = 1; i <= 30; i++) {
+	if (nWeekDay > 6) {
+		nRowNum = nRowNum + 1;
+		nWeekDay = 0;
+	}
+	oTableInner.GetRow(nRowNum).GetCell(nWeekDay).GetContent().GetElement(0).SetStyle(oDateStyle);
+	oTableInner.GetRow(nRowNum).GetCell(nWeekDay).GetContent().GetElement(0).AddText("" + i);
+	nWeekDay = nWeekDay + 1;
+}
+oTableInner.GetRow(6).GetCell(0).GetContent().GetElement(0).SetStyle(oDateStyle);
+
+oCellWithMonthsTable = oTable.GetRow(7).GetCell(1).GetContent();
+oCellWithMonthsTable.Push(oTableInner);
+oCellWithMonthsTable.RemoveElement(0);
+
+
+
+/// OCTOBER
+// month table
+oTableInner = Api.CreateTable(7, 7);
+
+oTableInner.SetTableLayout("fixed");
+oTableInner.SetTableCellMarginRight(0);
+oTableInner.SetTableCellMarginLeft(0);
+oTableInner.SetWidth("twips", 2246);
+oTableInner.SetTableLook(true, true, false, false, true, false);
+
+// cells
+oCell = oTableInner.GetRow(0).GetCell(0);
+oCell.SetWidth("twips", 318);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("s");
+
+oCell = oTableInner.GetRow(0).GetCell(1);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("m");
+
+oCell = oTableInner.GetRow(0).GetCell(2);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("t");
+
+oCell = oTableInner.GetRow(0).GetCell(3);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("w");
+
+oCell = oTableInner.GetRow(0).GetCell(4);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("t");
+
+oCell = oTableInner.GetRow(0).GetCell(5);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("f");
+
+oCell = oTableInner.GetRow(0).GetCell(6);
+oCell.SetWidth("twips", 318);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("s");
+
+
+nWeekDay = 0;
+nRowNum = 1;
+for (var i = 1; i <= 31; i++) {
+	if (nWeekDay > 6) {
+		nRowNum = nRowNum + 1;
+		nWeekDay = 0;
+	}
+	oTableInner.GetRow(nRowNum).GetCell(nWeekDay).GetContent().GetElement(0).SetStyle(oDateStyle);
+	oTableInner.GetRow(nRowNum).GetCell(nWeekDay).GetContent().GetElement(0).AddText("" + i);
+	nWeekDay = nWeekDay + 1;
+}
+oTableInner.GetRow(6).GetCell(0).GetContent().GetElement(0).SetStyle(oDateStyle);
+
+oCellWithMonthsTable = oTable.GetRow(7).GetCell(4).GetContent();
+oCellWithMonthsTable.Push(oTableInner);
+oCellWithMonthsTable.RemoveElement(0);
+
+
+
+/// NOVEMBER
+// month table
+oTableInner = Api.CreateTable(7, 7);
+
+oTableInner.SetTableLayout("fixed");
+oTableInner.SetTableCellMarginRight(0);
+oTableInner.SetTableCellMarginLeft(0);
+oTableInner.SetWidth("twips", 2246);
+oTableInner.SetTableLook(true, true, false, false, true, false);
+
+// cells
+oCell = oTableInner.GetRow(0).GetCell(0);
+oCell.SetWidth("twips", 318);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("s");
+
+oCell = oTableInner.GetRow(0).GetCell(1);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("m");
+
+oCell = oTableInner.GetRow(0).GetCell(2);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("t");
+
+oCell = oTableInner.GetRow(0).GetCell(3);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("w");
+
+oCell = oTableInner.GetRow(0).GetCell(4);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("t");
+
+oCell = oTableInner.GetRow(0).GetCell(5);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("f");
+
+oCell = oTableInner.GetRow(0).GetCell(6);
+oCell.SetWidth("twips", 318);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("s");
+
+
+nWeekDay = 3;
+nRowNum = 1;
+for (var i = 1; i <= 30; i++) {
+	if (nWeekDay > 6) {
+		nRowNum = nRowNum + 1;
+		nWeekDay = 0;
+	}
+	oTableInner.GetRow(nRowNum).GetCell(nWeekDay).GetContent().GetElement(0).SetStyle(oDateStyle);
+	oTableInner.GetRow(nRowNum).GetCell(nWeekDay).GetContent().GetElement(0).AddText("" + i);
+	nWeekDay = nWeekDay + 1;
+}
+oTableInner.GetRow(6).GetCell(0).GetContent().GetElement(0).SetStyle(oDateStyle);
+
+oCellWithMonthsTable = oTable.GetRow(7).GetCell(7).GetContent();
+oCellWithMonthsTable.Push(oTableInner);
+oCellWithMonthsTable.RemoveElement(0);
+
+
+/// DECEMBER
+// month table
+oTableInner = Api.CreateTable(7, 7);
+
+oTableInner.SetTableLayout("fixed");
+oTableInner.SetTableCellMarginRight(0);
+oTableInner.SetTableCellMarginLeft(0);
+oTableInner.SetWidth("twips", 2246);
+oTableInner.SetTableLook(true, true, false, false, true, false);
+
+// cells
+oCell = oTableInner.GetRow(0).GetCell(0);
+oCell.SetWidth("twips", 318);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("s");
+
+oCell = oTableInner.GetRow(0).GetCell(1);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("m");
+
+oCell = oTableInner.GetRow(0).GetCell(2);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("t");
+
+oCell = oTableInner.GetRow(0).GetCell(3);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("w");
+
+oCell = oTableInner.GetRow(0).GetCell(4);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("t");
+
+oCell = oTableInner.GetRow(0).GetCell(5);
+oCell.SetWidth("twips", 322);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("f");
+
+oCell = oTableInner.GetRow(0).GetCell(6);
+oCell.SetWidth("twips", 318);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oDayStyle);
+oParagraph.AddText("s");
+
+
+nWeekDay = 5;
+nRowNum = 1;
+for (var i = 1; i <= 31; i++) {
+	if (nWeekDay > 6) {
+		nRowNum = nRowNum + 1;
+		nWeekDay = 0;
+	}
+	oTableInner.GetRow(nRowNum).GetCell(nWeekDay).GetContent().GetElement(0).SetStyle(oDateStyle);
+	oTableInner.GetRow(nRowNum).GetCell(nWeekDay).GetContent().GetElement(0).AddText("" + i);
+	nWeekDay = nWeekDay + 1;
+}
+oTableInner.GetRow(6).GetCell(0).GetContent().GetElement(0).SetStyle(oDateStyle);
+
+oCellWithMonthsTable = oTable.GetRow(7).GetCell(10).GetContent();
+oCellWithMonthsTable.Push(oTableInner);
+oCellWithMonthsTable.RemoveElement(0);
+// end of row 5 - 6
