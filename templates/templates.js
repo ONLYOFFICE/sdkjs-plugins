@@ -129,7 +129,7 @@
 
 		var _indexTmp = _index;
 		client.onreadystatechange = function() {
-			if (client.readyState == 4 && client.status == 200)
+			if (client.readyState == 4 && (client.status == 200 || location.href.indexOf("file:") == 0))
 			{
 				_templates_code[_indexTmp] = client.responseText;
 				window.template_run(_indexTmp);
