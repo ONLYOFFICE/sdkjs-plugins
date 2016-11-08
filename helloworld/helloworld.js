@@ -3,8 +3,7 @@
     window.Asc.plugin.init = function()
     {
         var sScript = 'var oDocument = Api.GetDocument();';
-        sScript += 'oDocument.CreateNewHistoryPoint();';
-        sScript += 'oParagraph = Api.CreateParagraph();';
+        sScript += 'var oParagraph = Api.CreateParagraph();';
         sScript += 'oParagraph.AddText(\'Hello world!\');';
         sScript += 'oDocument.InsertContent([oParagraph]);';
         window.Asc.plugin.info.recalculate = true;
