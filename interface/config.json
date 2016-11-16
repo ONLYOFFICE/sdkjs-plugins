@@ -1,11 +1,12 @@
 {
     "name" : "Interface (test)",
     "guid" : "asc.{B62BC2E0-858A-444F-B288-9190DE68B3FE}",
+    "isUICustomizer" : true,
 
     "variations" : [
         {
             "description" : "interface",
-            "url"         : "interface/index.html",
+            "url"         : "interface/code.js",
 
             "icons"           : ["interface/icon.png", "interface/icon@2x.png"],
             "isViewer"        : true,
