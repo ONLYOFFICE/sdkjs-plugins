@@ -6,7 +6,7 @@
     "variations" : [
         {
             "description" : "interface",
-            "url"         : "interface/code.js",
+            "url"         : "interface/index.html",
 
             "icons"           : ["interface/icon.png", "interface/icon@2x.png"],
             "isViewer"        : true,
