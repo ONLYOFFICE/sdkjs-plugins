@@ -43,19 +43,19 @@ If you have any problems with or questions about [ONLYOFFICE Document Server][2]
   [1]: http://dev.onlyoffice.org
   [2]: https://github.com/ONLYOFFICE/DocumentServer
   [3]: https://github.com/ONLYOFFICE/DesktopEditors
-  [4]: https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/cbr
-  [5]: https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/chess
-  [6]: https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/clipart
-  [7]: https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/glavred
-  [8]: https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/helloworld
-  [9]: https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/num2word
-  [10]: https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/ocr
-  [11]: https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/speech
-  [12]: https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/templates
-  [13]: https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/translate
-  [14]: https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/yandextranslaterus
-  [15]: https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/youtube
-  [16]: https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/chrome_extension_example
+  [4]: cbr
+  [5]: chess
+  [6]: clipart
+  [7]: glavred
+  [8]: helloworld
+  [9]: num2word
+  [10]: ocr
+  [11]: speech
+  [12]: templates
+  [13]: translate
+  [14]: yandextranslaterus
+  [15]: youtube
+  [16]: chrome_extension_example
   
 ## License
 
