@@ -13,9 +13,9 @@ Currently the following plugins are available:
 * [clipart][6] - adds beautiful ClipArt objects to your documents
 * [glavred][7] - checks and enhances text using glvrd.ru service API (for the Russian language only)
 * [helloworld][8] - an example of a simple plugin which inserts the "Hello World!" phrase into the document
-* [num2word][9] - converts numbers into words designating these numbers
+* [num2word][9] - converts numbers into words designating these numbers (for the Russian language only)
 * [ocr][10] - recognizes text from the pictures and screenshots
-* [speech][11] - converts selected text into speech
+* [speech][11] - converts selected text into speech using Yandex translation API
 * [templates][12] - creates documents based on the provided templates with a single button click
 * [translate][13] - translates the text into the selected language using Yandex translation API
 * [yandextranslaterus][14] - translates the text into the Russian language using Yandex translation API
