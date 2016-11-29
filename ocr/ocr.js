@@ -122,7 +122,6 @@
         if (id == 0){
             var sScript = '';
             sScript += 'var oDocument = Api.GetDocument();';
-            sScript += '\noDocument.CreateNewHistoryPoint();';
             sScript += '\nvar oParagraph, oRun, arrInsertResult = [], oTextPr;';
 
             for(var i = 0; i < arrParsedData.length; ++i){
