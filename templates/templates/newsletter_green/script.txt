@@ -1,0 +1,2051 @@
+var oParaPr, oTextPr;
+var oDocument, oParagraph, oDrawing, oDrawingInner, oParagraphInner;
+var oFill, oStroke, oSection;
+var oTable, oRow, oCell, oHeader;
+var oDrawingDocContent, oRun;
+var oGs1, oGs2;
+
+
+oDocument = Api.GetDocument();
+
+
+
+
+
+// page settings
+oSection = oDocument.GetFinalSection();
+oSection.SetPageMargins(360, 450, 360, 450);
+oSection.SetPageSize(24480, 15840, true);
+oSection.SetFooterDistance(360);
+oSection.SetHeaderDistance(360);
+oSection.SetType("nextPage");
+
+// styles
+// default text
+oTextPr = oDocument.GetDefaultTextPr();
+
+oTextPr.SetFontFamily("Calibri");
+oTextPr.SetFontSize(22);
+oTextPr.SetLanguage("en-US");
+oTextPr.SetSpacing(0);
+oTextPr.SetPosition(0);
+oTextPr.SetColor(0x00, 0x00, 0x00, false);
+
+// default paragraph
+oParaPr = oDocument.GetDefaultParaPr();
+
+oParaPr.SetJc("center");
+oParaPr.SetIndLeft(0);
+oParaPr.SetIndRight(0);
+oParaPr.SetIndFirstLine(0);
+oParaPr.SetSpacingAfter(200);
+oParaPr.SetSpacingBefore(0);
+oParaPr.SetSpacingLine(276, "auto");
+
+
+// normal style id 103
+var oNormalStyle = oDocument.CreateStyle("Normal", "paragraph");
+
+oTextPr = oNormalStyle.GetTextPr();
+oTextPr.SetFontFamily("Calibri");
+oTextPr.SetFontSize(22);
+oTextPr.SetLanguage("en-US");
+oTextPr.SetSpacing(0);
+oTextPr.SetPosition(0);
+oTextPr.SetColor(0x00, 0x00, 0x00, false);
+
+oParaPr = oNormalStyle.GetParaPr();
+oParaPr.SetJc("left");
+oParaPr.SetIndLeft(0);
+oParaPr.SetIndRight(0);
+oParaPr.SetIndFirstLine(0);
+oParaPr.SetSpacingAfter(200);
+oParaPr.SetSpacingBefore(0);
+oParaPr.SetSpacingLine(276, "auto");
+
+
+// style Id 114
+var oP114Style = oDocument.CreateStyle("Para_Text02", "paragraph");
+oP114Style.SetBasedOn(oNormalStyle);
+
+oTextPr = oP114Style.GetTextPr();
+oTextPr.SetFontSize(20);
+oTextPr.SetColor(0x00, 0x00, 0x00, false);
+
+oParaPr = oP114Style.GetParaPr();
+oParaPr.SetJc("right");
+oParaPr.SetWidowControl(false);
+oParaPr.SetSpacingLine(280, "exact");
+
+
+// RUN normal style id 104
+var oNormalCharStyle = oDocument.CreateStyle("Normal Char", "run");
+
+oTextPr = oNormalCharStyle.GetTextPr();
+oTextPr.SetFontFamily("Calibri");
+oTextPr.SetFontSize(22);
+oTextPr.SetLanguage("en-US");
+oTextPr.SetSpacing(0);
+oTextPr.SetPosition(0);
+oTextPr.SetColor(0x00, 0x00, 0x00, false);
+
+
+
+// bottom text style id 110
+var oP110Style = oDocument.CreateStyle("Bottom Text", "paragraph");
+oP110Style.SetBasedOn(oNormalStyle);
+
+oTextPr = oP110Style.GetTextPr();
+oTextPr.SetColor(0x0D, 0x0D, 0x0D, false);
+
+oParaPr = oP110Style.GetParaPr();
+oParaPr.SetSpacingAfter(0);
+oParaPr.SetSpacingLine(240, "exact");
+oParaPr.SetWidowControl(false);
+
+
+// Tagline 03 style id 122
+var oP122Style = oDocument.CreateStyle("Tagline 03", "paragraph");
+oP122Style.SetBasedOn(oNormalStyle);
+
+oTextPr = oP122Style.GetTextPr();
+oTextPr.SetFontFamily("Calibri");
+oTextPr.SetCaps(true);
+oTextPr.SetColor(0x0D, 0x0D, 0x0D, false);
+oTextPr.SetFontSize(36);
+
+oParaPr = oP122Style.GetParaPr();
+oParaPr.SetSpacingLine(240, "auto");
+oParaPr.SetWidowControl(false);
+
+
+// style Id 122 + M
+var oP122MStyle = oDocument.CreateStyle("Tagline 03M", "paragraph");
+oP122MStyle.SetBasedOn(oP122Style);
+
+oTextPr = oP122MStyle.GetTextPr();
+oTextPr.SetFontFamily("Calibri");
+
+
+// style Id 120
+var oP120Style = oDocument.CreateStyle("Para_text03", "paragraph");
+oP120Style.SetBasedOn(oNormalStyle);
+
+oTextPr = oP120Style.GetTextPr();
+oTextPr.SetColor(0x32, 0x2B, 0x39, false);
+oTextPr.SetFontSize(28);
+
+oParaPr = oP120Style.GetParaPr();
+oParaPr.SetSpacingAfter(0);
+oParaPr.SetSpacingLine(360, "auto");
+
+
+// style Id 149
+var oP149Style = oDocument.CreateStyle("Picture with spacing", "paragraph");
+oP149Style.SetBasedOn(oNormalStyle);
+
+oParaPr = oP149Style.GetParaPr();
+oParaPr.SetSpacingBefore(200);
+
+
+// style Id 148
+var oP148Style = oDocument.CreateStyle("Right-aligned", "paragraph");
+oP148Style.SetBasedOn(oNormalStyle);
+
+oTextPr = oP148Style.GetTextPr();
+oTextPr.SetColor(0x00, 0x00, 0x00, false);
+
+oParaPr = oP148Style.GetParaPr();
+oParaPr.SetJc("right");
+
+
+// style Id 130
+var oP130Style = oDocument.CreateStyle("Para_Text 06", "paragraph");
+oP130Style.SetBasedOn(oNormalStyle);
+
+oTextPr = oP130Style.GetTextPr();
+oTextPr.SetColor(0x32, 0x2B, 0x39, false);
+
+oParaPr = oP130Style.GetParaPr();
+oParaPr.SetSpacingAfter(240);
+oParaPr.SetSpacingLine(240, "auto");
+
+
+// style Id 123
+var oP123Style = oDocument.CreateStyle("Para_text04", "paragraph");
+oP123Style.SetBasedOn(oNormalStyle);
+
+oTextPr = oP123Style.GetTextPr();
+oTextPr.SetColor(0x0D, 0x0D, 0x0D, false);
+oTextPr.SetFontSize(18);
+
+oParaPr = oP123Style.GetParaPr();
+oParaPr.SetJc("both");
+oParaPr.SetSpacingLine(360, "exact");
+oParaPr.SetWidowControl(false);
+
+
+// style Id 115
+var oP115Style = oDocument.CreateStyle("Address", "paragraph");
+oP115Style.SetBasedOn(oNormalStyle);
+
+oTextPr = oP115Style.GetTextPr();
+oTextPr.SetFontSize(18);
+
+oParaPr = oP115Style.GetParaPr();
+oParaPr.SetSpacingAfter(0);
+
+
+// style Id 145
+var oP145Style = oDocument.CreateStyle("NewsLtrBodyText", "paragraph");
+oP145Style.SetBasedOn(oNormalStyle);
+
+oTextPr = oP145Style.GetTextPr();
+oTextPr.SetFontSize(18);
+
+oParaPr = oP145Style.GetParaPr();
+oParaPr.SetJc("left");
+
+
+// style Id 139
+var oP139Style = oDocument.CreateStyle("NLetter_Heading", "paragraph");
+oP139Style.SetBasedOn(oNormalStyle);
+
+oTextPr = oP139Style.GetTextPr();
+oTextPr.SetFontFamily("Calibri");
+oTextPr.SetBold(true);
+oTextPr.SetColor(0x14, 0x11, 0x17, false);
+oTextPr.SetFontSize(96);
+
+oParaPr = oP139Style.GetParaPr();
+oParaPr.SetJc("right");
+oParaPr.SetSpacingAfter(0);
+oParaPr.SetSpacingLine(240, "auto");
+
+
+// style Id 125
+var oP125Style = oDocument.CreateStyle("Tagline04", "paragraph");
+oP125Style.SetBasedOn(oNormalStyle);
+
+oTextPr = oP125Style.GetTextPr();
+oTextPr.SetFontFamily("Calibri");
+oTextPr.SetFontSize(60);
+oTextPr.SetColor(0x4E, 0x5D, 0x3C, false);
+
+oParaPr = oP125Style.GetParaPr();
+oParaPr.SetJc("center");
+oParaPr.SetSpacingAfter(0);
+oParaPr.SetSpacingLine(600, "exact");
+oParaPr.SetWidowControl(false);
+
+
+// style Id 136
+var oP136Style = oDocument.CreateStyle("para_text05", "paragraph");
+oP136Style.SetBasedOn(oNormalStyle);
+
+oTextPr = oP136Style.GetTextPr();
+oTextPr.SetColor(0x32, 0x2B, 0x39, false);
+
+oParaPr = oP136Style.GetParaPr();
+oParaPr.SetJc("left");
+oParaPr.SetSpacingLine(240, "auto");
+
+
+// style Id 137
+var oP137Style = oDocument.CreateStyle("Tagline 08", "paragraph");
+oP137Style.SetBasedOn(oNormalStyle);
+
+oTextPr = oP137Style.GetTextPr();
+oTextPr.SetColor(0x32, 0x2B, 0x39, false);
+oTextPr.SetFontSize(56);
+
+oParaPr = oP137Style.GetParaPr();
+oParaPr.SetSpacingAfter(0);
+oParaPr.SetSpacingLine(240, "auto");
+
+
+// RUN style Id 138
+var oR138Style = oDocument.CreateStyle("para_text05 Char", "run");
+oR138Style.SetBasedOn(oNormalCharStyle);
+
+oTextPr = oR138Style.GetTextPr();
+oTextPr.SetColor(0x32, 0x2B, 0x39, false);
+
+
+
+// RUN style Id 121
+var oR121Style = oDocument.CreateStyle("Para_text03 Char", "run");
+oR121Style.SetBasedOn(oNormalCharStyle);
+
+oTextPr = oR121Style.GetTextPr();
+oTextPr.SetFontSize(28);
+oTextPr.SetColor(0x32, 0x2B, 0x39, false);
+
+
+// RUN style Id 142
+var oR142Style = oDocument.CreateStyle("NLetter Heading Char", "run");
+oR142Style.SetBasedOn(oNormalCharStyle);
+
+oTextPr = oR142Style.GetTextPr();
+oTextPr.SetFontFamily("Calibri");
+oTextPr.SetBold(true);
+oTextPr.SetFontSize(96);
+oTextPr.SetColor(0x14, 0x11, 0x17, false);
+
+
+// RUN style Id 144
+var oR144Style = oDocument.CreateStyle("NLetter Heading Char 2", "run");
+oR144Style.SetBasedOn(oNormalCharStyle);
+
+oTextPr = oR144Style.GetTextPr();
+oTextPr.SetFontFamily("Calibri");
+oTextPr.SetFontSize(96);
+oTextPr.SetColor(0x14, 0x11, 0x17, false);
+
+
+// RUN style Id 119 
+var oR119Style = oDocument.CreateStyle("Tagline 02 Char", "run");
+oR119Style.SetBasedOn(oNormalCharStyle);
+
+oTextPr = oR119Style.GetTextPr();
+oTextPr.SetFontSize(40);
+oTextPr.SetColor(0x4E, 0x5D, 0x3C, false);
+
+
+// RUN style Id 131
+var oR131Style = oDocument.CreateStyle("Para Text 06 Char", "run");
+oR131Style.SetBasedOn(oNormalCharStyle);
+
+oTextPr = oR131Style.GetTextPr();
+oTextPr.SetColor(0x32, 0x2B, 0x39, false);
+
+
+// RUN style Id 116
+var oR116Style = oDocument.CreateStyle("Para Text 02 Char", "run");
+oR116Style.SetBasedOn(oNormalCharStyle);
+
+oTextPr = oR116Style.GetTextPr();
+oTextPr.SetColor(0x00, 0x00, 0x00, false);
+oTextPr.SetFontSize(20);
+
+
+// RUN style Id 116M
+var oR116MStyle = oDocument.CreateStyle("Para Text 02 Char m", "run");
+oR116MStyle.SetBasedOn(oR116Style);
+
+oTextPr = oR116MStyle.GetTextPr();
+oTextPr.SetColor(0x32, 0x2B, 0x39, false);
+oTextPr.SetFontSize(22);
+
+
+// RUN style Id 146
+var oR146Style = oDocument.CreateStyle("Tagline09 Char", "run");
+oR146Style.SetBasedOn(oNormalCharStyle);
+
+oTextPr = oR146Style.GetTextPr();
+oTextPr.SetColor(0x32, 0x2B, 0x39, false);
+oTextPr.SetFontSize(22);
+
+
+// style Id 133
+var oP133Style = oDocument.CreateStyle("Tagline 07", "paragraph");
+oP133Style.SetBasedOn(oNormalStyle);
+
+oTextPr = oP133Style.GetTextPr();
+oTextPr.SetFontSize(36);
+oTextPr.SetColor(0x32, 0x2B, 0x39, false);
+oTextPr.SetCaps(true);
+
+oParaPr = oP133Style.GetParaPr();
+oParaPr.SetSpacingAfter(0);
+oParaPr.SetSpacingLine(240, "auto");
+
+
+// style Id 132
+var oP132Style = oDocument.CreateStyle("Tagline06", "paragraph");
+oP132Style.SetBasedOn(oNormalStyle);
+
+oTextPr = oP132Style.GetTextPr();
+oTextPr.SetFontSize(36);
+oTextPr.SetColor(0x14, 0x11, 0x17, false);
+
+
+
+
+// end of styles
+
+
+// doc content
+// paragraph 1 starts here
+oParagraph = Api.CreateParagraph();
+oParagraph.SetStyle(oP139Style);
+oParagraph.AddText(" ");
+oDocument.Push(oParagraph);
+oDocument.RemoveElement(0);
+
+								
+// shape with paragraphs #1
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 914400, 1021714, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 7830819);
+oDrawing.SetVerPosition("page", 349884);
+oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("top");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+oDrawingDocContent = oDrawing.GetDocContent();
+
+// text 
+var oArrTexts = [];
+
+oArrTexts[0] = "Issue";
+oArrTexts[1] = "00";
+// 122
+oArrTexts[2] = "Month";
+oArrTexts[3] = "Year";
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oParagraphInner = Api.CreateParagraph();
+
+	switch (i) {
+		case 1:
+			oParagraphInner.SetStyle(oP122Style);
+			break;
+		default:
+			oParagraphInner.SetStyle(oP110Style);
+			break;
+	}
+
+	oParagraphInner.AddText(oArrTexts[i]);
+	oDrawingDocContent.Push(oParagraphInner);
+}
+//
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with paragraphs #1
+
+
+// shape img 1
+// bg picture top
+oDrawing = Api.CreateImage("http://i.imgur.com/6DuXyE4.png", 7586979, 1396999);
+oDrawing.SetWrappingStyle("behind");
+oDrawing.SetHorPosition("margin", 60959);
+oDrawing.SetVerPosition("margin", 15239);
+oParagraph.AddDrawing(oDrawing);
+// end of shape img 1
+
+
+// shape with runs #01
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 3455669, 763269, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 11536044);
+oDrawing.SetVerPosition("page", 361314);
+oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("top");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+
+oDrawingDocContent = oDrawing.GetDocContent();
+
+// text
+oParagraphInner = Api.CreateParagraph();
+oParagraphInner.SetStyle(oP148Style);
+
+var oArrTexts = [];
+
+oArrTexts[0] = "Tech";
+// r142
+oArrTexts[1] = "Times";
+// r144
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oRun = Api.CreateRun();
+
+	switch (i) {
+		case 0:
+			oRun.SetStyle(oR142Style);
+			break;
+		default:
+			oRun.SetStyle(oR144Style);
+			break;
+	}
+
+	oRun.AddText(oArrTexts[i]);
+	oParagraphInner.AddElement(oRun);
+}
+oDrawingDocContent.Push(oParagraphInner);
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with runs #01
+
+
+// shape smart art 01
+// big light Left Bottom gradient
+oDrawing = Api.CreateImage("http://i.imgur.com/y1EtpO2.png", 8190229, 8956039);
+oDrawing.SetWrappingStyle("behind");
+oDrawing.SetHorPosition("column", 75564);
+oDrawing.SetVerPosition("paragraph", -34290);
+oParagraph.AddDrawing(oDrawing);
+// end of shape smart art 01
+
+
+// shape smart art 02
+// dark Left Bottom gradient
+oDrawing = Api.CreateImage("http://i.imgur.com/Dw7oLZU.png", 3733164, 8956039);
+oDrawing.SetWrappingStyle("behind");
+oDrawing.SetHorPosition("column", 75564);
+oDrawing.SetVerPosition("paragraph", 503554);
+oParagraph.AddDrawing(oDrawing);
+// end of shape smart art 02
+
+
+// shape smart art 03
+// dark top left gradient
+oDrawing = Api.CreateImage("http://i.imgur.com/ACpQqXq.png", 1409699, 2534919);
+oDrawing.SetWrappingStyle("behind");
+oDrawing.SetHorPosition("column", 7551419);
+oDrawing.SetVerPosition("paragraph", 13969);
+oParagraph.AddDrawing(oDrawing);
+// end of shape smart art 03
+
+
+// shape smart art 04
+// dark top right gradient
+oDrawing = Api.CreateImage("http://i.imgur.com/o8jbos9.png", 3075304, 5125719);
+oDrawing.SetWrappingStyle("behind");
+oDrawing.SetHorPosition("column", 11932920);
+oDrawing.SetVerPosition("paragraph", 17779);
+oParagraph.AddDrawing(oDrawing);
+// end of shape smart art 04
+
+
+// shape smart art 05
+// light top right gradient
+oDrawing = Api.CreateImage("http://i.imgur.com/sWNpX8w.png", 5258434, 5304789);
+oDrawing.SetWrappingStyle("behind");
+oDrawing.SetHorPosition("margin", 9753599);
+oDrawing.SetVerPosition("margin", 17779);
+oParagraph.AddDrawing(oDrawing);
+// end of shape smart art 05
+// paragraph 1 ends here
+
+
+// paragraph 2 starts here
+oParagraph = Api.CreateParagraph();
+oParagraph.AddText("");
+oParagraph.SetSpacingLine(240, "auto");
+oDocument.Push(oParagraph);
+// paragraph 2 ends here
+
+
+// paragraph 3 starts here
+oParagraph = Api.CreateParagraph();
+oParagraph.AddText("");
+oDocument.Push(oParagraph);
+
+
+// shape with paragraphs #02
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 1728469, 1735454, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 13372464);
+oDrawing.SetVerPosition("page", 2218054);
+oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("top");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+oDrawingDocContent = oDrawing.GetDocContent();
+
+// text 
+var oArrTexts = [];
+
+oArrTexts[0] = "this issue";
+// oR119Style
+oArrTexts[1] = ["Open Source Revolution ", "P.1"];
+// oR131Style + oR116Style
+oArrTexts[2] = ["IT Management Tips  ", "P.2"];
+oArrTexts[3] = ["Non-Profit Solutions ", "P.3"];
+oArrTexts[4] = ["Trends & New Software ", "P.4"];
+// oP130Style: oR116Style + oR116MStyle
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oParagraphInner = Api.CreateParagraph();
+	oParagraphInner.SetJc("right");
+
+	// 1st line
+	if (i == 0) {
+		oRun = Api.CreateRun();
+		oRun.SetStyle(oR119Style);
+		oRun.AddText(oArrTexts[i]);
+		oParagraphInner.AddElement(oRun);
+	}
+
+	// 2nd line
+	if (oArrTexts[i].length == 2 && i == 1) {
+		// text
+		oRun = Api.CreateRun();
+		oRun.SetStyle(oR131Style);
+		oRun.AddText(oArrTexts[i][0]);
+		oParagraphInner.AddElement(oRun);
+
+		// P.1
+		oRun = Api.CreateRun();
+		oRun.SetStyle(oR116Style);
+		oRun.AddText(oArrTexts[i][1]);
+		oParagraphInner.AddElement(oRun);
+	}
+
+	// 3rd line+
+	if (oArrTexts[i].length == 2 && i > 1) {
+		oParagraphInner.SetStyle(oP130Style);
+		//oParagraphInner.SetJc("right");
+
+		// text
+		oRun = Api.CreateRun();
+		oRun.SetStyle(oR116MStyle);
+		//oRun.SetBold(true);
+		oRun.AddText(oArrTexts[i][0]);
+		oParagraphInner.AddElement(oRun);
+
+		// P.X
+		oRun = Api.CreateRun();
+		oRun.SetStyle(oR116Style);
+		oRun.AddText(oArrTexts[i][1]);
+		oParagraphInner.AddElement(oRun);
+	}
+
+	oDrawingDocContent.Push(oParagraphInner);
+}
+
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with paragraphs #02
+
+
+
+// shape with runs #02
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 1544954, 264159, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 504189);
+oDrawing.SetVerPosition("page", 9386569);
+oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("top");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+
+oDrawingDocContent = oDrawing.GetDocContent();
+
+// text
+oParagraphInner = Api.CreateParagraph();
+oParagraphInner.SetStyle(oP123Style);
+
+var oArrTexts = [];
+
+oArrTexts[0] = "Tech Times ";
+// oR121Style 
+oArrTexts[1] = "Issue 00 Month Year";
+// default
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oRun = Api.CreateRun();
+
+	if (i == 0) {
+		oRun.SetStyle(oR121Style);
+		oRun.SetColor(0x0D, 0x0D, 0x0D, false);
+		oRun.SetFontSize(18);
+	}
+
+	oRun.AddText(oArrTexts[i]);
+	oParagraphInner.AddElement(oRun);
+}
+oDrawingDocContent.Push(oParagraphInner);
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with runs #02
+
+
+//shape for img
+//// shape img 02 
+//// your logo here img
+//oDrawing = Api.CreateImage("rect", 1802764, 699135);
+//oDrawing.SetWrappingStyle("behind");
+//oDrawing.SetHorPosition("column", 220344);
+//oDrawing.SetVerPosition("paragraph", 6485889);
+//oParagraph.AddDrawing(oDrawing);
+//// end of shape img 02
+
+
+// shape img 02
+// your logo here img
+oDrawing = Api.CreateImage("http://i.imgur.com/UGcTO9g.jpg", 1232560, 623205);
+oDrawing.SetWrappingStyle("behind");
+oDrawing.SetHorPosition("column", 220344);
+oDrawing.SetVerPosition("paragraph", 6485889);
+oParagraph.AddDrawing(oDrawing);
+// end of shape img 02
+
+
+// shape with paragraphs #03
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 1709419, 814069, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("column", 275589);
+oDrawing.SetVerPosition("paragraph", 7213599);
+oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("top");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+
+oDrawingDocContent = oDrawing.GetDocContent();
+
+// text 
+var oArrTexts = [];
+
+oArrTexts[0] = "5432 Any Street West";
+oArrTexts[1] = "Townsville, State 54321";
+oArrTexts[2] = "425.555.0132 ph  ";
+oArrTexts[3] = "425.555.0133 fax";
+oArrTexts[4] = "www.adatum.com";
+// oP115Style
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oParagraphInner = Api.CreateParagraph();
+	oParagraphInner.SetStyle(oP115Style);
+	
+	oParagraphInner.AddText(oArrTexts[i]);
+	oDrawingDocContent.Push(oParagraphInner);
+}
+
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with paragraphs #03
+
+
+// shape with paragraphs #04
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 2491740, 4081779, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("column", 9494519);
+oDrawing.SetVerPosition("paragraph", 4320540);
+oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("top");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+
+oDrawingDocContent = oDrawing.GetDocContent();
+
+// text 
+var oArrTexts = [];
+
+oArrTexts[0] = "Volutpat mos at neque nulla lobortis dignissim conventio, torqueo, acsi roto modo. Feugait in obruo quae ingenium tristique elit vel natu meus. Molior torqueo capio velit loquor aptent ut lorem erat feugiat pneum commodo vel obruo mara genitus. Suscipit, vicis praesent erat feugait epulae, validus indoles duis enim consequat genitus at. Sed, conventio, aliquip accumsan adipiscing augue blandit minim abbas oppeto commoveo.";
+oArrTexts[1] = "Enim neo velit adsum odio, multo, in commoveo quibus premo tamen erat huic. Occuro uxor dolore, ut at praemitto opto si sudo, opes feugiat iriure validus. Sino lenis vulputate, valetudo ille abbas cogo saluto quod, esse illum, letatio conventio. Letalis nibh iustum transverbero bene, erat vulputate enim dolore modo. Loquor, vulputate meus indoles iaceo, ne secundum, dolus demoveo interdico proprius. In consequat os quae nulla magna. Delenit abdo esse quia, te huic. Ratis neque ymo, venio illum pala damnum pneum. Aptent nulla aliquip camur ut consequat aptent nisl in voco. Adipiscing magna ";
+// oP145Style
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oParagraphInner = Api.CreateParagraph();
+	oParagraphInner.SetStyle(oP145Style);
+
+	oParagraphInner.AddText(oArrTexts[i]);
+	oDrawingDocContent.Push(oParagraphInner);
+}
+
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with paragraphs #04
+
+
+// shape with paragraphs #05
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 2491740, 3242309, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("column", 12380594);
+oDrawing.SetVerPosition("paragraph", 4320540);
+oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("top");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+
+oDrawingDocContent = oDrawing.GetDocContent();
+
+// text 
+var oArrTexts = [];
+
+oArrTexts[0] = "vel natu meus. Molior torqueo capio velit loquor aptent ut erat feugiat pneum commodo vel obruo mara genitus. Suscipit, vicis praesent erat feugait epulae, validus indoles duis enim consequat genitus at lerpo ipsum. Enim neo velit adsum odio, multo, in commoveo quibus premo tamen erat huic. Occuro uxor dolore, ut at praemitto opto si sudo, opes feugiat iriure validus. Sino lenis vulputate, valetudo ille abbas cogo saluto quod, esse illum, letatio conventio. ";
+oArrTexts[1] = "Letalis nibh iustum transverbero bene, erat vulputate enim dolore modo. Molior torqueo capio velit loquor aptent ut erat feugiat pneum commodo vel obruo mara genitus. Suscipit, vicis praesent erat feugait epulae, validus indoles duis enim consequat genitus at lerpo ipsum. ";
+// oP145Style
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oParagraphInner = Api.CreateParagraph();
+	oParagraphInner.SetStyle(oP145Style);
+
+	oParagraphInner.AddText(oArrTexts[i]);
+	oDrawingDocContent.Push(oParagraphInner);
+}
+
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with paragraphs #05
+
+
+// shape img 3
+// people img
+oDrawing = Api.CreateImage("http://i.imgur.com/jDPGykv.jpg", 3514918, 2331561);
+oDrawing.SetWrappingStyle("behind");
+oDrawing.SetHorPosition("column", 9494519);
+oDrawing.SetVerPosition("paragraph", 324484);
+oParagraph.AddDrawing(oDrawing);
+// end of shape img 3
+
+
+// shape with paragraphs #06
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 5597524, 944879, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("column", 9410699);
+oDrawing.SetVerPosition("paragraph", 3051810);
+oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("top");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+
+oDrawingDocContent = oDrawing.GetDocContent();
+
+// text 
+var oArrTexts = [];
+
+oArrTexts[0] = "Exploring open source software opportunities.";
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oParagraphInner = Api.CreateParagraph();
+	oParagraphInner.SetStyle(oP125Style);
+
+	oParagraphInner.AddText(oArrTexts[i]);
+	oDrawingDocContent.Push(oParagraphInner);
+}
+
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with paragraphs #06
+
+
+// shape smart art 04
+// bottom line
+oDrawing = Api.CreateImage("http://i.imgur.com/jG0CII5.png", 5393689, 1721484);
+oDrawing.SetWrappingStyle("behind");
+oDrawing.SetHorPosition("margin", 9614534);
+oDrawing.SetVerPosition("margin", 7595235);
+oParagraph.AddDrawing(oDrawing);
+// end of shape smart art 04
+
+
+// shape with paragraphs #07
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 1638299, 2250439, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 393064);
+oDrawing.SetVerPosition("page", 3401694);
+oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("top");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+
+oDrawingDocContent = oDrawing.GetDocContent();
+
+// text 
+var oArrTexts = [];
+
+oArrTexts[0] = "Lorem, vicis praesent erat feugait dolor.";
+// oP136Style + oR138Style
+oArrTexts[1] = "Adipiscing magna jumentum velit iriure volutpat mos at neque nulla lobortis dignissiconventio, torqueo, acsi roto modol etalis nibh iustum transverbero bene, erat.";
+// oP145Style
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oParagraphInner = Api.CreateParagraph();
+
+	switch (i) {
+		case 0:
+			oParagraphInner.SetStyle(oP136Style);
+			break;
+		default:
+			oParagraphInner.SetStyle(oP145Style);
+			break;
+	}
+
+	if (i == 0) {
+		oRun = Api.CreateRun();
+		oRun.SetStyle(oR138Style);
+		oRun.AddText(oArrTexts[i]);
+		oParagraphInner.AddElement(oRun);
+		oDrawingDocContent.Push(oParagraphInner);
+		continue
+	}
+
+	oParagraphInner.AddText(oArrTexts[i]);
+	oDrawingDocContent.Push(oParagraphInner);
+}
+
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with paragraphs #07
+
+
+// shape with paragraphs #08
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 1638299, 2250439, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 2294889);
+oDrawing.SetVerPosition("page", 3401694);
+oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("top");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+
+oDrawingDocContent = oDrawing.GetDocContent();
+
+// text 
+var oArrTexts = [];
+
+oArrTexts[0] = "Lorem, vicis praesent erat feugait dolor.";
+// oP136Style + oR138Style
+oArrTexts[1] = "Adipiscing magna jumentum velit iriure volutpat mos at neque nulla lobortis dignissiconventio, torqueo, acsi roto modol etalis nibh iustum transverbero bene, erat.";
+// oP145Style
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oParagraphInner = Api.CreateParagraph();
+
+	switch (i) {
+		case 0:
+			oParagraphInner.SetStyle(oP136Style);
+			break;
+		default:
+			oParagraphInner.SetStyle(oP145Style);
+			break;
+	}
+
+	if (i == 0) {
+		oRun = Api.CreateRun();
+		oRun.SetStyle(oR138Style);
+		oRun.AddText(oArrTexts[i]);
+		oParagraphInner.AddElement(oRun);
+		oDrawingDocContent.Push(oParagraphInner);
+		continue
+	}
+
+	oParagraphInner.AddText(oArrTexts[i]);
+	oDrawingDocContent.Push(oParagraphInner);
+}
+
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with paragraphs #08
+
+
+// shape with paragraphs #09
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 1638299, 2457450, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 5998209);
+oDrawing.SetVerPosition("page", 3401694);
+oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("top");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+
+oDrawingDocContent = oDrawing.GetDocContent();
+
+// text 
+var oArrTexts = [];
+
+oArrTexts[0] = "Molior torqueo capio velit loquor aptent ut erat feugiat pneum.";
+// oP136Style + oR138Style
+oArrTexts[1] = "Delenit abdo esse quia, te huic. Ratis neque ymo, venio illum pala damnum pneum. Aptent nulla aliquip camur ut consequat aptent nisl in voco olior torqueo capio.";
+// oP145Style
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oParagraphInner = Api.CreateParagraph();
+
+	switch (i) {
+		case 0:
+			oParagraphInner.SetStyle(oP136Style);
+			break;
+		default:
+			oParagraphInner.SetStyle(oP145Style);
+			break;
+	}
+
+	if (i == 0) {
+		oRun = Api.CreateRun();
+		oRun.SetStyle(oR138Style);
+		oRun.AddText(oArrTexts[i]);
+		oParagraphInner.AddElement(oRun);
+		oDrawingDocContent.Push(oParagraphInner);
+		continue
+	}
+
+	oParagraphInner.AddText(oArrTexts[i]);
+	oDrawingDocContent.Push(oParagraphInner);
+}
+
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with paragraphs #09
+
+
+// shape with paragraphs #10
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 1638299, 2457450, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 4151629);
+oDrawing.SetVerPosition("page", 3401694);
+oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("top");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+
+oDrawingDocContent = oDrawing.GetDocContent();
+
+// text 
+var oArrTexts = [];
+
+oArrTexts[0] = "Feugait in obruo quae ingenium tristique elit vel natu meus.";
+// oP136Style + oR138Style
+oArrTexts[1] = "Sino lenis vulputate, valetudo ille abbas cogo saluto quod, esse illum, letatio conventio.Letalis nibh iustum transverbero bene, erat vulputate enim dolore modo dolor serp";
+// oP145Style
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oParagraphInner = Api.CreateParagraph();
+
+	switch (i) {
+		case 0:
+			oParagraphInner.SetStyle(oP136Style);
+			break;
+		default:
+			oParagraphInner.SetStyle(oP145Style);
+			break;
+	}
+
+	if (i == 0) {
+		oRun = Api.CreateRun();
+		oRun.SetStyle(oR138Style);
+		oRun.AddText(oArrTexts[i]);
+		oParagraphInner.AddElement(oRun);
+		oDrawingDocContent.Push(oParagraphInner);
+		continue
+	}
+
+	oParagraphInner.AddText(oArrTexts[i]);
+	oDrawingDocContent.Push(oParagraphInner);
+}
+
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with paragraphs #10
+
+// shape with paragraphs #11
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 7466329, 564514, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("column", 75564);
+oDrawing.SetVerPosition("paragraph", 1204594);
+oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("top");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+
+oDrawingDocContent = oDrawing.GetDocContent();
+
+// text 
+var oArrTexts = [];
+
+oArrTexts[0] = "Upcoming Events";
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oParagraphInner = Api.CreateParagraph();
+	oParagraphInner.SetStyle(oP137Style);
+
+	oParagraphInner.AddText(oArrTexts[i]);
+	oDrawingDocContent.Push(oParagraphInner);
+}
+
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with paragraphs #11
+
+
+// shape for logo right bottom
+oFill = Api.CreateNoFill();
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 1640839, 579754, oFill, oStroke);
+oDrawing.SetWrappingStyle("behind");
+oDrawing.SetHorPosition("column", 13371194);
+oDrawing.SetVerPosition("paragraph", 7689849);
+oDrawing.SetVerticalTextAlign("top");
+
+oDrawingDocContent = oDrawing.GetDocContent();
+oParagraphInner = Api.CreateParagraph();
+oParagraphInner.SetJc("right");
+
+// inner drawing logo
+oDrawingInner = Api.CreateImage("http://i.imgur.com/UGcTO9g.jpg", 766676, 387646);
+oParagraphInner.AddDrawing(oDrawingInner);
+oDrawingDocContent.Push(oParagraphInner);
+
+
+oDrawingDocContent.RemoveElement(0);
+oParagraph.AddDrawing(oDrawing);
+// end of shape for logo right bottom
+
+
+// shape with paragraphs #12
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 1590039, 300354, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("column", 13371194);
+oDrawing.SetVerPosition("paragraph", 8093709);
+oDrawing.SetVerticalTextAlign("top");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+
+oDrawingDocContent = oDrawing.GetDocContent();
+
+// text 
+var oArrTexts = [];
+
+oArrTexts[0] = "Consulting";
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oParagraphInner = Api.CreateParagraph();
+	oParagraphInner.SetStyle(oP114Style);
+
+	oParagraphInner.AddText(oArrTexts[i]);
+	oDrawingDocContent.Push(oParagraphInner);
+}
+
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with paragraphs #12
+
+
+// shape with paragraphs #13
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 3302634, 323849, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 11887200);
+oDrawing.SetVerPosition("page", 1124584);
+oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("top");
+////oDrawing.SetPaddings(0, 0, 0, 0);
+//oDrawing.SetPaddings(0, 0, 0, 0);
+
+oDrawingDocContent = oDrawing.GetDocContent();
+
+// text 
+var oArrTexts = [];
+
+oArrTexts[0] = "MONTHLY JOURNAL OF INFORMATION TECHNOLOGY";
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oParagraphInner = Api.CreateParagraph();
+	oParagraphInner.SetSpacingLine(260, "exact");
+	oParagraphInner.SetWidowControl(false);
+
+	oRun = Api.CreateRun();
+	oRun.SetStyle(oR146Style);
+	oRun.AddText(oArrTexts[i]);
+
+	oParagraphInner.AddElement(oRun);
+	oDrawingDocContent.Push(oParagraphInner);
+}
+
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with paragraphs #13
+
+
+// shape smart art XX
+// green gradient
+oDrawing = Api.CreateImage("http://i.imgur.com/AOAOnke.png", 5015864, 5297169);
+oDrawing.SetWrappingStyle("behind");
+oDrawing.SetHorPosition("column", 7541894);
+oDrawing.SetVerPosition("paragraph", 3267709);
+oParagraph.AddDrawing(oDrawing);
+// end of shape smart art XX
+
+
+// shape smart art XX
+// yet another green gradient
+oDrawing = Api.CreateImage("http://i.imgur.com/AmvrHvK.png", 5329554, 7672704);
+oDrawing.SetWrappingStyle("behind");
+oDrawing.SetHorPosition("column", 2221864);
+oDrawing.SetVerPosition("paragraph", 1469389);
+oParagraph.AddDrawing(oDrawing);
+// end of shape smart art XX
+
+
+// shape with paragraphs #XX
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 1371600, 7913369, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 8034654);
+oDrawing.SetVerPosition("page", 1767839);
+oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("center");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+
+oDrawingDocContent = oDrawing.GetDocContent();
+
+
+// text 
+var oArrTexts = [];
+
+oArrTexts[0] = "Solutions For a New Economy";
+// oP122MStyle
+oArrTexts[1] = "Sit amet, consec tetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam . Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper. Et iusto odio dignissim qui blandit praeseptatum zzril delenit augue duis dolore te feugait nulla adipiscing elit, sed diam nonummy nibh .";
+// oP115Style
+oArrTexts[2] = "";
+// oP149Style
+oArrTexts[3] = "PERSONAL COMPUTING";
+// oP130Style
+oArrTexts[4] = "Tincidunt ut laoreet dolore magna aliquam erat volut pat. Ut wisi enim ad minim veniam, quis exerci tation ullamcorper cipit lobortis nisl ut aliquip exit amet, consec tetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam . Ut wisi enim ad minim veniam, quis nostrud exerci tation ";
+// oP145Style
+oArrTexts[5] = "ullamcorper. Et iusto odio ";
+oArrTexts[6] = "dignissim qui blandit ";
+oArrTexts[7] = "praeseptatum.";
+// oP115Style
+
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oParagraphInner = Api.CreateParagraph();
+
+	switch (i) {
+		case 0:
+			oParagraphInner.SetStyle(oP122MStyle);
+			break;
+		case 2:
+			// center column img
+			oParagraphInner.SetStyle(oP149Style);
+			oDrawingInner = Api.CreateImage("http://i.imgur.com/UIEg7yg.jpg", 1295399, 852804);
+			oParagraphInner.AddDrawing(oDrawingInner);
+			break;
+		case 3:
+			oParagraphInner.SetStyle(oP130Style);
+			break;
+		case 4:
+			oParagraphInner.SetStyle(oP145Style);
+			break;
+		default:
+			oParagraphInner.SetStyle(oP115Style);
+			break;
+	}
+
+	oParagraphInner.AddText(oArrTexts[i]);
+	oDrawingDocContent.Push(oParagraphInner);
+}
+
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with paragraphs #XX
+
+
+oParagraph.AddPageBreak();
+// paragraph 3 ends here
+
+
+// paragraph 4 starts here
+oParagraph = Api.CreateParagraph();
+oDocument.Push(oParagraph);
+
+// shape with paragraphs #XX
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 1657350, 5538469, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 6004559);
+oDrawing.SetVerPosition("page", 3953509);
+oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("top");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+
+oDrawingDocContent = oDrawing.GetDocContent();
+
+// text 
+var oArrTexts = [];
+
+oArrTexts[0] = "Loquor, vulputate meus indoles iaceo, ne secundum, dolus demoveo interdico proprius. In consequat os quae nulla ";
+oArrTexts[1] = "magna. Delenit abdo esse quia, te huic. Ratis neque ymo, venio illum pala damnum pneum spago loquor dolus lor secundum erat neo adsum multo commoveo feugiat praesant validus convention oco camur nulla. erat.Loquor, vulputate meus indoles iaceo, ne secundum, dolus demoveo interdico proprius. ";
+oArrTexts[2] = "In consequat asos quae nulla magna. Delenit abdo esse quia, te huic. Ratis neque ymo, venio illum pala damnum pneum. Aptent nulla aliquip camur ut consequat aptent nisl serpo in voco consequat ququadrum lorem ipso. erat.Loquor, vulputate meus indoles iaceo, ne interdico proprius. In consequat asos quae nulla magna. Delenit abdo esse quia, te huic. Ratis neque ymo, venio illum pala damnum pneum. Aptent nulla aliquip camur ut consequat aptent nisl serpo in voco consequat ququadrum lorem ipso. ";
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oParagraphInner = Api.CreateParagraph();
+	oParagraphInner.SetStyle(oP145Style);
+
+	oParagraphInner.AddText(oArrTexts[i]);
+	oDrawingDocContent.Push(oParagraphInner);
+}
+
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with paragraphs #XX
+
+
+// shape with paragraphs #XX
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 1657350, 5538469, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 4148454);
+oDrawing.SetVerPosition("page", 3940809);
+oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("top");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+
+oDrawingDocContent = oDrawing.GetDocContent();
+
+// text 
+var oArrTexts = [];
+
+oArrTexts[0] = "Enim neo velit adsum odio, multo, in commoveo quibus premo tamen erat huic. Occuro uxor dolore, ut at praemitto opto si sudo, opes feugiat iriure validus. Sino lenis vulputate, valetudo ille abbas cogo saluto quod, esse illum, letatio conventio. ";
+oArrTexts[1] = "Ymo, venio illum pala damnum pneum. Aptent nulla aliquip camur ut consequat aptent nisl in voco cundum, dolus demoveo interdico proprius. In consequat os quae nulla magna delenit abdo. ";
+oArrTexts[2] = "Ratis neque ymo, venio illum pala damnum pneum. Aptent nulla aliquip camur ut consequat aptent nisl in voco consequat praemitto. opto si sudo, opes secundum, dolus demoveo interdico proprius. In consequat os quae nulla magna. Delenit abdo esse quia, tehuic. Ratis neque ymo, venio illum pala damnum pneum. Aptent nulla aliquip camur ut consequat aptent nisl in voco consequat qui quadrum. Feugait in obruo quae ingenium. Ratis neque ymo, venio illum pala damnum pneum. ";
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oParagraphInner = Api.CreateParagraph();
+	oParagraphInner.SetStyle(oP145Style);
+
+	oParagraphInner.AddText(oArrTexts[i]);
+	oDrawingDocContent.Push(oParagraphInner);
+}
+
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with paragraphs #XX
+
+
+// shape with paragraphs #XX
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 3476624, 889634, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 4156709);
+oDrawing.SetVerPosition("page", 2875914);
+oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("top");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+
+oDrawingDocContent = oDrawing.GetDocContent();
+
+// text 
+var oArrTexts = [];
+
+oArrTexts[0] = "“Becoming a new  IT manager means  you must actively take the reins”  ";
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oParagraphInner = Api.CreateParagraph();
+	oParagraphInner.SetStyle(oP133Style);
+
+	oParagraphInner.AddText(oArrTexts[i]);
+	oDrawingDocContent.Push(oParagraphInner);
+}
+
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with paragraphs #XX
+
+
+// shape with paragraphs #XX
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 3700144, 955674, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 2177415);
+oDrawing.SetVerPosition("page", 1841499);
+oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("top");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+
+oDrawingDocContent = oDrawing.GetDocContent();
+
+// text 
+var oArrTexts = [];
+
+oArrTexts[0] = "We asked 5 accomplished managers the things they would’ve done differently at the onset of their careers";
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oParagraphInner = Api.CreateParagraph();
+	oParagraphInner.SetStyle(oP132Style);
+
+	oParagraphInner.AddText(oArrTexts[i]);
+	oDrawingDocContent.Push(oParagraphInner);
+}
+
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with paragraphs #XX
+
+
+
+
+
+// shape with paragraphs #XX
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 1668780, 1137285, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 7882254);
+oDrawing.SetVerPosition("page", 8268969);
+//oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("top");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+
+oDrawingDocContent = oDrawing.GetDocContent();
+
+// text 
+var oArrTexts = [];
+
+oArrTexts[0] = "A: Occuro uxor dolore, ut at praemitto opto si sudo, opes feugiat iriure validus. Sino lenis vulputate, vale Letalis nibh iustum ransverbero bene, erat ";
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oParagraphInner = Api.CreateParagraph();
+	oParagraphInner.SetStyle(oP115Style);
+
+	oParagraphInner.AddText(oArrTexts[i]);
+	oDrawingDocContent.Push(oParagraphInner);
+}
+
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with paragraphs #XX
+
+
+// shape with paragraphs #XX
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 1668780, 972184, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 7891144);
+oDrawing.SetVerPosition("page", 7364094);
+//oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("top");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+
+oDrawingDocContent = oDrawing.GetDocContent();
+
+// text 
+var oArrTexts = [];
+
+oArrTexts[0] = "Q: Enim neo velit adsum odio, multo, in commoveo quibus premo tamen";
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oParagraphInner = Api.CreateParagraph();
+	oParagraphInner.SetStyle(oP136Style);
+
+	oParagraphInner.AddText(oArrTexts[i]);
+	oDrawingDocContent.Push(oParagraphInner);
+}
+
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with paragraphs #XX
+
+
+// shape with paragraphs #XX
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 3736339, 1868169, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 7772400);
+oDrawing.SetVerPosition("page", 5462269);
+//oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("top");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+
+oDrawingDocContent = oDrawing.GetDocContent();
+
+// text 
+var oArrTexts = [];
+
+oArrTexts[0] = "This Month’s Q&A Technology Tips";
+oArrTexts[1] = "";
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oParagraphInner = Api.CreateParagraph();
+	oParagraphInner.SetStyle(oP133Style);
+
+	if (i == 1) {
+		oParagraphInner.SetStyle(oP149Style);
+		oParagraphInner.SetJc("left");
+		oDrawingInner = Api.CreateImage("http://i.imgur.com/OJyKOYG.jpg", 1614877, 1229193);
+		oParagraphInner.AddDrawing(oDrawingInner);
+	}
+
+	oParagraphInner.AddText(oArrTexts[i]);
+	oDrawingDocContent.Push(oParagraphInner);
+}
+
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with paragraphs #XX
+
+
+// shape img
+// img 2 humans 1 pc
+oDrawing = Api.CreateImage("http://i.imgur.com/ja7qOgO.png", 1897785, 1778941);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 5906769);
+oDrawing.SetVerPosition("page", 143509);
+oParagraph.AddDrawing(oDrawing);
+// end of shape img
+
+
+// shape with paragraphs #XX
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 2701289, 1407794, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 2428875);
+oDrawing.SetVerPosition("page", 542925);
+oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("top");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+
+oDrawingDocContent = oDrawing.GetDocContent();
+
+// text 
+var oArrTexts = [];
+
+oArrTexts[0] = "What first-time ";
+oArrTexts[1] = "IT managers really ";
+oArrTexts[2] = "need to know.";
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oParagraphInner = Api.CreateParagraph();
+	oParagraphInner.SetStyle(oP125Style);
+
+	oParagraphInner.AddText(oArrTexts[i]);
+	oDrawingDocContent.Push(oParagraphInner);
+}
+
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with paragraphs #XX
+
+
+// shape smart art XX
+oDrawing = Api.CreateImage("http://i.imgur.com/0i0PJ5w.png", 7331709, 9034779);
+oDrawing.SetWrappingStyle("behind");
+oDrawing.SetHorPosition("page", 7772400);
+oDrawing.SetVerPosition("page", 429894);
+oParagraph.AddDrawing(oDrawing);
+// end of shape smart art XX
+
+
+// shape img blue line top
+oDrawing = Api.CreateImage("http://i.imgur.com/07Ilyik.jpg", 5603874, 1073149);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 7772400);
+oDrawing.SetVerPosition("page", 146049);
+oParagraph.AddDrawing(oDrawing);
+// end of shape img blue line top
+
+
+// shape with paragraphs #XX
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 1485900, 9212580, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 452119);
+oDrawing.SetVerPosition("page", 375284);
+oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("center");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+
+oDrawingDocContent = oDrawing.GetDocContent();
+
+
+// text 
+var oArrTexts = [];
+
+oArrTexts[0] = "Principles for ";
+oArrTexts[1] = "Project ";
+oArrTexts[2] = "Management ";
+oArrTexts[3] = "Success";
+// oP122Style
+oArrTexts[4] = "";
+//sz 15
+oArrTexts[5] = "Volutpat mos at neque nulla lobortis dignissim conventio, torqueo, acsi roto modo. Feugait in obruo quae ingenium tristique elit vel natu meus. Molior ";
+oArrTexts[6] = "torqueo capio velit loquor aptent ut erat feugiat pneum commodo vel obruo mara genitus. Sus cipit, vicis praesent erat feugait epulae, validus indoles duis ";
+oArrTexts[7] = "enim consequat genitus at. Sed, conventio, aliquip accumsan adipiscing augue blandit minim abbas oppeto commoveo.";
+oArrTexts[8] = "Enim neo velit adsum odio, multo, in commoveo quibus premo tamen erat huic. Occuro uxor dolore, ut at praemitto opto si sudo, opes feugiat iriure validus. Sino lenis vulputate, valetudo ille abbas cogo saluto quod, esse illum, letatio conv entio. Letalis nibh iustum tran sverbero bene, erat vulputate enim praemitto validus. ";
+oArrTexts[9] = "Loquor, vulputate meus indoles iaceo, ne secundum, dolus demoveo interdico proprius. In consequat os quae nulla magna. Delenit abdo esse quia, te huic. Ratis neque ymo, venio illum pala damnum pneum spago loquor dolus lor secundum erat neo adsum multo commoveo feugiat praesant validus conventio voco camur nulla.";
+oArrTexts[10] = "Loquor, vulputate meus indoles iaceo, ne secundum, dolus ";
+// oP145Style
+oArrTexts[11] = "demoveo interdico proprius. In consequat os quae nulla ";
+oArrTexts[12] = "magna. alidus conventio ";
+oArrTexts[13] = "voco camur nulla.";
+// oP115Style
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oParagraphInner = Api.CreateParagraph();
+
+	switch (i) {
+		case 0:
+		case 1:
+		case 2:
+		case 3:
+			oParagraphInner.SetStyle(oP122Style);
+			break;
+		case 11:
+		case 12:
+		case 13:
+			oParagraphInner.SetStyle(oP115Style);
+			break;
+		default:
+			oParagraphInner.SetStyle(oP145Style);
+			break;
+	}
+
+	oParagraphInner.AddText(oArrTexts[i]);
+	oDrawingDocContent.Push(oParagraphInner);
+}
+
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with paragraphs #XX
+
+
+// shape with paragraphs #XX
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 1484629, 8717279, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 13556614);
+oDrawing.SetVerPosition("page", 914400);
+oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("top");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+
+oDrawingDocContent = oDrawing.GetDocContent();
+
+
+// text 
+var oArrTexts = [];
+
+oArrTexts[0] = "EYE ON IT";
+// oP120Style
+oArrTexts[1] = "Current Industry Trends";
+// oP123Style
+oArrTexts[2] = "Suscipit, vicis praesent erat feugait epulae, validus indoles duis enim consequat genitus at. Sed, conventio, aliquipaccumsan adipiscing augue blandit minim abbas oppeto commov. ";
+oArrTexts[3] = "Enim neo velit adsum odio, multo, in commoveo quibus premo tamen erat huic. Occuro uxor dolore, ut at praemitto opto si sudo, opes feugiat iriure validus. Sino lenis vulputate, valetudo ille abbas cogo saluto quod, esse illum, letatio lorem conventio. Letalis nibh iustum transverbero bene, erat vulpu tate enim esse si sudo erat. ";
+// oP145Style
+oArrTexts[4] = "";
+// oP149Style
+oArrTexts[5] = "Software";
+// oP120Style
+oArrTexts[6] = "Monthly Picks";
+// oP130Style
+oArrTexts[7] = "Volutpat mos atreque ulla lobortis dignissim conventio, torqueo, acsi roto modo. Feugait in obruo quae ingenium tristique elit vel natu meus. Molior torqueo capio velit loquor aptent ut erat feugiat pneum commodo.";
+// oP145Style
+oArrTexts[8] = "Enim neo velit adsum odio, multo, in commoveo quibus premo tamen erat huic. Occuro uxor dolore, ut at praemitto opto si sudo, opes feugiat.";
+oArrTexts[9] = "";
+// oP115Style
+
+
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oParagraphInner = Api.CreateParagraph();
+
+	switch (i) {
+		case 0:
+		case 5:
+			oParagraphInner.SetStyle(oP120Style);
+			break;
+		case 1:
+			oParagraphInner.SetStyle(oP123Style);
+			break;
+		case 3:
+		case 6:
+			oParagraphInner.SetStyle(oP130Style);
+			break;
+		case 4:
+			// center column img
+			oParagraphInner.SetStyle(oP149Style);
+			oDrawingInner = Api.CreateImage("http://i.imgur.com/KuhWHhT.jpg", 1586229, 1046910);
+			oParagraphInner.AddDrawing(oDrawingInner);
+			break;
+		case 8:
+			oParagraphInner.SetStyle(oP115Style);
+			break;		
+		default:
+			oParagraphInner.SetStyle(oP145Style);
+			break;
+	}
+
+	oParagraphInner.AddText(oArrTexts[i]);
+	oDrawingDocContent.Push(oParagraphInner);
+}
+
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with paragraphs #XX
+
+
+// shape smart art XX
+oDrawing = Api.CreateImage("http://i.imgur.com/pFV4RVI.png", 3081654, 5584824);
+oDrawing.SetWrappingStyle("behind");
+oDrawing.SetHorPosition("margin", 11936729);
+oDrawing.SetVerPosition("margin", 0);
+oParagraph.AddDrawing(oDrawing);
+// end of shape smart art XX
+
+
+// shape smart art XX
+oDrawing = Api.CreateImage("http://i.imgur.com/hMsIkqU.png", 1890394, 1473834);
+oDrawing.SetWrappingStyle("behind");
+oDrawing.SetHorPosition("page", 13350240);
+oDrawing.SetVerPosition("page", 311149);
+oParagraph.AddDrawing(oDrawing);
+// end of shape smart art XX
+
+
+// shape smart art XX
+oDrawing = Api.CreateImage("http://i.imgur.com/NFrDXFs.png", 950594, 2586354);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 6830694);
+oDrawing.SetVerPosition("page", 292734);
+oParagraph.AddDrawing(oDrawing);
+// end of shape smart art XX
+
+
+// shape smart art XX
+oDrawing = Api.CreateImage("http://i.imgur.com/bYxelRU.png", 7324724, 9415779);
+oDrawing.SetWrappingStyle("behind");
+oDrawing.SetHorPosition("page", 311149);
+oDrawing.SetVerPosition("page", 356869);
+oParagraph.AddDrawing(oDrawing);
+// end of shape smart art XX
+
+
+// shape smart art XX
+oDrawing = Api.CreateImage("http://i.imgur.com/FmIMss0.png", 5784214, 2742564);
+oDrawing.SetWrappingStyle("behind");
+oDrawing.SetHorPosition("page", 7772400);
+oDrawing.SetVerPosition("page", 7031989);
+oParagraph.AddDrawing(oDrawing);
+// end of shape smart art XX
+
+
+// shape smart art XX
+oDrawing = Api.CreateImage("http://i.imgur.com/D3NzD6p.png", 7324724, 3883659);
+oDrawing.SetWrappingStyle("behind");
+oDrawing.SetHorPosition("page", 448309);
+oDrawing.SetVerPosition("page", 5843269);
+oParagraph.AddDrawing(oDrawing);
+// end of shape smart art XX
+
+
+// shape smart art XX
+oDrawing = Api.CreateImage("http://i.imgur.com/19p4pKG.png", 7347584, 1699259);
+oDrawing.SetWrappingStyle("behind");
+oDrawing.SetHorPosition("page", 7891144);
+oDrawing.SetVerPosition("page", 8028304);
+oParagraph.AddDrawing(oDrawing);
+// end of shape smart art XX
+
+
+// shape with paragraphs #XX
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 5573394, 513714, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 7909560);
+oDrawing.SetVerPosition("page", 1467484);
+oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("top");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+
+oDrawingDocContent = oDrawing.GetDocContent();
+
+// text 
+var oArrTexts = [];
+
+oArrTexts[0] = "Technology Solutions for Non-Profits";
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oParagraphInner = Api.CreateParagraph();
+	oParagraphInner.SetStyle(oP137Style);
+
+	oParagraphInner.AddText(oArrTexts[i]);
+	oDrawingDocContent.Push(oParagraphInner);
+}
+
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with paragraphs #XX
+
+
+// shape with paragraphs #XX
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 1668780, 3281679, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 7882254);
+oDrawing.SetVerPosition("page", 2057400);
+//oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("top");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+
+oDrawingDocContent = oDrawing.GetDocContent();
+
+// text 
+var oArrTexts = [];
+
+oArrTexts[0] = "Aptent nulla aliquip camur ut consequat aptent nisl in voco consequat. Adipsdiscing magna jumentum velit iriure obruo. damnum pneum. Aptent nulla aliquip camur ut consequat lorem aptent nisl magna jumentum velitan en iriure. Loquor, vulputate meus indoles iaceo, ne secundum, dolus demoveo interddfico proprius. In consequat os quadfse nudflla magna.  Aptent nulla aliquip camur utan sdl as consequat aptent nisl in vocoloc consequat ispo facto delore ergo maska forgeuit masca pala ergo sacrum lamap allacum dergo ipso aliquip mia sermio saluto quod, esse illum, letatio conventio.";
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oParagraphInner = Api.CreateParagraph();
+	oParagraphInner.SetStyle(oP115Style);
+
+	oParagraphInner.AddText(oArrTexts[i]);
+	oDrawingDocContent.Push(oParagraphInner);
+}
+
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with paragraphs #XX
+
+
+// shape with paragraphs #XX
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 1668780, 7470139, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 11621769);
+oDrawing.SetVerPosition("page", 2057400);
+//oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("top");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+
+oDrawingDocContent = oDrawing.GetDocContent();
+
+// text 
+var oArrTexts = [];
+
+oArrTexts[0] = "Aptent nulla aliquip camur ut consequat aptent nisl in voco consequat. Adipsdiscing magna jumentum velit iriure obruo. damnum pneum. Aptent nulla aliquip camur ut consequat lorem aptent nisl magna jumentum velitan en iriure. Loquor, vulputate meus indoles iaceo, ne secundum, dolus demoveo interddfico proprius. In consequat os quadfse nudflla magna.  Aptent nulla aliquip camur utan sdl as consequat aptent nisl in vocoloc consequat ispo facto delore ergo maska forgeuit masca pala ergo sacrum lamap allacum dergo ipso aliquip mia sermi ";
+oArrTexts[1] = "Aptent nulla aliquip camur ut consequat aptent nisl in voco consequat. Adipsdiscing magna jumentum velit iriure obruo. damnum pneum. Aptent nulla aliquip camur ut consequat lorem aptent nisl magna jumentum velitan en iriure. Loquor, vulputate meus indoles iaceo, ne secundum, dolus demoveo interddfico proprius. In consequat os quadfse nudflla magna.  Aptent nulla aliquip camur utan sdl as consequat aptent nisl in vocoloc consequat ispo facto delore ergo maska forgeuit masca pala ergo sacrum lamap allacum dergo ipso aliquip mia sermi ";
+oArrTexts[2] = "Aptent nulla aliquip camur ut consequat aptent nisl in voco consequat. Adipsdiscing magna jumentum velit iriure obruo. ";
+
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oParagraphInner = Api.CreateParagraph();
+	oParagraphInner.SetStyle(oP145Style);
+
+	oParagraphInner.AddText(oArrTexts[i]);
+	oDrawingDocContent.Push(oParagraphInner);
+}
+
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with paragraphs #XX
+
+
+// shape with paragraphs #XX
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 1668780, 3281679, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 9747249);
+oDrawing.SetVerPosition("page", 2057400);
+oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("top");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+
+oDrawingDocContent = oDrawing.GetDocContent();
+
+// text 
+var oArrTexts = [];
+
+oArrTexts[0] = "Aptent nulla aliquip camur ut consequat aptent nisl in voco consequat. Adipsdiscing magna jumentum velit iriure obruo. damnum pneum. Aptent nulla aliquip camur ut consequat lorem aptent nisl magna jumentum velitan en iriure. Loquor, vulputate meus indoles iaceo, ne secundum, dolus demoveo interddfico proprius. In consequat os quadfse nudflla magna.  Aptent nulla aliquip camur utan sdl as consequat aptent nisl in vocoloc consequat ispo facto delore ergo maska forgeuit masca pala ergo sacrum lamap allacum dergo ipso aliquip mia sermi o";
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oParagraphInner = Api.CreateParagraph();
+	oParagraphInner.SetStyle(oP115Style);
+
+	oParagraphInner.AddText(oArrTexts[i]);
+	oDrawingDocContent.Push(oParagraphInner);
+}
+
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with paragraphs #XX
+
+
+// shape with paragraphs #XX
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 1668780, 3742054, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 9747249);
+oDrawing.SetVerPosition("page", 5897880);
+oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("top");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+
+oDrawingDocContent = oDrawing.GetDocContent();
+
+// text 
+var oArrTexts = [];
+
+oArrTexts[0] = "Aptent nulla aliquip camur ut consequat aptent nisl in voco consequat. Adipsdiscing magna jumentum velit iriure obruo. damnum pneum. Aptent nulla aliquip camur ut consequat lorem aptent nisl magna jumentum velitan en iriure. Loquor, vulputate meus indoles iaceo, ne secundum, dolus demoveo interddfico proprius. In consequat os quadfse nudflla magna.  Aptent nulla aliquip camur utan sdl as consequat aptent nisl in vocoloc consequat ispo facto delore ergo maska forgeuit masca pala ergo sacrum lamap allacum dergo ipso aliquip mia sermi o saluto quod, esse illum, letatio conventio.";
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oParagraphInner = Api.CreateParagraph();
+	oParagraphInner.SetStyle(oP115Style);
+
+	oParagraphInner.AddText(oArrTexts[i]);
+	oDrawingDocContent.Push(oParagraphInner);
+}
+
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with paragraphs #XX
+
+
+// shape with paragraphs #XX
+oFill = Api.CreateNoFill();
+//oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x55, 0x5F, 0x74));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 1657350, 6741794, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 2258694);
+oDrawing.SetVerPosition("page", 2936874);
+oDrawing.SetDistances(36576, 36576, 36576, 36576);
+oDrawing.SetVerticalTextAlign("top");
+//oDrawing.SetPaddings(0, 0, 0, 0);
+
+oDrawingDocContent = oDrawing.GetDocContent();
+
+// text 
+var oArrTexts = [];
+
+oArrTexts[0] = "";
+oArrTexts[1] = "Volutpat mos at neque nulla lobortis dignissim conventio, torqueo, acsi roto modo. Feugait indalo obruo quae ingenium as tristique elit vel natu meus. ";
+oArrTexts[2] = "Molior torqueo capio velit loquor aptent ut erat feugiat pneum commodo vel obruo mara genitus. Suscipit, vicis praesent erat feugait epulae, validus indoles duis enim consequat genitus at. Sed, conventio, aliquip accum san adipiscing augue blandit minim abbas lorem ivo oppeto commoveo lorem ipsum.  Enim neo velit adsum odio, multo, in commoveo quibus premo tamen erat huic. ";
+oArrTexts[3] = "Occuro uxor dolore, ut at praemitto opto si sudo, opes feugiat iriure validus. Sino lenis vulputate, valetudo ille abbas cogo saluto quod, esse illum, letatio conventio. Letalis nibh iustum transverbero bene, erat.  Loquor, vulputate meus indoles iaceo, nessan lor secundum, dolus demoveo interdico proprius. In consequat os quae nulla magna. Delenit abdo esse quia, te huic.";
+
+for (var i = 0; i <= oArrTexts.length - 1; i++) {
+	oParagraphInner = Api.CreateParagraph();
+
+	switch (i) {
+		case 0:
+			oParagraphInner.SetStyle(oP115Style);
+			oDrawingInner = Api.CreateImage("http://i.imgur.com/jYILlhQ.jpg", 1385803, 920260);
+			oParagraphInner.AddDrawing(oDrawingInner);
+			break;
+		default:
+			oParagraphInner.SetStyle(oP145Style);
+			break;
+	}
+
+	oParagraphInner.AddText(oArrTexts[i]);
+	oDrawingDocContent.Push(oParagraphInner);
+}
+
+oDrawingDocContent.RemoveElement(0);
+// text
+oParagraph.AddDrawing(oDrawing);
+// end of shape with paragraphs #XX
+
+
+// shape img pc XX
+// http://i.imgur.com/8LxaSWq.png
+oDrawing = Api.CreateImage("http://i.imgur.com/8LxaSWq.png", 438784, 412749);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 14554834);
+oDrawing.SetVerPosition("page", 6350634);
+oParagraph.AddDrawing(oDrawing);
+// end of shape img pc XX
+
+
+// shape smart art XX
+oDrawing = Api.CreateImage("http://i.imgur.com/47BhLe9.png", 5125084, 1383664);
+oDrawing.SetWrappingStyle("behind");
+oDrawing.SetHorPosition("page", 10113009);
+oDrawing.SetVerPosition("page", 6976744);
+oParagraph.AddDrawing(oDrawing);
+// end of shape smart art XX
+
+
+// shape smart art XX
+oDrawing = Api.CreateImage("http://i.imgur.com/B4CZpLS.png", 1987549, 6831329);
+oDrawing.SetWrappingStyle("behind");
+oDrawing.SetHorPosition("margin", 75564);
+oDrawing.SetVerPosition("margin", 21589);
+oParagraph.AddDrawing(oDrawing);
+// end of shape smart art XX

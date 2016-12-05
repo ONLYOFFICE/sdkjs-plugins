@@ -1,0 +1,261 @@
+var oParaPr, oRun, oTextPr, oCell, oRow;
+var oTable, oDocument, oParagraph, oDrawing, oDrawingRect;
+var oTableInner, oCellInner, oRowInner, oParagraphInner;
+
+oDocument = Api.GetDocument();
+
+
+// page settings
+oSection = oDocument.GetFinalSection();
+oSection.SetPageMargins(2160, 1872, 2160, 720);
+oSection.SetPageSize(15840, 12240, false);
+oSection.SetFooterDistance(720);
+oSection.SetHeaderDistance(720);
+oSection.SetType("nextPage");
+
+
+// default text
+oTextPr = oDocument.GetDefaultTextPr();
+
+oTextPr.SetFontFamily("Cambria");
+oTextPr.SetFontSize(22);
+oTextPr.SetLanguage("en-US");
+oTextPr.SetSpacing(0);
+oTextPr.SetPosition(0);
+
+
+// default paragraph
+oParaPr = oDocument.GetDefaultParaPr();
+
+oParaPr.SetJc("left");
+oParaPr.SetIndLeft(0);
+oParaPr.SetIndRight(0);
+oParaPr.SetIndFirstLine(0);
+oParaPr.SetSpacingAfter(200);
+oParaPr.SetSpacingBefore(0);
+oParaPr.SetSpacingLine(276, "auto");
+
+
+// styles
+// style id 104: Normal
+var oNormalStyle = oDocument.CreateStyle("Normal", "paragraph");
+
+oTextPr = oNormalStyle.GetTextPr();
+oTextPr.SetColor(0x44, 0x4D, 0x26, false);
+oTextPr.SetFontSize(28);
+
+oParaPr = oNormalStyle.GetParaPr();
+oParaPr.SetIndLeft(2160);
+oParaPr.SetIndRight(2160);
+oParaPr.SetJc("center");
+oParaPr.SetSpacingAfter(240);
+oParaPr.SetSpacingBefore(240);
+
+
+
+// style id 106: Heading 2
+var oHeading2Style = oDocument.CreateStyle("Heading 2", "paragraph");
+oHeading2Style.SetBasedOn(oNormalStyle);
+
+oTextPr = oHeading2Style.GetTextPr();
+oTextPr.SetColor(0x59, 0x59, 0x59, false);
+oTextPr.SetFontSize(56);
+
+oParaPr = oHeading2Style.GetParaPr();
+oParaPr.SetKeepLines(true);
+oParaPr.SetKeepNext(true);
+oParaPr.SetSpacingAfter(0);
+oParaPr.SetSpacingLine(240, "auto");
+
+
+// style id 105: Heading 1
+var oHeading1Style = oDocument.CreateStyle("Heading 1", "paragraph");
+oHeading1Style.SetBasedOn(oNormalStyle);
+
+oTextPr = oHeading1Style.GetTextPr();
+oTextPr.SetCaps(true);
+oTextPr.SetFontSize(72);
+
+oParaPr = oHeading1Style.GetParaPr();
+oParaPr.SetSpacingAfter(360);
+oParaPr.SetSpacingBefore(120);
+oParaPr.SetSpacingLine(240, "auto");
+
+
+// style id 117: Signature
+var oSignatureStyle = oDocument.CreateStyle("Signature", "paragraph");
+oSignatureStyle.SetBasedOn(oNormalStyle);
+
+oTextPr = oSignatureStyle.GetTextPr();
+oTextPr.SetFontSize(20);
+
+oParaPr = oSignatureStyle.GetParaPr();
+oParaPr.SetIndLeft(216);
+oParaPr.SetIndRight(216);
+oParaPr.SetSpacingAfter(0);
+oParaPr.SetSpacingBefore(0);
+oParaPr.SetSpacingLine(240, "auto");
+
+
+// style id 119: Seal // ask Ilya
+var oSealStyle = oDocument.CreateStyle("Seal", "paragraph");
+oSealStyle.SetBasedOn(oNormalStyle);
+
+oTextPr = oSealStyle.GetTextPr();
+oTextPr.SetColor(0x44, 0x4D, 0x26, false);
+oTextPr.SetFontSize(28);
+oTextPr.SetFontFamily("Cambria");
+
+oParaPr = oSealStyle.GetParaPr();
+oParaPr.SetIndLeft(0);
+oParaPr.SetIndRight(0);
+oParaPr.SetSpacingAfter(0);
+oParaPr.SetSpacingBefore(0);
+oParaPr.SetSpacingLine(240, "auto");
+// end of styles
+
+
+// Heading 2 text
+oParagraph = oDocument.GetElement(0);
+oParagraph.SetStyle(oHeading2Style);
+oParagraph.AddText("[YOUR HIGH SCHOOL]");
+
+
+// Normal text 1
+oParagraph = Api.CreateParagraph();
+oParagraph.SetStyle(oNormalStyle);
+oParagraph.AddText("THIS CERTIFIES THAT");
+oDocument.Push(oParagraph);
+
+
+// Heading 1 text 1
+oParagraph = Api.CreateParagraph();
+oParagraph.SetStyle(oHeading1Style);
+oParagraph.AddText("[Name]");
+oDocument.Push(oParagraph);
+
+
+// Normal text 2
+oParagraph = Api.CreateParagraph();
+oParagraph.SetStyle(oNormalStyle);
+oParagraph.AddText("has successfully completed the required course of study approved by the Board of Education for the State of ");
+oParagraph.AddText("[State]");
+oParagraph.AddText(", and is therefore ");
+oParagraph.AddText("awarded this");
+oDocument.Push(oParagraph);
+
+
+// Heading 1 text 2
+oParagraph = Api.CreateParagraph();
+oParagraph.SetStyle(oHeading1Style);
+oParagraph.AddText("DIPLOMA");
+oDocument.Push(oParagraph);
+
+
+// Normal text 3
+oParagraph = Api.CreateParagraph();
+// shape with text
+oFill = Api.CreateSolidFill(Api.CreateRGBColor(0xFF, 0xFF, 0xFF));
+oStroke = Api.CreateStroke(12600, Api.CreateSolidFill(Api.CreateRGBColor(0x44, 0x4D, 0x26)));
+oDrawing = Api.CreateShape("ellipse", 1234440, 1188720, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorAlign("page", "center");
+oDrawing.SetVerPosition("page", 5188584);
+
+// shape text
+//oParagraphInner = Api.CreateParagraph();
+oParagraphInner = oDrawing.GetDocContent().GetElement(0);
+oParagraphInner.SetStyle(oSealStyle);
+oParagraphInner.AddText("SEAL");
+//oDrawing.GetDocContent().Push(oParagraphInner);
+// end of shape text
+
+oParagraph.AddDrawing(oDrawing);
+
+
+// text
+oParagraph.SetStyle(oNormalStyle);
+oParagraph.AddText("Dated this ");
+oParagraph.AddText("[Day] ");
+oParagraph.AddText("day of ");
+oParagraph.AddText("[Date]");
+oDocument.Push(oParagraph);
+
+
+// table
+oTable = Api.CreateTable(3, 2);
+oTable.SetTableLayout("fixed");
+oTable.SetTableCellMarginLeft(0);
+oTable.SetTableCellMarginRight(0);
+oTable.SetWidth("twips", 11520);
+oTable.SetTableLook(true, true, false, false, true, false);
+//oTable.SetTableLook(isFirstColumn, isFirstRow, isLastColumn, isLastRow, isHorBand, isVerBand)
+
+
+// row 1
+oRow = oTable.GetRow(0);
+oRow.SetHeight("atLeast", 1233);
+
+// cell 1
+oCell = oRow.GetCell(0);
+oCell.SetVerticalAlign("bottom");
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oSignatureStyle);
+oCell.SetWidth("twips", 4189);
+
+
+// cell 2
+oCell = oRow.GetCell(1);
+oCell.SetVerticalAlign("bottom");
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oSignatureStyle);
+oCell.SetWidth("twips", 3142);
+
+
+// cell 3
+oCell = oRow.GetCell(2);
+oCell.SetVerticalAlign("bottom");
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oSignatureStyle);
+oCell.SetWidth("twips", 4189);
+// end of row 1
+
+
+// row 2
+oRow = oTable.GetRow(1);
+oRow.SetHeight("atLeast", 251);
+
+// cell 1
+oCell = oRow.GetCell(0);
+oCell.SetWidth("twips", 4189);
+// cell text
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oSignatureStyle);
+oParagraph.AddText("Superintendent");
+
+
+// cell 2
+oCell = oRow.GetCell(1);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oSignatureStyle);
+oCell.SetWidth("twips", 3142);
+
+
+// cell 3
+oCell = oRow.GetCell(2);
+oCell.SetWidth("twips", 4189);
+oParagraph = oCell.GetContent().GetElement(0);
+oParagraph.SetStyle(oSignatureStyle);
+oParagraph.AddText("Principal");
+// end of row 2
+
+oDocument.Push(oTable);
+// end of table
+
+
+// bg img http://i.imgur.com/YYRsHQj.png
+var oDrawing1 = Api.CreateImage("http://i.imgur.com/YYRsHQj.png", 9070848, 6839712);
+oDrawing1.SetWrappingStyle("behind");
+oDrawing1.SetHorAlign("page", "center");
+oDrawing1.SetVerAlign("page", "center");
+oDocument.GetElement(0).AddDrawing(oDrawing1);

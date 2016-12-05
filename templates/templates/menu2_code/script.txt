@@ -1,0 +1,198 @@
+var oParaPr, oRun, oTextPr;
+var oTable, oDocument, oParagraph, oDrawing, oDrawingRect;
+var oTableInner, oCellInner, oRowInner, oParagraphInner;
+
+var Api = editor;
+
+oDocument = Api.GetDocument();
+
+
+// page settings
+oSection = oDocument.GetFinalSection();
+oSection.SetPageMargins(720, 720, 720, 720);
+oSection.SetPageSize(11907, 16839, true);
+oSection.SetFooterDistance(720);
+oSection.SetHeaderDistance(720);
+oSection.SetType("nextPage");
+
+
+// default text
+oTextPr = oDocument.GetDefaultTextPr();
+
+oTextPr.SetFontFamily("Georgia");
+oTextPr.SetFontSize(22);
+oTextPr.SetLanguage("en-US");
+oTextPr.SetSpacing(0);
+oTextPr.SetPosition(0);
+
+
+// default paragraph
+oParaPr = oDocument.GetDefaultParaPr();
+
+oParaPr.SetJc("left");
+oParaPr.SetIndLeft(0);
+oParaPr.SetIndRight(0);
+oParaPr.SetIndFirstLine(0);
+oParaPr.SetSpacingAfter(200);
+oParaPr.SetSpacingBefore(0);
+oParaPr.SetSpacingLine(276, "auto");
+
+
+// title
+var oTitleStyle = oDocument.CreateStyle("Title custom", "paragraph");
+
+oTextPr = oTitleStyle.GetTextPr();
+oTextPr.SetFontSize(128);
+oTextPr.SetColor(0x66, 0x33, 0x00, false);
+oTextPr.SetFontFamily("Georgia");
+
+oParaPr = oTitleStyle.GetParaPr();
+oParaPr.SetJc("center");
+oParaPr.SetSpacingAfter(100);
+oParaPr.SetSpacingLine(240, "auto");
+
+
+// date style
+var oDateStyle = oDocument.CreateStyle("Date custom", "paragraph");
+
+oTextPr = oDateStyle.GetTextPr();
+oTextPr.SetFontFamily("Georgia");
+oTextPr.SetFontSize(24);
+oTextPr.SetColor(0x66, 0x33, 0x00, false);
+
+oParaPr = oDateStyle.GetParaPr(); 
+oParaPr.SetJc("center");
+oParaPr.SetSpacingAfter(600);
+
+
+// menu header style
+var oMenuHeaderStyle = oDocument.CreateStyle("Menu Header", "paragraph");
+
+oTextPr = oMenuHeaderStyle.GetTextPr();
+oTextPr.SetFontFamily("Georgia");
+oTextPr.SetFontSize(20);
+oTextPr.SetBold(true);
+oTextPr.SetColor(0x66, 0x33, 0x00, false);
+
+oParaPr = oMenuHeaderStyle.GetParaPr();
+oParaPr.SetJc("center");
+oParaPr.SetSpacingAfter(0);
+
+
+// menu item style
+var oMenuItemStyle = oDocument.CreateStyle("Menu item", "paragraph");
+
+oTextPr = oMenuItemStyle.GetTextPr();
+oTextPr.SetFontFamily("Georgia");
+oTextPr.SetFontSize(20);
+oTextPr.SetColor(0x66, 0x33, 0x00, false);
+
+oParaPr = oMenuItemStyle.GetParaPr();
+oParaPr.SetJc("center");
+oParaPr.SetSpacingAfter(0);
+
+
+// pic1 main big bad pic image3
+oParagraph = oDocument.GetElement(0);
+var oDrawing0 = Api.CreateImage("http://i.imgur.com/R3LnEwU.jpg", 6710679, 9144000);
+oDrawing0.SetWrappingStyle("inFront");
+oDrawing0.SetHorPosition("page", 539114);
+oDrawing0.SetVerPosition("page", 457200);
+oParagraph.AddDrawing(oDrawing0);
+
+
+// pic2 big bad pic image2
+var oDrawing1 = Api.CreateImage("http://i.imgur.com/M8CRsWa.jpg", 6713219, 7804149);
+oDrawing1.SetWrappingStyle("inFront");
+oDrawing1.SetHorPosition("page", 523239);
+oDrawing1.SetVerPosition("page", 457200);
+oParagraph.AddDrawing(oDrawing1);
+
+
+// round shape
+oFill = Api.CreateSolidFill(Api.CreateRGBColor(0xFF, 0xFF, 0xFF));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+var oDrawingRoundRect = Api.CreateShape("roundRect", 5250180, 7346315, oFill, oStroke);
+oDrawingRoundRect.SetWrappingStyle("inFront");
+oDrawingRoundRect.SetHorPosition("page", 1261109);
+oDrawingRoundRect.SetVerPosition("page", 993774);
+oDrawingRoundRect.SetVerticalTextAlign("top");
+oParagraph.AddDrawing(oDrawingRoundRect);
+
+
+// pic3 bad pic image1
+var oDrawing1 = Api.CreateImage("http://i.imgur.com/Ps9a9S0.png", 1667859, 773874);
+oDrawingRoundRect.GetDocContent().GetElement(0).AddDrawing(oDrawing1);
+
+
+// pic4 pic image0
+var oDrawing1 = Api.CreateImage("http://i.imgur.com/X9t5xEg.png", 4233573, 2081048);
+oDrawing1.SetWrappingStyle("inFront");
+oDrawing1.SetHorAlign("page", "center");
+oDrawing1.SetVerPosition("paragraph", 6307454);
+oParagraph.AddDrawing(oDrawing1);
+
+
+// shape with text
+oFill = Api.CreateNoFill();
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawingRect = Api.CreateShape("rect", 6206490, 4645152, oFill, oStroke);
+oDrawingRect.SetWrappingStyle("inFront");
+oDrawingRect.SetHorPosition("column", 335914);
+oDrawingRect.SetVerPosition("paragraph", 1624964);
+
+
+// menu title
+oParagraphInner = Api.CreateParagraph();
+oParagraphInner.SetStyle(oTitleStyle);
+oParagraphInner.AddText("Menu");
+oDrawingRect.GetDocContent().Push(oParagraphInner);
+oDrawingRect.GetDocContent().RemoveElement(0);
+
+
+// menu date
+oParagraphInner = Api.CreateParagraph();
+oParagraphInner.SetStyle(oDateStyle);
+oParagraphInner.AddText("November 22 2016 г.");
+oDrawingRect.GetDocContent().Push(oParagraphInner);
+
+
+// cycle improvements
+var oMenuItems = new Array("Starter", "Main Course", "Dessrt"); 
+
+
+for (var i = 0; i < 3; i++) {
+
+	// menu header
+	oParagraphInner = Api.CreateParagraph();
+	oParagraphInner.SetStyle(oMenuHeaderStyle);
+	oParagraphInner.AddText("" + oMenuItems[i]);
+	oDrawingRect.GetDocContent().Push(oParagraphInner);
+
+
+	// inner cycle
+	for (var j = 0; j < 2; j++) {
+		// menu item
+		oParagraphInner = Api.CreateParagraph();
+		oParagraphInner.SetStyle(oMenuItemStyle);
+		oParagraphInner.AddText("[" + oMenuItems[i] + " Item]");
+		oDrawingRect.GetDocContent().Push(oParagraphInner);
+
+
+		// menu description
+		oParagraphInner = Api.CreateParagraph();
+		oParagraphInner.SetStyle(oMenuItemStyle);
+		oParagraphInner.AddText("[Description]");
+		oDrawingRect.GetDocContent().Push(oParagraphInner);
+	}
+
+
+	// empty line
+	oParagraphInner = Api.CreateParagraph();
+	oParagraphInner.SetStyle(oMenuItemStyle);
+	oParagraphInner.AddText("");
+	oDrawingRect.GetDocContent().Push(oParagraphInner);
+}
+
+
+oParagraph.AddDrawing(oDrawingRect);

@@ -13,19 +13,20 @@
 	}
 
 	var _templates = [
-		[ "demohyden", 121, 159 ],
-		[ "demohyden", 121, 159 ],
-		[ "demohyden", 121, 159 ],
-		[ "demohyden", 121, 159 ],
-		[ "demohyden", 121, 159 ],
-		[ "demohyden", 121, 159 ],
-		[ "demohyden", 121, 159 ],
-		[ "demohyden", 121, 159 ],
-		[ "demohyden", 121, 159 ],
-		[ "demohyden", 121, 159 ],
-		[ "demohyden", 121, 159 ],
-		[ "demohyden", 121, 159 ],
-		[ "demohyden", 121, 159 ]
+		[ "bold_report", 122, 158 ],
+		[ "calendar_2017", 158, 122 ],
+		[ "christmas_note_cards", 158, 122 ],
+		[ "class_newsletter", 122, 158 ],
+		[ "fax_cover", 122, 158 ],
+		[ "menu1_code", 122, 158 ],
+		[ "menu2_code", 122, 158 ],
+		[ "newsletter", 122, 158 ],
+		[ "newsletter_green", 158, 122 ],
+		[ "priglashenie", 122, 158 ],
+		[ "rsvp_cards", 122, 158 ],
+		[ "TC9990301-LAYOUT-WD1", 158, 122 ],
+		[ "TC9990301-LAYOUT-WD2", 158, 122 ],
+		[ "your_high_school", 158, 122 ]
 	];
 
 	var _templates_code = [];
@@ -128,7 +129,7 @@
 
 		var _indexTmp = _index;
 		client.onreadystatechange = function() {
-			if (client.readyState == 4 && client.status == 200)
+			if (client.readyState == 4 && (client.status == 200 || location.href.indexOf("file:") == 0))
 			{
 				_templates_code[_indexTmp] = client.responseText;
 				window.template_run(_indexTmp);

@@ -1,0 +1,28 @@
+{
+    "name" : "num2word",
+    "guid" : "asc.{902F74A4-89F2-4028-8DB0-BD913E07335C}",
+
+    "variations" : [
+        {
+            "description" : "num2word",
+            "url"         : "num2word/index.html",
+
+            "icons"           : ["num2word/icon.png", "num2word/icon@2x.png"],
+            "isViewer"        : false,
+            "EditorsSupport"  : ["cell"],
+
+            "isVisual"        : false,
+            "isModal"         : false,
+            "isInsideMode"    : false,
+
+            "initDataType"    : "text",
+            "initData"        : "",
+
+			"isUpdateOleOnResize" : false,
+
+			"buttons"         : [],
+			
+			"initOnSelectionChanged" : true
+        }
+    ]
+}

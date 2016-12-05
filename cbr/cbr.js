@@ -54,8 +54,6 @@
 				try {
 					var rates = JSON.parse(value).rates;
 					var keys = Object.keys(rates);
-					console.log(rates);
-
 					command += 'var oSheet = Api.GetActiveSheet();';
 					command += 'var active = oSheet.GetActiveCell();';
 					command += 'var row = active.GetRow();';

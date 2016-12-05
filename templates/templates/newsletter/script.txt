@@ -1,0 +1,396 @@
+var oParaPr, oTextPr;
+var oDocument, oParagraph, oDrawing, oParagraphInner;
+var oFill, oStroke, oSection;
+var oTable, oRow, oCell, oHeader;
+
+oDocument = Api.GetDocument();
+
+
+// page settings
+oSection = oDocument.GetFinalSection();
+oSection.SetPageMargins(720, 1440, 630, 1440);
+oSection.SetPageSize(12240, 15840, true);
+oSection.SetFooterDistance(720);
+oSection.SetHeaderDistance(720);
+
+
+// styles
+// default text
+oTextPr = oDocument.GetDefaultTextPr();
+
+oTextPr.SetFontFamily("Times New Roman");
+oTextPr.SetFontSize(22);
+oTextPr.SetLanguage("en-US");
+oTextPr.SetSpacing(0);
+oTextPr.SetPosition(0);
+
+
+// default paragraph
+oParaPr = oDocument.GetDefaultParaPr();
+
+oParaPr.SetJc("left");
+oParaPr.SetIndLeft(0);
+oParaPr.SetIndRight(0);
+oParaPr.SetIndFirstLine(0);
+oParaPr.SetSpacingAfter(0);
+oParaPr.SetSpacingBefore(0);
+oParaPr.SetSpacingLine(240, "auto");
+
+
+// custom style 1
+var oCustomStyle1 = oDocument.CreateStyle("Custom Style", "paragraph");
+
+oTextPr = oCustomStyle1.GetTextPr();
+oTextPr.SetFontSize(20);
+oTextPr.SetFontFamily("Lucida Grande");
+oTextPr.SetColor(0x00, 0x00, 0x00, false);
+
+
+// style Id 123: Company Name
+var oCompanyNameStyle = oDocument.CreateStyle("Company Name", "paragraph");
+
+oTextPr = oCompanyNameStyle.GetTextPr();
+oTextPr.SetFontFamily("Arial");
+oTextPr.SetBold(true);
+oTextPr.SetColor(0xFF, 0xFF, 0xFF, false);
+oTextPr.SetFontSize(52);
+
+oParaPr = oCompanyNameStyle.GetParaPr();
+oParaPr.SetJc("left");
+
+
+// style Id 118: Newsletter Heading
+var oNewsletterHeadingStyle = oDocument.CreateStyle("Newsletter Heading", "paragraph");
+
+oTextPr = oNewsletterHeadingStyle.GetTextPr();
+oTextPr.SetBold(true);
+oTextPr.SetFontSize(62);
+oTextPr.SetColor(0xFF, 0xFF, 0xFF, false);
+oTextPr.SetFontFamily("Arial");
+
+oParaPr = oNewsletterHeadingStyle.GetParaPr();
+oParaPr.SetJc("left");
+
+
+// style id 119: Newsletter Subhead
+var oNewsletterSubheadStyle = oDocument.CreateStyle("Newsletter Subhead", "paragraph");
+
+oTextPr = oNewsletterSubheadStyle.GetTextPr();
+oTextPr.SetFontSize(26);
+oTextPr.SetColor(0xFF, 0xFF, 0xFF, false);
+oTextPr.SetFontFamily("Times New Roman");
+
+oParaPr = oNewsletterSubheadStyle.GetParaPr();
+oParaPr.SetJc("left");
+
+
+// style Id 120: Newsletter Headline
+var oNewsletterHeadline = oDocument.CreateStyle("Newsletter Headline", "paragraph");
+
+oTextPr = oNewsletterHeadline.GetTextPr();
+oTextPr.SetFontSize(32);
+//oTextPr.SetColor(0xFF, 0xFF, 0xFF, false);
+oTextPr.SetBold(true);
+oTextPr.SetFontFamily("Arial");
+
+//oParaPr = oNewsletterHeadline.GetParaPr();
+
+
+// style Id 121: Newsletter Body
+var oNewsletterBodyStyle = oDocument.CreateStyle("Newsletter Body", "paragraph");
+
+oTextPr = oNewsletterBodyStyle.GetTextPr();
+oTextPr.SetFontSize(22);
+oTextPr.SetFontFamily("Times New Roman");
+
+oParaPr = oNewsletterBodyStyle.GetParaPr();
+oParaPr.SetSpacingAfter(200);
+oParaPr.SetJc("both");
+
+
+// end of styles
+
+
+//// fake header starts here
+// 1st paragraph
+oParagraph = oDocument.GetElement(0);
+oParagraph.SetStyle(oCustomStyle1);
+
+
+// bg shape with solid fill
+// shape with text
+oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x1F, 0x59, 0x66));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 8001000, 2847339, oFill, oStroke);
+oDrawing.SetWrappingStyle("behind");
+oDrawing.SetHorPosition("page", -177164);
+oDrawing.SetVerPosition("page", -111759);
+oParagraph.AddDrawing(oDrawing);
+
+// img item logo
+oDrawing = Api.CreateImage("http://i.imgur.com/in7ArcH.png", 2190750, 1457325);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("column", 285750);
+oDrawing.SetVerPosition("paragraph", -638174);
+oParagraph.AddDrawing(oDrawing);
+
+
+// quote text: “The most natural food is fruit”
+oParagraph = Api.CreateParagraph();
+
+oFill = Api.CreateNoFill();
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 3657600, 1120140, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 3922776);
+oDrawing.SetVerPosition("page", 512064);
+oDrawing.SetVerticalTextAlign("top");
+oDrawing.SetDistances(91440, 91440, 91440, 91440);
+
+// inner text
+oParagraphInner = oDrawing.GetDocContent().GetElement(0);
+oParagraphInner.SetStyle(oNewsletterHeadingStyle);
+oParagraphInner.SetJc("left");
+oParagraphInner.AddText("“The most natural food is fruit”");
+// end of inner text
+
+oParagraph.AddDrawing(oDrawing);
+oDocument.Push(oParagraph);
+
+
+// new paragraph Fabrikam, Inc.
+oParagraph = Api.CreateParagraph();
+
+oFill = Api.CreateNoFill();
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 2495550, 581025, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("column", 47624);
+oDrawing.SetVerPosition("page", 1874520);
+oDrawing.SetVerticalTextAlign("center");
+//oDrawing.SetDistances(91440, 91440, 91440, 91440);
+
+// inner text
+oParagraphInner = oDrawing.GetDocContent().GetElement(0);
+oParagraphInner.SetStyle(oCompanyNameStyle);
+oParagraphInner.SetJc("left");
+oParagraphInner.AddText("Fabrikam, Inc.");
+// end of inner text
+
+oParagraph.AddDrawing(oDrawing);
+oDocument.Push(oParagraph);
+
+
+// author text
+oParagraph = Api.CreateParagraph();
+
+oFill = Api.CreateNoFill();
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 3657600, 457200, oFill, oStroke);
+oDrawing.SetWrappingStyle("inFront");
+oDrawing.SetHorPosition("page", 3941063);
+oDrawing.SetVerPosition("page", 1773936);
+oDrawing.SetVerticalTextAlign("center");
+oDrawing.SetDistances(91440, 91440, 91440, 91440);
+
+// inner text
+oParagraphInner = oDrawing.GetDocContent().GetElement(0);
+oParagraphInner.SetStyle(oNewsletterSubheadStyle);
+oParagraphInner.SetJc("left");
+oParagraphInner.AddText("-Morgan A.");
+// end of inner text
+
+oParagraph.AddDrawing(oDrawing);
+oDocument.Push(oParagraph);
+
+
+// orange shape
+oFill = Api.CreateSolidFill(Api.CreateRGBColor(0xE0, 0x6A, 0x09));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 8001000, 173989, oFill, oStroke);
+oDrawing.SetWrappingStyle("behind");
+oDrawing.SetHorPosition("page", -177164);
+oDrawing.SetVerPosition("page", 2640964);
+oParagraph.AddDrawing(oDrawing);
+
+//// fake header ends here
+
+
+// header weekly empty lines
+for (var i = 0; i < 6; i++) {
+	oParagraph = Api.CreateParagraph();
+	oParagraph.SetStyle(oNewsletterHeadline);
+	oParagraph.AddText("");
+	oDocument.Push(oParagraph);
+}
+
+
+// headline real:
+oParagraph = Api.CreateParagraph();
+oParagraph.SetStyle(oNewsletterHeadline);
+oParagraph.AddText("Weekly Newsletter");
+oDocument.Push(oParagraph);
+
+
+// empty line
+oParagraph = Api.CreateParagraph();
+
+// section break
+oSection = oDocument.CreateSection(oParagraph);
+oSection.SetPageMargins(720, 1440, 630, 1440);
+oSection.SetPageSize(12240, 15840, true);
+// test
+
+oParagraph.AddText(" ");
+oDocument.Push(oParagraph);
+
+
+// page settings
+oSection = oDocument.GetFinalSection();
+oSection.SetPageMargins(720, 1440, 630, 1440);
+oSection.SetPageSize(12240, 15840, true);
+oSection.SetFooterDistance(720);
+oSection.SetHeaderDistance(720);
+oSection.SetType("continuous");
+oSection.SetEqualColumns(2, 720);
+
+
+// lets create some text
+oParagraph = Api.CreateParagraph();
+oParagraph.SetStyle(oNewsletterBodyStyle);
+oParagraph.AddText("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut et nulla ac leo porttitor tempor. Curabitur pretium porta risus. Nam sodales luctus nibh. Integer sodales tincidunt libero. Ut a lacus et ante vestibulum sollicitudin. Sed pulvinar. ");
+oParagraph.AddText("Sed");
+oParagraph.AddText("fermentum diam at lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada ");
+oParagraph.AddText("fames ac turpis egestas. Vivamus massa nisl, condimentum et, semper sed, varius eget, elit. Vestibulum interdum sem eu tellus. Nunc sit amet nisi. Maecenas pede sem, feugiat vitae, tincidunt et, ultricies non, risus.");
+oDocument.Push(oParagraph);
+
+
+// oDrawing apple
+oDrawing = Api.CreateImage("http://i.imgur.com/U2IAQeB.jpg", 1917699, 1282699);
+oDrawing.SetWrappingStyle("square");
+oDrawing.SetHorAlign("column", "left");
+oDrawing.SetVerPosition("paragraph", 1311909);
+oDrawing.SetDistances(114300, 0, 114300, 0);
+oParagraph.AddDrawing(oDrawing);
+
+
+// oDrawing
+oDrawing = Api.CreateImage("http://i.imgur.com/VSeHCzh.jpg", 2265044, 1642744);
+oDrawing.SetWrappingStyle("square");
+oDrawing.SetHorPosition("page", 4142232);
+oDrawing.SetVerPosition("bottomMargin", -3721608);
+oDrawing.SetDistances(114300, 114300, 114300, 0);
+oParagraph.AddDrawing(oDrawing);
+
+
+// fix for 1st empty paragraph;
+oDocument.RemoveElement(oDocument.GetElementsCount() - 2);
+
+
+// new text goes here
+oParagraph = Api.CreateParagraph();
+oParagraph.SetStyle(oNewsletterBodyStyle);
+oParagraph.AddText("Integer volutpat turpis id arcu. Pellentesque consectetuer, ante eu tincidunt ornare, ligula lorem pulvinar massa, eget tempus elit mi sit amet leo. Aliquam fringilla, neque sed semper molestie, tellus pede rutrum augue, tincidunt aliquam massa ante ut neque. Integer pellentesque. Aenean ipsum neque, semper quis, vulputate at, hendrerit in, orci. Duis malesuada elit at libero. Praesent mollis, orci eget interdum mollis, nunc nibh pellentesque orci, quis suscipit elit purus vel enim. Suspendisse egestas orci in enim. Pellentesque nec dui. Aenean sem nisi, dignissim id, venenatis ut, interdum ut, nibh.");
+oDocument.Push(oParagraph);
+
+
+// new text goes here vol 2
+oParagraph = Api.CreateParagraph();
+oParagraph.SetStyle(oNewsletterBodyStyle);
+oParagraph.AddText("Nulla imperdiet, urna eu porttitor commodo, nisi lectus imperdiet dolor, ac bibendum odio lectus at orci. Nulla et sem.");
+oDocument.Push(oParagraph);
+
+
+// new text goes here vol 3
+oParagraph = Api.CreateParagraph();
+oParagraph.SetStyle(oNewsletterBodyStyle);
+oParagraph.AddText("habitasse platea dictumst. Vivamus mollis. Integer mollis erat non purus. Praesent massa. Phasellus vestibulum dapibus velit. Sed tempus. Curabitur viverra suscipit dolor. Nulla facilisi. Fusce tempus, leo in gravida semper, felis justo ornare dolor, ac porta orci lectus et neque. Sed quis purus. Cras dolor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum nulla massa, interdum ac, luctus et, venenatis vitae, quam.");
+oDocument.Push(oParagraph);
+
+
+// new text goes here vol 4
+oParagraph = Api.CreateParagraph();
+oParagraph.SetStyle(oNewsletterBodyStyle);
+oParagraph.AddText("Curabitur eu tortor quis nunc dictum suscipit. Sed et risus. Donec suscipit libero a nisi. Ut sollicitudin metus faucibus turpis. Praesent rutrum odio nec lacus. Nullam hendrerit sagittis lorem. Maecenas eget eros. Etiam convallis eros sed sapien. Curabitur tincidunt mollis ante. Vestibulum rhoncus aliquam tortor. Aenean mauris. Duis iaculis vulputate sapien. Suspendisse non eros.");
+oDocument.Push(oParagraph);
+
+
+// new text goes here vol 5
+oParagraph = Api.CreateParagraph();
+oParagraph.SetStyle(oNewsletterBodyStyle);
+oParagraph.AddText("Integer volutpat turpis id arcu. Pellentesque consectetuer, ante eu tincidunt ornare, ligula lorem pulvinar massa.");
+oDocument.Push(oParagraph);
+
+
+// new text goes here vol 6
+oParagraph = Api.CreateParagraph();
+oParagraph.SetStyle(oNewsletterBodyStyle);
+oParagraph.AddText("Aenean nulla augue, euismod vel, lobortis in, sollicitudin sit amet, nisl. Vestibulum rutrum, mauris dignissim volutpat aliquam, tortor dui pellentesque urna, a faucibus orci nulla sed justo. Nullam sed ipsum sit amet enim dapibus tempus. In nisi risus, vehicula ut, pellentesque accumsan, consequat facilisis, nunc. Maecenas id ligula. Etiam laoreet condimentum arcu. Phasellus sed arcu id lacus mollis semper. Quisque egestas nulla. Vestibulum ullamcorper sem vel felis. Nulla adipiscing ligula vel enim. Etiam vestibulum, diam et interdum posuere, urna dolor pharetra felis, vel pellentesque ipsum justo eget enim. Integer pretium condimentum elit. Donec faucibus euismod enim. Mauris luctus fringilla enim.");
+oDocument.Push(oParagraph);
+
+
+// page 2
+oParagraph = Api.CreateParagraph();
+oDocument.Push(oParagraph);
+
+// line
+oFill = Api.CreateSolidFill(Api.CreateRGBColor(0x1F, 0x59, 0x66));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 8001000, 768348, oFill, oStroke);
+oDrawing.SetWrappingStyle("behind");
+oDrawing.SetHorPosition("page", -177164);
+oDrawing.SetVerPosition("page", -111759);
+oParagraph.AddDrawing(oDrawing);
+
+
+// orange line
+oFill = Api.CreateSolidFill(Api.CreateRGBColor(0xE0, 0x6A, 0x09));
+oStroke = Api.CreateStroke(0, Api.CreateNoFill());
+oDrawing = Api.CreateShape("rect", 8001000, 173989, oFill, oStroke);
+oDrawing.SetWrappingStyle("behind");
+oDrawing.SetHorPosition("page", 0);
+oDrawing.SetVerPosition("page", 656589);
+oParagraph.AddDrawing(oDrawing);
+
+
+// new text goes here vol 7
+oParagraph = Api.CreateParagraph();
+oParagraph.SetStyle(oNewsletterBodyStyle);
+oParagraph.AddText("Donec laoreet urna vitae pede. Nunc luctus, lorem quis egestas congue, massa lacus tempus libero, volutpat posuere pede metus sed nisl. Aliquam tincidunt ligula ac nisi. Proin placerat. Donec ligula dolor, sodales ut, scelerisque id, cursus et, neque. Curabitur vestibulum suscipit orci. Aliquam massa dolor, sollicitudin id, sagittis et, euismod vitae, est. Nam placerat semper odio. Nunc at odio. Quisque placerat auctor lorem. Nam ut tellus eu tortor blandit egestas. Maecenas tortor nisi, egestas ut, iaculis ac, porta a, erat. Pellentesque a turpis vel est tempor elementum. Morbi scelerisque varius velit. Proin porta fringilla sapien. Pellentesque sollicitudin nunc vel eros. Nullam non libero a lacus elementum suscipit. Pellentesque egestas commodo leo. Donec a augue nec eros laoreet vulputate.");
+oDocument.Push(oParagraph);
+
+
+// new text goes here vol 8
+oParagraph = Api.CreateParagraph();
+oParagraph.SetStyle(oNewsletterBodyStyle);
+oParagraph.AddText("Morbi ut arcu et lacus lacinia gravida. Suspendisse potenti. Nullam luctus justo ac est. Vivamus in mauris sed odio feugiat fringilla. Etiam euismod. Donec sapien. Aenean molestie venenatis tellus. Phasellus non neque. Proin elit dolor, elementum non, adipiscing in, molestie sit amet, est. Curabitur ut nulla. Nulla massa odio, mattis eget, vulputate vel, lacinia eget, lectus. Quisque arcu. Ut vitae velit ac enim imperdiet posuere. Praesent ut ipsum vel.");
+oDocument.Push(oParagraph);
+
+
+// new text goes here vol 9
+oParagraph = Api.CreateParagraph();
+oParagraph.SetStyle(oNewsletterBodyStyle);
+oParagraph.AddText("Eros posuere fermentum. Nam ut mi et sem semper aliquam. Maecenas pulvinar arcu in turpis. Curabitur tellus dolor, luctus a, mattis nec, cursus id, erat. Maecenas ultrices vehicula lacus. Quisque aliquet leo a leo. Cum sociis natoque penatibus et.");
+oDocument.Push(oParagraph);
+
+
+// new text goes here vol 10
+oParagraph = Api.CreateParagraph();
+oParagraph.SetStyle(oNewsletterBodyStyle);
+oParagraph.AddText("Donec laoreet urna vitae pede. Nunc luctus, lorem quis egestas congue, massa lacus tempus libero, volutpat posuere pede metus sed nisl. Aliquam tincidunt ligula ac nisi. Proin placerat. Donec ligula dolor, sodales ut, scelerisque id, cursus et, neque. Curabitur vestibulum suscipit orci. Aliquam massa dolor, sollicitudin id, sagittis et, euismod vitae, est. Nam placerat semper odio. Nunc at odio. Quisque placerat auctor lorem. Nam ut tellus eu tortor blandit egestas. Maecenas tortor nisi, egestas ut, iaculis ac, porta a, erat. ");
+oDocument.Push(oParagraph);
+
+
+// new text goes here vol 11
+oParagraph = Api.CreateParagraph();
+oParagraph.SetStyle(oNewsletterBodyStyle);
+oParagraph.AddText("Pellentesque a turpis vel est tempor elementum. Morbi scelerisque varius velit. Proin porta fringilla sapien. Pellentesque sollicitudin nunc vel eros. Nullam non libero a lacus elementum suscipit. Pellentesque egestas commodo leo. Donec a augue nec eros laoreet vulputate. ligula ac nisi. Proin placerat. Donec ligula dolor, sodales ut, scelerisque id, cursus et, neque. Curabitur vestibulum suscipit orci. Aliquam massa dolor, sollicitudin id, sagittis et, euismod vitae, est.");
+oDocument.Push(oParagraph);
+
+
+// last pic of fruit
+oDrawing = Api.CreateImage("http://i.imgur.com/X1KiLEW.jpg", 3200400, 2122803);
+oDrawing.SetWrappingStyle("square");
+oDrawing.SetVerPosition("topMargin", 2157984);
+oDrawing.SetDistances(114300, 114300, 114300, 0);
+oParagraph.AddDrawing(oDrawing);
