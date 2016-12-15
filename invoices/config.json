@@ -1,0 +1,26 @@
+{
+    "name" : "Invoices",
+    "guid" : "asc.{6B6715E5-A558-4F70-8058-40704CD659CF}",
+
+    "variations" : [
+        {
+            "description" : "invoices",
+            "url"         : "invoices/index.html",
+
+            "icons"           : ["invoices/icon.png", "invoices/icon@2x.png"],
+            "isViewer"        : false,
+            "EditorsSupport"  : ["word"],
+
+            "isVisual"        : true,
+            "isModal"         : false,
+            "isInsideMode"    : true,
+
+            "initDataType"    : "none",
+            "initData"        : "",
+
+            "isUpdateOleOnResize" : false,
+
+            "buttons"        : [ ]
+        }
+    ]
+}
