@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Clippy</title>
+    <script type="text/javascript" src="../pluginBase.js"></script>
+    <link rel="stylesheet" href="https://s3.amazonaws.com/clippy.js/clippy.css">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://s3.amazonaws.com/clippy.js/clippy.min.js"></script>
+</head>
+<body>
+    <p>
+        <select id="agent-type" title="Agent" style="width: 100%">
+            <option value="Bonzi">Bonzi</option>
+            <option value="Clippy" selected>Clippy</option>
+            <option value="F1">F1</option>
+            <option value="Genie">Genie</option>
+            <option value="Genius">Genius</option>
+            <option value="Links">Links</option>
+            <option value="Merlin">Merlin</option>
+            <option value="Peedy">Peedy</option>
+            <option value="Rocky">Rocky</option>
+            <option value="Rover">Rover</option>
+        </select>
+    </p>
+
+    <script type="text/javascript">
+        var _agent = null,
+            _agentDfd = null;
+
+        window.Asc.plugin.init = function() {
+            //
+        };
+
+        window.Asc.plugin.button = function(id) {
+            this.executeCommand("close", '');
+        };
+
+        var switchAgent = function (newAgent) {
+            var switchAgentInternal = function (newAgent) {
+                _agentDfd = $.Deferred();
+
+                clippy.load(newAgent, function (agent) {
+                    _agentDfd.resolve(agent);
+                    _agent = agent;
+
+                    agent.moveTo(50, 50);
+                    agent.show();
+                });
+                return _agentDfd.promise();
+            };
+
+            if (_agentDfd && _agentDfd.isResolved()) {
+                var dfd = $.Deferred(),
+                    agent = function (func) {
+                    if (!_agentDfd) return;
+                    var dfd = _agentDfd;
+                    if ($.isFunction(func) && dfd) {
+                        dfd.done(func);
+                    }
+                    return dfd.promise();
+                };
+
+                agent(function (agent) {
+                    agent.hide(false, function () {
+                        switchAgentInternal(newAgent).done(dfd.resolve);
+                    })
+                });
+
+                return dfd.promise();
+            }
+
+            return switchAgentInternal(newAgent);
+        };
+
+        switchAgent('Clippy');
+
+        $('#agent-type').on('change', function(e) {
+            var el = $(e.currentTarget),
+                name = el.val();
+            if (!name) return;
+            switchAgent(name);
+        });
+    </script>
+</body>
+</html>
