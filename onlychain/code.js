@@ -232,7 +232,7 @@
 
 	window.template_run = function(_index)
 	{
-		alert("Apply template ID: " + window.Asc.plugin.templates[_index].Id);
+		window.Asc.plugin.executeMethod("OpenFile", ["", "", window.Asc.plugin.templates[_index].Url]);
 	};
 
 	window.serverConnect = function()
@@ -242,7 +242,7 @@
 
 	window.saveDocument = function()
 	{
-		alert("Save document");
+		window.Asc.plugin.executeMethod("GetFields", []);
 	};
 
     window.Asc.plugin.button = function(id)
@@ -260,5 +260,10 @@
     window.Asc.plugin.onExternalMouseUp = function()
     {        
     };
+
+	window.Asc.plugin.onMethodReturn = function(returnValue)
+	{
+		console.log(returnValue);
+	};
 
 })(window, undefined);
