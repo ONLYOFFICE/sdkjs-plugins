@@ -225,19 +225,73 @@
 			_element.style.borderWidth = "1px";
 	};
 
+	function getTemplateById(_id)
+	{
+		var _plugin = window.Asc.plugin;
+		var _template = null;
+		for (var i = _plugin.templates.length - 1; i >= 0; i--)
+		{
+			if (_id == _plugin.templates[i].Id)
+			{
+				_template = _plugin.templates[i];
+				break;
+			}
+		}
+		return _template;
+	}
+
 	window.document_run = function(_index)
 	{
-		alert("Apply document ID: " + window.Asc.plugin.myDocuments[_index].Id);
+		var _plugin = window.Asc.plugin;
+		var _template = getTemplateById(_plugin.myDocuments[_index].TemplateId);
+
+		if (_template == null)
+			return;
+
+		window.Asc.plugin.currentTemplateID = _template.Id;
+		window.Asc.plugin.currentDocumentIndex = _index;
+
+		var client = new XMLHttpRequest();
+		var _url = _plugin.templatesBaseUrl + _template.Url + "/document.bin";
+		client.open("GET", _url);
+
+		client.onreadystatechange = function() {
+			if (client.readyState == 4 && (client.status == 200 || location.href.indexOf("file:") == 0))
+			{
+				var _document = _plugin.myDocuments[window.Asc.plugin.currentDocumentIndex];
+				window.Asc.plugin.executeMethod("OpenFile", [client.responseText, _document.Data,  window.Asc.plugin.templatesBaseUrl + _template.Url]);
+			}
+		};
+		client.send();
 	};
 
 	window.template_run = function(_index)
 	{
-		window.Asc.plugin.executeMethod("OpenFile", ["", "", window.Asc.plugin.templates[_index].Url]);
+		var _plugin = window.Asc.plugin;
+		var _template = window.Asc.plugin.templates[_index];
+		_plugin.currentTemplateID =_template.Id;
+
+		var client = new XMLHttpRequest();
+		var _url = _plugin.templatesBaseUrl + _template.Url + "/document.bin";
+		client.open("GET", _url);
+
+		client.onreadystatechange = function() {
+			if (client.readyState == 4 && (client.status == 200 || location.href.indexOf("file:") == 0))
+			{
+				var _template = getTemplateById(window.Asc.plugin.currentTemplateID);
+				window.Asc.plugin.executeMethod("OpenFile", [client.responseText, "", window.Asc.plugin.templatesBaseUrl + _template.Url]);
+			}
+		};
+		client.send();
 	};
 
 	window.serverConnect = function()
 	{
-		alert("Connect to server");
+		// TODO: connect to server
+		var _serverUrl = document.getElementById("serverId").value;
+		var _serverKey = document.getElementById("userId").value;
+
+		console.log("connect to server: [ url: " + _serverUrl + ", id: " + _serverKey + " ]");
 	};
 
 	window.saveDocument = function()
@@ -264,6 +318,17 @@
 	window.Asc.plugin.onMethodReturn = function(returnValue)
 	{
 		console.log(returnValue);
+
+		if (window.Asc.plugin.info.methodName == "GetFields")
+		{
+			// TODO: save document
+
+			var _serverUrl = document.getElementById("serverId").value;
+			var _serverKey = document.getElementById("userId").value;
+
+			console.log("info: [ url: " + _serverUrl + ", id: " + _serverKey + " ]");
+			console.log("save document: [ templateID: " + this.currentTemplateID + ", data: " + JSON.stringify(returnValue) + " ]");
+		}
 	};
 
 })(window, undefined);
