@@ -20,23 +20,23 @@
 			}
 			.ac-container label{
 				font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-				padding: 5px 20px;
+				padding: 5px 20px 5px 12px;
 				position: relative;
 				z-index: 20;
 				display: block;
 				height: 30px;
 				cursor: pointer;
-				color: #000000;
+				color: #444444;
 				line-height: 33px;
 				font-size: 14px;
 				background: #FAFAFA;
 			}
 			.ac-container label:hover{
-				background: #FAFAFA;
+				background: #D8DADC;
 			}
 			.ac-container input:checked + label,
 			.ac-container input:checked + label:hover{
-				background: #D8DADC;
+				background: #FAFAFA;
 			}
 			.ac-container label:after,
 			.ac-container input:checked + label:after{
@@ -65,7 +65,7 @@
 			}
 			.ac-container article p{
 				font-style: italic;
-				color: #000000;
+				color: #444444;
 				line-height: 23px;
 				font-size: 14px;
 				padding: 20px;
@@ -119,14 +119,15 @@
 				transition: all 0.2s ease-in-out;
 			}
 			.tableRow:hover {
-				background-color: #ebebeb;
+				background-color: #D8DADC;
 				cursor: pointer;
 			}
 
 			.contentCells {
 				padding: 4px 1px 4px 15px;
 				font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-				font-size: 14px;
+				font-size: 12px;
+				color: #444444;
 				border-bottom: 1px solid #e5e5e5;
 				white-space: nowrap;
 				-khtml-user-select: none;
@@ -153,7 +154,7 @@
 					<label for="ac-1">Settings</label>
 					<article class="ac-content">
 						<div id="section_settings">
-							<p class="defaultlable" style="margin: 20px 10% 0px 10%; padding: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 12px;font-style: normal;">Server</p>
+							<p class="defaultlable" style="margin: 16px 10% 0px 10%; padding: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 12px;font-style: normal;">Server</p>
 							<input type="text" class="form-control" style="padding: 0; display: block; height: 20px; width: 80%; margin-left:10%; margin-right: 10%; position:relative;" id="serverId"/>
 							<p class="defaultlable" style="margin: 8px 10% 0px 10%; padding: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 12px;font-style: normal;">ID</p>
 							<input type="text" class="form-control" style="padding: 0; display: block; height: 20px; width: 80%; margin-left:10%; margin-right: 10%; position:relative;" id="userId"/>
@@ -168,7 +169,7 @@
 					<input id="ac-2" name="accordion-1" type="radio" />
 					<label for="ac-2" style="border-top: 1px solid #CBCBCB;">Templates</label>
 					<article class="ac-content">
-						<div id="section_templates" style="position: absolute; left: 0px; top: 10px; width:100%; bottom: 10px; overflow: hidden;">
+						<div id="section_templates" style="position: absolute; left: 0px; top: 5px; width:100%; bottom: 10px; overflow: hidden;">
 							<table id="section_templates_main" style="border:0; margin:0; padding:0; border-spacing:0; text-align: center;">
 							</table>
 						</div>
@@ -178,7 +179,7 @@
 					<input id="ac-3" name="accordion-1" type="radio" />
 					<label for="ac-3" style="border-top: 1px solid #CBCBCB;">My Documents</label>
 					<article class="ac-content">
-						<div id="section_documents" style="position:absolute; left: 0px; top: 10px; right:0px; bottom: 50px; overflow: hidden;">
+						<div id="section_documents" style="position:absolute; left: 0px; top: 5px; right:0px; bottom: 50px; overflow: hidden;">
 							<table id="section_documents_main" style="box-sizing: border-box; width: 100%; border:0; margin:0; padding:0; border-spacing:0; text-align: center;">
 							</table>
 						</div>
