@@ -187,21 +187,21 @@
 	{
 		this.myDocuments.splice(0, this.myDocuments.length);
 
-		this.myDocuments.push(new CDocument("1", "Document1", "{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", "{ Data: OK }"));
-		this.myDocuments.push(new CDocument("2", "Document2", "{D7817089-5819-41D2-981A-957B5D08A99F}", "{ Data: OK }"));
+		this.myDocuments.push(new CDocument("1", "Document1", "{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", ["Contract", "Column1", "Column2", "Column3", "Row1", "Row2"]));
+		this.myDocuments.push(new CDocument("2", "Document2", "{D7817089-5819-41D2-981A-957B5D08A99F}", ["Contract", "Column1", "Column2", "Column3", "Row1", "Row2"]));
 
-		this.myDocuments.push(new CDocument("1", "Document1", "{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", "{ Data: OK }"));
-		this.myDocuments.push(new CDocument("2", "Document2", "{D7817089-5819-41D2-981A-957B5D08A99F}", "{ Data: OK }"));
-		this.myDocuments.push(new CDocument("1", "Document1", "{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", "{ Data: OK }"));
-		this.myDocuments.push(new CDocument("2", "Document2", "{D7817089-5819-41D2-981A-957B5D08A99F}", "{ Data: OK }"));
-		this.myDocuments.push(new CDocument("1", "Document1", "{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", "{ Data: OK }"));
-		this.myDocuments.push(new CDocument("2", "Document2", "{D7817089-5819-41D2-981A-957B5D08A99F}", "{ Data: OK }"));
-		this.myDocuments.push(new CDocument("1", "Document1", "{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", "{ Data: OK }"));
-		this.myDocuments.push(new CDocument("2", "Document2", "{D7817089-5819-41D2-981A-957B5D08A99F}", "{ Data: OK }"));
-		this.myDocuments.push(new CDocument("1", "Document1", "{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", "{ Data: OK }"));
-		this.myDocuments.push(new CDocument("2", "Document2", "{D7817089-5819-41D2-981A-957B5D08A99F}", "{ Data: OK }"));
-		this.myDocuments.push(new CDocument("1", "Document1", "{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", "{ Data: OK }"));
-		this.myDocuments.push(new CDocument("2", "Document2", "{D7817089-5819-41D2-981A-957B5D08A99F}", "{ Data: OK }"));
+		this.myDocuments.push(new CDocument("1", "Document1", "{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", ["Contract", "Column1", "Column2", "Column3", "Row1", "Row2"]));
+		this.myDocuments.push(new CDocument("2", "Document2", "{D7817089-5819-41D2-981A-957B5D08A99F}", ["Contract", "Column1", "Column2", "Column3", "Row1", "Row2"]));
+		this.myDocuments.push(new CDocument("1", "Document1", "{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", ["Contract", "Column1", "Column2", "Column3", "Row1", "Row2"]));
+		this.myDocuments.push(new CDocument("2", "Document2", "{D7817089-5819-41D2-981A-957B5D08A99F}", ["Contract", "Column1", "Column2", "Column3", "Row1", "Row2"]));
+		this.myDocuments.push(new CDocument("1", "Document1", "{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", ["Contract", "Column1", "Column2", "Column3", "Row1", "Row2"]));
+		this.myDocuments.push(new CDocument("2", "Document2", "{D7817089-5819-41D2-981A-957B5D08A99F}", ["Contract", "Column1", "Column2", "Column3", "Row1", "Row2"]));
+		this.myDocuments.push(new CDocument("1", "Document1", "{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", ["Contract", "Column1", "Column2", "Column3", "Row1", "Row2"]));
+		this.myDocuments.push(new CDocument("2", "Document2", "{D7817089-5819-41D2-981A-957B5D08A99F}", ["Contract", "Column1", "Column2", "Column3", "Row1", "Row2"]));
+		this.myDocuments.push(new CDocument("1", "Document1", "{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", ["Contract", "Column1", "Column2", "Column3", "Row1", "Row2"]));
+		this.myDocuments.push(new CDocument("2", "Document2", "{D7817089-5819-41D2-981A-957B5D08A99F}", ["Contract", "Column1", "Column2", "Column3", "Row1", "Row2"]));
+		this.myDocuments.push(new CDocument("1", "Document1", "{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", ["Contract", "Column1", "Column2", "Column3", "Row1", "Row2"]));
+		this.myDocuments.push(new CDocument("2", "Document2", "{D7817089-5819-41D2-981A-957B5D08A99F}", ["Contract", "Column1", "Column2", "Column3", "Row1", "Row2"]));
 
 		var _innerHtml = "";
 		for (var i = 0; i < this.myDocuments.length; i++)
