@@ -300,7 +300,7 @@
 			window.documentCurrentIndex++;
 
 			if (_dataParse.TemplateID !== undefined)
-				window.documentTemplates.push(new CDocument("" + window.documentCurrentIndex, "Document " + window.documentCurrentIndex, _dataParse.TemplateID, _dataParse.Data));
+				window.documentTemplates.push(new CDocument("" + window.documentCurrentIndex, "Document " + (window.documentCurrentIndex + 1), _dataParse.TemplateID, _dataParse.Data));
 
 			if (window.documentCurrentIndex == (window.documentTemplatesCount - 1))
 			{
@@ -310,6 +310,8 @@
 				window.documentTemplatesCount = 0;
 
 				window.Asc.plugin.fillDocuments();
+
+				$("#ac-3").click();
 			}
 			else
 			{
