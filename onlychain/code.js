@@ -179,30 +179,25 @@
 			_element.style.borderWidth = "0px";
 		else
 			_element.style.borderWidth = "1px";
+
+		if (true)
+		{
+			document.getElementById("serverId").value       = "http://146.0.233.16:8080";
+			document.getElementById("userId").value         = "0x0082d505Da1039f76b4Ec489a804B20fdD53CDF6";
+			document.getElementById("userPassword").value   = "sergey";
+			document.getElementById("serverContract").value = "0x047f7014dd2591d50b1056ac69471eb6be2422aa";
+
+			document.getElementById("serverId").disabled       = true;
+			document.getElementById("userId").disabled         = true;
+			document.getElementById("userPassword").disabled   = true;
+			document.getElementById("serverContract").disabled = true;
+		}
 	};
 
 	/***********************************************/
 	/***************** DOCUMENTS *******************/
 	window.Asc.plugin.fillDocuments = function()
 	{
-		this.myDocuments.splice(0, this.myDocuments.length);
-
-		this.myDocuments.push(new CDocument("1", "Document1", "{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", ["Contract", "Column1", "Column2", "Column3", "Row1", "Row2"]));
-		this.myDocuments.push(new CDocument("2", "Document2", "{D7817089-5819-41D2-981A-957B5D08A99F}", ["Contract", "Column1", "Column2", "Column3", "Row1", "Row2"]));
-
-		this.myDocuments.push(new CDocument("1", "Document1", "{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", ["Contract", "Column1", "Column2", "Column3", "Row1", "Row2"]));
-		this.myDocuments.push(new CDocument("2", "Document2", "{D7817089-5819-41D2-981A-957B5D08A99F}", ["Contract", "Column1", "Column2", "Column3", "Row1", "Row2"]));
-		this.myDocuments.push(new CDocument("1", "Document1", "{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", ["Contract", "Column1", "Column2", "Column3", "Row1", "Row2"]));
-		this.myDocuments.push(new CDocument("2", "Document2", "{D7817089-5819-41D2-981A-957B5D08A99F}", ["Contract", "Column1", "Column2", "Column3", "Row1", "Row2"]));
-		this.myDocuments.push(new CDocument("1", "Document1", "{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", ["Contract", "Column1", "Column2", "Column3", "Row1", "Row2"]));
-		this.myDocuments.push(new CDocument("2", "Document2", "{D7817089-5819-41D2-981A-957B5D08A99F}", ["Contract", "Column1", "Column2", "Column3", "Row1", "Row2"]));
-		this.myDocuments.push(new CDocument("1", "Document1", "{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", ["Contract", "Column1", "Column2", "Column3", "Row1", "Row2"]));
-		this.myDocuments.push(new CDocument("2", "Document2", "{D7817089-5819-41D2-981A-957B5D08A99F}", ["Contract", "Column1", "Column2", "Column3", "Row1", "Row2"]));
-		this.myDocuments.push(new CDocument("1", "Document1", "{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", ["Contract", "Column1", "Column2", "Column3", "Row1", "Row2"]));
-		this.myDocuments.push(new CDocument("2", "Document2", "{D7817089-5819-41D2-981A-957B5D08A99F}", ["Contract", "Column1", "Column2", "Column3", "Row1", "Row2"]));
-		this.myDocuments.push(new CDocument("1", "Document1", "{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", ["Contract", "Column1", "Column2", "Column3", "Row1", "Row2"]));
-		this.myDocuments.push(new CDocument("2", "Document2", "{D7817089-5819-41D2-981A-957B5D08A99F}", ["Contract", "Column1", "Column2", "Column3", "Row1", "Row2"]));
-
 		var _innerHtml = "";
 		for (var i = 0; i < this.myDocuments.length; i++)
 		{
@@ -287,11 +282,47 @@
 
 	window.serverConnect = function()
 	{
-		// TODO: connect to server
-		var _serverUrl = document.getElementById("serverId").value;
-		var _serverKey = document.getElementById("userId").value;
+		var _serverId 		= document.getElementById("serverId").value;
+		var _userId 		= document.getElementById("userId").value;
+		var _userPassword 	= document.getElementById("userPassword").value;
+		var _serverContract = document.getElementById("serverContract").value;
 
-		console.log("connect to server: [ url: " + _serverUrl + ", id: " + _serverKey + " ]");
+		window.setSettings(_serverId, _serverContract, _userId, _userPassword);
+
+		window.documentTemplates = [];
+		window.documentCurrentIndex = -1;
+		window.documentTemplatesCount = 0;
+
+		function _getFormCallback(_data)
+		{
+			var _dataParse = JSON.parse(_data);
+
+			window.documentCurrentIndex++;
+
+			if (_dataParse.TemplateID !== undefined)
+				window.documentTemplates.push(new CDocument("" + window.documentCurrentIndex, "Document " + window.documentCurrentIndex, _dataParse.TemplateID, _dataParse.Data));
+
+			if (window.documentCurrentIndex == (window.documentTemplatesCount - 1))
+			{
+				window.Asc.plugin.myDocuments = window.documentTemplates;
+				window.documentTemplates = [];
+				window.documentCurrentIndex = -1;
+				window.documentTemplatesCount = 0;
+
+				window.Asc.plugin.fillDocuments();
+			}
+			else
+			{
+				window.getForm(window.documentCurrentIndex + 1, _getFormCallback);
+			}
+		}
+
+		window.getFormsCount(function(_count){
+			window.documentTemplatesCount = _count.toNumber();
+
+			if (0 < window.documentTemplatesCount)
+				window.getForm(window.documentCurrentIndex + 1, _getFormCallback);
+		});
 	};
 
 	window.saveDocument = function()
@@ -317,17 +348,15 @@
 
 	window.Asc.plugin.onMethodReturn = function(returnValue)
 	{
-		console.log(returnValue);
+		//console.log(returnValue);
 
 		if (window.Asc.plugin.info.methodName == "GetFields")
 		{
-			// TODO: save document
+			var _dataParse = { TemplateID : this.currentTemplateID, Data : returnValue };
 
-			var _serverUrl = document.getElementById("serverId").value;
-			var _serverKey = document.getElementById("userId").value;
-
-			console.log("info: [ url: " + _serverUrl + ", id: " + _serverKey + " ]");
-			console.log("save document: [ templateID: " + this.currentTemplateID + ", data: " + JSON.stringify(returnValue) + " ]");
+			window.setForm(JSON.stringify(_dataParse), function(){
+				window.serverConnect();
+			});
 		}
 	};
 
