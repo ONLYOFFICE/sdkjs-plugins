@@ -182,10 +182,10 @@
 
 		if (true)
 		{
-			document.getElementById("serverId").value       = "http://146.0.233.16:8080";
-			document.getElementById("userId").value         = "0x0082d505Da1039f76b4Ec489a804B20fdD53CDF6";
-			document.getElementById("userPassword").value   = "sergey";
-			document.getElementById("serverContract").value = "0x047f7014dd2591d50b1056ac69471eb6be2422aa";
+			document.getElementById("serverId").value       = "http://parity-node1.onlyoffice.com/rpc";
+			document.getElementById("userId").value         = "0x004ec07d2329997267Ec62b4166639513386F32E";
+			document.getElementById("userPassword").value   = "user";
+			document.getElementById("serverContract").value = "0xedfc9c2f4cfa7495c1a95cfe1cb856f5980d5e18";
 
 			document.getElementById("serverId").disabled       = true;
 			document.getElementById("userId").disabled         = true;
