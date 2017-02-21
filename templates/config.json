@@ -5,9 +5,9 @@
     "variations" : [
         {
             "description" : "templates",
-            "url"         : "templates/index.html",
+            "url"         : "index.html",
 
-            "icons"           : ["templates/icon.png", "templates/icon@2x.png"],
+            "icons"           : ["icon.png", "icon@2x.png"],
             "isViewer"        : true,
             "EditorsSupport"  : ["word"],
 

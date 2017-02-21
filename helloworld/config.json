@@ -5,8 +5,8 @@
     "variations" : [
         {
             "description"         : "hello world",
-            "url"                 : "helloworld/index.html",
-            "icons"               : ["helloworld/icon.png", "helloworld/icon@2x.png"],
+            "url"                 : "index.html",
+            "icons"               : ["icon.png", "icon@2x.png"],
             "isViewer"            : false,
             "EditorsSupport"      : ["word"],
             "isVisual"            : false,
@@ -19,8 +19,8 @@
         },
         {
             "description"         : "About",
-            "url"                 : "helloworld/index_about.html",
-            "icons"               : ["helloworld/icon.png", "helloworld/icon@2x.png"],
+            "url"                 : "index_about.html",
+            "icons"               : ["icon.png", "icon@2x.png"],
             "isViewer"            : false,
             "EditorsSupport"      : ["word"],
             "isVisual"            : true,

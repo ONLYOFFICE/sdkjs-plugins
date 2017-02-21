@@ -5,9 +5,9 @@
     "variations" : [
         {
             "description" : "youtube",
-            "url"         : "youtube/index.html",
+            "url"         : "index.html",
 
-            "icons"           : ["youtube/icon.png", "youtube/icon@2x.png"],
+            "icons"           : ["icon.png", "icon@2x.png"],
             "isViewer"        : true,
             "EditorsSupport"  : ["word", "cell", "slide"],
 

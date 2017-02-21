@@ -5,9 +5,9 @@
     "variations" : [
         {
             "description" : "chess",
-            "url"         : "chess/index.html",
+            "url"         : "index.html",
 
-            "icons"           : ["chess/icon.png", "chess/icon@2x.png"],
+            "icons"           : ["icon.png", "icon@2x.png"],
             "isViewer"        : true,
             "EditorsSupport"  : ["word", "cell", "slide"],
 
@@ -25,9 +25,9 @@
         },
         {
             "description" : "About",
-            "url"         : "chess/index_about.html",
+            "url"         : "index_about.html",
 
-            "icons"           : ["chess/icon.png", "chess/icon@2x.png"],
+            "icons"           : ["icon.png", "icon@2x.png"],
             "isViewer"        : true,
             "EditorsSupport"  : ["word", "cell", "slide"],
 

@@ -5,9 +5,9 @@
     "variations" : [
         {
             "description" : "onlychain",
-            "url"         : "onlychain/index.html",
+            "url"         : "index.html",
 
-            "icons"           : ["onlychain/icon.png", "onlychain/icon@2x.png"],
+            "icons"           : ["icon.png", "icon@2x.png"],
             "isViewer"        : false,
             "EditorsSupport"  : ["word"],
 
@@ -24,9 +24,9 @@
         },
         {
             "description" : "About",
-            "url"         : "onlychain/index_about.html",
+            "url"         : "index_about.html",
 
-            "icons"           : ["onlychain/icon.png", "onlychain/icon@2x.png"],
+            "icons"           : ["icon.png", "icon@2x.png"],
             "isViewer"        : false,
             "EditorsSupport"  : ["word"],
 

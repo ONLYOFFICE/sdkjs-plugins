@@ -5,9 +5,9 @@
     "variations" : [
         {
             "description" : "Telegram",
-            "url"         : "telegram/index.html",
+            "url"         : "index.html",
 
-            "icons"           : ["telegram/icon.png", "telegram/icon@2x.png"],
+            "icons"           : ["icon.png", "icon@2x.png"],
             "isViewer"        : true,
             "EditorsSupport"  : ["word", "cell", "slide"],
 

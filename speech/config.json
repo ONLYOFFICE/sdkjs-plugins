@@ -5,9 +5,9 @@
     "variations" : [
         {
             "description" : "speech",
-            "url"         : "speech/index.html",
+            "url"         : "index.html",
 
-            "icons"           : ["speech/icon.png", "speech/icon@2x.png"],
+            "icons"           : ["icon.png", "icon@2x.png"],
             "isViewer"        : true,
             "EditorsSupport"  : ["word"],
 

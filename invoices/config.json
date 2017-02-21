@@ -5,9 +5,9 @@
     "variations" : [
         {
             "description" : "invoices",
-            "url"         : "invoices/index.html",
+            "url"         : "index.html",
 
-            "icons"           : ["invoices/icon.png", "invoices/icon@2x.png"],
+            "icons"           : ["icon.png", "icon@2x.png"],
             "isViewer"        : false,
             "EditorsSupport"  : ["word"],
 

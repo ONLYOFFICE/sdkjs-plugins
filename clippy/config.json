@@ -6,9 +6,9 @@
     "variations" : [
         {
             "description"         : "Clippy",
-            "url"                 : "clippy/code.js",
+            "url"                 : "code.js",
 
-            "icons"               : ["clippy/icon.png", "clippy/icon@2x.png"],
+            "icons"               : ["icon.png", "icon@2x.png"],
             "isViewer"            : true,
             "EditorsSupport"      : ["word", "slide", "cell"],
 

@@ -5,9 +5,9 @@
     "variations" : [
         {
             "description" : "ClipArt",
-            "url"         : "clipart/index.html",
+            "url"         : "index.html",
 
-            "icons"           : ["clipart/icon.png", "clipart/icon@2x.png"],
+            "icons"           : ["icon.png", "icon@2x.png"],
             "isViewer"        : false,
             "EditorsSupport"  : ["word", "slide", "cell"],
 
@@ -24,9 +24,9 @@
         },
         {
             "description" : "About",
-            "url"         : "clipart/index_about.html",
+            "url"         : "index_about.html",
 
-            "icons"           : ["clipart/icon.png", "clipart/icon@2x.png"],
+            "icons"           : ["icon.png", "icon@2x.png"],
             "isViewer"        : false,
             "EditorsSupport"  : ["word", "slide", "cell"],
 
