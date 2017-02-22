@@ -275,6 +275,8 @@
 			{
 				var _template = getTemplateById(window.Asc.plugin.currentTemplateID);
 				window.Asc.plugin.executeMethod("OpenFile", [client.responseText, "", window.Asc.plugin.templatesBaseUrl + _template.Url]);
+
+				$("#ac-3").click();
 			}
 		};
 		client.send();
@@ -295,11 +297,20 @@
 
 		function _getFormCallback(_data)
 		{
-			var _dataParse = JSON.parse(_data);
+			var _dataParse = {};
+
+			try
+			{
+				_dataParse = JSON.parse(_data);
+			}
+			catch (err)
+			{
+				_dataParse = {};
+			}
 
 			window.documentCurrentIndex++;
 
-			if (_dataParse.TemplateID !== undefined)
+			if (_dataParse.TemplateID !== undefined && _dataParse.TemplateID != "")
 				window.documentTemplates.push(new CDocument("" + window.documentCurrentIndex, "Document " + (window.documentCurrentIndex + 1), _dataParse.TemplateID, _dataParse.Data));
 
 			if (window.documentCurrentIndex == (window.documentTemplatesCount - 1))
@@ -351,6 +362,9 @@
 	window.Asc.plugin.onMethodReturn = function(returnValue)
 	{
 		//console.log(returnValue);
+
+		if (this.currentTemplateID == "")
+			return;
 
 		if (window.Asc.plugin.info.methodName == "GetFields")
 		{

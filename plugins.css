@@ -9,13 +9,22 @@
     cursor: pointer;
 }
 
+.btn-text-default.primary {
+	color: #fff;
+	background-color: #7d858c;
+}
+
 .btn-text-default:focus {
     outline: 0;
     outline-offset: 0;
 }
 
 .btn-text-default:hover {
-    background-color: #d8dadc !important;
+    background-color: #d8dadc;
+}
+
+.btn-text-default.primary:hover {
+	background-color: #666d73; !important;
 }
 
 .btn-text-default:active,
