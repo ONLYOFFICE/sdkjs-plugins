@@ -275,11 +275,11 @@
 			{
 				var _template = getTemplateById(window.Asc.plugin.currentTemplateID);
 				window.Asc.plugin.executeMethod("OpenFile", [client.responseText, "", window.Asc.plugin.templatesBaseUrl + _template.Url]);
-
-				$("#ac-3").click();
 			}
 		};
 		client.send();
+
+		$("#ac-3").click();
 	};
 
 	window.serverConnect = function()
