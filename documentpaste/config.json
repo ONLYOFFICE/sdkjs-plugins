@@ -1,0 +1,26 @@
+{
+    "name" : "DocumentPaste",
+    "guid" : "asc.{C36DDFB5-08F0-4A68-B829-5FB1F7D49728}",
+
+    "variations" : [
+        {
+            "description" : "DocumentPaste",
+            "url"         : "index.html",
+
+            "icons"           : ["icon.png", "icon@2x.png"],
+            "isViewer"        : false,
+            "EditorsSupport"  : ["word"],
+
+            "isVisual"        : true,
+            "isModal"         : false,
+            "isInsideMode"    : true,
+
+            "initDataType"    : "none",
+            "initData"        : "",
+
+            "isUpdateOleOnResize" : false,
+
+            "buttons"         : []
+        }
+    ]
+}
