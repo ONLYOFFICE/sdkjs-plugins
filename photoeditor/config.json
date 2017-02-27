@@ -1,0 +1,55 @@
+{
+    "name" : "Photo Editor",
+    "guid" : "asc.{DA2BB87B-9F03-4160-8411-3AB4A5C71C39}",
+    "baseUrl" : "",
+
+    "variations" : [
+        {
+            "description" : "photoeditor",
+            "url"         : "index.html",
+
+            "icons"           : ["icon.png", "icon@2x.png"],
+            "isViewer"        : false,
+            "EditorsSupport"  : ["word", "cell", "slide"],
+
+            "isVisual"        : true,
+            "isModal"         : true,
+            "isInsideMode"    : false,
+
+            "initDataType"    : "html",
+            "initData"        : "",
+
+            "isUpdateOleOnResize" : false,
+
+            "buttons"         : [{ "text": "Save and Exit", "primary": false }, { "text": "Cancel", "primary": false } ],
+
+            "size" : [800, 800]
+        },
+        {
+            "description" : "About",
+            "url"         : "index_about.html",
+
+            "icons"           : ["icon.png", "icon@2x.png"],
+            "isViewer"        : false,
+            "EditorsSupport"  : ["word", "cell", "slide"],
+
+            "isVisual"        : true,
+            "isModal"         : true,
+            "isInsideMode"    : false,
+
+            "initDataType"    : "none",
+            "initData"        : "",
+
+            "isUpdateOleOnResize" : false,
+
+            "buttons"         : [
+                {
+                    "text": "Ok",
+                    "primary": true
+                }
+            ],
+
+            "size" : [392, 147]
+        }
+    ]
+}
