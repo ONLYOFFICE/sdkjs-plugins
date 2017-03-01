@@ -102,17 +102,17 @@
 
 		this.templatesBaseUrl = "./templates/";
 
-		this.templates.push(new CTemplate("{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", "Report", "bold_report/", [122, 158]));
-		this.templates.push(new CTemplate("{D7817089-5819-41D2-981A-957B5D08A99F}", "Fax", "fax_cover/", [122, 158]));
+		this.templates.push(new CTemplate("{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", "Amazon", "template1/", [122, 165]));
+		this.templates.push(new CTemplate("{D7817089-5819-41D2-981A-957B5D08A99F}", "Goods", "template2/", [122, 165]));
 
-		this.templates.push(new CTemplate("{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", "Report", "bold_report/", [122, 158]));
-		this.templates.push(new CTemplate("{D7817089-5819-41D2-981A-957B5D08A99F}", "Fax", "fax_cover/", [122, 158]));
-		this.templates.push(new CTemplate("{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", "Report", "bold_report/", [122, 158]));
-		this.templates.push(new CTemplate("{D7817089-5819-41D2-981A-957B5D08A99F}", "Fax", "fax_cover/", [122, 158]));
-		this.templates.push(new CTemplate("{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", "Report", "bold_report/", [122, 158]));
-		this.templates.push(new CTemplate("{D7817089-5819-41D2-981A-957B5D08A99F}", "Fax", "fax_cover/", [122, 158]));
-		this.templates.push(new CTemplate("{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", "Report", "bold_report/", [122, 158]));
-		this.templates.push(new CTemplate("{D7817089-5819-41D2-981A-957B5D08A99F}", "Fax", "fax_cover/", [122, 158]));
+		this.templates.push(new CTemplate("{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", "Amazon", "template1/", [122, 165]));
+		this.templates.push(new CTemplate("{D7817089-5819-41D2-981A-957B5D08A99F}", "Goods", "template2/", [122, 165]));
+		this.templates.push(new CTemplate("{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", "Amazon", "template1/", [122, 165]));
+		this.templates.push(new CTemplate("{D7817089-5819-41D2-981A-957B5D08A99F}", "Goods", "template2/", [122, 165]));
+		this.templates.push(new CTemplate("{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", "Amazon", "template1/", [122, 165]));
+		this.templates.push(new CTemplate("{D7817089-5819-41D2-981A-957B5D08A99F}", "Goods", "template2/", [122, 165]));
+		this.templates.push(new CTemplate("{0B5DA9FE-F354-40A8-83B3-E0F42F31DFDD}", "Amazon", "template1/", [122, 165]));
+		this.templates.push(new CTemplate("{D7817089-5819-41D2-981A-957B5D08A99F}", "Goods", "template2/", [122, 165]));
 
 		var _width = 0;
 		for (var i = 0; i < this.templates.length; i++)
