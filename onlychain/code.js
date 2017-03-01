@@ -87,11 +87,14 @@
 		this.fillDocuments();
 
 		document.getElementById("settingsButtonId").onclick = function(e) {
+			window.isConnectButton = true;
 			window.serverConnect();
 		};
 		document.getElementById("documentsSaveId").onclick = function(e) {
 			window.saveDocument();
 		};
+
+		this.documentsSession = 0;
     };
 
 	/***********************************************/
@@ -199,7 +202,7 @@
 	window.Asc.plugin.fillDocuments = function()
 	{
 		var _innerHtml = "";
-		for (var i = 0; i < this.myDocuments.length; i++)
+		for (var i = this.myDocuments.length - 1; i >= 0; i--)
 		{
 			_innerHtml += ("<tr class='tableRow' id='rowDocumentId" + i + "'><td class='contentCells'>" + this.myDocuments[i].Name + "</td></tr>");
 		}
@@ -322,6 +325,12 @@
 
 				window.Asc.plugin.fillDocuments();
 
+				if (window.isConnectButton === true)
+				{
+					window.Asc.plugin.documentsSession = window.Asc.plugin.myDocuments.length;
+					window.isConnectButton = false;
+				}
+
 				$("#ac-3").click();
 			}
 			else
@@ -366,11 +375,28 @@
 		if (this.currentTemplateID == "")
 			return;
 
-		if (window.Asc.plugin.info.methodName == "GetFields")
+		var _plugin = window.Asc.plugin;
+		if (_plugin.info.methodName == "GetFields")
 		{
-			var _dataParse = { TemplateID : this.currentTemplateID, Data : returnValue };
+			// не вставляем ТАКОЙ ЖЕ документ
+			var _start = _plugin.documentsSession;
+			var _end   = _plugin.myDocuments.length;
 
-			window.setForm(JSON.stringify(_dataParse), function(){
+			var _dataParse = {TemplateID : this.currentTemplateID, Data : returnValue};
+			var _dataParseJSON = JSON.stringify(_dataParse);
+
+			for (var i = _start; i < _end; i++)
+			{
+				var _dataParseCheck = {TemplateID : _plugin.myDocuments[i].TemplateId, Data : _plugin.myDocuments[i].Data};
+				var _dataParseCheckJSON = JSON.stringify(_dataParseCheck);
+				if (_dataParseJSON == _dataParseCheckJSON)
+				{
+					alert("duplicate document!!!");
+					return;
+				}
+			}
+
+			window.setForm(_dataParseJSON, function(){
 				window.serverConnect();
 			});
 		}
