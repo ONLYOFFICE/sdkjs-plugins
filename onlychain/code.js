@@ -417,7 +417,7 @@
 				var _dataParseCheckJSON = JSON.stringify(_dataParseCheck);
 				if (_dataParseJSON == _dataParseCheckJSON)
 				{
-					alert("duplicate document!!!");
+					alert("The document has already been saved. No new changes have been made.");
 					return;
 				}
 			}
