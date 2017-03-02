@@ -1,0 +1,21 @@
+{
+    "name"       : "Listener",
+    "guid"       : "asc.{A8705DEE-7544-4C33-B3D5-168406D92F72}",
+    "baseUrl"    : "",
+    "variations" : [
+        {
+            "description"         : "Listener",
+            "url"                 : "index.html",
+            "icons"               : ["icon.png", "icon@2x.png"],
+            "isViewer"            : false,
+            "EditorsSupport"      : ["word"],
+            "isVisual"            : false,
+            "isModal"             : true,
+            "isInsideMode"        : false,
+            "initDataType"        : "none",
+            "initData"            : "",
+            "isUpdateOleOnResize" : true,
+            "buttons"             : []
+        }
+    ]
+}
