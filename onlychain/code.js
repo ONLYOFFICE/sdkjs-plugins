@@ -88,6 +88,7 @@
 
 		document.getElementById("settingsButtonId").onclick = function(e) {
 			window.isConnectButton = true;
+			window.show_progress();
 			window.serverConnect();
 		};
 		document.getElementById("documentsSaveId").onclick = function(e) {
@@ -96,6 +97,21 @@
 
 		this.documentsSession = 0;
     };
+
+	window.show_progress = function()
+	{
+		var _element = document.getElementById("progressID");
+		if (!_element)
+			return;
+		_element.style.display = "block";
+	};
+	window.unshow_progress = function()
+	{
+		var _element = document.getElementById("progressID");
+		if (!_element)
+			return;
+		_element.style.display = "none";
+	};
 
 	/***********************************************/
 	/***************** TEMPLATES *******************/
@@ -294,9 +310,18 @@
 
 		window.setSettings(_serverId, _serverContract, _userId, _userPassword);
 
-		window.documentTemplates = [];
-		window.documentCurrentIndex = -1;
-		window.documentTemplatesCount = 0;
+		if (window.isConnectButton)
+		{
+			window.documentTemplates      = [];
+			window.documentCurrentIndex   = -1;
+			window.documentTemplatesCount = 0;
+		}
+		else
+		{
+			window.documentTemplates = window.Asc.plugin.myDocuments;
+			window.documentTemplatesCount = window.documentTemplates.length;
+			window.documentCurrentIndex = window.documentTemplatesCount - 1; // first iteration get last file
+		}
 
 		function _getFormCallback(_data)
 		{
@@ -330,6 +355,7 @@
 					window.Asc.plugin.documentsSession = window.Asc.plugin.myDocuments.length;
 					window.isConnectButton = false;
 				}
+				window.unshow_progress();
 
 				$("#ac-3").click();
 			}
@@ -396,6 +422,7 @@
 				}
 			}
 
+			window.show_progress();
 			window.setForm(_dataParseJSON, function(){
 				window.serverConnect();
 			});
