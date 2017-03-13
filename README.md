@@ -8,7 +8,7 @@ The add-ons for [ONLYOFFICE Document Server][2] and [ONLYOFFICE Desktop Editors]
 
 Currently the following plugins are available:
 
-* [cbr][4] - inserts currency value into your spreadsheet using the exchange rates from fixer.io API
+* [cbr][4] - inserts currency value into your spreadsheet using the exchange rates from [fixer.io][17] API
 * [chess][5] - allows to play chess right in your document
 * [clipart][6] - adds beautiful ClipArt objects to your documents
 * [glavred][7] - checks and enhances text using glvrd.ru service API (for the Russian language only)
@@ -56,6 +56,7 @@ If you have any problems with or questions about [ONLYOFFICE Document Server][2]
   [14]: yandextranslaterus
   [15]: youtube
   [16]: chrome_extension_example
+  [17]: https://github.com/hakanensari/fixer-io
   
 ## License
 
