@@ -1,0 +1,27 @@
+{
+    "name"       : "Clippy",
+    "guid"       : "asc.{DD97A73A-D8C9-11E6-BF26-CEC0C932CE01}",
+    "isUICustomizer" : true,
+
+    "variations" : [
+        {
+            "description"         : "Clippy",
+            "url"                 : "code.js",
+
+            "icons"               : ["icon.png", "icon@2x.png"],
+            "isViewer"            : true,
+            "EditorsSupport"      : ["word", "slide", "cell"],
+
+            "isVisual"            : false,
+            "isModal"             : false,
+            "isInsideMode"        : false,
+
+            "initDataType"        : "none",
+            "initData"            : "",
+
+            "isUpdateOleOnResize" : false,
+
+            "buttons"             : []
+        }
+    ]
+}

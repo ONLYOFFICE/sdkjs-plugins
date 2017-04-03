@@ -1,10 +1,10 @@
 {
-    "name" : "Yandex Translate",
-    "guid" : "asc.{7327FC95-16DA-41D9-9AF2-0E7F449F687D}",
+    "name" : "Telegram",
+    "guid" : "asc.{E5773A43-F9B3-4E81-81D9-CE0A132470E7}",
 
     "variations" : [
         {
-            "description" : "translate",
+            "description" : "Telegram",
             "url"         : "index.html",
 
             "icons"           : ["icon.png", "icon@2x.png"],
@@ -15,14 +15,12 @@
             "isModal"         : false,
             "isInsideMode"    : true,
 
-            "initDataType"    : "text",
+            "initDataType"    : "none",
             "initData"        : "",
 
             "isUpdateOleOnResize" : false,
 
-            "buttons"        : [ ],
-
-            "initOnSelectionChanged" : true
+            "buttons"         : [ ]
         }
     ]
 }

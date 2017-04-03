@@ -1,35 +1,34 @@
 {
-    "name" : "chess(fen)",
-    "guid" : "asc.{FFE1F462-1EA2-4391-990D-4CC84940B754}",
+    "name" : "Onlychain",
+    "guid" : "asc.{1A7AAA7C-607B-4E12-BBC9-A31ABEC71CC3}",
 
     "variations" : [
         {
-            "description" : "chess",
+            "description" : "onlychain",
             "url"         : "index.html",
 
             "icons"           : ["icon.png", "icon@2x.png"],
-            "isViewer"        : true,
-            "EditorsSupport"  : ["word", "cell", "slide"],
+            "isViewer"        : false,
+            "EditorsSupport"  : ["word"],
 
             "isVisual"        : true,
-            "isModal"         : true,
-            "isInsideMode"    : false,
+            "isModal"         : false,
+            "isInsideMode"    : true,
 
-            "initDataType"    : "ole",
+            "initDataType"    : "none",
             "initData"        : "",
 
-            "isUpdateOleOnResize" : true,
+            "isUpdateOleOnResize" : false,
 
-            "buttons"         : [ { "text": "Ok", "primary": true },
-                                { "text": "Cancel", "primary": false } ]
+            "buttons"         : []
         },
         {
             "description" : "About",
             "url"         : "index_about.html",
 
             "icons"           : ["icon.png", "icon@2x.png"],
-            "isViewer"        : true,
-            "EditorsSupport"  : ["word", "cell", "slide"],
+            "isViewer"        : false,
+            "EditorsSupport"  : ["word"],
 
             "isVisual"        : true,
             "isModal"         : true,

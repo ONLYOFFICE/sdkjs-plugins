@@ -1,5 +1,14 @@
 (function(window, undefined) {
 
+	window.oncontextmenu = function(e)
+	{
+		if (e.preventDefault)
+			e.preventDefault();
+		if (e.stopPropagation)
+			e.stopPropagation();
+		return false;
+	};
+
     var nAmount = 20;//Count images on page
     var widthPix = 185;
     var sEmptyQuery = 'play';
@@ -10,7 +19,6 @@
             switch (window.Asc.plugin.info.editorType) {
                 case 'word': {
                     sScript += 'var oDocument = Api.GetDocument();';
-                    sScript += '\noDocument.CreateNewHistoryPoint();';
                     sScript += '\nvar oParagraph, oRun, arrInsertResult = [], oImage;';
 
                     for (var i = 0; i < aSelected.length; ++i) {
@@ -29,7 +37,6 @@
                 }
                 case 'slide':{
                     sScript += 'var oPresentation = Api.GetPresentation();';
-                    sScript += '\noPresentation.CreateNewHistoryPoint()';
 
                     sScript += '\nvar oSlide = oPresentation.GetCurrentSlide()';
                     sScript += '\nif(oSlide){';
@@ -47,7 +54,6 @@
                     break;
                 }
                 case 'cell':{
-                    sScript += 'Api.CreateNewHistoryPoint();';
                     sScript += '\nvar oWorksheet = Api.GetActiveSheet();';
                     sScript += '\nif(oWorksheet){';
                     sScript += '\nvar oActiveCell = oWorksheet.GetActiveCell();';

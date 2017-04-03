@@ -5,9 +5,9 @@
     "variations" : [
         {
             "description" : "num2word",
-            "url"         : "num2word/index.html",
+            "url"         : "index.html",
 
-            "icons"           : ["num2word/icon.png", "num2word/icon@2x.png"],
+            "icons"           : ["icon.png", "icon@2x.png"],
             "isViewer"        : false,
             "EditorsSupport"  : ["cell"],
 

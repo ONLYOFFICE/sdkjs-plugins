@@ -6,9 +6,9 @@
     "variations" : [
         {
             "description" : "interface",
-            "url"         : "interface/index.html",
+            "url"         : "index.html",
 
-            "icons"           : ["interface/icon.png", "interface/icon@2x.png"],
+            "icons"           : ["icon.png", "icon@2x.png"],
             "isViewer"        : true,
             "EditorsSupport"  : ["word", "cell", "slide"],
 

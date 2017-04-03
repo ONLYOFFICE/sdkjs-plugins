@@ -5,9 +5,9 @@
     "variations" : [
         {
             "description" : "yandextranslaterus",
-            "url"         : "yandextranslaterus/index.html",
+            "url"         : "index.html",
 
-            "icons"           : ["yandextranslaterus/icon.png", "yandextranslaterus/icon@2x.png"],
+            "icons"           : ["icon.png", "icon@2x.png"],
             "isViewer"        : false,
             "EditorsSupport"  : ["word"],
 

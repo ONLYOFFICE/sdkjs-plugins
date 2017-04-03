@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>invoices</title>
+    <script type="text/javascript" src="../pluginBase.js"></script>
+    <script type="text/javascript" src="code.js"></script>
+	
+	<style>
+		td { font-weight: bold }
+		a {color: red;cursor: pointer;margin-left: 16px;}
+	</style>
+</head>
+<body style="width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;">
+    <div>Main Invoice Info</div>
+	<table>
+		<tr>
+			<td>Invoice Number</td>
+			<td>
+				<a onclick="Add('${InvoiceNumber}')">+</a>
+			</td>
+		</tr>
+		<tr>
+			<td>Invoice Date</td>
+			<td>
+				<a onclick="Add('${InvoiceDate}')">+</a>
+			</td>
+		</tr>
+		<tr>
+			<td>Invoice PO Number</td>
+			<td>
+				<a onclick="Add('${InvoicePoNumber}')">+</a>
+			</td>
+		</tr>
+		<tr>
+			<td>Invoice Due Date</td>
+			<td>
+				<a onclick="Add('${InvoiceDueDate}')">+</a>
+			</td>
+		</tr>
+		<tr>
+			<td>Bill To Address</td>
+			<td>
+				<a onclick="Add('${InvoiceBillTo}')">+</a>
+			</td>
+		</tr>
+		<tr>
+			<td>Terms</td>
+			<td>
+				<a onclick="Add('${InvoiceTerms}')">+</a>
+			</td>
+		</tr>
+		<tr>
+			<td>Notes</td>
+			<td>
+				<a onclick="Add('${InvoiceNotes}')">+</a>
+			</td>
+		</tr>
+		<tr>
+			<td>Ship To Address</td>
+			<td>
+				<a onclick="Add('${InvoiceShipTo}')">+</a>
+			</td>
+		</tr>
+		<tr>
+			<td>Subtotal (withouth taxes)</td>
+			<td>
+				<a onclick="Add('${InvoiceSubtotal}')">+</a>
+			</td>
+		</tr>
+		<tr>
+			<td>Total</td>
+			<td>
+				<a onclick="Add('${InvoiceTotal}')">+</a>
+			</td>
+		</tr>
+	</table>
+	
+	<br/>
+	<br/>
+
+	<div>Dynamic Table</div>
+	<table>
+		<tr>
+			<td>Mark Table As Dynamic</td>
+			<td>
+				<a onclick="Mark()">Mark</a>
+			</td>
+		</tr>
+	</table>	
+	
+	<br/>
+	<br/>	
+	
+	<div>Invoice Items Data (Dynamic Table Row)</div>
+	<table>
+		<tr>
+			<td>Item Title</td>
+			<td>
+				<a onclick="Add('${ItemTitle}')">+</a>
+			</td>
+		</tr>
+		<tr>
+			<td>Item Quantity</td>
+			<td>
+				<a onclick="Add('${ItemQuantity}')">+</a>
+			</td>
+		</tr>
+		<tr>
+			<td>Item Price</td>
+			<td>
+				<a onclick="Add('${ItemPrice}')">+</a>
+			</td>
+		</tr>
+		<tr>
+			<td>Item Discount</td>
+			<td>
+				<a onclick="Add('${ItemDiscount}')">+</a>
+			</td>
+		</tr>
+		<tr>
+			<td>Item Tax1 Name</td>
+			<td>
+				<a onclick="Add('${ItemTax1Name}')">+</a>
+			</td>
+		</tr>
+		<tr>
+			<td>Item Tax1 Value</td>
+			<td>
+				<a onclick="Add('${ItemTax1Value}')">+</a>
+			</td>
+		</tr>
+		<tr>
+			<td>Item Tax2 Name</td>
+			<td>
+				<a onclick="Add('${ItemTax2Name}')">+</a>
+			</td>
+		</tr>
+		<tr>
+			<td>Item Tax2 Value</td>
+			<td>
+				<a onclick="Add('${ItemTax2Value}')">+</a>
+			</td>
+		</tr>
+		<tr>
+			<td>Item Amount</td>
+			<td>
+				<a onclick="Add('${ItemAmount}')">+</a>
+			</td>
+		</tr>
+	</table>
+		
+	<br/>
+	<br/>
+</body>
+</html>

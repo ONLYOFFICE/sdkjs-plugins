@@ -5,9 +5,9 @@
     "variations" : [
         {
             "description" : "cbr",
-            "url"         : "cbr/index.html",
+            "url"         : "index.html",
 
-            "icons"           : ["cbr/icon.png", "cbr/icon@2x.png"],
+            "icons"           : ["icon.png", "icon@2x.png"],
 
             "isViewer"        : false,
             "EditorsSupport"  : ["cell"],

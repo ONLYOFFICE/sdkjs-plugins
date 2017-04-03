@@ -5,9 +5,9 @@
     "variations" : [
         {
             "description" : "glavred",
-            "url"         : "glavred/index.html",
+            "url"         : "index.html",
 
-            "icons"           : ["glavred/icon.png", "glavred/icon@2x.png"],
+            "icons"           : ["icon.png", "icon@2x.png"],
             "isViewer"        : true,
             "EditorsSupport"  : ["word"],
 

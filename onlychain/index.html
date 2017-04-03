@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+		<title>blockchain</title>
+        
+		<style type="text/css">
+			html, body {
+				margin: 0px;
+				padding: 0px;
+				overflow: hidden;
+			}
+
+			.ac-container{
+				overflow: hidden;
+				width: 100%;
+				margin: 0px;
+				text-align: left;
+			}
+			.ac-container label{
+				font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+				padding: 5px 20px 5px 12px;
+				position: relative;
+				z-index: 20;
+				display: block;
+				height: 30px;
+				cursor: pointer;
+				color: #444444;
+				line-height: 33px;
+				font-size: 14px;
+				background: #FAFAFA;
+			}
+			.ac-container label:hover{
+				background: #D8DADC;
+			}
+			.ac-container input:checked + label,
+			.ac-container input:checked + label:hover{
+				background: #FAFAFA;
+			}
+			.ac-container label:after,
+			.ac-container input:checked + label:after{
+				content: '';
+				position: absolute;
+				width: 24px;
+				height: 24px;
+				right: 13px;
+				top: 7px;
+				background: transparent url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAICAYAAADJEc7MAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwgAADsIBFShKgAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC41ZYUyZQAAAGBJREFUKFOdjksKwCAMRL12LqMSyDnTjGVqYyuFLh46P7G4+y+SMLM4coGsWQpExHvvIWcBwEN2H6dCa20Uaq0hTw93eMjogetC+LqqDna/SIJwvBuBh0E4XH3yan7j5QCEdEdY5lRrxQAAAABJRU5ErkJggg==') no-repeat center center;
+			}
+			.ac-container input:checked + label:after{
+				background-image: none;
+			}
+			.ac-container input{
+				display: none;
+			}
+			.ac-container article{
+				background: rgba(255, 255, 255, 0.5);
+				margin-top: -1px;
+				overflow: hidden;
+				height: 0px;
+				position: relative;
+				z-index: 10;
+				transition: height 0.3s ease-in-out, box-shadow 0.3s linear;
+			}
+			.ac-container article p{
+				font-style: italic;
+				color: #444444;
+				line-height: 23px;
+				font-size: 14px;
+				padding: 20px;
+			}
+			.ac-container input:checked ~ article{
+				transition: height 0.3s ease-in-out, box-shadow 0.3s linear;
+			}
+			
+			.ac-container input:checked ~ article.ac-content{
+				height: 600px;
+			}
+
+			.noselect {
+				-khtml-user-select: none;
+				user-select: none;
+				-moz-user-select: none;
+				-webkit-user-select: none;
+			}
+
+			td {
+				background: transparent;
+				border:0;
+				padding:10px;
+			}
+
+			.celllabel {
+				text-align: center;
+				font-size: 12px;
+				color: #444444;
+				font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+			}
+
+			img {
+				padding: 1px;
+				border: 1px solid #CBCBCB;
+			}
+
+			img:hover {
+				padding: 0px;
+				border: 2px solid #7D858C;
+				cursor: pointer;
+			}
+
+			.tableRow {
+				background: transparent;
+				text-align: left;
+				height: 40px;
+			}
+			.tableRow:hover {
+				background-color: #D8DADC;
+				cursor: pointer;
+			}
+
+			.contentCells {
+				padding: 4px 1px 4px 15px;
+				font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+				font-size: 12px;
+				color: #444444;
+				border-bottom: 1px solid #e5e5e5;
+				white-space: nowrap;
+				-khtml-user-select: none;
+				user-select: none;
+				-moz-user-select: none;
+				-webkit-user-select: none;
+			}
+
+		</style>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+		<script src='https://noraesae.github.io/perfect-scrollbar/perfect-scrollbar.min.js'></script>
+
+		<link rel="stylesheet" href="../plugins.css">
+  
+		<script type="text/javascript" src="../pluginBase.js"></script>
+    	<script type="text/javascript" src="code.js"></script>
+		<script type="text/javascript" src="main.js"></script>
+    </head>
+    <body>
+		<div id="progressID" style="position:fixed;margin: 0px;padding: 0px;left: 0px; top: 0px; width: 100%; height: 100%;z-index: 100;display: none;">
+			<img src="progress.gif" style="position: absolute; width: 33px; height: 33px; left: 50%; top: 50%; padding: 0px; margin-left: -16px; margin-top: -16px; border: none; user-select: none;">
+		</div>
+        <div class="container noselect">
+			<section class="ac-container">
+				<div>
+					<input id="ac-1" name="accordion-1" type="radio" checked />
+					<label for="ac-1">Settings</label>
+					<article class="ac-content">
+						<div id="section_settings">
+							<p class="defaultlable" style="margin: 16px 10% 0px 10%; padding: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 12px;font-style: normal;">Server</p>
+							<input type="text" class="form-control" style="padding: 0; display: block; height: 20px; width: 80%; margin-left:10%; margin-right: 10%; position:relative;" id="serverId"/>
+							<p class="defaultlable" style="margin: 8px 10% 0px 10%; padding: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 12px;font-style: normal;">ID</p>
+							<input type="text" class="form-control" style="padding: 0; display: block; height: 20px; width: 80%; margin-left:10%; margin-right: 10%; position:relative;" id="userId"/>
+							<p class="defaultlable" style="margin: 8px 10% 0px 10%; padding: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 12px;font-style: normal;">Password</p>
+							<input type="text" class="form-control" style="padding: 0; display: block; height: 20px; width: 80%; margin-left:10%; margin-right: 10%; position:relative;" id="userPassword"/>
+							<p class="defaultlable" style="margin: 8px 10% 0px 10%; padding: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 12px;font-style: normal;">Contract</p>
+							<input type="text" class="form-control" style="padding: 0; display: block; height: 20px; width: 80%; margin-left:10%; margin-right: 10%; position:relative;" id="serverContract"/>
+
+							<div style="margin: 0px; padding: 20px 30% 10px 30%">
+								<button class="btn-text-default primary" style="width:100%;" id="settingsButtonId">Connect</button>
+							</div>
+						</div>
+					</article>
+				</div>
+				<div>
+					<input id="ac-2" name="accordion-1" type="radio" />
+					<label for="ac-2" style="border-top: 1px solid #CBCBCB;">Templates</label>
+					<article class="ac-content">
+						<div id="section_templates" style="position: absolute; left: 0px; top: 5px; width:100%; bottom: 10px; overflow: hidden;">
+							<table id="section_templates_main" style="border:0; margin:0; padding:0; border-spacing:0; text-align: center;">
+							</table>
+						</div>
+					</article>
+				</div>
+				<div>
+					<input id="ac-3" name="accordion-1" type="radio" />
+					<label for="ac-3" style="border-top: 1px solid #CBCBCB;">My Documents</label>
+					<article class="ac-content">
+						<div id="section_documents" style="position:absolute; left: 0px; top: 5px; right:0px; bottom: 50px; overflow: hidden;">
+							<table id="section_documents_main" style="box-sizing: border-box; width: 100%; border:0; margin:0; padding:0; border-spacing:0; text-align: center;">
+							</table>
+						</div>
+						<div style="position: absolute; padding: 0px; margin: 20px 30% 10px 30%; left: 0px; right: 0px; bottom: 0px; height: 30px;">
+							<button class="btn-text-default primary" style="width:100%;" id="documentsSaveId">Save</button>
+						</div>
+					</article>
+				</div>
+			</section>
+        </div>
+    </body>
+</html>
