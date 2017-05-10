@@ -12,73 +12,83 @@
 	
 	var arrayCommands = [
 		{ 
-			type : "document", 
-			data : [[
-				{ url: 'https://personal.onlyoffice.com/products/files/httphandlers/filehandler.ashx?action=view&fileid=1617658&version=0&doc=aEE1OEk0THZWakI4bC9Ydm1CaFdQaGRpOFdLMURzaUFkV3cvRFlXS1dUND0_IjE2MTc2NTgi0', format : 'docx' },
-				{ url: 'https://personal.onlyoffice.com/products/files/httphandlers/filehandler.ashx?action=view&fileid=1617658&version=0&doc=aEE1OEk0THZWakI4bC9Ydm1CaFdQaGRpOFdLMURzaUFkV3cvRFlXS1dUND0_IjE2MTc2NTgi0', format : 'docx' }				
-			]] 
-		},
-		{
-			type : "content",
-			data : insertContentCommand
+			Props : {
+				Id : 0,
+				Tag : "Document 1",
+				Lock : 0
+			},
+			
+			Url : 'https://personal.onlyoffice.com/products/files/httphandlers/filehandler.ashx?action=view&fileid=1617658&version=0&doc=aEE1OEk0THZWakI4bC9Ydm1CaFdQaGRpOFdLMURzaUFkV3cvRFlXS1dUND0_IjE2MTc2NTgi0',
+			
+			Format : 'docx'
 		},
 		{ 
-			type : "document", 
-			data : [[
-				{ url: 'https://personal.onlyoffice.com/products/files/httphandlers/filehandler.ashx?action=view&fileid=1617658&version=0&doc=aEE1OEk0THZWakI4bC9Ydm1CaFdQaGRpOFdLMURzaUFkV3cvRFlXS1dUND0_IjE2MTc2NTgi0', format : 'docx' }
-			]]
+			Props : {
+				Id : 1,
+				Tag : "Document 2",
+				Lock : 1
+			},
+			
+			Url : 'https://personal.onlyoffice.com/products/files/httphandlers/filehandler.ashx?action=view&fileid=1617658&version=0&doc=aEE1OEk0THZWakI4bC9Ydm1CaFdQaGRpOFdLMURzaUFkV3cvRFlXS1dUND0_IjE2MTc2NTgi0',
+			
+			Format : 'docx'
 		},
-		{
-			type : "content",
-			data : insertContentCommand
+		{ 
+			Props : {
+				Id : 2,
+				Tag : "Document 3",
+				Lock : 0
+			},
+			
+			Script : insertContentCommand
 		},
-		{
-			type : "content",
-			data : insertContentCommand
+		{ 
+			Props : {
+				Id : 3,
+				Tag : "Document 4",
+				Lock : 0
+			},
+			
+			Url : 'https://personal.onlyoffice.com/products/files/httphandlers/filehandler.ashx?action=view&fileid=1617658&version=0&doc=aEE1OEk0THZWakI4bC9Ydm1CaFdQaGRpOFdLMURzaUFkV3cvRFlXS1dUND0_IjE2MTc2NTgi0',
+			
+			Format : 'docx'
+		},
+		{ 
+			Props : {
+				Id : 4,
+				Tag : "Document 5",
+				Lock : 0
+			},
+			
+			Script : insertContentCommand
+		},
+		{ 
+			Props : {
+				Id : 5,
+				Tag : "Document 6",
+				Lock : 0
+			},
+			
+			Script : insertContentCommand
 		}
 	];
 		
-	var arrayCommandsLength = arrayCommands.length;
-	var currentCommand = -1;
-	
-	function RunCommand()
-	{
-		var plugin = window.Asc.plugin;
-		
-		++currentCommand;
-		if (currentCommand >= arrayCommandsLength)
-		{
-			plugin.executeCommand("close", "");
-			return;
-		}
-		
-		var current = arrayCommands[currentCommand];
-		if (current.type == "document")
-		{
-			plugin.executeMethod("InsertDocuments", current.data);
-		}
-		else if (current.type == "content")
-		{
-			plugin.info.recalculate = true;
-			plugin.executeCommand("command", current.data);
-		}		
-	}
-	
 	window.Asc.plugin.onMethodReturn = function(returnValue)
 	{
-		// next command
-		RunCommand();
+		var plugin = window.Asc.plugin;
+		plugin.info.recalculate = true;
+		plugin.executeCommand("command", insertContentCommand);
 	};
 	
 	window.Asc.plugin.onCommandCallback = function()
 	{
-		// next command
-		RunCommand();
+		var plugin = window.Asc.plugin;
+		plugin.executeCommand("close", "");
 	};
 
     window.Asc.plugin.init = function()
 	{
-		RunCommand();
+		this.executeMethod("InsertAndReplaceContentControls", [arrayCommands]);
     };
 
     window.Asc.plugin.button = function(id) 
