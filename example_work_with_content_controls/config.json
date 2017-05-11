@@ -1,10 +1,10 @@
 {
-    "name" : "DocumentPaste",
+    "name" : "Example work with content controls",
     "guid" : "asc.{C36DDFB5-08F0-4A68-B829-5FB1F7D49728}",
 
     "variations" : [
         {
-            "description" : "DocumentPaste",
+            "description" : "Example work with content controls",
             "url"         : "index.html",
 
             "icons"           : ["icon.png", "icon@2x.png"],
