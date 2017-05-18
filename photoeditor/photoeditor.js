@@ -17,6 +17,7 @@
         oFeatherEditor = new Aviary.Feather({
             apiKey: '1234567',
             appendTo: 'editor_container',
+			theme: 'light',
             onLoad: function(){
                 bInit = true;
                 oFeatherEditor.launch(
