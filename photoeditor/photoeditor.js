@@ -6,7 +6,10 @@
     var oImage = false;
 
     window.Asc.plugin.init = function(sHtml){
-        oImage = $(sHtml).find('img')[0];
+        oImage = $(sHtml)[0];
+        if(!oImage || !$(oImage).is('img')){
+            oImage = $(sHtml).find('img')[0];
+        }
         if(!oImage){
             oImage = document.createElement("img");
             //white rect
@@ -17,7 +20,7 @@
         oFeatherEditor = new Aviary.Feather({
             apiKey: '1234567',
             appendTo: 'editor_container',
-			theme: 'light',
+			theme: 'minimum',
             onLoad: function(){
                 bInit = true;
                 oFeatherEditor.launch(
@@ -72,6 +75,20 @@
                 sScript += '\n oImage = Api.CreateImage(\'' + sUrl + '\', ' + nEmuWidth + ', ' + nEmuHeight + ');';
                 sScript += '\noParagraph.AddDrawing(oImage);';
                 sScript += '\noDocument.InsertContent(arrInsertResult);';
+                break;
+            }
+            case 'cell':{
+                sScript += 'var oWorksheet = Api.GetActiveSheet();';
+                var nEmuWidth = ((width / 96) * 914400 + 0.5) >> 0;
+                var nEmuHeight = ((height / 96) * 914400 + 0.5) >> 0;
+                sScript += '\n oWorksheet.ReplaceCurrentImage(\'' + sUrl + '\', ' + nEmuWidth + ', ' + nEmuHeight + ');';
+                break;
+            }
+            case 'slide':{
+                sScript += 'var oPresentation = Api.GetPresentation();';
+                var nEmuWidth = ((width / 96) * 914400 + 0.5) >> 0;
+                var nEmuHeight = ((height / 96) * 914400 + 0.5) >> 0;
+                sScript += '\n oPresentation.ReplaceCurrentImage(\'' + sUrl + '\', ' + nEmuWidth + ', ' + nEmuHeight + ');';
                 break;
             }
         }

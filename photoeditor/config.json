@@ -10,7 +10,7 @@
 
             "icons"           : ["icon.png", "icon@2x.png"],
             "isViewer"        : false,
-            "EditorsSupport"  : ["word"],
+            "EditorsSupport"  : ["word", "cell", "slide"],
 
             "isVisual"        : true,
             "isModal"         : true,
@@ -31,7 +31,7 @@
 
             "icons"           : ["icon.png", "icon@2x.png"],
             "isViewer"        : false,
-            "EditorsSupport"  : ["word"],
+            "EditorsSupport"  : ["word", "cell", "slide"],
 
             "isVisual"        : true,
             "isModal"         : true,
