@@ -1,0 +1,15 @@
+body .avpw .avpw_primary_button,
+body .avpw .avpw_primary_button:link,
+body .avpw .avpw_primary_button:visited,
+body .avpw .avpw_primary_button:active {
+  background-color: #ffffff;
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  color: #444444;
+}
+body .avpw .avpw_primary_button:active {
+  background-color: #ffffff;
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  color: #444444;
+}
