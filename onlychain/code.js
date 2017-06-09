@@ -194,10 +194,15 @@
 		Ps.update(document.getElementById('section_templates'));
 
 		var _element = document.getElementsByClassName("ps-scrollbar-y")[0];
-		if (_element.clientHeight == 0)
-			_element.style.borderWidth = "0px";
-		else
-			_element.style.borderWidth = "1px";
+		if (!_element)
+			_element = document.getElementsByClassName("ps__scrollbar-y")[0];
+		if (_element)
+		{
+			if (_element.clientHeight == 0)
+				_element.style.borderWidth = "0px";
+			else
+				_element.style.borderWidth = "1px";
+		}
 
 		if (true)
 		{
@@ -233,10 +238,15 @@
 		Ps.update(document.getElementById('section_documents'));
 
 		var _element = document.getElementsByClassName("ps-scrollbar-y")[1];
-		if (_element.clientHeight == 0)
-			_element.style.borderWidth = "0px";
-		else
-			_element.style.borderWidth = "1px";
+		if (!_element)
+			_element = document.getElementsByClassName("ps__scrollbar-y")[1];
+		if (_element)
+		{
+			if (_element.clientHeight == 0)
+				_element.style.borderWidth = "0px";
+			else
+				_element.style.borderWidth = "1px";
+		}
 	};
 
 	function getTemplateById(_id)
