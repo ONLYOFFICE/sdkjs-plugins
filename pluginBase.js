@@ -40,7 +40,7 @@
         xhr.responseType = "json";
         xhr.onload = function()
         {
-            if (xhr.status == 200)
+            if (xhr.status == 200 || (xhr.status == 0 && xhr.readyState == 4))
             {
                 var objConfig = xhr.response;
                 if ((typeof objConfig) == "string")
