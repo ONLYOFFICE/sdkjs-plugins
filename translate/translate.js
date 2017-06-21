@@ -9,11 +9,11 @@
 	{
 		var container = document.getElementById('scrollable-container-id');
 		Ps.update(container);
-		if($('.ps-scrollbar-y').height() === 0){
-			$('.ps-scrollbar-y').css('border-width', '0px');
+		if($('.ps__scrollbar-y').height() === 0){
+			$('.ps__scrollbar-y').css('border-width', '0px');
 		}
 		else{
-			$('.ps-scrollbar-y').css('border-width', '1px');
+			$('.ps__scrollbar-y').css('border-width', '1px');
 		}
 	}
 
@@ -160,6 +160,11 @@
 			});
 
 			getLanguagesSupport();
+
+			window.onresize = function()
+			{
+				updateScroll();
+			};
 		}
 		else
 		{
@@ -171,6 +176,15 @@
 	window.Asc.plugin.button = function(id)
 	{
 		this.executeCommand("close", "");
+	};
+
+	window.Asc.plugin.onExternalMouseUp = function()
+	{
+		var evt = document.createEvent("MouseEvents");
+		evt.initMouseEvent("mouseup", true, true, window, 1, 0, 0, 0, 0,
+			false, false, false, false, 0, null);
+
+		document.dispatchEvent(evt);
 	};
 
 })(window, undefined);

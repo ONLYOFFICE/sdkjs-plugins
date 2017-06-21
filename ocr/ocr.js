@@ -21,11 +21,11 @@
         function updateScroll(){
             var container = document.getElementById('scrollable-image-text-div');
             Ps.update(container);
-            if($('.ps-scrollbar-y').height() === 0){
-                $('.ps-scrollbar-y').css('border-width', '0px');
+            if($('.ps__scrollbar-y').height() === 0){
+                $('.ps__scrollbar-y').css('border-width', '0px');
             }
             else{
-                $('.ps-scrollbar-y').css('border-width', '1px');
+                $('.ps__scrollbar-y').css('border-width', '1px');
             }
         }
         var container = document.getElementById('scrollable-image-text-div');
