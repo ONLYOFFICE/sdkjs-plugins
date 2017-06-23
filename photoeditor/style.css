@@ -14,6 +14,10 @@ body .avpw .avpw_primary_button:active {
   color: #444444;
 }
 
+body #avpw_tool_content_header {
+    height: 22px;
+}
+
 body #avpw_control_cancel_pane .avpw_close_button {
     width: 16px;
     height: 16px;
@@ -27,7 +31,14 @@ body #avpw_control_cancel_pane .avpw_close_inner {
     display: none
 }
 
+body #avpw_control_cancel_pane {
+    z-index: 2
+}
 body #avpw_tool_content_header .avpw_label {
     position: relative;
-    top: 3px
+    top: 3px;
+}
+
+body #avpw_canvas_embed {
+    top: 133px
 }
