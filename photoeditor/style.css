@@ -13,8 +13,21 @@ body .avpw .avpw_primary_button:active {
   border-radius: 2px;
   color: #444444;
 }
-/* 'locked'/down state */
-.avpw .avpw_inset_button .avpw_lock_icon_top_inner,
-.avpw .avpw_inset_button .avpw_lock_icon_sep {
-  background: #FFFFFF;
+
+body #avpw_control_cancel_pane .avpw_close_button {
+    width: 16px;
+    height: 16px;
+    margin-top: 9px;
+    margin-right: 7px;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAB/SURBVDhPpZLRCcAgDAXTLuKHA8VR3UQXcAkXSEmoJQ2m2DbwNJg7EBEQkUop1HtfCrPsADchhCVZs2APLDxiGRFnA53Z7BI9YHbGuYkcDXoSZ+MFTLXWIKUkfc4ZYozS69rP/X3ZK6xe9f/jeIA3E/FJGrHMpy9Xa6WPnxzpACWPQp5celq8AAAAAElFTkSuQmCC) 50% 50% no-repeat;
+    border: 0
+}
+
+body #avpw_control_cancel_pane .avpw_close_inner {
+    display: none
+}
+
+body #avpw_tool_content_header .avpw_label {
+    position: relative;
+    top: 3px
 }
