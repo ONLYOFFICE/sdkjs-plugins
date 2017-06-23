@@ -30,20 +30,17 @@
                 )
             },
             onSave: function(imageID, newURL) {
-                oImage.src = newURL;
-                if(bCloseAfterSave){
-                    var oImageDimensions = oFeatherEditor.getImageDimensions();
-                    var sScript = createScript(newURL, oImageDimensions.width, oImageDimensions.height);
-                    window.Asc.plugin.info.recalculate = true;
-                    window.Asc.plugin.executeCommand("close", sScript);
-                }
+                oImage.src = newURL;                
+				var oImageDimensions = oFeatherEditor.getImageDimensions();
+				var sScript = createScript(newURL, oImageDimensions.width, oImageDimensions.height);
+				window.Asc.plugin.info.recalculate = true;
+				window.Asc.plugin.executeCommand("close", sScript);                
             },
             onError: function(e){
             },
             onClose: function(isDirty){
                 window.Asc.plugin.executeCommand("close", "");
-            },
-            noCloseButton: true
+            }
         });
 
     };

@@ -20,8 +20,9 @@
             "initData"        : "",
 
             "isUpdateOleOnResize" : false,
+			"isCustomWindow"  : true,
 
-            "buttons"         : [{ "text": "Save and Exit", "primary": false }, { "text": "Cancel", "primary": false } ],
+            "buttons"         : [],
 
             "size" : [800, 800]
         },
