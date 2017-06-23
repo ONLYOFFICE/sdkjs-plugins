@@ -15,16 +15,16 @@
             "isVisual"        : true,
             "isModal"         : true,
             "isInsideMode"    : false,
+            "isCustomWindow"  : true,
 
             "initDataType"    : "html",
             "initData"        : "",
 
             "isUpdateOleOnResize" : false,
-			"isCustomWindow"  : true,
 
             "buttons"         : [],
 
-            "size" : [1000, 600]
+            "size" : [10000, 10000]
         },
         {
             "description" : "About",
