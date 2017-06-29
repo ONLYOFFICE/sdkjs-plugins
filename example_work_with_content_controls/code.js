@@ -101,6 +101,17 @@
 			window.Asc.plugin.executeMethod("GetAllContentControls");
 
 		};
+		document.getElementById("buttonIDChangeState").onclick = function() {
+
+			window.buttonIDChangeState_click = true;
+			window.Asc.plugin.executeMethod("GetCurrentContentControl");
+
+		};
+		document.getElementById("buttonIDCurrent").onclick = function() {
+
+			window.Asc.plugin.executeMethod("GetCurrentContentControl");
+
+		};
     };
 
     window.Asc.plugin.button = function(id)
@@ -121,6 +132,18 @@
 			_val = _val.split("]").join("\r\n]");
 
 			document.getElementById("textareaG").value = _val;
+		}
+		else if (window.buttonIDChangeState_click)
+		{
+			window.buttonIDChangeState_click = undefined;
+			if (null == returnValue)
+			{
+				window.Asc.plugin.executeMethod("AddContentControl", [1/*1 - block, 2 - inline*/]);
+			}
+			else
+			{
+				window.Asc.plugin.executeMethod("RemoveContentControl", [returnValue]);
+			}
 		}
 		else
 		{
