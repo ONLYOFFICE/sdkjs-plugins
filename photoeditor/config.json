@@ -10,20 +10,21 @@
 
             "icons"           : ["icon.png", "icon@2x.png"],
             "isViewer"        : false,
-            "EditorsSupport"  : ["word"],
+            "EditorsSupport"  : ["word", "cell", "slide"],
 
             "isVisual"        : true,
             "isModal"         : true,
             "isInsideMode"    : false,
+            "isCustomWindow"  : true,
 
             "initDataType"    : "html",
             "initData"        : "",
 
             "isUpdateOleOnResize" : false,
 
-            "buttons"         : [{ "text": "Save and Exit", "primary": false }, { "text": "Cancel", "primary": false } ],
+            "buttons"         : [],
 
-            "size" : [800, 800]
+            "size" : [10000, 10000]
         },
         {
             "description" : "About",
@@ -31,7 +32,7 @@
 
             "icons"           : ["icon.png", "icon@2x.png"],
             "isViewer"        : false,
-            "EditorsSupport"  : ["word"],
+            "EditorsSupport"  : ["word", "cell", "slide"],
 
             "isVisual"        : true,
             "isModal"         : true,

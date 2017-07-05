@@ -125,13 +125,13 @@
 }
 
 
-.ps-container .ps-scrollbar-y-rail {
+.ps .ps__scrollbar-y-rail {
     position: absolute; /* please don't change 'position' */
     right: 3px; /* there must be 'right' for ps-scrollbar-y-rail */
     width: 10px;
 }
 
-.ps-scrollbar-y {
+.ps__scrollbar-y {
     position: absolute; /* please don't change 'position' */
     right: 0; /* there must be 'right' for ps-scrollbar-y */
     width: 9px;
@@ -148,12 +148,12 @@
     border: 1px solid #cfcfcf;
 }
 
-.ps-container .ps-scrollbar-y-rail:hover .ps-scrollbar-y, .ps-container .ps-scrollbar-y-rail.hover .ps-scrollbar-y {
+.ps .ps__scrollbar-y-rail:hover .ps__scrollbar-y, .ps .ps__scrollbar-y-rail.hover .ps__scrollbar-y {
     background-color: rgb(207, 207, 207);
     background-position: -7px center;
 }
 
-.ps-container.ps-in-scrolling .ps-scrollbar-y-rail .ps-scrollbar-y{
+.ps.ps--in-scrolling .ps__scrollbar-y-rail .ps__scrollbar-y{
     background-color: #adadad;
     border-color: #adadad;
     background-position: -7px center;
