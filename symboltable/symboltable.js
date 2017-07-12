@@ -499,7 +499,6 @@
             var data = returnValue;
 
             $( window ).resize(function(){
-                $('#scrollable-table-div').height('30px');
                 updateScroll();
             });
 
