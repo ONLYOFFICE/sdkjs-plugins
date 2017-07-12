@@ -386,9 +386,10 @@
                 sScript += '\noTextPr = oRun.GetTextPr();';
                 sScript += '\noTextPr.SetFontFamily(\'' + sFont + '\');';
                 sScript += '\noDocument.InsertContent(arrInsertResult);';
+                break;
             }
             case 'cell':{
-                
+
                 break;
             }
         }
@@ -498,6 +499,7 @@
             var data = returnValue;
 
             $( window ).resize(function(){
+                $('#scrollable-table-div').height('30px');
                 updateScroll();
             });
 
