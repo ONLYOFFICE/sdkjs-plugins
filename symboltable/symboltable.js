@@ -389,7 +389,12 @@
                 break;
             }
             case 'cell':{
-
+                sScript += 'var oSheet = Api.GetActiveSheet();';
+                sScript += 'var active = oSheet.GetActiveCell();';
+                sScript += 'var row = active.GetRow();';
+                sScript += 'var col = active.GetCol();';
+                sScript += 'oSheet.GetRangeByNumber(row, col).SetFontName("' + sFont + '");';
+                sScript += 'oSheet.GetRangeByNumber(row, col).SetValue("' + sText + '");';
                 break;
             }
         }
