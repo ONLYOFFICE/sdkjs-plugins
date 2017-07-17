@@ -713,12 +713,14 @@
     function updateRangeSelector() {
         var oRangeSelector = $('#range-select');
         var oCurrentRange = getRangeBySymbol(aRanges, nCurrentSymbol);
-        if(!oCurrentRange){
+        if(!oCurrentRange || !oCurrentRange.Name){
             oRangeSelector.empty();
             oRangeSelector.hide();
+            $('#range-label').hide();
         }
         else{
             oRangeSelector.show();
+            $('#range-label').show();
             oRangeSelector.empty();
             var oOption, i;
             for(i = 0; i < aRanges.length; ++i){
