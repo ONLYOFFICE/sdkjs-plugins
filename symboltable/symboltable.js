@@ -884,16 +884,15 @@
             );
 
 
-
-            updateView(undefined, undefined, undefined, true);
-
-
+            $("#main-div").show();
 
             var container = document.getElementById('fake-symbol-table-wrap');
             Ps.initialize(container, {
                 theme: 'custom-theme',
                 minScrollbarLength: 50
             });
+
+            updateView(undefined, undefined, undefined, true);
 
 
 
