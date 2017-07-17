@@ -548,17 +548,28 @@
     }
 
 
+    var sLastId = "";
+    var nLastTime = -1000;
 
-    function cellClickHandler() {
+    function cellClickHandler(e) {
+        var nTime = (new Date()).getTime();
+
         var id = $(this).attr('id');
-        nCurrentSymbol = parseInt(id.slice(1, id.length));
-        if(id[0] === 'c'){
-            bMainFocus = true;
+        if(id === sLastId && (nTime - nLastTime) < 300 ){
+            cellDblClickHangdler.call(this, e)
         }
         else{
-            bMainFocus = false;
+            nCurrentSymbol = parseInt(id.slice(1, id.length));
+            if(id[0] === 'c'){
+                bMainFocus = true;
+            }
+            else{
+                bMainFocus = false;
+            }
+            updateView(false);
         }
-        updateView(false);
+        sLastId = e.target.id;
+        nLastTime = nTime;
     }
 
     function cellDblClickHangdler(){
@@ -575,6 +586,43 @@
 		var _htmlPaste = "<span style=\"font-family:'" + aFontSelects[nCurrentFont].m_wsFontName + "'\">" + String.fromCharCode(nCurrentSymbol) + "</span>";
 		window.Asc.plugin.executeMethod("PasteHtml", [_htmlPaste]);
 		bUpdateRecents && updateView(false, undefined, undefined, true);
+    }
+
+
+
+    function onScrollEnd(){
+
+        var nSymbolsCount = getAllSymbolsCount(aRanges);
+        var nColsCount = getColsCount();
+        var nRows = getRowsCount();
+        var nAllRowsCount = Math.ceil(nSymbolsCount/nColsCount);
+        var nFullHeight = nAllRowsCount*CELL_HEIGHT;
+
+        var container = document.getElementById('fake-symbol-table-wrap');
+
+        var nRowSkip = Math.min(nAllRowsCount - nRows, (nAllRowsCount*container.scrollTop/nFullHeight + 0.5) >> 0);
+        container.scrollTop = nRowSkip*CELL_HEIGHT;
+
+        if(!bMainFocus){
+            nCurrentSymbol = getCodeByLinearIndex(aRanges, nRowSkip*nColsCount);
+            bMainFocus = true;
+        }
+        else{
+            var id = $('#symbols-table:first-child').children(":first").attr('id');
+            if(id){
+                var nOldFirstCode = parseInt(id.slice(1, id.length));
+                var nOldFirstLinearIndex = getLinearIndexByCode(aRanges, nOldFirstCode);
+                var nOldCurrentLinearIndex = getLinearIndexByCode(aRanges, nCurrentSymbol);
+                var nDiff = nOldCurrentLinearIndex - nOldFirstLinearIndex;
+                var nNewCurLinearIndex = nRowSkip*nColsCount + nDiff;
+                nCurrentSymbol = getCodeByLinearIndex(aRanges, nNewCurLinearIndex);
+            }
+            else{
+                nCurrentSymbol = getCodeByLinearIndex(aRanges, nRowSkip*nColsCount);
+            }
+
+        }
+        updateView(true, getCodeByLinearIndex(aRanges, nRowSkip*nColsCount));
     }
 
     function updateView(bUpdateTable, nTopSymbol, bUpdateInput, bUpdateRecents) {
@@ -613,8 +661,10 @@
             else{
                 $('.ps__scrollbar-y').css('border-width', '1px');
             }
-            $('#symbols-table > .cell').mousedown(cellClickHandler);
-            $('#symbols-table > .cell').dblclick(cellDblClickHangdler);
+            var aCells = $('#symbols-table > .cell');
+            aCells.mousedown(cellClickHandler);
+            aCells.dblclick(cellDblClickHangdler);
+            //aCells.mouseup(onScrollEnd);
         }
 
         //fill recent
@@ -793,42 +843,10 @@
             );
 
 
-            function onScrollEnd(){
-
-                var nSymbolsCount = getAllSymbolsCount(aRanges);
-                var nColsCount = getColsCount();
-                var nAllRowsCount = Math.ceil(nSymbolsCount/nColsCount);
-                var nFullHeight = nAllRowsCount*CELL_HEIGHT;
-
-                var container = document.getElementById('fake-symbol-table-wrap');
-
-                var nRowSkip = Math.min(nAllRowsCount, (nAllRowsCount*container.scrollTop/nFullHeight + 0.5) >> 0);
-                container.scrollTop = nRowSkip*CELL_HEIGHT;
-
-                if(!bMainFocus){
-                    nCurrentSymbol = getCodeByLinearIndex(aRanges, nRowSkip*nColsCount);
-                    bMainFocus = true;
-                }
-                else{
-                    var id = $('#symbols-table:first-child').children(":first").attr('id');
-                    if(id){
-                        var nOldFirstCode = parseInt(id.slice(1, id.length));
-                        var nOldFirstLinearIndex = getLinearIndexByCode(aRanges, nOldFirstCode);
-                        var nOldCurrentLinearIndex = getLinearIndexByCode(aRanges, nCurrentSymbol);
-                        var nDiff = nOldCurrentLinearIndex - nOldFirstLinearIndex;
-                        var nNewCurLinearIndex = nRowSkip*nColsCount + nDiff;
-                        nCurrentSymbol = getCodeByLinearIndex(aRanges, nNewCurLinearIndex);
-                    }
-                    else{
-                        nCurrentSymbol = getCodeByLinearIndex(aRanges, nRowSkip*nColsCount);
-                    }
-
-                }
-                updateView(true, getCodeByLinearIndex(aRanges, nRowSkip*nColsCount));
-            }
 
             $("#fake-symbol-table-wrap").on('mouseup.perfect-scroll', onScrollEnd);
             document.getElementById("fake-symbol-table-wrap").addEventListener("wheel", onScrollEnd);
+            document.addEventListener("mouseup", onScrollEnd);
             document.getElementById("symbols-table").addEventListener("wheel", function(e){
                 var container = document.getElementById('fake-symbol-table-wrap');
                 container.scrollTop -= e.wheelDelta;
@@ -876,6 +894,17 @@
         window.Asc.plugin.executeMethod("GetFontList");
     };
 
+
+
+    window.Asc.plugin.onExternalMouseUp = function()
+    {
+        var event = new MouseEvent('mouseup', {
+            'view': window,
+            'bubbles': true,
+            'cancelable': true
+        });
+        document.dispatchEvent(event);
+    };
 
     window.Asc.plugin.button = function(id){
         saveRecent();
