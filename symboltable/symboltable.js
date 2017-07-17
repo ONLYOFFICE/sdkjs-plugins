@@ -470,12 +470,13 @@
     }
 
     function createCell(nSymbolCode, sFontName){
-
         var sId = 'r' + nSymbolCode;
         var _ret = $('<div id=\"' + sId + '\"></div>');
         _ret.text(String.fromCharCode(nSymbolCode));
         _ret.addClass('cell');
         _ret.addClass('noselect');
+        _ret.mousedown(cellClickHandler);
+        _ret.dblclick(cellDblClickHangdler);
         if(sFontName){
             _ret.css('font-family', sFontName);
         }
@@ -552,30 +553,25 @@
     function cellClickHandler() {
         var id = $(this).attr('id');
         nCurrentSymbol = parseInt(id.slice(1, id.length));
-
-        //reset selection
-        $('.cell').removeClass('cell-selected');
-        //select current cell
-        $(this).addClass('cell-selected');
         if(id[0] === 'c'){
             bMainFocus = true;
         }
         else{
             bMainFocus = false;
         }
-        updateInput();
-        updateRangeSelector();
+        updateView(false);
     }
 
     function cellDblClickHangdler(){
-        checkRecent(nCurrentSymbol, aFontSelects[nCurrentFont].m_wsFontName);
+        var bUpdateRecents = $(this).attr('id')[0] === 'c';
+        bUpdateRecents && checkRecent(nCurrentSymbol, aFontSelects[nCurrentFont].m_wsFontName);
         var sScript = createScript(aFontSelects[nCurrentFont].m_wsFontName, String.fromCharCode(nCurrentSymbol));
-        updateRecents();
+        bUpdateRecents && updateView(false, undefined, undefined, true);
         window.Asc.plugin.info.recalculate = true;
         window.Asc.plugin.executeCommand('command', sScript);
     }
 
-    function updateView(bUpdateTable, nTopSymbol, bOnlySelect) {
+    function updateView(bUpdateTable, nTopSymbol, bUpdateInput, bUpdateRecents) {
         //fill fonts combo box
         var oFontSelector = $('#font-select');
         oFontSelector.val(nCurrentFont);
@@ -611,10 +607,14 @@
             else{
                 $('.ps__scrollbar-y').css('border-width', '1px');
             }
+            $('#symbols-table > .cell').mousedown(cellClickHandler);
+            $('#symbols-table > .cell').dblclick(cellDblClickHangdler);
         }
 
         //fill recent
-        updateRecents();
+        if(bUpdateRecents){
+            updateRecents();
+        }
 
         //reset selection
         $('.cell').removeClass('cell-selected');
@@ -628,9 +628,10 @@
         }
 
         //update input
-        updateInput();
-        $('.cell').mousedown(cellClickHandler);
-        $('.cell').dblclick(cellDblClickHangdler);
+        if(bUpdateInput !== false){
+            updateInput();
+        }
+
     }
 
     function updateInput(){
@@ -771,7 +772,7 @@
                             var bUpdateTable = ($("#c" + value).length === 0);
                             nCurrentSymbol = value;
                             bMainFocus = true;
-                            updateView(bUpdateTable);
+                            updateView(bUpdateTable, false);
                         }
                     }
                 }
@@ -840,9 +841,7 @@
 
 
 
-
-
-            updateView();
+            updateView(undefined, undefined, undefined, true);
 
 
 
