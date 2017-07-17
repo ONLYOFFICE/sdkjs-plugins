@@ -471,8 +471,7 @@
 
     function createCell(nSymbolCode, sFontName){
         var sId = 'r' + nSymbolCode;
-        var _ret = $('<div id=\"' + sId + '\"></div>');
-        _ret.text(String.fromCharCode(nSymbolCode));
+        var _ret = $('<div id=\"' + sId + '\">&#' + nSymbolCode.toString() + '</div>');
         _ret.addClass('cell');
         _ret.addClass('noselect');
         _ret.mousedown(cellClickHandler);
@@ -781,7 +780,7 @@
                             var bUpdateTable = ($("#c" + value).length === 0);
                             nCurrentSymbol = value;
                             bMainFocus = true;
-                            updateView(bUpdateTable, false);
+                            updateView(bUpdateTable, undefined, false);
                         }
                     }
                 }
@@ -789,7 +788,7 @@
 
             $('#symbol-code-input').focusout(
                 function(){
-                    updateView(false);
+                    updateInput();
                 }
             );
 
@@ -847,10 +846,11 @@
                     window.Asc.plugin.info.recalculate = true;
                     window.Asc.plugin.executeCommand('command', sScript);
 					*/
-					checkRecent(nCurrentSymbol, aFontSelects[nCurrentFont].m_wsFontName);
+                    var bUpdateRecents = $(this).attr('id')[0] === 'c';
+                    bUpdateRecents && checkRecent(nCurrentSymbol, aFontSelects[nCurrentFont].m_wsFontName);
 					var _htmlPaste = "<span style=\"font-family:'" + aFontSelects[nCurrentFont].m_wsFontName + "'\">" + String.fromCharCode(nCurrentSymbol) + "</span>";
 					window.Asc.plugin.executeMethod("PasteHtml", [_htmlPaste]);
-					updateRecents();
+                    bUpdateRecents && updateRecents();
                 }
             );
 
