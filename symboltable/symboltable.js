@@ -475,10 +475,12 @@
         _ret.addClass('cell');
         _ret.addClass('noselect');
         _ret.mousedown(cellClickHandler);
-        _ret.dblclick(cellDblClickHangdler);
         if(sFontName){
             _ret.css('font-family', sFontName);
         }
+        //_ret.mouseup(function (e) {
+        //    e.stopPropagation();
+        //});
         return _ret;
     }
 
@@ -588,9 +590,16 @@
 		bUpdateRecents && updateView(false, undefined, undefined, true);
     }
 
+    var nLastScroll = -1000;
 
 
     function onScrollEnd(){
+
+        var container = document.getElementById('fake-symbol-table-wrap');
+
+        if(container.scrollTop === nLastScroll){
+            return;
+        }
 
         var nSymbolsCount = getAllSymbolsCount(aRanges);
         var nColsCount = getColsCount();
@@ -598,11 +607,10 @@
         var nAllRowsCount = Math.ceil(nSymbolsCount/nColsCount);
         var nFullHeight = nAllRowsCount*CELL_HEIGHT;
 
-        var container = document.getElementById('fake-symbol-table-wrap');
 
-        var nRowSkip = Math.min(nAllRowsCount - nRows, (nAllRowsCount*container.scrollTop/nFullHeight + 0.5) >> 0);
+            var nRowSkip = Math.min(nAllRowsCount - nRows, (nAllRowsCount*container.scrollTop/nFullHeight + 0.5) >> 0);
         container.scrollTop = nRowSkip*CELL_HEIGHT;
-
+        nLastScroll = container.scrollTop;
         if(!bMainFocus){
             nCurrentSymbol = getCodeByLinearIndex(aRanges, nRowSkip*nColsCount);
             bMainFocus = true;
@@ -663,8 +671,9 @@
             }
             var aCells = $('#symbols-table > .cell');
             aCells.mousedown(cellClickHandler);
-            aCells.dblclick(cellDblClickHangdler);
-            //aCells.mouseup(onScrollEnd);
+            //aCells.mouseup(function (e) {
+            //    e.stopPropagation();
+            //});
         }
 
         //fill recent
