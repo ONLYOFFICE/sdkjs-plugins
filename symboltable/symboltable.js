@@ -583,9 +583,19 @@
         window.Asc.plugin.info.recalculate = true;
         window.Asc.plugin.executeCommand('command', sScript);
 		*/
+
+
+
 		var bUpdateRecents = $(this).attr('id')[0] === 'c';
-		bUpdateRecents && checkRecent(nCurrentSymbol, aFontSelects[nCurrentFont].m_wsFontName);
-		var _htmlPaste = "<span style=\"font-family:'" + aFontSelects[nCurrentFont].m_wsFontName + "'\">" + String.fromCharCode(nCurrentSymbol) + "</span>";
+		var sFont;
+		if(bUpdateRecents){
+		    sFont = aFontSelects[nCurrentFont].m_wsFontName;
+        }
+        else{
+		    sFont = $(this).css('font-family');
+        }
+		bUpdateRecents && checkRecent(nCurrentSymbol, sFont);
+		var _htmlPaste = "<span style=\"font-family:'" + sFont + "'\">" + String.fromCharCode(nCurrentSymbol) + "</span>";
 		window.Asc.plugin.executeMethod("PasteHtml", [_htmlPaste]);
 		bUpdateRecents && updateView(false, undefined, undefined, true);
     }
