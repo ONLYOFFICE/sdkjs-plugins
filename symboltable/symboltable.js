@@ -563,12 +563,19 @@
     }
 
     function cellDblClickHangdler(){
+		/*
         var bUpdateRecents = $(this).attr('id')[0] === 'c';
         bUpdateRecents && checkRecent(nCurrentSymbol, aFontSelects[nCurrentFont].m_wsFontName);
         var sScript = createScript(aFontSelects[nCurrentFont].m_wsFontName, String.fromCharCode(nCurrentSymbol));
         bUpdateRecents && updateView(false, undefined, undefined, true);
         window.Asc.plugin.info.recalculate = true;
         window.Asc.plugin.executeCommand('command', sScript);
+		*/
+		var bUpdateRecents = $(this).attr('id')[0] === 'c';
+		bUpdateRecents && checkRecent(nCurrentSymbol, aFontSelects[nCurrentFont].m_wsFontName);
+		var _htmlPaste = "<span style=\"font-family:'" + aFontSelects[nCurrentFont].m_wsFontName + "'\">" + String.fromCharCode(nCurrentSymbol) + "</span>";
+		window.Asc.plugin.executeMethod("PasteHtml", [_htmlPaste]);
+		bUpdateRecents && updateView(false, undefined, undefined, true);
     }
 
     function updateView(bUpdateTable, nTopSymbol, bUpdateInput, bUpdateRecents) {
@@ -831,11 +838,17 @@
 
             $('#insert-button').click(
                 function () {
+					/*
                     checkRecent(nCurrentSymbol, aFontSelects[nCurrentFont].m_wsFontName);
                     var sScript = createScript(aFontSelects[nCurrentFont].m_wsFontName, String.fromCharCode(nCurrentSymbol));
                     updateRecents();
                     window.Asc.plugin.info.recalculate = true;
                     window.Asc.plugin.executeCommand('command', sScript);
+					*/
+					checkRecent(nCurrentSymbol, aFontSelects[nCurrentFont].m_wsFontName);
+					var _htmlPaste = "<span style=\"font-family:'" + aFontSelects[nCurrentFont].m_wsFontName + "'\">" + String.fromCharCode(nCurrentSymbol) + "</span>";
+					window.Asc.plugin.executeMethod("PasteHtml", [_htmlPaste]);
+					updateRecents();
                 }
             );
 
