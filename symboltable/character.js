@@ -1285,7 +1285,7 @@
 		return _retArray;
 	};
 
-	window.getSupprotedRangesByFont = function(_select)
+	window.getSupportedRangesByFont = function(_select)
 	{
 		var _ret = [];
 		for(var i = 0; i < c_oUnicodeRanges.length; ++i)

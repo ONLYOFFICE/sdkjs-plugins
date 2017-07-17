@@ -278,20 +278,108 @@
        oRangeNames[273] =  'Supplementary Private Use Area B';               
     
     
-    var sCurrentFont;
-    var nCurrentRange;
-    var aCurSupportedRanges;
+
+    var CELL_WIDTH = 31;
+    var CELL_HEIGHT = 33;
+
+
 
     var aFontSelects = [];
+    var aRanges = [];
     var aRecents = [];
-    var oMapFontSelect = [];
+    var nCurrentFont = -1;// индекс в aFontSelects
+    var nCurrentSymbol = -1;// code
+    var bMainFocus = true;//фокус в основной таблице
+
     var nMaxRecent = 36;
-    function getAllFontsSelect(data){
-        aFontSelects = data;
-        for(var i  = 0; i < aFontSelects.length; ++i){
-            oMapFontSelect[aFontSelects[i].m_wsFontName] = aFontSelects[i];
+
+
+
+    function getArrRangesByFont(nFontName){
+        var _ret = getSupportedRangesByFont(aFontSelects[nFontName]);
+        if(_ret.length === 0){
+            _ret.push({Start:0x20, End: 0xFF});
         }
+        if(_ret[0].Start < 0x20){
+            _ret[0].Start = 0x20;
+        }
+        return _ret;
     }
+
+    function getRangeBySymbol(arrRanges, nCode){
+        for(var i = 0; i < arrRanges.length; ++i){
+            if(arrRanges[i].Start <= nCode && arrRanges[i].End >= nCode){
+                return arrRanges[i];
+            }
+        }
+        return null;
+    }
+
+    function getRangeByName(arrRanges, nName){
+        for(var i = 0; i < arrRanges.length; ++i){
+            if(arrRanges[i].Name === nName){
+                return arrRanges[i];
+            }
+        }
+        return null;
+    }
+
+    function getLinearIndexByCode(arrRanges, nCode){
+        var nLinearIndex = -1;
+        var nCounter = 0;
+        var oCurRange;
+        for(var i = 0; i < arrRanges.length; ++i){
+            oCurRange = arrRanges[i];
+            if(oCurRange.Start > nCode){
+                return -1;
+            }
+            if(oCurRange.Start <= nCode && oCurRange.End >= nCode){
+                return nCounter + (nCode - oCurRange.Start);
+            }
+            nCounter += (oCurRange.End - oCurRange.Start + 1);
+        }
+        return nLinearIndex;
+    }
+
+    function getCodeByLinearIndex(arrRanges, nIndex){
+        var nCount = 0;
+        var oCurRange = arrRanges[0];
+        var nDiff;
+        for(var i = 0; i < arrRanges.length; ++i){
+            oCurRange = arrRanges[i];
+            nDiff = oCurRange.End - oCurRange.Start + 1;
+            if(nCount + nDiff > nIndex){
+                return oCurRange.Start + nIndex - nCount;
+            }
+            nCount += nDiff;
+        }
+        return -1;
+    }
+
+    function createTable(arrSym, nRowsCount, nColsCount, oDiv){
+
+        var nDivCount = nRowsCount*nColsCount;
+        var nCellsCounter = 0;
+        var sInnerHtml = '';
+        var sId;
+        for(var i = 0; i < nDivCount; ++i){
+            if(i < arrSym.length){
+                sId = 'c' + arrSym[i];
+                sInnerHtml += '<div class=\"cell\" id=\"' + sId + '\">' + '&#' + arrSym[i].toString(10) + '</div>';
+            }
+            else{
+                sInnerHtml += '<div class=\"cell\"></div>';
+            }
+            ++nCellsCounter;
+            if(nCellsCounter >= nColsCount){
+                sInnerHtml +=  '<br class=\"noselect\">';
+                nCellsCounter = 0;
+            }
+        }
+        oDiv.innerHTML = sInnerHtml;
+    }
+
+
 
     function getCookie(cname) {
         var name = cname + "=";
@@ -350,27 +438,6 @@
         }
     }
 
-    function getFontInfo(sFontName){
-        return oMapFontSelect[sFontName];
-    }
-
-    function getRangeName(nRangeId){
-        return oRangeNames[nRangeId];
-    }
-
-    function fillFontSelect(){
-        var oFontSelector = $('#font-select');
-        oFontSelector.empty();
-        var oOption;
-        for(var i = 0; i < aFontSelects.length; ++i){
-            oOption = $('<option></option>');
-            oOption.attr('value', aFontSelects[i].m_wsFontName);
-            oOption.text(aFontSelects[i].m_wsFontName);
-            oFontSelector.append(oOption);
-        }
-        oFontSelector.val(sCurrentFont);
-    }
-
 
     function createScript(sFont, sText){
         var sScript = '';
@@ -402,54 +469,17 @@
         return sScript;
     }
 
-    function cellDblClick(){
-        var sScript =  createScript(sCurrentFont, $(this).text());
-        window.Asc.plugin.info.recalculate = true;
-        window.Asc.plugin.executeCommand("command", sScript);
-        if($(this).parent().attr("id") === 'symbols-table'){
-            var oThis = $(this);
-            checkRecent(oThis.text().charCodeAt(0), oThis.css('font-family'));
-            updateRecents();
-        }
-    }
-    function cellClick(){
-        $('.cell').removeClass('cell-selected');
-        $(this).addClass('cell-selected');
-        if(bSetVal){
-            var sVal = $(this).text().charCodeAt(0).toString(16).toUpperCase();
-            var sValLen = sVal.length;
-            for(var i = sValLen; i < 4; ++i){
-                sVal = '0' + sVal;
-            }
-            $('#symbol-code-input').val(sVal);
-        }
-    }
-
-    var bSetVal = true;
     function createCell(nSymbolCode, sFontName){
-        var _ret = $('<div></div>');
+
+        var sId = 'r' + nSymbolCode;
+        var _ret = $('<div id=\"' + sId + '\"></div>');
         _ret.text(String.fromCharCode(nSymbolCode));
         _ret.addClass('cell');
         _ret.addClass('noselect');
-        _ret.css('font-family', sFontName);
-        _ret.dblclick(cellDblClick);
-        _ret.click(cellClick);
-        return _ret;
-    }
-
-    function updateFontRangeSelectByFont(){
-        var oRangeSelector = $('#range-select');
-        oRangeSelector.empty();
-        var oOption;
-        var aOptions = [];
-        for(var i = 0; i < aCurSupportedRanges.length; ++i){
-            oOption = $('<option></option>');
-            oOption.attr('value', "" + aCurSupportedRanges[i].Name);
-            oOption.text(getRangeName(aCurSupportedRanges[i].Name));
-            aOptions.push(oOption);
+        if(sFontName){
+            _ret.css('font-family', sFontName);
         }
-        oRangeSelector.append(aOptions);
-        oRangeSelector.val("" + aCurSupportedRanges[nCurrentRange].Name);
+        return _ret;
     }
 
     function updateRecents(){
@@ -459,40 +489,181 @@
             oRecentsDiv.append(createCell(aRecents[i].symbol, aRecents[i].font));
         }
     }
+    function getColsCount(){
+        var nMaxWidth = $('#main-div').innerWidth() - 16 - 2;
+        return ((nMaxWidth/CELL_WIDTH) >> 0);
+    }
 
-    function updateTableByFont(){
-        var oCurRange = aCurSupportedRanges[nCurrentRange];
-        var oSymbolTable = $('#symbols-table');
-        oSymbolTable.empty();
-        if(!oCurRange){
-            return;
+
+    function getMaxHeight(){
+
+        var nMaxHeight = $('#main-div').innerHeight() - 10 - $('#header-div').outerHeight(true) - $('#recent-symbols-wrap').outerHeight(true)
+            - $('#value-wrap').outerHeight(true) - $('#insert-button').outerHeight(true) - 2;
+        return nMaxHeight;
+    }
+    function getRowsCount() {
+        return  ((getMaxHeight()/CELL_HEIGHT) >> 0);
+    }
+
+    function getAllSymbolsCount(arrRanges){
+        var _count = 0;
+        var oRange;
+        for(var i = 0; i < arrRanges.length; ++i){
+            oRange = arrRanges[i];
+            _count += (oRange.End - oRange.Start + 1);
         }
-        var nStart = Math.max(0x20,  oCurRange.Start);
-        var aCells = [];
-        for(var i = nStart; i <= oCurRange.End; ++i){
-            var oCell = createCell(i, sCurrentFont);
-            aCells.push(oCell);
+        return _count;
+    }
+
+    
+
+
+    function setTable(nStartCode){
+        var nColsCount = getColsCount();
+        var nRowsCount = getRowsCount();
+        var nIndexSymbol = getLinearIndexByCode(aRanges, nStartCode);
+
+        var nRowsSkip = ((nIndexSymbol / nColsCount) >> 0);
+        var nFirst = nRowsSkip*nColsCount;
+        var nSymbolsCount = nRowsCount*nColsCount;
+        var aSymbols = [];
+        var nCode;
+        for(var i = 0; i < nSymbolsCount; ++i){
+            nCode = getCodeByLinearIndex(aRanges, nFirst + i);
+            if(nCode === -1){
+                break;
+            }
+            aSymbols.push(nCode);
         }
-        oSymbolTable.append(aCells);
-        updateScroll();
-        aCells[0].trigger('click');
+        var oSymbolTable = $('#symbols-table')[0];
+        $('#symbols-table').css('font-family', aFontSelects[nCurrentFont].m_wsFontName);
+        createTable(aSymbols, nRowsCount, nColsCount, oSymbolTable);
+        return nRowsSkip;
     }
 
 
 
-    function updateScroll(){
-        var container = document.getElementById('scrollable-table-div');
-        Ps.update(container);
-        if($('.ps__scrollbar-y').height() === 0){
-            $('.ps__scrollbar-y').css('border-width', '0px');
-            $('#symbols-table').css('margin-right', '0px');
+    function onResize(){
+
+    }
+
+
+
+    function cellClickHandler() {
+        var id = $(this).attr('id');
+        nCurrentSymbol = parseInt(id.slice(1, id.length));
+
+        //reset selection
+        $('.cell').removeClass('cell-selected');
+        //select current cell
+        $(this).addClass('cell-selected');
+        if(id[0] === 'c'){
+            bMainFocus = true;
         }
         else{
-            $('.ps__scrollbar-y').css('border-width', '1px');
-            $('#symbols-table').css('margin-right', '13px');
+            bMainFocus = false;
         }
+        updateInput();
+        updateRangeSelector();
     }
 
+    function cellDblClickHangdler(){
+        checkRecent(nCurrentSymbol, aFontSelects[nCurrentFont].m_wsFontName);
+        var sScript = createScript(aFontSelects[nCurrentFont].m_wsFontName, String.fromCharCode(nCurrentSymbol));
+        updateRecents();
+        window.Asc.plugin.info.recalculate = true;
+        window.Asc.plugin.executeCommand('command', sScript);
+    }
+
+    function updateView(bUpdateTable, nTopSymbol, bOnlySelect) {
+        //fill fonts combo box
+        var oFontSelector = $('#font-select');
+        oFontSelector.val(nCurrentFont);
+        //fill ranges combo box
+        updateRangeSelector();
+
+
+        //main table
+        var nRowsCount = getRowsCount();
+
+        var nHeight = nRowsCount*CELL_HEIGHT;
+        $('#scrollable-table-div').height(nHeight);
+        $('#scrollable-table-div').css('margin-bottom', getMaxHeight() - nHeight);
+
+
+        if(bUpdateTable !== false){
+            //fill table
+            var nSymbol = (nTopSymbol !== null && nTopSymbol !== undefined)? nTopSymbol : nCurrentSymbol;
+            var nRowSkip = setTable(nSymbol);
+            //update scroll
+            var nSymbolsCount = getAllSymbolsCount(aRanges);
+            var nAllRowsCount = Math.ceil(nSymbolsCount/getColsCount());
+            var nFullHeight = nAllRowsCount*CELL_HEIGHT;
+            $("#fake-symbol-table-wrap").height(nHeight);
+            $("#fake-symbol-table").height(nFullHeight);
+
+            var container = document.getElementById('fake-symbol-table-wrap');
+            container.scrollTop = nRowSkip*CELL_HEIGHT;
+            Ps.update(container);
+            if($('.ps__scrollbar-y').height() === 0){
+                $('.ps__scrollbar-y').css('border-width', '0px');
+            }
+            else{
+                $('.ps__scrollbar-y').css('border-width', '1px');
+            }
+        }
+
+        //fill recent
+        updateRecents();
+
+        //reset selection
+        $('.cell').removeClass('cell-selected');
+
+        //select current cell
+        if(bMainFocus){
+            $('#c' + nCurrentSymbol).addClass('cell-selected');
+        }
+        else{
+            $('#r' + nCurrentSymbol).addClass('cell-selected');
+        }
+
+        //update input
+        updateInput();
+        $('.cell').mousedown(cellClickHandler);
+        $('.cell').dblclick(cellDblClickHangdler);
+    }
+
+    function updateInput(){
+
+        var sVal = nCurrentSymbol.toString(16).toUpperCase();
+        var sValLen = sVal.length;
+        for(var i = sValLen; i < 5; ++i){
+            sVal = '0' + sVal;
+        }
+        $('#symbol-code-input').val(sVal);
+    }
+
+
+    function updateRangeSelector() {
+        var oRangeSelector = $('#range-select');
+        var oCurrentRange = getRangeBySymbol(aRanges, nCurrentSymbol);
+        if(!oCurrentRange){
+            oRangeSelector.empty();
+            oRangeSelector.hide();
+        }
+        else{
+            oRangeSelector.show();
+            oRangeSelector.empty();
+            var oOption, i;
+            for(i = 0; i < aRanges.length; ++i){
+                oOption = $('<option></option>');
+                oOption.attr('value', '' + aRanges[i].Name);
+                oOption.text(oRangeNames[aRanges[i].Name]);
+                oRangeSelector.append(oOption);
+            }
+            oRangeSelector.val(''+oCurrentRange.Name);
+        }
+    }
 
     window.Asc.plugin.onMethodReturn = function(returnValue)
     {
@@ -500,99 +671,94 @@
         var _this = this;
         $(document).ready(function () {
 
-
-            var data = returnValue;
-
-            $( window ).resize(function(){
-                updateScroll();
-            });
-
-            //_this.resizeWindow(600, 700, 400, 300, 10000, 10000);
-
-            fillRecentSymbols();
-
-            var container = document.getElementById('scrollable-table-div');
-            Ps.initialize(container, {
-                theme: 'custom-theme',
-                minScrollbarLength: 50
-            });
-            getAllFontsSelect(data);
-            if(aFontSelects.length === 0){
-                //  this.executeCommand('close', '');
-                return;
-            }
-            if(oMapFontSelect['Cambria Math']){
-                sCurrentFont = 'Cambria Math';
-            }
-            else if(oMapFontSelect['Arial Unicode MS']){
-                sCurrentFont = 'Arial Unicode MS';
-            }
-            else{
-                sCurrentFont = aFontSelects[0].m_wsFontName;
-            }
-            aCurSupportedRanges = getSupprotedRangesByFont(getFontInfo(sCurrentFont));
-            var bFound = false;
-            for(var i = 0; i < aCurSupportedRanges.length && aCurSupportedRanges[i].Name < 2; ++i){
-                if(aCurSupportedRanges[i].Name === 1){
-                    nCurrentRange = i;
-                    bFound = true;
-                    break;
+            var oCurFont, oLastFont;
+            var data = [];
+            var oFontsByName = {};
+            var sCurFontNameInMap;
+            for(var i = 0; i < returnValue.length; ++i){
+                oCurFont = returnValue[i];
+                sCurFontNameInMap = oCurFont.m_wsFontName;
+                oLastFont = oFontsByName[sCurFontNameInMap];
+                if(!oLastFont){
+                    oFontsByName[sCurFontNameInMap] = oCurFont;
+                }
+                else{
+                    if(oLastFont.m_bBold && oLastFont.m_bItalic){
+                        oFontsByName[sCurFontNameInMap] = oCurFont;
+                    }
+                    else if(oLastFont.m_bBold && !oCurFont.m_bBold){
+                        oFontsByName[sCurFontNameInMap] = oCurFont;
+                    }
+                    else if(oLastFont.m_bItalic && !oCurFont.m_bBold && !oCurFont.m_bItalic){
+                        oFontsByName[sCurFontNameInMap] = oCurFont;
+                    }
                 }
             }
-            if(!bFound){
-                nCurrentRange = 0;
+            delete oFontsByName['ASCW3'];
+            for(var key in oFontsByName){
+                if(oFontsByName.hasOwnProperty(key)){
+                    data.push(oFontsByName[key]);
+                }
             }
+
+            //initialize params
+            aFontSelects = data;
+            if(oFontsByName['Cambria Math']){
+                for(i = 0; i < aFontSelects.length; ++i){
+                    if(aFontSelects[i].m_wsFontName === 'Cambria Math'){
+                        nCurrentFont = i;
+                        break;
+                    }
+                }
+            }
+            aRanges = getArrRangesByFont(nCurrentFont);
+            nCurrentSymbol = aRanges[0].Start;
+
+
+            //fill fonts combo box
+            var oFontSelector = $('#font-select');
+            oFontSelector.empty();
+            var oOption;
+            for(i = 0; i < aFontSelects.length; ++i){
+                oOption = $('<option></option>');
+                oOption.attr('value', i);
+                oOption.text(aFontSelects[i].m_wsFontName);
+                oFontSelector.append(oOption);
+            }
+            //fill recents
+            fillRecentSymbols();
+
+
+
+
+            $( window ).resize(function(){
+                updateView();
+            });
 
             $('#font-select').change(
                 function(){
-                    sCurrentFont = $('#font-select').val();
-                    var sOldName = null;
-                    if(aCurSupportedRanges[nCurrentRange]){
-                        sOldName = aCurSupportedRanges[nCurrentRange].Name;
-                    }
-                    aCurSupportedRanges = getSupprotedRangesByFont(getFontInfo(sCurrentFont));
-                    var bFound = false, i;
-                    if(sOldName !== null){
-                        for(i = 0; i < aCurSupportedRanges.length; ++i){
-                            if(aCurSupportedRanges[i].Name === sOldName){
-                                nCurrentRange = i;
-                                bFound = true;
-                                break;
-                            }
+                    var oCurrentRange = getRangeBySymbol(aRanges, nCurrentSymbol);
+                    nCurrentFont = parseInt($('#font-select').val());
+                    aRanges = getArrRangesByFont(nCurrentFont);
+                    for(var i = 0; i < aRanges.length; ++i){
+                        if(oCurrentRange.Name === aRanges[i].Name){
+                            break;
                         }
                     }
-                    if(!bFound){
-                        for(i = 0; i < aCurSupportedRanges.length && aCurSupportedRanges[i].Name < 2; ++i){
-                            if(aCurSupportedRanges[i].Name === 1){
-                                nCurrentRange = i;
-                                bFound = true;
-                                break;
-                            }
-                        }
+                    if(i === aRanges.length){
+                        nCurrentSymbol = aRanges[0].Start;
                     }
-                    if(!bFound){
-                        nCurrentRange = 0;
-                    }
-                    updateTableByFont();
-                    updateFontRangeSelectByFont();
+                    bMainFocus = true;
+                    updateView();
                 }
             );
 
             $('#range-select').change(
                 function () {
-                    var bFound = false;
-                    var nName = parseInt($('#range-select').val());
-                    for(var i = 0; i < aCurSupportedRanges.length; ++i){
-                        if(aCurSupportedRanges[i].Name === nName){
-                            nCurrentRange = i;
-                            bFound = true;
-                            break;
-                        }
-                    }
-                    if(!bFound){
-                        nCurrentRange = 0;
-                    }
-                    updateTableByFont();
+                    var oCurrentRange = getRangeByName(aRanges, parseInt($('#range-select').val()));
+                    nCurrentSymbol = oCurrentRange.Start;
+                    bMainFocus = true;
+                    updateView();
                 }
             );
 
@@ -600,25 +766,12 @@
                 function(){
                     var value = parseInt($(this).val(), 16);
                     if(!isNaN(value) && value > 0x1F){
-                        for(var i = 0; i < aCurSupportedRanges.length; ++i){
-                            var oCurRange = aCurSupportedRanges[i];
-                            if(value >= oCurRange.Start && value <= oCurRange.End){
-                                var oRangeSelector = $('#range-select');
-                                var sVal = "" + oCurRange.Name;
-                                if(sVal !== oRangeSelector.val()){
-                                    oRangeSelector.val(sVal);
-                                    bSetVal = false;
-                                    oRangeSelector.trigger('change');
-                                    bSetVal = true;
-                                }
-                                $('.cell').removeClass('cell-selected');
-                                var sText = "\'" + String.fromCharCode(value) + "\'";
-                                $(".cell:contains(" + sText +")").addClass('cell-selected');
-                                bSetVal = false;
-                                $('.cell-selected').trigger('click');
-                                bSetVal = true;
-                                return;
-                            }
+                        var oRange = getRangeBySymbol(aRanges, value);
+                        if(oRange){
+                            var bUpdateTable = ($("#c" + value).length === 0);
+                            nCurrentSymbol = value;
+                            bMainFocus = true;
+                            updateView(bUpdateTable);
                         }
                     }
                 }
@@ -626,20 +779,82 @@
 
             $('#symbol-code-input').focusout(
                 function(){
-                    $('.cell-selected').trigger('click');
+                    updateView(false);
                 }
             );
+
+
+            function onScrollEnd(){
+
+                var nSymbolsCount = getAllSymbolsCount(aRanges);
+                var nColsCount = getColsCount();
+                var nAllRowsCount = Math.ceil(nSymbolsCount/nColsCount);
+                var nFullHeight = nAllRowsCount*CELL_HEIGHT;
+
+                var container = document.getElementById('fake-symbol-table-wrap');
+
+                var nRowSkip = Math.min(nAllRowsCount, (nAllRowsCount*container.scrollTop/nFullHeight + 0.5) >> 0);
+                container.scrollTop = nRowSkip*CELL_HEIGHT;
+
+                if(!bMainFocus){
+                    nCurrentSymbol = getCodeByLinearIndex(aRanges, nRowSkip*nColsCount);
+                    bMainFocus = true;
+                }
+                else{
+                    var id = $('#symbols-table:first-child').children(":first").attr('id');
+                    if(id){
+                        var nOldFirstCode = parseInt(id.slice(1, id.length));
+                        var nOldFirstLinearIndex = getLinearIndexByCode(aRanges, nOldFirstCode);
+                        var nOldCurrentLinearIndex = getLinearIndexByCode(aRanges, nCurrentSymbol);
+                        var nDiff = nOldCurrentLinearIndex - nOldFirstLinearIndex;
+                        var nNewCurLinearIndex = nRowSkip*nColsCount + nDiff;
+                        nCurrentSymbol = getCodeByLinearIndex(aRanges, nNewCurLinearIndex);
+                    }
+                    else{
+                        nCurrentSymbol = getCodeByLinearIndex(aRanges, nRowSkip*nColsCount);
+                    }
+
+                }
+                updateView(true, getCodeByLinearIndex(aRanges, nRowSkip*nColsCount));
+            }
+
+            $("#fake-symbol-table-wrap").on('mouseup.perfect-scroll', onScrollEnd);
+            document.getElementById("fake-symbol-table-wrap").addEventListener("wheel", onScrollEnd);
+            document.getElementById("symbols-table").addEventListener("wheel", function(e){
+                var container = document.getElementById('fake-symbol-table-wrap');
+                container.scrollTop -= e.wheelDelta;
+                onScrollEnd();
+            });
+            $('#fake-symbol-table').on('scroll', onScrollEnd);
+
 
             $('#insert-button').click(
                 function () {
-                    $('.cell-selected').trigger('dblclick');
+                    checkRecent(nCurrentSymbol, aFontSelects[nCurrentFont].m_wsFontName);
+                    var sScript = createScript(aFontSelects[nCurrentFont].m_wsFontName, String.fromCharCode(nCurrentSymbol));
+                    updateRecents();
+                    window.Asc.plugin.info.recalculate = true;
+                    window.Asc.plugin.executeCommand('command', sScript);
                 }
             );
 
-            fillFontSelect();
-            updateTableByFont();
-            updateFontRangeSelectByFont();
-            updateRecents();
+
+
+
+
+            updateView();
+
+
+
+            var container = document.getElementById('fake-symbol-table-wrap');
+            Ps.initialize(container, {
+                theme: 'custom-theme',
+                minScrollbarLength: 50
+            });
+
+
+
+
         });
     };
 
