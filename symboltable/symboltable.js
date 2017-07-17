@@ -675,7 +675,9 @@
 
     window.Asc.plugin.onMethodReturn = function(returnValue)
     {
-
+		if (window.Asc.plugin.info.methodName != "GetFontList")
+			return;
+		
         var _this = this;
         $(document).ready(function () {
 
