@@ -931,7 +931,17 @@
             document.addEventListener("mouseup", onScrollEnd);
             document.getElementById("symbols-table").addEventListener("wheel", function(e){
                 var container = document.getElementById('fake-symbol-table-wrap');
-                container.scrollTop -= e.wheelDelta;
+                var delta = e.detail || e.wheelDelta || 0;
+                if(e.wheelDelta){
+                    delta = e.wheelDelta;
+                }
+                else if(e.deltaY){
+                    delta = e.deltaY*(-40);
+                }
+                else{
+                    delta = 0;
+                }
+                container.scrollTop -= delta;
                 onScrollEnd();
                 bShowTooltip = false;
             });
