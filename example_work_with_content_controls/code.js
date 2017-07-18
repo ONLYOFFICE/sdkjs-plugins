@@ -138,7 +138,7 @@
 			window.buttonIDChangeState_click = undefined;
 			if (null == returnValue)
 			{
-				window.Asc.plugin.executeMethod("AddContentControl", [1/*1 - block, 2 - inline*/]);
+				window.Asc.plugin.executeMethod("AddContentControl", [1/*1 - block, 2 - inline*/, {"Id" : 7/*own id*/, "Lock" : 0, "Tag" : "{some text}"}]);
 			}
 			else
 			{
