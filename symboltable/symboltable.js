@@ -554,9 +554,12 @@
     var nLastTime = -1000;
 
     function cellClickHandler(e) {
-        var nTime = (new Date()).getTime();
 
         var id = $(this).attr('id');
+        if(!id){
+            return;
+        }
+        var nTime = (new Date()).getTime();
         if(id === sLastId && (nTime - nLastTime) < 300 ){
             cellDblClickHangdler.call(this, e)
         }
@@ -640,8 +643,10 @@
             }
 
         }
+        $('#tooltip-div').hide();
         updateView(true, getCodeByLinearIndex(aRanges, nRowSkip*nColsCount));
     }
+    var bShowTooltip = true;
 
     function updateView(bUpdateTable, nTopSymbol, bUpdateInput, bUpdateRecents) {
         //fill fonts combo box
@@ -670,6 +675,7 @@
             $("#fake-symbol-table-wrap").height(nHeight);
             $("#fake-symbol-table").height(nFullHeight);
 
+            bShowTooltip = false;
             var container = document.getElementById('fake-symbol-table-wrap');
             container.scrollTop = nRowSkip*CELL_HEIGHT;
             Ps.update(container);
@@ -679,6 +685,7 @@
             else{
                 $('.ps__scrollbar-y').css('border-width', '1px');
             }
+            bShowTooltip = true;
             var aCells = $('#symbols-table > .cell');
             aCells.mousedown(cellClickHandler);
             //aCells.mouseup(function (e) {
@@ -864,6 +871,53 @@
             );
 
 
+            $(document).on('ps-scroll-y', function () {
+                if(!bShowTooltip){
+                    return;
+                }
+                var container = document.getElementById('fake-symbol-table-wrap');
+
+                var nSymbolsCount = getAllSymbolsCount(aRanges);
+                var nColsCount = getColsCount();
+                var nRows = getRowsCount();
+                var nAllRowsCount = Math.ceil(nSymbolsCount/nColsCount);
+                var nFullHeight = nAllRowsCount*CELL_HEIGHT;
+
+                var nSymbol;
+                var nRowSkip = Math.min(nAllRowsCount - nRows, (nAllRowsCount*container.scrollTop/nFullHeight + 0.5) >> 0);
+                if(!bMainFocus){
+                    nSymbol = getCodeByLinearIndex(aRanges, nRowSkip*nColsCount);
+                }
+                else{
+                    var id = $('#symbols-table:first-child').children(":first").attr('id');
+                    if(id){
+                        var nOldFirstCode = parseInt(id.slice(1, id.length));
+                        var nOldFirstLinearIndex = getLinearIndexByCode(aRanges, nOldFirstCode);
+                        var nOldCurrentLinearIndex = getLinearIndexByCode(aRanges, nCurrentSymbol);
+                        var nDiff = nOldCurrentLinearIndex - nOldFirstLinearIndex;
+                        var nNewCurLinearIndex = nRowSkip*nColsCount + nDiff;
+                        nSymbol = getCodeByLinearIndex(aRanges, nNewCurLinearIndex);
+                    }
+                    else{
+                        nSymbol = getCodeByLinearIndex(aRanges, nRowSkip*nColsCount);
+                    }
+                }
+
+                var oTooltip = $('#tooltip-div');
+                var oRange = getRangeBySymbol(aRanges, nSymbol);
+                if(!oRange){
+                    oTooltip.hide();
+                    return;
+                }
+                var sRangeName = oRangeNames[oRange.Name];
+                oTooltip.text(sRangeName);
+                oTooltip.css('top', $('.ps__scrollbar-y').css('top'));
+                oTooltip.css('right', $('#fake-symbol-table-wrap').width() + 4);
+                if(!oTooltip.is(":visible")){
+                    oTooltip.show();
+                }
+            });
+
 
             $("#fake-symbol-table-wrap").on('mouseup.perfect-scroll', onScrollEnd);
             document.getElementById("fake-symbol-table-wrap").addEventListener("wheel", onScrollEnd);
@@ -894,6 +948,8 @@
             );
 
 
+
+
             $("#main-div").show();
 
             var container = document.getElementById('fake-symbol-table-wrap');
@@ -901,6 +957,8 @@
                 theme: 'custom-theme',
                 minScrollbarLength: 50
             });
+
+            //$($('.ps__scrollbar-y')[0]).append('<span id=\"tooltip-span\" class=\"tooltiptext\">sdfsdfsdf</span>');
 
             updateView(undefined, undefined, undefined, true);
 
