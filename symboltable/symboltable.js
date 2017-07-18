@@ -492,7 +492,7 @@
         }
     }
     function getColsCount(){
-        var nMaxWidth = $('#main-div').innerWidth() - 16 - 2;
+        var nMaxWidth = $('#main-div').innerWidth() - 17 - 2;
         return ((nMaxWidth/CELL_WIDTH) >> 0);
     }
 
@@ -629,7 +629,7 @@
             bMainFocus = true;
         }
         else{
-            var id = $('#symbols-table:first-child').children(":first").attr('id');
+            var id = $('#symbols-table').children()[0].id;
             if(id){
                 var nOldFirstCode = parseInt(id.slice(1, id.length));
                 var nOldFirstLinearIndex = getLinearIndexByCode(aRanges, nOldFirstCode);
@@ -866,13 +866,18 @@
 
             $('#symbol-code-input').focusout(
                 function(){
+
                     updateInput();
                 }
             );
 
 
             $(document).on('ps-scroll-y', function () {
+
+                var oTooltip = $('#tooltip-div');
                 if(!bShowTooltip){
+                    bShowTooltip = true;
+                    oTooltip.hide();
                     return;
                 }
                 var container = document.getElementById('fake-symbol-table-wrap');
@@ -889,7 +894,7 @@
                     nSymbol = getCodeByLinearIndex(aRanges, nRowSkip*nColsCount);
                 }
                 else{
-                    var id = $('#symbols-table:first-child').children(":first").attr('id');
+                    var id = $('#symbols-table').children()[0].id;
                     if(id){
                         var nOldFirstCode = parseInt(id.slice(1, id.length));
                         var nOldFirstLinearIndex = getLinearIndexByCode(aRanges, nOldFirstCode);
@@ -903,7 +908,6 @@
                     }
                 }
 
-                var oTooltip = $('#tooltip-div');
                 var oRange = getRangeBySymbol(aRanges, nSymbol);
                 if(!oRange){
                     oTooltip.hide();
@@ -920,14 +924,40 @@
 
 
             $("#fake-symbol-table-wrap").on('mouseup.perfect-scroll', onScrollEnd);
-            document.getElementById("fake-symbol-table-wrap").addEventListener("wheel", onScrollEnd);
+            document.getElementById("fake-symbol-table-wrap").addEventListener("wheel",  function () {
+                onScrollEnd();
+                bShowTooltip = false;
+            });
             document.addEventListener("mouseup", onScrollEnd);
             document.getElementById("symbols-table").addEventListener("wheel", function(e){
                 var container = document.getElementById('fake-symbol-table-wrap');
                 container.scrollTop -= e.wheelDelta;
                 onScrollEnd();
+                bShowTooltip = false;
             });
-            $('#fake-symbol-table').on('scroll', onScrollEnd);
+            $('#fake-symbol-table').on('scroll',
+
+                function () {
+                    onScrollEnd();
+                    bShowTooltip = false;
+                }
+
+                );
+            $('.ps__scrollbar-y-rail').on('scroll',
+
+                function () {
+                    bShowTooltip = false;
+                }
+
+                );
+
+            $('.ps__scrollbar-y').on('scroll',
+
+                function () {
+                    bShowTooltip = false;
+                }
+
+                );
 
 
             $('#insert-button').click(
