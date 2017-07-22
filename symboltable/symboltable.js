@@ -294,6 +294,20 @@
     var nMaxRecent = 36;
 
 
+    function encodeSurrogateChar(nUnicode)
+    {
+        if (nUnicode < 0x10000)
+        {
+            return String.fromCharCode(nUnicode);
+        }
+        else
+        {
+            nUnicode = nUnicode - 0x10000;
+            var nLeadingChar = 0xD800 | (nUnicode >> 10);
+            var nTrailingChar = 0xDC00 | (nUnicode & 0x3FF);
+            return String.fromCharCode(nLeadingChar) + String.fromCharCode(nTrailingChar);
+        }
+    }
 
     function getArrRangesByFont(nFontName){
         var _ret = getSupportedRangesByFont(aFontSelects[nFontName]);
@@ -520,9 +534,6 @@
 
 
 
-    function onResize(){
-
-    }
 
 
     var sLastId = "";
@@ -573,7 +584,7 @@
 		    sFont = $(this).css('font-family');
         }
 		bUpdateRecents && checkRecent(nCurrentSymbol, sFont);
-		var _htmlPaste = "<span style=\"font-family:'" + sFont + "'\">" + String.fromCharCode(nCurrentSymbol) + "</span>";
+		var _htmlPaste = "<span style=\"font-family:'" + sFont + "'\">" + encodeSurrogateChar(nCurrentSymbol) + "</span>";
 		window.Asc.plugin.executeMethod("PasteHtml", [_htmlPaste]);
 		bUpdateRecents && updateView(false, undefined, undefined, true);
     }
@@ -956,7 +967,7 @@
 					*/
                     var bUpdateRecents = $(this).attr('id')[0] === 'c';
                     bUpdateRecents && checkRecent(nCurrentSymbol, aFontSelects[nCurrentFont].m_wsFontName);
-					var _htmlPaste = "<span style=\"font-family:'" + aFontSelects[nCurrentFont].m_wsFontName + "'\">" + String.fromCharCode(nCurrentSymbol) + "</span>";
+					var _htmlPaste = "<span style=\"font-family:'" + aFontSelects[nCurrentFont].m_wsFontName + "'\">" + encodeSurrogateChar(nCurrentSymbol) + "</span>";
 					window.Asc.plugin.executeMethod("PasteHtml", [_htmlPaste]);
                     bUpdateRecents && updateRecents();
                 }
