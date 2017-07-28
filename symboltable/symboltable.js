@@ -425,6 +425,7 @@
         if(aRecents.length > nMaxRecent){
             aRecents.splice(nMaxRecent, aRecents.length - nMaxRecent);
         }
+        saveRecent();
     }
 
 
@@ -615,17 +616,29 @@
             bMainFocus = true;
         }
         else{
-            var id = $('#symbols-table').children()[0].id;
-            if(id){
-                var nOldFirstCode = parseInt(id.slice(1, id.length));
-                var nOldFirstLinearIndex = getLinearIndexByCode(aRanges, nOldFirstCode);
-                var nOldCurrentLinearIndex = getLinearIndexByCode(aRanges, nCurrentSymbol);
-                var nDiff = nOldCurrentLinearIndex - nOldFirstLinearIndex;
-                var nNewCurLinearIndex = nRowSkip*nColsCount + nDiff;
-                nCurrentSymbol = getCodeByLinearIndex(aRanges, nNewCurLinearIndex);
-            }
-            else{
-                nCurrentSymbol = getCodeByLinearIndex(aRanges, nRowSkip*nColsCount);
+            var oFirstCell = $('#symbols-table').children()[0];
+            if(oFirstCell){
+                var id = oFirstCell.id;
+                if(id){
+                    var nOldFirstCode = parseInt(id.slice(1, id.length));
+                    var nOldFirstLinearIndex = getLinearIndexByCode(aRanges, nOldFirstCode);
+                    var nOldCurrentLinearIndex = getLinearIndexByCode(aRanges, nCurrentSymbol);
+                    var nDiff = nOldCurrentLinearIndex - nOldFirstLinearIndex;
+                    var nNewCurLinearIndex = nRowSkip*nColsCount + nDiff;
+                    nCurrentSymbol = getCodeByLinearIndex(aRanges, nNewCurLinearIndex);
+                    var nFirstIndex = nRowSkip*nColsCount;
+                    nNewCurLinearIndex -= nColsCount;
+                    while(nCurrentSymbol === -1 && nNewCurLinearIndex >= nFirstIndex){
+                        nCurrentSymbol = getCodeByLinearIndex(aRanges, nNewCurLinearIndex);
+                        nNewCurLinearIndex -= nColsCount;
+                    }
+                    if(nCurrentSymbol === -1){
+                        nCurrentSymbol = getCodeByLinearIndex(aRanges, nFirstIndex);
+                    }
+                }
+                else{
+                    nCurrentSymbol = getCodeByLinearIndex(aRanges, nRowSkip*nColsCount);
+                }
             }
 
         }
