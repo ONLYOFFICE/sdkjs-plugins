@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Example loading custom fields</title>
+    <script type="text/javascript" src="../pluginBase.js"></script>
+    <script type="text/javascript" src="code.js"></script>
+
+	<style type="text/css">
+		html, body {
+			margin: 0px;
+			padding: 0px;
+			overflow: hidden;
+			width:100%;
+			height:100%;
+		}
+
+		div.questionDiv {
+			font-size: 30px;
+			text-align: center;
+			margin: 20px 0px;
+		}
+
+	</style>
+
+</head>
+<body style="width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;">
+    <div id="divMain" style="margin: 0px auto; padding: 0; width:600px;">
+		<div id="divSimpleQuestion" style="display:none;">
+			<div id="divSimpleQuestionText" class="questionDiv">
+				What is your name?
+			</div>
+			<div align="center" style="margin: 20px 0px;">
+				<input id="inputSimpleQuestion" placeholder="type here...">
+			</div>
+		</div>
+		<div id="divDropDownQuestion" style="display:none;">
+			<div id="divDropDownQuestionText" class="questionDiv">
+				How old are you?
+			</div>
+			<div align="center" style="margin: 20px 0px;">
+				<select id="divDropDownQuestionSelect">
+					<option>
+						20
+					</option>
+					<option>
+						30
+					</option>
+					<option>
+						40
+					</option>
+				</select>
+			</div>
+		</div>
+
+		<div style="position: relative;width:200px; margin: 0px auto;">
+			<input id="buttonBack" type="button" value="Back" style="display: none;width:75px;position:absolute;left:0px"/>
+			<input id="buttonNext" type="button" value="Next" style="display: none;width:75px;position:absolute;right:0px"/>
+		</div>
+	</div>
+	
+</body>
+</html>
