@@ -4,6 +4,12 @@
 
 	window.Asc.plugin.init      = function(text)
 	{
+		if ("" == text)
+		{
+			window.Asc.plugin.executeCommand("close", "");
+			return;
+		}
+
 		text_init = text;
 		function StartCallback()
 		{
