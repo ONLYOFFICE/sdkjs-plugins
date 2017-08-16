@@ -254,4 +254,12 @@
 		}
 	};
 
+	window.Asc.plugin.button = function(id)
+	{
+		if (-1 === id)
+		{
+			this.executeCommand("close", "");
+		}
+	};
+
 })(window, undefined);
