@@ -7,7 +7,7 @@
             "description" : "youtube",
             "url"         : "index.html",
 
-            "icons"           : ["icon.png", "icon@2x.png"],
+            "icons"           : ["icon.png", "icon@2x.png", "icon2.png", "icon2@2x.png"],
             "isViewer"        : true,
             "EditorsSupport"  : ["word", "cell", "slide"],
 

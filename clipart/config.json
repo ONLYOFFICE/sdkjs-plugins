@@ -7,7 +7,7 @@
             "description" : "ClipArt",
             "url"         : "index.html",
 
-            "icons"           : ["icon.png", "icon@2x.png"],
+            "icons"           : ["icon.png", "icon@2x.png", "icon2.png", "icon2@2x.png"],
             "isViewer"        : false,
             "EditorsSupport"  : ["word", "slide", "cell"],
 
@@ -26,7 +26,7 @@
             "description" : "About",
             "url"         : "index_about.html",
 
-            "icons"           : ["icon.png", "icon@2x.png"],
+            "icons"           : ["icon.png", "icon@2x.png", "icon2.png", "icon2@2x.png"],
             "isViewer"        : false,
             "EditorsSupport"  : ["word", "slide", "cell"],
 
