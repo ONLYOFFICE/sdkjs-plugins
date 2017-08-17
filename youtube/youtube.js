@@ -17,6 +17,11 @@
 
 		if (0 == _id.indexOf("watch?v="))
 			_id = _id.substr(8);
+
+		var _amp = _id.indexOf("&");
+		if (-1 != _amp)
+			_id = _id.substr(0, _amp);
+
 		return _id;
 	}
 
@@ -142,21 +147,13 @@
 		}
 	};
 
-	window.onresize = function(e)
+	window.Asc.plugin.onEnableMouseEvent = function(isEnabled)
 	{
-		var _plugin = document.getElementById("me_youtube_0_container");
-		if (_plugin)
+		var _frames = document.getElementsByTagName("iframe");
+		if (_frames && _frames[0])
 		{
-			var _pluginContainer = document.getElementById("mep_0");
-			if (_pluginContainer)
-			{
-				_pluginContainer.style.width = "100%";
-				_pluginContainer.style.height = "100%";
-			}
-
-			_plugin.style.width = "100%";
-			_plugin.style.height = "100%";
+			_frames[0].style.pointerEvents = isEnabled ? "none" : "";
 		}
 	};
-
+	
 })(window, undefined);
