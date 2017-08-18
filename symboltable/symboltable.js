@@ -290,6 +290,7 @@
     var nCurrentFont = -1;// индекс в aFontSelects
     var nCurrentSymbol = -1;// code
     var bMainFocus = true;//фокус в основной таблице
+	var nFontNameRecent = -1;
 
     var nMaxRecent = 36;
 
@@ -460,7 +461,21 @@
     }
 
     function createCell(nSymbolCode, sFontName){
-        var sId = 'r' + nSymbolCode;
+        var sId;
+		if(sFontName){
+			var nFontIndex = 0;
+			aFontSelects[nCurrentFont].m_wsFontName
+			for(var i = 0; i < aFontSelects.length; ++i){
+				if(aFontSelects[i].m_wsFontName === sFontName){
+					nFontIndex = i;
+					break;
+				}
+			}
+			sId = 'r_' + nSymbolCode + '_' + nFontIndex;
+		}
+		else{
+			sId = 'r' + nSymbolCode;
+		}
         var _ret = $('<div id=\"' + sId + '\">&#' + nSymbolCode.toString() + '</div>');
         _ret.addClass('cell');
         _ret.addClass('noselect');
@@ -548,14 +563,20 @@
         }
         var nTime = (new Date()).getTime();
         if(id === sLastId && (nTime - nLastTime) < 300 ){
+			console.log('1');
             cellDblClickHangdler.call(this, e)
         }
         else{
-            nCurrentSymbol = parseInt(id.slice(1, id.length));
             if(id[0] === 'c'){
+				console.log('2');
+				nCurrentSymbol = parseInt(id.slice(1, id.length));
                 bMainFocus = true;
             }
             else{
+				console.log('3');
+				var aStrings = id.split('_');
+				nCurrentSymbol = parseInt(aStrings[1]);
+				nFontNameRecent = parseInt(aStrings[2]);
                 bMainFocus = false;
             }
             updateView(false);
@@ -576,13 +597,15 @@
 
 
 
-		var bUpdateRecents = $(this).attr('id')[0] === 'c';
+		var sIdCell = $(this).attr('id');
+		var bUpdateRecents = sIdCell[0] === 'c';
 		var sFont;
 		if(bUpdateRecents){
 		    sFont = aFontSelects[nCurrentFont].m_wsFontName;
         }
         else{
-		    sFont = $(this).css('font-family');
+			var nFontId = parseInt(sIdCell.split('_')[2]);
+		    sFont = aFontSelects[nFontId].m_wsFontName;
         }
 		bUpdateRecents && checkRecent(nCurrentSymbol, sFont);
 		var _htmlPaste = "<span style=\"font-family:'" + sFont + "'\">" + encodeSurrogateChar(nCurrentSymbol) + "</span>";
@@ -705,7 +728,7 @@
             $('#c' + nCurrentSymbol).addClass('cell-selected');
         }
         else{
-            $('#r' + nCurrentSymbol).addClass('cell-selected');
+            $('#r_' + nCurrentSymbol + '_' + nFontNameRecent).addClass('cell-selected');
         }
 
         //update input
@@ -1000,7 +1023,7 @@
             //$($('.ps__scrollbar-y')[0]).append('<span id=\"tooltip-span\" class=\"tooltiptext\">sdfsdfsdf</span>');
 
             updateView(undefined, undefined, undefined, true);
-
+			nLastScroll = 0;
 
 
 
