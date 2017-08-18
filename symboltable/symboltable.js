@@ -563,17 +563,14 @@
         }
         var nTime = (new Date()).getTime();
         if(id === sLastId && (nTime - nLastTime) < 300 ){
-			console.log('1');
             cellDblClickHangdler.call(this, e)
         }
         else{
             if(id[0] === 'c'){
-				console.log('2');
 				nCurrentSymbol = parseInt(id.slice(1, id.length));
                 bMainFocus = true;
             }
             else{
-				console.log('3');
 				var aStrings = id.split('_');
 				nCurrentSymbol = parseInt(aStrings[1]);
 				nFontNameRecent = parseInt(aStrings[2]);
@@ -778,6 +775,11 @@
 			return;
 		
         var _this = this;
+		returnValue.sort(function(a, b){
+			if(a.m_wsFontName < b.m_wsFontName) return -1;
+			if(a.m_wsFontName > b.m_wsFontName) return 1;
+			return 0;
+		});
         $(document).ready(function () {
 
             var oCurFont, oLastFont;
