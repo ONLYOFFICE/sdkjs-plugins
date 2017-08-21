@@ -101,6 +101,8 @@
 			document.getElementById("textbox_url").value = url;
 			document.getElementById("textbox_button").onclick();
 		}
+		
+		_textbox.focus();
 	};
 	
 	window.Asc.plugin.button = function(id)
