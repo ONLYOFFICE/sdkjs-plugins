@@ -1,10 +1,10 @@
 {
-    "name" : "Example loading custom fields",
-    "guid" : "asc.{E5A81B17-C871-4C4B-A90A-62D3A7EC0751}",
+    "name" : "Example of search and replace",
+    "guid" : "asc.{5FF5F75F-2977-4B98-8D36-7C406D610B90}",
 
     "variations" : [
         {
-            "description" : "Example loading custom fields",
+            "description" : "Example of search and replace",
             "url"         : "index.html",
 
             "icons"           : ["icon.png", "icon@2x.png"],
