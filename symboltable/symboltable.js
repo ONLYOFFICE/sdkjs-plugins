@@ -543,7 +543,7 @@
             aSymbols.push(nCode);
         }
         var oSymbolTable = $('#symbols-table')[0];
-        $('#symbols-table').css('font-family', aFontSelects[nCurrentFont].m_wsFontName);
+        $('#symbols-table').css('font-family',  '\'' + aFontSelects[nCurrentFont].m_wsFontName + '\'');
         createTable(aSymbols, nRowsCount, nColsCount, oSymbolTable);
         return nRowsSkip;
     }
