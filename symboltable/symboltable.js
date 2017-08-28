@@ -723,9 +723,21 @@
         //select current cell
         if(bMainFocus){
             $('#c' + nCurrentSymbol).addClass('cell-selected');
+			if(aFontSelects[nCurrentFont]){
+				$("#font-name-label").text(aFontSelects[nCurrentFont].m_wsFontName);
+			}
+			else{
+				$("#font-name-label").text('');
+			}			
         }
         else{
             $('#r_' + nCurrentSymbol + '_' + nFontNameRecent).addClass('cell-selected');
+			if(aFontSelects[nFontNameRecent]){
+				$("#font-name-label").text(aFontSelects[nFontNameRecent].m_wsFontName);
+			}
+			else{
+				$("#font-name-label").text('');
+			}
         }
 
         //update input
