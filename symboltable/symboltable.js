@@ -698,10 +698,12 @@
             var container = document.getElementById('fake-symbol-table-wrap');
             container.scrollTop = nRowSkip*CELL_HEIGHT;
             Ps.update(container);
-            if($('.ps__scrollbar-y').height() === 0){
+            if($('.ps__scrollbar-y').height() === 0 || (nFullHeight < nHeight)){
                 $('.ps__scrollbar-y').css('border-width', '0px');
+				$('.ps__scrollbar-y').hide();
             }
             else{
+				$('.ps__scrollbar-y').show();
                 $('.ps__scrollbar-y').css('border-width', '1px');
             }
             bShowTooltip = true;
@@ -863,14 +865,21 @@
                     var oCurrentRange = getRangeBySymbol(aRanges, nCurrentSymbol);
                     nCurrentFont = parseInt($('#font-select').val());
                     aRanges = getArrRangesByFont(nCurrentFont);
-                    for(var i = 0; i < aRanges.length; ++i){
-                        if(oCurrentRange.Name === aRanges[i].Name){
-                            break;
-                        }
-                    }
-                    if(i === aRanges.length){
-                        nCurrentSymbol = aRanges[0].Start;
-                    }
+					if(oCurrentRange){
+						for(var i = 0; i < aRanges.length; ++i){
+							if(oCurrentRange.Name === aRanges[i].Name){
+								break;
+							}
+						}
+						if(i === aRanges.length){
+							nCurrentSymbol = aRanges[0].Start;
+						}	
+					}
+					else{
+						if(i === aRanges.length){
+							nCurrentSymbol = aRanges[0].Start;
+						}	
+					}
                     bMainFocus = true;
                     updateView();
                 }
