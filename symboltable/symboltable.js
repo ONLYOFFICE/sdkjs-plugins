@@ -481,7 +481,7 @@
         _ret.addClass('noselect');
         _ret.mousedown(cellClickHandler);
         if(sFontName){
-            _ret.css('font-family', sFontName);
+            _ret.css('font-family', '\'' + sFontName + '\'');
         }
         //_ret.mouseup(function (e) {
         //    e.stopPropagation();
