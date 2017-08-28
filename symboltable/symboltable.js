@@ -876,9 +876,7 @@
 						}	
 					}
 					else{
-						if(i === aRanges.length){
-							nCurrentSymbol = aRanges[0].Start;
-						}	
+						nCurrentSymbol = aRanges[0].Start;							
 					}
                     bMainFocus = true;
                     updateView();
