@@ -684,7 +684,24 @@
         //fill ranges combo box
         updateRangeSelector();
 
-
+		
+		if(bMainFocus){
+			if(aFontSelects[nCurrentFont]){
+				$("#font-name-label").text(aFontSelects[nCurrentFont].m_wsFontName);
+			}
+			else{
+				$("#font-name-label").text('');
+			}			
+        }
+        else{
+			if(aFontSelects[nFontNameRecent]){
+				$("#font-name-label").text(aFontSelects[nFontNameRecent].m_wsFontName);
+			}
+			else{
+				$("#font-name-label").text('');
+			}
+        }
+		
         //main table
         var nRowsCount = getRowsCount();
 
@@ -693,6 +710,7 @@
         $('#scrollable-table-div').css('margin-bottom', getMaxHeight() - nHeight);
 
 
+		
         if(bUpdateTable !== false){
             //fill table
             var nSymbol = (nTopSymbol !== null && nTopSymbol !== undefined)? nTopSymbol : nCurrentSymbol;
@@ -734,22 +752,10 @@
 
         //select current cell
         if(bMainFocus){
-            $('#c' + nCurrentSymbol).addClass('cell-selected');
-			if(aFontSelects[nCurrentFont]){
-				$("#font-name-label").text(aFontSelects[nCurrentFont].m_wsFontName);
-			}
-			else{
-				$("#font-name-label").text('');
-			}			
+            $('#c' + nCurrentSymbol).addClass('cell-selected');		
         }
         else{
             $('#r_' + nCurrentSymbol + '_' + nFontNameRecent).addClass('cell-selected');
-			if(aFontSelects[nFontNameRecent]){
-				$("#font-name-label").text(aFontSelects[nFontNameRecent].m_wsFontName);
-			}
-			else{
-				$("#font-name-label").text('');
-			}
         }
 
         //update input
