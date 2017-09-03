@@ -491,7 +491,7 @@
         _ret.addClass('noselect');
         _ret.mousedown(cellClickHandler);
         if(sFontName){
-            _ret.css('font-family', '\'' + sFontName + '\' !important');
+            _ret.css('font-family', '\'' + sFontName + '\'');
         }
         //_ret.mouseup(function (e) {
         //    e.stopPropagation();
@@ -553,7 +553,7 @@
             aSymbols.push(nCode);
         }
         var oSymbolTable = $('#symbols-table')[0];
-        $('#symbols-table').css('font-family',  '\'' + aFontSelects[nCurrentFont].m_wsFontName + '\'  !important');
+        $('#symbols-table').css('font-family',  '\'' + aFontSelects[nCurrentFont].m_wsFontName + '\'');
         createTable(aSymbols, nRowsCount, nColsCount, oSymbolTable);
         return nRowsSkip;
     }
