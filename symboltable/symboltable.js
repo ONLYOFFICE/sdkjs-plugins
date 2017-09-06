@@ -293,6 +293,7 @@
 	var nFontNameRecent = -1;
 
     var nMaxRecent = 36;
+	var bScrollMouseUp = false;
 
 
     function encodeSurrogateChar(nUnicode)
@@ -979,6 +980,10 @@
                 if(!oTooltip.is(":visible")){
                     oTooltip.show();
                 }
+				if(bScrollMouseUp){
+					bScrollMouseUp = false;					
+					onScrollEnd();
+				}
             });
 
 
@@ -987,7 +992,10 @@
                 onScrollEnd();
                 bShowTooltip = false;
             });
-            document.addEventListener("mouseup", onScrollEnd);
+            document.addEventListener("mouseup", function(){
+				bScrollMouseUp = true;						
+				onScrollEnd();
+			});
             document.getElementById("symbols-table").addEventListener("wheel", function(e){
                 var container = document.getElementById('fake-symbol-table-wrap');
                 var delta = e.detail || e.wheelDelta || 0;
