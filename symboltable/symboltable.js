@@ -712,6 +712,7 @@
 
 
 		
+		bScrollMouseUp = false;	
         if(bUpdateTable !== false){
             //fill table
             var nSymbol = (nTopSymbol !== null && nTopSymbol !== undefined)? nTopSymbol : nCurrentSymbol;
@@ -987,13 +988,16 @@
             });
 
 
-            $("#fake-symbol-table-wrap").on('mouseup.perfect-scroll', onScrollEnd);
+            $("#fake-symbol-table-wrap").on('mouseup.perfect-scroll', function(){
+				bScrollMouseUp = true;						
+				onScrollEnd();
+			});
             document.getElementById("fake-symbol-table-wrap").addEventListener("wheel",  function () {
                 onScrollEnd();
                 bShowTooltip = false;
             });
             document.addEventListener("mouseup", function(){
-				bScrollMouseUp = true;						
+				//bScrollMouseUp = true;						
 				onScrollEnd();
 			});
             document.getElementById("symbols-table").addEventListener("wheel", function(e){
