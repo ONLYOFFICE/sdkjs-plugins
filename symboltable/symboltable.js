@@ -290,8 +290,10 @@
     var nCurrentFont = -1;// индекс в aFontSelects
     var nCurrentSymbol = -1;// code
     var bMainFocus = true;//фокус в основной таблице
+	var nFontNameRecent = -1;
 
     var nMaxRecent = 36;
+	var bScrollMouseUp = false;
 
 
     function encodeSurrogateChar(nUnicode)
@@ -376,13 +378,23 @@
         var nCellsCounter = 0;
         var sInnerHtml = '';
         var sId;
+		var sStyle = 'style=\'border-bottom: none\'';
+		var sCellStyle;
         for(var i = 0; i < nDivCount; ++i){
+			
+			
+			if(((i / nColsCount) >> 0) === (nRowsCount - 1)){
+				sCellStyle = sStyle;
+			}
+			else{
+				sCellStyle = '';
+			}
             if(i < arrSym.length){
                 sId = 'c' + arrSym[i];
-                sInnerHtml += '<div class=\"cell\" id=\"' + sId + '\">' + '&#' + arrSym[i].toString(10) + '</div>';
+                sInnerHtml += '<div class=\"cell\" '+sCellStyle +' id=\"' + sId + '\">' + '&#' + arrSym[i].toString(10) + '</div>';
             }
             else{
-                sInnerHtml += '<div class=\"cell\"></div>';
+                sInnerHtml += '<div class=\"cell\"'+sCellStyle +'></div>';
             }
             ++nCellsCounter;
             if(nCellsCounter >= nColsCount){
@@ -460,13 +472,27 @@
     }
 
     function createCell(nSymbolCode, sFontName){
-        var sId = 'r' + nSymbolCode;
+        var sId;
+		if(sFontName){
+			var nFontIndex = 0;
+			aFontSelects[nCurrentFont].m_wsFontName
+			for(var i = 0; i < aFontSelects.length; ++i){
+				if(aFontSelects[i].m_wsFontName === sFontName){
+					nFontIndex = i;
+					break;
+				}
+			}
+			sId = 'r_' + nSymbolCode + '_' + nFontIndex;
+		}
+		else{
+			sId = 'r' + nSymbolCode;
+		}
         var _ret = $('<div id=\"' + sId + '\">&#' + nSymbolCode.toString() + '</div>');
         _ret.addClass('cell');
         _ret.addClass('noselect');
         _ret.mousedown(cellClickHandler);
         if(sFontName){
-            _ret.css('font-family', sFontName);
+            _ret.css('font-family', '\'' + sFontName + '\'');
         }
         //_ret.mouseup(function (e) {
         //    e.stopPropagation();
@@ -528,7 +554,7 @@
             aSymbols.push(nCode);
         }
         var oSymbolTable = $('#symbols-table')[0];
-        $('#symbols-table').css('font-family', aFontSelects[nCurrentFont].m_wsFontName);
+        $('#symbols-table').css('font-family',  '\'' + aFontSelects[nCurrentFont].m_wsFontName + '\'');
         createTable(aSymbols, nRowsCount, nColsCount, oSymbolTable);
         return nRowsSkip;
     }
@@ -551,11 +577,14 @@
             cellDblClickHangdler.call(this, e)
         }
         else{
-            nCurrentSymbol = parseInt(id.slice(1, id.length));
             if(id[0] === 'c'){
+				nCurrentSymbol = parseInt(id.slice(1, id.length));
                 bMainFocus = true;
             }
             else{
+				var aStrings = id.split('_');
+				nCurrentSymbol = parseInt(aStrings[1]);
+				nFontNameRecent = parseInt(aStrings[2]);
                 bMainFocus = false;
             }
             updateView(false);
@@ -576,13 +605,15 @@
 
 
 
-		var bUpdateRecents = $(this).attr('id')[0] === 'c';
+		var sIdCell = $(this).attr('id');
+		var bUpdateRecents = sIdCell[0] === 'c';
 		var sFont;
 		if(bUpdateRecents){
 		    sFont = aFontSelects[nCurrentFont].m_wsFontName;
         }
         else{
-		    sFont = $(this).css('font-family');
+			var nFontId = parseInt(sIdCell.split('_')[2]);
+		    sFont = aFontSelects[nFontId].m_wsFontName;
         }
 		bUpdateRecents && checkRecent(nCurrentSymbol, sFont);
 		var _htmlPaste = "<span style=\"font-family:'" + sFont + "'\">" + encodeSurrogateChar(nCurrentSymbol) + "</span>";
@@ -654,15 +685,34 @@
         //fill ranges combo box
         updateRangeSelector();
 
-
+		
+		if(bMainFocus){
+			if(aFontSelects[nCurrentFont]){
+				$("#font-name-label").text(aFontSelects[nCurrentFont].m_wsFontName);
+			}
+			else{
+				$("#font-name-label").text('');
+			}			
+        }
+        else{
+			if(aFontSelects[nFontNameRecent]){
+				$("#font-name-label").text(aFontSelects[nFontNameRecent].m_wsFontName);
+			}
+			else{
+				$("#font-name-label").text('');
+			}
+        }
+		
         //main table
         var nRowsCount = getRowsCount();
 
-        var nHeight = nRowsCount*CELL_HEIGHT;
+        var nHeight = nRowsCount*CELL_HEIGHT - 1;
         $('#scrollable-table-div').height(nHeight);
         $('#scrollable-table-div').css('margin-bottom', getMaxHeight() - nHeight);
 
 
+		
+		bScrollMouseUp = false;	
         if(bUpdateTable !== false){
             //fill table
             var nSymbol = (nTopSymbol !== null && nTopSymbol !== undefined)? nTopSymbol : nCurrentSymbol;
@@ -678,10 +728,12 @@
             var container = document.getElementById('fake-symbol-table-wrap');
             container.scrollTop = nRowSkip*CELL_HEIGHT;
             Ps.update(container);
-            if($('.ps__scrollbar-y').height() === 0){
+            if($('.ps__scrollbar-y').height() === 0 || (nFullHeight < nHeight)){
                 $('.ps__scrollbar-y').css('border-width', '0px');
+				$('.ps__scrollbar-y').hide();
             }
             else{
+				$('.ps__scrollbar-y').show();
                 $('.ps__scrollbar-y').css('border-width', '1px');
             }
             bShowTooltip = true;
@@ -702,10 +754,10 @@
 
         //select current cell
         if(bMainFocus){
-            $('#c' + nCurrentSymbol).addClass('cell-selected');
+            $('#c' + nCurrentSymbol).addClass('cell-selected');		
         }
         else{
-            $('#r' + nCurrentSymbol).addClass('cell-selected');
+            $('#r_' + nCurrentSymbol + '_' + nFontNameRecent).addClass('cell-selected');
         }
 
         //update input
@@ -755,6 +807,11 @@
 			return;
 		
         var _this = this;
+		returnValue.sort(function(a, b){
+			if(a.m_wsFontName < b.m_wsFontName) return -1;
+			if(a.m_wsFontName > b.m_wsFontName) return 1;
+			return 0;
+		});
         $(document).ready(function () {
 
             var oCurFont, oLastFont;
@@ -826,14 +883,19 @@
                     var oCurrentRange = getRangeBySymbol(aRanges, nCurrentSymbol);
                     nCurrentFont = parseInt($('#font-select').val());
                     aRanges = getArrRangesByFont(nCurrentFont);
-                    for(var i = 0; i < aRanges.length; ++i){
-                        if(oCurrentRange.Name === aRanges[i].Name){
-                            break;
-                        }
-                    }
-                    if(i === aRanges.length){
-                        nCurrentSymbol = aRanges[0].Start;
-                    }
+					if(oCurrentRange){
+						for(var i = 0; i < aRanges.length; ++i){
+							if(oCurrentRange.Name === aRanges[i].Name){
+								break;
+							}
+						}
+						if(i === aRanges.length){
+							nCurrentSymbol = aRanges[0].Start;
+						}	
+					}
+					else{
+						nCurrentSymbol = aRanges[0].Start;							
+					}
                     bMainFocus = true;
                     updateView();
                 }
@@ -919,15 +981,25 @@
                 if(!oTooltip.is(":visible")){
                     oTooltip.show();
                 }
+				if(bScrollMouseUp){
+					bScrollMouseUp = false;					
+					onScrollEnd();
+				}
             });
 
 
-            $("#fake-symbol-table-wrap").on('mouseup.perfect-scroll', onScrollEnd);
+            $("#fake-symbol-table-wrap").on('mouseup.perfect-scroll', function(){
+				bScrollMouseUp = true;						
+				onScrollEnd();
+			});
             document.getElementById("fake-symbol-table-wrap").addEventListener("wheel",  function () {
                 onScrollEnd();
                 bShowTooltip = false;
             });
-            document.addEventListener("mouseup", onScrollEnd);
+            document.addEventListener("mouseup", function(){
+				//bScrollMouseUp = true;						
+				onScrollEnd();
+			});
             document.getElementById("symbols-table").addEventListener("wheel", function(e){
                 var container = document.getElementById('fake-symbol-table-wrap');
                 var delta = e.detail || e.wheelDelta || 0;
@@ -1000,7 +1072,7 @@
             //$($('.ps__scrollbar-y')[0]).append('<span id=\"tooltip-span\" class=\"tooltiptext\">sdfsdfsdf</span>');
 
             updateView(undefined, undefined, undefined, true);
-
+			nLastScroll = 0;
 
 
 

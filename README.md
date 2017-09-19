@@ -43,19 +43,19 @@ If you have any problems with or questions about [ONLYOFFICE Document Server][2]
   [1]: http://dev.onlyoffice.org
   [2]: https://github.com/ONLYOFFICE/DocumentServer
   [3]: https://github.com/ONLYOFFICE/DesktopEditors
-  [4]: cbr
-  [5]: chess
+  [4]: examples/cbr
+  [5]: examples/chess
   [6]: clipart
-  [7]: glavred
-  [8]: helloworld
-  [9]: num2word
+  [7]: examples/glavred
+  [8]: examples/helloworld
+  [9]: examples/num2word
   [10]: ocr
   [11]: speech
-  [12]: templates
+  [12]: examples/templates
   [13]: translate
-  [14]: yandextranslaterus
+  [14]: examples/yandextranslaterus
   [15]: youtube
-  [16]: chrome_extension_example
+  [16]: examples/chrome_extension_example
   [17]: https://github.com/hakanensari/fixer-io
   
 ## License

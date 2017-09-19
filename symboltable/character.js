@@ -921,8 +921,8 @@
 	};
 
 	var c_oUnicodeRanges = [
-		new CRange(0x0000, 0x007F, c_oUnicodeRangesLID.Basic_Latin, lcid_enUS, [(1 << c_oUnicodeRangeOS2_1.Basic_Latin), 0, 0, 0, (1 << c_oCodePagesOS2_1.Latin_1), 0]),
-		new CRange(0x0080, 0x00FF, c_oUnicodeRangesLID.Latin_1_Supplement, lcid_unknown, [(1 << c_oUnicodeRangeOS2_1.Basic_Latin) | (1 << c_oUnicodeRangeOS2_1.Latin_1_Supplement), 0, 0, 0, (1 << c_oCodePagesOS2_1.Latin_1), 0]),
+		new CRange(0x0020, 0x007E, c_oUnicodeRangesLID.Basic_Latin, lcid_enUS, [(1 << c_oUnicodeRangeOS2_1.Basic_Latin), 0, 0, 0, (1 << c_oCodePagesOS2_1.Latin_1), 0]),
+		new CRange(0x00A0, 0x00FF, c_oUnicodeRangesLID.Latin_1_Supplement, lcid_unknown, [(1 << c_oUnicodeRangeOS2_1.Basic_Latin) | (1 << c_oUnicodeRangeOS2_1.Latin_1_Supplement), 0, 0, 0, (1 << c_oCodePagesOS2_1.Latin_1), 0]),
 		new CRange(0x0100, 0x017F, c_oUnicodeRangesLID.Latin_Extended_A, lcid_unknown, [(1 << c_oUnicodeRangeOS2_1.Basic_Latin) | (1 << c_oUnicodeRangeOS2_1.Latin_Extended_A), 0, 0, 0, (1 << c_oCodePagesOS2_1.Latin_1) | (1 << c_oCodePagesOS2_1.Latin_2) | (1 << c_oCodePagesOS2_1.Turkish) | (1 << c_oCodePagesOS2_1.Windows_Baltic), 0]),
 		new CRange(0x0180, 0x024F, c_oUnicodeRangesLID.Latin_Extended_B, lcid_unknown, [(1 << c_oUnicodeRangeOS2_1.Basic_Latin) | (1 << c_oUnicodeRangeOS2_1.Latin_Extended_B), 0, 0, 0, (1 << c_oCodePagesOS2_1.Latin_1) | (1 << c_oCodePagesOS2_1.Latin_2) | (1 << c_oCodePagesOS2_1.Turkish) | (1 << c_oCodePagesOS2_1.Windows_Baltic), 0]),
 		new CRange(0x0250, 0x02AF, c_oUnicodeRangesLID.IPA_Extensions, lcid_unknown, [(1 << c_oUnicodeRangeOS2_1.IPA_Extensions), 0, 0, 0, 0, 0]),

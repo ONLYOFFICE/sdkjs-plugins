@@ -59,6 +59,7 @@
         -moz-user-select: none;
         -webkit-user-select: none;
         cursor: default;
+		overflow:hidden;
     }
     .cell-selected{
         background-color: #3399ff;
@@ -82,7 +83,7 @@
             </div>
         </div>
         <div id="scrollable-table-div" class="noselect" style="position:relative; display: inline-block; width: auto; height: auto; overflow: hidden; border: 1px solid #7a7a7a">
-            <div id="tooltip-div" style="display: none; position: absolute; z-index: 30; width: auto; height: auto; background-color: #FAFAFA; border: solid black 1px"></div>
+            <div id="tooltip-div" style="display: none; position: absolute; z-index: 30; width: auto; height: auto; background-color: #FAFAFA; border: solid black 1px;  border-radius: 3px;   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px"></div>
             <div id="symbols-table" class="noselect">
 
             </div>
@@ -104,8 +105,12 @@
         <br class="noselect">
         <div id="value-wrap" style="margin-bottom: 10px">
             <label class="noselect" style="display: inline-block; margin-top: 10px; margin-bottom: 10px">Unicode hex value:</label>
-            <input id="symbol-code-input" autocapitalize="none" autocorrect="off" autocomplete="off">
+            <input id="symbol-code-input" autocapitalize="none" autocorrect="off" autocomplete="off" spellcheck="false">	
+			<br class="noselect">			
+            <label class="noselect" id="font-name-label" style="display: inline-block;">Font Name</label>
         </div>
+		
+		
         <br class="noselect">
             <button class="btn-text-default" id='insert-button'>Insert</button>
 	</div>

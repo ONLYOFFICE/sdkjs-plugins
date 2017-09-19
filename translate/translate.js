@@ -112,7 +112,7 @@
 		var _url = "https://translate.yandex.net/api/v1.5/tr.json/translate?";
 		_url += "key=trnsl.1.1.20160604T115612Z.107ebb05a7757bcc.804e900f347ddfbeadd7ca5999bd5cb6ca32805b";
 		_url += "&text=";
-		_url += translate_data;
+		_url += encodeURIComponent(translate_data);
 		_url += ("&lang=" + _lang);
 		_url += "&format=plain";
 		xhr.open('POST', _url, true);

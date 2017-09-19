@@ -1,15 +1,15 @@
 {
-    "name" : "YouTube",
-    "guid" : "asc.{38E022EA-AD92-45FC-B22B-49DF39746DB4}",
+    "name" : "Example loading custom fields",
+    "guid" : "asc.{E5A81B17-C871-4C4B-A90A-62D3A7EC0751}",
 
     "variations" : [
         {
-            "description" : "YouTube",
+            "description" : "Example loading custom fields",
             "url"         : "index.html",
 
             "icons"           : ["icon.png", "icon@2x.png", "icon2.png", "icon2@2x.png"],
             "isViewer"        : true,
-            "EditorsSupport"  : ["word", "cell", "slide"],
+            "EditorsSupport"  : ["word"],
 
             "isVisual"        : true,
             "isModal"         : true,
@@ -18,12 +18,9 @@
             "initDataType"    : "ole",
             "initData"        : "",
 
-            "isUpdateOleOnResize" : false,
+            "isUpdateOleOnResize" : true,
 
-            "buttons"        : [ { "text": "Ok", "primary": true },
-                                { "text": "Cancel", "primary": false } ],
-
-            "size" : [350, 90]
+            "buttons"         : []
         }
     ]
 }
