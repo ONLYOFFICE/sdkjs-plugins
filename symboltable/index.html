@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <title>Symbol Table</title>
+    <script type='text/javascript' src='../pluginBase.js'></script>
+    <link rel="stylesheet" href="../plugins.css">
+    <script type='text/javascript' src='symboltable.js'></script>
+    <script type='text/javascript' src='character.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js'></script>
+</head>
+
+<style>
+    label{
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 11px;
+    }
+    div{
+        display: inline-block;
+        vertical-align: top;
+    }
+    html{
+        height: 100%;
+    }
+    button{
+        width: 125px;
+    }
+    .disabled {
+        color: darkgrey;
+    }
+
+    select {
+        background: #fff;
+        border: 1px solid #cfcfcf;
+        border-radius: 2px;
+        color: #444444;
+        font-size: 11px;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        height: 22px;
+        cursor: pointer;
+    }
+
+    select[disabled],
+    select.disabled {
+        opacity: 0.65;
+    }
+    .cell{
+        width: 30px;
+        height: 32px;
+        border-right: 1px solid black;
+        border-bottom: 1px solid black;
+        background: #ffffff;
+        align-content: center;
+        vertical-align: middle;
+        text-align: center;
+        font-size: 22px;
+        -khtml-user-select: none;
+        user-select: none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        cursor: default;
+		overflow:hidden;
+    }
+    .cell-selected{
+        background-color: #3399ff;
+        color: white;
+    }
+</style>
+
+<body style="box-sizing:border-box; width: 100%; height: 100%; margin: 0; padding-left: 10px; padding-right: 10px; background: #F7F7F7;">
+    <div id="main-div" style="height: 100%; width: 100%; display: none" >
+        <div id="header-div" style="height: auto;">
+            <label class="noselect" style="display: inline-block; margin-top: 10px; margin-bottom: 10px">Symbols</label><br class="noselect">
+            <div class="noselect" style="margin-right: 22px; margin-bottom: 10px">
+                <label class="noselect">Font:</label>
+                <select name = 'font_combo' class="noselect" id='font-select' style="width: auto">
+                </select>
+            </div>
+            <div  class="noselect" style="margin-bottom: 10px">
+                <label class="noselect" id="range-label">Range:</label>
+                <select name = 'range_combo' class="noselect" id='range-select' style="width: auto">
+                </select>
+            </div>
+        </div>
+        <div id="scrollable-table-div" class="noselect" style="position:relative; display: inline-block; width: auto; height: auto; overflow: hidden; border: 1px solid #7a7a7a">
+            <div id="tooltip-div" style="display: none; position: absolute; z-index: 30; width: auto; height: auto; background-color: #FAFAFA; border: solid black 1px;  border-radius: 3px;   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px"></div>
+            <div id="symbols-table" class="noselect">
+
+            </div>
+            <div>
+                <div id="fake-symbol-table-wrap" class="noselect" style="position:relative; display: block; width: 13px; height: auto; overflow: hidden;">
+                    <div id="fake-symbol-table" class="noselect" style="width: 1px">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="recent-symbols-wrap"  style="width: 100%;">
+            <label class="noselect" style="display: inline-block; margin-top: 10px; margin-bottom: 10px">Recently used symbols:</label><br class="noselect">
+            <div class="noselect" style="width: 100%; margin-bottom: 10px">
+                <div id="recent-table" style="height: 32px; overflow: hidden; width: 100%; border: 1px solid #7a7a7a">
+
+                </div>
+            </div>
+        </div>
+        <br class="noselect">
+        <div id="value-wrap" style="margin-bottom: 10px">
+            <label class="noselect" style="display: inline-block; margin-top: 10px; margin-bottom: 10px">Unicode hex value:</label>
+            <input id="symbol-code-input" autocapitalize="none" autocorrect="off" autocomplete="off" spellcheck="false">	
+			<br class="noselect">			
+            <label class="noselect" id="font-name-label" style="display: inline-block;">Font Name</label>
+        </div>
+		
+		
+        <br class="noselect">
+            <button class="btn-text-default" id='insert-button'>Insert</button>
+	</div>
+
+</body>
+</html>

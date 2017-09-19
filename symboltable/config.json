@@ -1,28 +1,30 @@
 {
-    "name" : "Translator",
-    "guid" : "asc.{7327FC95-16DA-41D9-9AF2-0E7F449F687D}",
+    "name" : "Symbol Table",
+    "guid" : "asc.{03C18A8D-8E01-444A-86EB-EDDFA7773157}",
+    "baseUrl" : "",
 
     "variations" : [
         {
-            "description" : "Translator",
+            "description" : "symboltable",
             "url"         : "index.html",
 
             "icons"           : ["icon.png", "icon@2x.png", "icon2.png", "icon2@2x.png"],
-            "isViewer"        : true,
+            "isViewer"        : false,
             "EditorsSupport"  : ["word", "cell", "slide"],
 
             "isVisual"        : true,
             "isModal"         : false,
             "isInsideMode"    : true,
 
-            "initDataType"    : "text",
+            "initDataType"    : "none",
             "initData"        : "",
 
             "isUpdateOleOnResize" : false,
 
-            "buttons"        : [ ],
+            "buttons"         : [ { "text": "Insert", "primary": true},
+                { "text": "Cancel", "primary": false } ],
 
-            "initOnSelectionChanged" : true
+            "size" : [600, 700]
         }
     ]
 }

@@ -1,0 +1,21 @@
+{
+    "name"       : "Example insert content & document",
+    "guid"       : "asc.{7CC733B1-9B26-4977-926E-D212B13F2B70}",
+    "baseUrl"    : "",
+    "variations" : [
+        {
+            "description"         : "Example insert content & document",
+            "url"                 : "index.html",
+            "icons"               : ["icon.png", "icon@2x.png", "icon2.png", "icon2@2x.png"],
+            "isViewer"            : false,
+            "EditorsSupport"      : ["word"],
+            "isVisual"            : false,
+            "isModal"             : true,
+            "isInsideMode"        : false,
+            "initDataType"        : "none",
+            "initData"            : "",
+            "isUpdateOleOnResize" : true,
+            "buttons"             : []
+        }
+    ]
+}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+		<title>Example work with content controls</title>
+        
+		<style type="text/css">
+			html, body {
+				margin: 0px;
+				padding: 0px;
+				overflow: hidden;
+				width:100%;
+				height:100%;
+			}
+		</style>
+
+		<link rel="stylesheet" href="../plugins.css">
+  
+		<script type="text/javascript" src="../pluginBase.js"></script>
+    	<script type="text/javascript" src="code.js"></script>
+    </head>
+    <body>
+		<div style="margin: 0px 5px; padding: 0px; width:calc(100% - 10px); box-sizing: border-box;">
+			<input id="inputTextFieldQ" style="tab-size: 2; margin: 2px 0px; padding: 0px; width:calc(100% - 10px);" placeholder="Type question here"></input>
+			<input id="inputTextFieldL" style="tab-size: 2; margin: 2px 0px; padding: 0px; width:calc(100% - 10px);" placeholder="Type label here"></input>
+			<button id="buttonAddTextField" class="btn-text-default primary" style="background:rgb(0, 0, 255) ;margin-left: calc(50% - 100px); width:200px;">Add simple field</button>
+		</div>	
+		
+		<div style="margin: 0px 5px; padding: 0px; width:calc(100% - 10px); box-sizing: border-box;">
+			<input id="inputDropDownQ" style="tab-size: 2; margin: 2px 0px; padding: 0px; width:calc(100% - 10px);" placeholder="Type question here"></input>
+			<input id="inputDropDownL" style="tab-size: 2; margin: 2px 0px; padding: 0px; width:calc(100% - 10px);" placeholder="Type label here"></input>
+			
+			<div style="margin: 2px 0px; padding: 0px; width:100%; box-sizing: border-box;">
+				<div style="float:left; width:calc(50% - 5px); height: 47px;">
+					<select id="selectDropDown" style="maring: 2px 0px; padding: 0px; width:100%">
+					</select>
+					<input id="inputDropDownItem" style="tab-size: 2; margin: 2px 0px; padding: 0px; width:100%;" placeholder="Type your item"></input>				
+				</div>
+				<div style="float:left; width:calc(50% - 5px); height : 47px;">
+					<button id="buttonDropDownAddItem" class="btn-text-default primary" style="margin-top: 2px; margin-left:calc(50% - 50px); width:100px; height:20px;">Add</button>
+					<button id="buttonDropDownRemoveItem" class="btn-text-default primary" style="margin-top: 2px; margin-left:calc(50% - 50px); width:100px; height:20px;">Remove</button>					
+				</div>				
+			</div>			
+			<button id="buttonAddDropDownField" class="btn-text-default primary" style="background:rgb(255, 0, 0) ;margin-left: calc(50% - 100px); width:200px;">Add drop down field</button>
+		</div>	
+    </body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+		<title>Example work with content controls</title>
+        
+		<style type="text/css">
+			html, body {
+				margin: 0px;
+				padding: 0px;
+				overflow: hidden;
+				width:100%;
+				height:100%;
+			}
+		</style>
+
+		<link rel="stylesheet" href="../plugins.css">
+  
+		<script type="text/javascript" src="../pluginBase.js"></script>
+    	<script type="text/javascript" src="code.js"></script>
+    </head>
+    <body>
+		<div style="position: absolute; margin: 0px; padding: 0px; width: 100%; height: 60%; box-sizing: border-box;">
+			<div style="position: absolute; margin: 0px; padding: 0px; left: 5px; top: 5px; right: 5px; bottom: 30px;">
+				<textarea id="textareaIR" style="tab-size: 2; margin: 0px; padding: 0px; width:100%; height:100%; resize: none;"></textarea>
+			</div>
+			<button class="btn-text-default primary" style="margin-left: 50%; left: -100px; width:200px; position:absolute; bottom: 4px;" id="buttonIDInsertAndContext">Insert/Replace</button>
+		</div>
+		<div style="position: absolute; margin: 0px; padding: 0px; width: 100%; height: 15%; top: 60%; box-sizing: border-box;">
+			<div style="position: absolute; margin: 0px; padding: 0px; left: 5px; top: 5px; right: 5px; bottom: 30px;">
+				<textarea id="textareaR" style="tab-size: 2; margin: 0px; padding: 0px; width:100%; height:100%; resize: none;"></textarea>
+			</div>
+			<button class="btn-text-default primary" style="margin-left: 50%; left: -100px; width:200px; position:absolute; bottom: 4px;" id="buttonIDRemove">Remove</button>
+		</div>
+		<div style="position: absolute; margin: 0px; padding: 0px; width: 100%; height: 25%; top: 75%; box-sizing: border-box;">
+			<div style="position: absolute; margin: 0px; padding: 0px; left: 5px; top: 5px; right: 5px; bottom: 90px;">
+				<textarea id="textareaG" style="tab-size: 2; margin: 0px; padding: 0px; width:100%; height:100%; resize: none;"></textarea>
+			</div>
+			<button class="btn-text-default primary" style="margin-left: 50%; left: -100px; width:200px; position:absolute; bottom: 64px;" id="buttonIDGetAll">Get All Content Controls</button>
+			<button class="btn-text-default primary" style="margin-left: 50%; left: -100px; width:200px; position:absolute; bottom: 34px;" id="buttonIDChangeState">Change Field State</button>
+			<button class="btn-text-default primary" style="margin-left: 50%; left: -100px; width:200px; position:absolute; bottom: 4px;" id="buttonIDCurrent">Get Current Field ID</button>
+		</div>
+    </body>
+</html>

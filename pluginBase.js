@@ -53,6 +53,28 @@
                     type : "initialize",
                     guid : window.Asc.plugin.guid
                 };
+				
+				var _body = document.body;
+				if (_body && true !== window.Asc.plugin.enableDrops)
+				{
+					_body.ondrop = function(e) {
+						if (e && e.preventDefault)
+							e.preventDefault();
+						return false;
+					};
+					_body.ondragenter = function(e) {
+						if (e && e.preventDefault)
+							e.preventDefault();
+						return false;
+					};
+					_body.ondragover = function(e) {
+						if (e && e.preventDefault)
+							e.preventDefault();
+						if (e && e.dataTransfer)
+							e.dataTransfer.dropEffect = "none";
+						return false;
+					};
+				}
 
                 window.parent.postMessage(JSON.stringify(obj), "*");
             }
@@ -96,5 +118,5 @@
     {
         window.attachEvent("onmessage", onMessage);
     }
-
+	
 })(window, undefined);

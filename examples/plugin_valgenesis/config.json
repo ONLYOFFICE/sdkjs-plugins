@@ -1,0 +1,26 @@
+{
+    "name" : "Interface review",
+    "guid" : "asc.{B62BC2E0-858A-444F-B211-9190DE68B3FE}",
+    "isUICustomizer" : true,
+
+    "variations" : [
+        {
+            "description" : "interface review",
+            "url"         : "code.js",
+
+            "isViewer"        : false,
+            "EditorsSupport"  : ["word"],
+
+            "isVisual"        : false,
+            "isModal"         : false,
+            "isInsideMode"    : false,
+
+            "initDataType"    : "none",
+            "initData"        : "",
+
+            "isUpdateOleOnResize" : false,
+
+            "buttons"        : [ ]
+        }
+    ]
+}
