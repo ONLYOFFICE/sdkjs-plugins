@@ -854,6 +854,8 @@
                     }
                 }
             }
+			if (nCurrentFont < 0)
+				nCurrentFont = 0;
             aRanges = getArrRangesByFont(nCurrentFont);
             nCurrentSymbol = aRanges[0].Start;
 
