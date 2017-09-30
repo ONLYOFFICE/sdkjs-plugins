@@ -1098,41 +1098,6 @@
 			nLastScroll = 0;
 
 
-            function getLinearIndexByCode(arrRanges, nCode){
-                var nLinearIndex = -1;
-                var nCounter = 0;
-                var oCurRange;
-                for(var i = 0; i < arrRanges.length; ++i){
-                    oCurRange = arrRanges[i];
-                    if(oCurRange.Start > nCode){
-                        return -1;
-                    }
-                    if(oCurRange.Start <= nCode && oCurRange.End >= nCode){
-                        return nCounter + (nCode - oCurRange.Start);
-                    }
-                    nCounter += (oCurRange.End - oCurRange.Start + 1);
-                }
-                return nLinearIndex;
-            }
-
-            function getCodeByLinearIndex(arrRanges, nIndex){
-                if(nIndex < 0){
-                    return - 1;
-                }
-                var nCount = 0;
-                var oCurRange = arrRanges[0];
-                var nDiff;
-                for(var i = 0; i < arrRanges.length; ++i){
-                    oCurRange = arrRanges[i];
-                    nDiff = oCurRange.End - oCurRange.Start + 1;
-                    if(nCount + nDiff > nIndex){
-                        return oCurRange.Start + nIndex - nCount;
-                    }
-                    nCount += nDiff;
-                }
-                return -1;
-            }
-
             $(document).on( "keydown", function(e){
 
                 if($('#symbol-code-input').is(':focus')){
