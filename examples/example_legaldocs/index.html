@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+		<title>Example work with content controls</title>
+        
+		<style type="text/css">
+			html, body {
+				margin   : 0px;
+				padding  : 0px;
+				overflow : hidden;
+				width    : 100%;
+				height   : 100%;
+			}
+			
+			.buttonDefault {
+				font-family : "Helvetica Neue", Helvetica, Arial, sans-serif;
+				height      : 22px;
+				cursor      : pointer;
+				border      : 1px solid silver;
+				shadow      : 0 0;
+				font-size   : 14px;				
+				margin-left : calc(50% - 100px); 
+				width       : 200px;	
+				outline     : none;
+			}
+			
+			.buttonDefault:hover{		
+				border : 1px solid silver;
+			}
+			
+			.buttonDefault:active{		
+				border : 1px solid black;
+			}
+			
+			
+			.buttonSave {		
+				color         : white;
+				background    : rgb(115, 177, 57);
+				margin-bottom : 5px;
+				
+				margin-left : calc(50% - 110px); 
+			}
+		
+			
+			.buttonAddTextQ {
+				margin-top  : 5px;
+				color       : black;
+				background  : rgb(190, 255, 255);
+			}
+				
+			.buttonAddListQ {
+				margin-top  : 5px;
+				color       : black;
+				background  : rgb(164, 171, 207);
+			}
+			
+			.buttonInsertOption {
+				margin-top  : 5px;
+				color       : black;
+				background  : rgb(255, 195, 128);
+			}
+			
+			.buttonCopyField {
+				margin-top  : 5px;
+				color       : black;
+				background  : rgb(218, 144, 234);
+			}
+
+			
+			.propertiesContainer {
+				margin-top    : 10px;
+				width         : 100%;
+				padding-left  : 10px;
+				padding-right : 10px;
+				border-top    : 1px solid silver;
+				border-bottom : 1px solid silver;
+			}
+			
+			.propertyTitle {
+				padding-top    : 3px;
+				padding-bottom : 3px;
+				color          : black;
+			}
+			
+			textarea.textAreaDefault {			
+				resize     : none;				
+				width      : calc(100% - 25px);
+				background : rgb(211, 210, 211);
+				border     : 1px solid rgb(143, 143, 143);
+				outline    : none;
+			}
+			
+			.inputDefault {
+				border     : 1px solid rgb(143, 143, 143);
+				background : rgb(211, 210, 211);
+				outline    : none;
+			}
+		
+			.roundButton {
+			
+				background-color : rgb(211, 210, 211);
+				border           : 1px solid rgb(143, 143, 143);
+				color            : black;
+				text-align       : center;
+				text-decoration  : none;
+				display          : inline-block;
+				font-size        : 20px;
+				border-radius    : 50%;
+				width            : 20px;
+				height           : 20px;
+				position         : relative;
+				outline          : none;
+				margin-left      : 5px;
+				cursor           : pointer;
+			}
+			
+			.roundButton:active {
+				border-color : black;
+			}
+			
+			.roundButton span {
+				position  : absolute;
+				top       : 50%;
+				left      : 50%;
+				transform : translate(-50%, -50%);
+			}
+			
+		
+			.inputTextQSubfields {
+				width       : 150px;
+				margin-left : 20px;
+			}
+			
+			.divAddTextQContainerSubElement {
+				margin-top : 3px;
+				width      : 250px;			
+				height     : 20px;
+			}
+			
+		</style>
+
+		<link rel="stylesheet" href="../plugins.css">
+		 
+		<script type="text/javascript" src="../pluginBase.js"></script>
+    	<script type="text/javascript" src="code.js"></script>
+    </head>
+    <body>
+	
+		<div>
+			<button id="buttonAddTextQ" class="buttonDefault buttonAddTextQ">Add Text Q.</button>					
+
+			<div id="divAddTextQ" style="display:block;" class="propertiesContainer">
+			
+				<div class="propertyTitle">
+					[Question Header]
+				</div>
+				<input id="inputAddTextQHeader" type="text" class="inputDefault" style="width : calc(100% - 23px);"/>
+				<div class="propertyTitle">		
+					[Question Text]
+				</div>
+				<textarea id="textareaAddTextQText" class="textAreaDefault"></textarea>
+				
+				<div id="divAddTextQContainerSub">
+				
+					<div class="divAddTextQContainerSubElement">
+						<input id="inputAddTextQSub0" type="text" class="inputDefault inputTextQSubfields" style="float:left;"/>
+						<button id="buttonAddTextQRemoveSub" class="roundButton" style="float:left;"><span>-</span></button>
+						<button id="buttonAddTextQAddSub" class="roundButton" style="float:left;"><span>+</span></button>
+					</div>
+				
+				</div>
+				
+				<button id="buttonAddTextQSave" class="buttonDefault buttonSave">Save</button>					
+			
+			</div>
+			
+			<button id="buttonAddListQ" class="buttonDefault buttonAddListQ">Add List Q.</button>
+			
+			<button id="buttonInsertOption" class="buttonDefault buttonInsertOption">Insert Option</button>
+			
+			<button id="buttonCopyField" class="buttonDefault buttonCopyField">Copy Field</button>
+			
+		</div>
+		
+		
+	
+    </body>
+</html>
