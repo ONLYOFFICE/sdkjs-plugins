@@ -254,3 +254,198 @@
 	};
 
 })(window, undefined);
+
+
+var nIdCounter = 0;
+
+function GetNewId()
+{
+	return "LegalDocs_" + (++nIdCounter);
+}
+
+function CField(oPaneElement, oProps)
+{
+	this.m_oPaneElement = oPaneElement;
+	this.m_oRawProps    = oProps;
+}
+CField.prototype.CheckByPaneElement = function(oElement)
+{
+	return this.m_oPaneElement === oElement;
+};
+
+var arrFields = [];
+
+window.onload = function()
+{
+	document.getElementById("buttonAddTextQ").onclick = function()
+	{
+		if ("none" === document.getElementById("divAddTextQ").style.display)
+			document.getElementById("divAddTextQ").style.display = "block";
+		else
+			document.getElementById("divAddTextQ").style.display = "none";
+	};
+
+	document.getElementById("buttonAddTextQSave").onclick = function()
+	{
+		var sHeader = document.getElementById("inputAddTextQHeader").value;
+		var sText   = document.getElementById("textareaAddTextQText").value;
+
+		var oProps = {
+			"isVisible"    : true,
+			"useLogic"     : document.getElementById("checkboxAddTextQLogic").checked,
+			"nonEditable"  : document.getElementById("checkboxAddTextQNotEditable").checked,
+			"question"     : sText,
+			"hint"         : "",
+			"label"        : sHeader,
+			"type"         : "text",
+			"id"           : GetNewId(),
+			"subFields"    : [],
+			"addAnother"   : document.getElementById("checkboxAddTextQAnother").checked,
+			"anotherTitle" : "",
+			"anotherMax"   : -1
+		};
+
+		var nSubfieldsCount = document.getElementById("divAddTextQContainerSub").children.length;
+		if (1 < nSubfieldsCount || (1 === nSubfieldsCount && "" !== document.getElementById("divAddTextQContainerSub").children[0].children[0].value))
+		{
+			for (var nIndex = 0; nIndex < nSubfieldsCount; ++nIndex)
+			{
+				var sSub = document.getElementById("divAddTextQContainerSub").children[nIndex].children[0].value;
+				oProps["subFields"].push(sSub);
+			}
+		}
+
+		if (true === document.getElementById("checkboxAddTextQAnother").checked)
+		{
+			oProps["anotherTitle"] = document.getElementById("checkboxAddTextQAnotherDescription").value;
+			oProps["anotherMax"]   = document.getElementById("inputAddTextQAnotherMaximum").value;
+		}
+
+
+		document.getElementById("divAddTextQ").style.display = "none";
+
+		var oPaneDiv = document.getElementById("divQuestionPane");
+
+		var oDiv = document.createElement("div");
+		oPaneDiv.appendChild(oDiv);
+		oDiv.className = "paneElement";
+
+
+		var oButton            = document.createElement("button");
+		oButton.className      = "roundButton";
+		oButton.style["float"] = "left";
+		oDiv.appendChild(oButton);
+
+		var oSpan       = document.createElement("span");
+		oSpan.innerHTML = "-";
+		oButton.appendChild(oSpan);
+
+		var oInfo = document.createElement("div");
+		oInfo.className = "paneElementInfo";
+		oDiv.appendChild(oInfo);
+
+		var oInfoTitle = document.createElement("div");
+		oInfoTitle.className = "paneElementInfoTitle";
+		oInfo.appendChild(oInfoTitle);
+		oInfoTitle.innerHTML = "TEXT | " + sHeader;
+
+		var oInfoText = document.createElement("div");
+		oInfoText.className = "paneElementInfoText";
+		oInfo.appendChild(oInfoText);
+
+		oInfoText.innerHTML = sText;
+
+		oButton.onclick = function()
+		{
+			// var sText = this.children[0].innerHTML;
+			// if ("-" === sText)
+			// {
+			// 	this.children[0].innerHTML = "+";
+			// 	oInfoText.style.display = "none";
+			// }
+			// else
+			// {
+			// 	this.children[0].innerHTML = "-";
+			// 	oInfoText.style.display = "block";
+			// }
+
+			oPaneDiv.removeChild(oDiv);
+
+			for (var nIndex = 0, nCount = arrFields.length; nIndex < nCount; ++nIndex)
+			{
+				if (arrFields[nIndex].CheckByPaneElement(oDiv))
+				{
+					arrFields.splice(nIndex, 1);
+					break;
+				}
+			}
+		};
+
+		var oField = new CField(oDiv, oProps);
+		arrFields.push(oField);
+
+		console.log(oProps);
+	};
+
+	function OnRemoveTextQSub()
+	{
+		var oParentDiv = this.parentNode;
+		if (!oParentDiv)
+			return;
+
+		var oContainerDiv = oParentDiv.parentNode;
+		if (!oContainerDiv)
+			return;
+
+		if (1 === oContainerDiv.children.length)
+		{
+			oParentDiv.children[0].value = "";
+		}
+		else
+		{
+			if (oParentDiv == oContainerDiv.children[oContainerDiv.children.length - 1])
+			{
+				var oAddButton = document.getElementById("buttonAddTextQAddSub");
+				oAddButton.parentNode.removeChild(oAddButton);
+				oContainerDiv.removeChild(oParentDiv);
+				oContainerDiv.children[oContainerDiv.children.length - 1].appendChild(oAddButton);
+			}
+			else
+			{
+				oContainerDiv.removeChild(oParentDiv);
+			}
+		}
+	};
+
+	document.getElementById("buttonAddTextQRemoveSub").onclick = OnRemoveTextQSub;
+
+	document.getElementById("buttonAddTextQAddSub").onclick = function()
+	{
+		this.parentNode.removeChild(this);
+
+		var oContainer = document.getElementById("divAddTextQContainerSub");
+
+		var oDiv       = document.createElement("div");
+		oDiv.className = "divAddTextQContainerSubElement";
+		oContainer.appendChild(oDiv);
+
+
+		var oInput            = document.createElement("input");
+		oInput.className      = "inputDefault inputTextQSubfields";
+		oInput.style["float"] = "left";
+		oDiv.appendChild(oInput);
+
+		var oButton            = document.createElement("button");
+		oButton.className      = "roundButton";
+		oButton.style["float"] = "left";
+		oDiv.appendChild(oButton);
+
+		var oSpan       = document.createElement("span");
+		oSpan.innerHTML = "-";
+		oButton.appendChild(oSpan);
+
+		oButton.onclick = OnRemoveTextQSub;
+
+		oDiv.appendChild(this);
+	};
+};

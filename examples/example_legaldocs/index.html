@@ -14,6 +14,10 @@
 				height   : 100%;
 				font-family : "Helvetica Neue", Helvetica, Arial, sans-serif;
 			}
+
+			body {
+				overflow-y: inherit;
+			}
 			
 			.buttonDefault {
 				font-family : "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -180,8 +184,30 @@
 			input::-webkit-inner-spin-button {
 				-webkit-appearance : none;
 				margin     : 0px;				
-			}			
-		
+			}
+
+			div.paneElement {
+				margin-top    : 10px;
+				padding-left  : 10px;
+				padding-right : 10px;
+				width         : calc(100% - 40px);
+			}
+
+			div.paneElementInfo {
+				margin-left: 30px;
+				border     : 1px solid rgb(143, 143, 143);
+			}
+
+			div.paneElementInfoTitle {
+				background : rgb(211, 210, 211);
+			}
+
+			div.paneElementInfoText {
+				background : rgb(255, 255, 255);
+				border-top : 1px solid rgb(143, 143, 143);
+			}
+
+
 		</style>
 
 		<link rel="stylesheet" href="../plugins.css">
@@ -191,7 +217,7 @@
     </head>
     <body>
 	
-		<div>
+		<div style="min-width: 420px;">
 			<button id="buttonAddTextQ" class="buttonDefault buttonAddTextQ">Add Text Q.</button>					
 
 			<div id="divAddTextQ" style="display:block;" class="propertiesContainer">
@@ -264,6 +290,9 @@
 			<button id="buttonInsertOption" class="buttonDefault buttonInsertOption">Insert Option</button>
 			
 			<button id="buttonCopyField" class="buttonDefault buttonCopyField">Copy Field</button>
+			
+			<div id="divQuestionPane" style="width:100%;">
+			</div>
 			
 		</div>
 		
