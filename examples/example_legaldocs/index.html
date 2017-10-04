@@ -12,6 +12,7 @@
 				overflow : hidden;
 				width    : 100%;
 				height   : 100%;
+				font-family : "Helvetica Neue", Helvetica, Arial, sans-serif;
 			}
 			
 			.buttonDefault {
@@ -139,6 +140,48 @@
 				height     : 20px;
 			}
 			
+			input[type="checkbox"].checkboxXMark {
+				-webkit-appearance : initial;
+				appearance         : initial;
+				background         : rgb(211, 210, 211);
+				width              : 20px;
+				height             : 20px;
+				border             : 1px solid rgb(143, 143, 143);
+				position           : relative;
+				outline            : none;
+				margin             : 0px;
+			}
+			input[type="checkbox"].checkboxXMark:checked:after {
+				content           : "X";
+				position          : absolute;
+				left              : 50%;
+				top               : 50%;
+				-webkit-transform : translate(-50%,-50%);
+				-moz-transform    : translate(-50%,-50%);
+				-ms-transform     : translate(-50%,-50%);
+				transform         : translate(-50%,-50%);
+			}
+			label.checkboxXMarkLabel {
+				position    : relative;
+				top         : -4px;
+				font-size   : 14px;
+			}
+			
+			.inputAddTextQAnotherDescription {
+				height : 18px;				
+			}
+			
+			.inputAddTextQAnotherMaximum {
+				height : 18px;
+				width  : 30px;		
+			}
+			
+			input::-webkit-outer-spin-button,
+			input::-webkit-inner-spin-button {
+				-webkit-appearance : none;
+				margin     : 0px;				
+			}			
+		
 		</style>
 
 		<link rel="stylesheet" href="../plugins.css">
@@ -172,6 +215,46 @@
 				
 				</div>
 				
+				<div style="margin-top: 5px;width:100%;height:25px;">
+				
+					<div style="float:left; padding-right: 5px;">
+						<form>
+							<input id="checkboxAddTextQAnother" class="checkboxXMark" type="checkbox" />
+							<label for="checkboxAddTextQAnother" class="checkboxXMarkLabel">Add another</label>
+						</form>							
+					</div>
+
+					<div style="float:left; padding-right: 15px;">
+						<input id="checkboxAddTextQAnotherDescription" placeholder="[describe]" class="inputDefault inputAddTextQAnotherDescription" type="text"/>
+					</div>
+				
+					<div style="float:left; padding-right: 5px;">
+						<form>
+							<label for="inputAddTextQAnotherMaximum" style="font-size:14px;">Maximum</label>
+							<input id="inputAddTextQAnotherMaximum" class="inputDefault inputAddTextQAnotherMaximum" type="number" min=0 max=999/>
+						</form>	
+					</div>
+
+				</div>
+				
+				<div style="margin-top: 5px;width:100%;height:25px;">
+					<div style="float:left; padding-right: 5px;">
+						<form>
+							<input id="checkboxAddTextQNotEditable" class="checkboxXMark" type="checkbox" />
+							<label for="checkboxAddTextQNotEditable" class="checkboxXMarkLabel">Not Editable</label>
+						</form>							
+					</div>
+				</div>
+				
+				<div style="margin-top: 5px;width:100%;height:25px;">
+					<div style="float:left; padding-right: 5px;">
+						<form>
+							<input id="checkboxAddTextQLogic" class="checkboxXMark" type="checkbox" />
+							<label for="checkboxAddTextQLogic" class="checkboxXMarkLabel">Use with logic</label>
+						</form>							
+					</div>
+				</div>
+
 				<button id="buttonAddTextQSave" class="buttonDefault buttonSave">Save</button>					
 			
 			</div>
