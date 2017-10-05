@@ -38,14 +38,12 @@
 			.buttonDefault:active{		
 				border : 1px solid black;
 			}
-			
-			
-			.buttonSave {		
+
+			.buttonSave {
 				color         : black;
 				background    : rgb(115, 177, 57);
 				margin-bottom : 5px;
-				
-				margin-left : calc(50% - 110px); 
+				margin-left   : calc(50% - 100px);
 			}
 		
 			
@@ -76,11 +74,10 @@
 			
 			.propertiesContainer {
 				margin-top    : 10px;
-				width         : 100%;
+				width         : calc(100% - 20px);
 				padding-left  : 10px;
 				padding-right : 10px;
 				border-top    : 1px solid silver;
-				border-bottom : 1px solid silver;
 			}
 			
 			.propertyTitle {
@@ -91,7 +88,7 @@
 			
 			textarea.textAreaDefault {			
 				resize     : none;				
-				width      : calc(100% - 25px);
+				width      : calc(100% - 5px);
 				background : rgb(211, 210, 211);
 				border     : 1px solid rgb(143, 143, 143);
 				outline    : none;
@@ -143,7 +140,7 @@
 				width      : 250px;			
 				height     : 20px;
 			}
-			
+
 			input[type="checkbox"].checkboxXMark {
 				-webkit-appearance : initial;
 				appearance         : initial;
@@ -155,36 +152,43 @@
 				outline            : none;
 				margin             : 0px;
 			}
+
 			input[type="checkbox"].checkboxXMark:checked:after {
 				content           : "X";
 				position          : absolute;
 				left              : 50%;
 				top               : 50%;
-				-webkit-transform : translate(-50%,-50%);
-				-moz-transform    : translate(-50%,-50%);
-				-ms-transform     : translate(-50%,-50%);
-				transform         : translate(-50%,-50%);
+				-webkit-transform : translate(-50%, -50%);
+				-moz-transform    : translate(-50%, -50%);
+				-ms-transform     : translate(-50%, -50%);
+				transform         : translate(-50%, -50%);
 			}
+
 			label.checkboxXMarkLabel {
-				position    : relative;
-				top         : -4px;
-				font-size   : 14px;
+				position  : relative;
+				top       : -4px;
+				font-size : 14px;
+			}
+
+			label.checkboxXMarkLabel span {
+				font-size : 10px;
+				color     : rgb(110, 110, 110);
 			}
 			
 			.inputAddTextQAnotherDescription {
 				height : 18px;
 				width  : 120px;
 			}
-			
+
 			.inputAddTextQAnotherMaximum {
 				height : 18px;
-				width  : 30px;		
+				width  : 30px;
 			}
-			
+
 			input::-webkit-outer-spin-button,
 			input::-webkit-inner-spin-button {
 				-webkit-appearance : none;
-				margin     : 0px;				
+				margin             : 0px;
 			}
 
 			div.paneElement {
@@ -195,8 +199,8 @@
 			}
 
 			div.paneElementInfo {
-				margin-left: 30px;
-				border     : 1px solid rgb(143, 143, 143);
+				margin-left : 30px;
+				border      : 1px solid rgb(143, 143, 143);
 			}
 
 			div.paneElementInfoTitle {
@@ -209,11 +213,11 @@
 			}
 
 			div.copyFieldElement {
-				margin-left: 10px;
+				margin-left : 10px;
 			}
 
 			div.copyFieldSubElement {
-				margin-left: 30px;
+				margin-left : 30px;
 			}
 
 			div.copyFieldAnotherLabel {
@@ -229,91 +233,144 @@
 		<script type="text/javascript" src="../pluginBase.js"></script>
     	<script type="text/javascript" src="code.js"></script>
     </head>
-    <body>
-	
-		<div>
-			<button id="buttonAddTextQ" class="buttonDefault buttonAddTextQ">Add Text Q.</button>
+	<body>
 
-			<div id="divAddTextQ" style="display:block;" class="propertiesContainer">
-			
-				<div class="propertyTitle">
-					[Question Header]
-				</div>
-				<input id="inputAddTextQHeader" type="text" class="inputDefault" style="width : calc(100% - 23px);"/>
-				<div class="propertyTitle">		
-					[Question Text]
-				</div>
-				<textarea id="textareaAddTextQText" class="textAreaDefault"></textarea>
-				
-				<div id="divAddTextQContainerSub">
-				
-					<div class="divAddTextQContainerSubElement">
-						<input id="inputAddTextQSub0" type="text" class="inputDefault inputTextQSubfields" style="float:left;"/>
-						<button id="buttonAddTextQRemoveSub" class="roundButton" style="float:left;"><span>-</span></button>
-						<button id="buttonAddTextQAddSub" class="roundButton" style="float:left;"><span>+</span></button>
-					</div>
-				
-				</div>
-				
-				<div style="margin-top: 5px;width:100%;height:25px;">
-				
-					<div style="float:left; padding-right: 5px;height:25px;">
-						<form>
-							<input id="checkboxAddTextQAnother" class="checkboxXMark" type="checkbox" />
-							<label for="checkboxAddTextQAnother" class="checkboxXMarkLabel">Add another</label>
-						</form>							
-					</div>
+	<div>
+		<button id="buttonAddTextQ" class="buttonDefault buttonAddTextQ">Add Text Q.</button>
+		<div id="divAddTextQ" style="display:none;" class="propertiesContainer">
 
-					<div style="float:left; padding-right: 15px;height:25px;">
-						<input id="checkboxAddTextQAnotherDescription" placeholder="[describe]" class="inputDefault inputAddTextQAnotherDescription" type="text"/>
-					</div>
-				
-					<div style="float:left; padding-right: 5px;height:25px;">
-						<form>
-							<label for="inputAddTextQAnotherMaximum" style="font-size:14px;">Maximum</label>
-							<input id="inputAddTextQAnotherMaximum" class="inputDefault inputAddTextQAnotherMaximum" type="number" min=0 max=999/>
-						</form>	
-					</div>
-
-				</div>
-				
-				<div style="margin-top: 5px;width:100%;height:25px;">
-					<div style="float:left; padding-right: 5px;">
-						<form>
-							<input id="checkboxAddTextQNotEditable" class="checkboxXMark" type="checkbox" />
-							<label for="checkboxAddTextQNotEditable" class="checkboxXMarkLabel">Not Editable</label>
-						</form>							
-					</div>
-				</div>
-				
-				<div style="margin-top: 5px;width:100%;height:25px;">
-					<div style="float:left; padding-right: 5px;">
-						<form>
-							<input id="checkboxAddTextQLogic" class="checkboxXMark" type="checkbox" />
-							<label for="checkboxAddTextQLogic" class="checkboxXMarkLabel">Use with logic</label>
-						</form>							
-					</div>
-				</div>
-
-				<button id="buttonAddTextQSave" class="buttonDefault buttonSave">Save</button>					
-			
+			<div class="propertyTitle" style="width:100%;float:left;">
+				[Question Header]
 			</div>
-			
-			<button id="buttonAddListQ" class="buttonDefault buttonAddListQ">Add List Q.</button>
-			
-			<button id="buttonInsertOption" class="buttonDefault buttonInsertOption">Insert Option</button>
-			
-			<button id="buttonCopyField" class="buttonDefault buttonCopyField">Copy Field</button>
-			<div id="divCopyField" style="display:block;padding-top: 5px;" class="propertiesContainer">
-				<button id="buttonCopyFieldInsert" class="buttonDefault buttonSave">Insert Field</button>
+			<input id="inputAddTextQHeader" type="text" class="inputDefault" style="width:100%;float:left;"/>
+			<div class="propertyTitle">
+				[Question Text]
 			</div>
-			
-			<div id="divQuestionPane" style="width:100%;">
+			<textarea id="textareaAddTextQText" class="textAreaDefault" style="width:calc(100% - 4px);float:left;"></textarea>
+
+			<div id="divAddTextQContainerSub" style="width:100%;float:left;">
+
+				<div class="divAddTextQContainerSubElement">
+					<input id="inputAddTextQSub0" type="text" class="inputDefault inputTextQSubfields"
+						   style="float:left;"/>
+					<button id="buttonAddTextQRemoveSub" class="roundButton" style="float:left;"><span>-</span>
+					</button>
+					<button id="buttonAddTextQAddSub" class="roundButton" style="float:left;"><span>+</span>
+					</button>
+				</div>
+
 			</div>
-			
+
+			<div style="margin-top: 5px;width:100%;float:left;">
+
+				<div style="float:left; padding-right: 5px;height:25px;">
+					<form>
+						<input id="checkboxAddTextQAnother" class="checkboxXMark" type="checkbox"/>
+						<label for="checkboxAddTextQAnother" class="checkboxXMarkLabel">Add another</label>
+					</form>
+				</div>
+
+				<div style="float:left; padding-right: 15px;height:25px;">
+					<input id="checkboxAddTextQAnotherDescription" placeholder="[describe]"
+						   class="inputDefault inputAddTextQAnotherDescription" type="text"/>
+				</div>
+
+				<div style="float:left; height:25px;">
+					<form>
+						<label for="inputAddTextQAnotherMaximum" style="font-size:14px;">Maximum</label>
+						<input id="inputAddTextQAnotherMaximum" class="inputDefault inputAddTextQAnotherMaximum"
+							   type="number" min=0 max=999/>
+					</form>
+				</div>
+
+			</div>
+
+			<div style="margin-top: 5px;width:100%;float:left;">
+				<div style="float:left; padding-right: 5px;">
+					<form>
+						<input id="checkboxAddTextQNotEditable" class="checkboxXMark" type="checkbox"/>
+						<label for="checkboxAddTextQNotEditable" class="checkboxXMarkLabel">Not Editable</label>
+					</form>
+				</div>
+			</div>
+
+			<div style="margin-top: 5px;width:100%;float:left;">
+				<div style="float:left; padding-right: 5px;">
+					<form>
+						<input id="checkboxAddTextQLogic" class="checkboxXMark" type="checkbox"/>
+						<label for="checkboxAddTextQLogic" class="checkboxXMarkLabel">Use with Logic <span>(if checked this field shows in the "Insert option" tool)</span></label>
+					</form>
+				</div>
+			</div>
+
+			<div style="width:100%;float:left; border-bottom : 1px solid silver;">
+				<button id="buttonAddTextQSave" class="buttonDefault buttonSave">Save</button>
+			</div>
+
 		</div>
-		
-		
-	
-    </body>
+
+		<button id="buttonAddListQ" class="buttonDefault buttonAddListQ">Add List Q.</button>
+		<div id="divAddListQ" style="display:block;" class="propertiesContainer">
+
+			<div class="propertyTitle" style="width:100%;float:left;">
+				[Question Header]
+			</div>
+			<input id="inputAddListQHeader" style="width:100%;float:left;" type="text" class="inputDefault" style="width : 100%;"/>
+			<div class="propertyTitle" style="width:100%;float:left;">
+				[Question Text]
+			</div>
+			<textarea id="textareaAddListQText" class="textAreaDefault" style="width:calc(100% - 4px);float:left;"></textarea>
+
+			<div id="divAddListQContainerSub" style="margin-top:5px; width:100%;float:left;">
+
+				<div class="divAddListQContainerSubElement">
+					<input id="inputAddListQSub0" type="text" class="inputDefault inputTextQSubfields"
+						   style="float:left;"/>
+					<button id="buttonAddListQRemoveSub" class="roundButton" style="float:left;"><span>-</span>
+					</button>
+					<button id="buttonAddListQAddSub" class="roundButton" style="float:left;"><span>+</span>
+					</button>
+				</div>
+
+			</div>
+
+			<div style="margin-top: 5px;width:100%;float:left;">
+				<div style="float:left; padding-right: 5px;">
+					<form>
+						<input id="checkboxAddListQAllowMultiple" class="checkboxXMark" type="checkbox"/>
+						<label for="checkboxAddListQAllowMultiple" class="checkboxXMarkLabel">Allow Multiple
+							Selections <span>(if not checked, only one selection allowed; if checked, more than one selection is allowed)</span></label>
+					</form>
+				</div>
+			</div>
+
+			<div style="margin-top: 5px;width:100%;float:left;">
+				<div style="float:left; padding-right: 5px;">
+					<form>
+						<input id="checkboxAddListQLogic" class="checkboxXMark" type="checkbox"/>
+						<label for="checkboxAddListQLogic" class="checkboxXMarkLabel">Use with Logic <span>(if checked this field shows in the "Insert option" tool)</span></label>
+					</form>
+				</div>
+			</div>
+
+			<div style="width:100%;float:left; border-bottom : 1px solid silver;">
+				<button id="buttonAddListQSave" class="buttonDefault buttonSave">Save</button>
+			</div>
+		</div>
+
+
+		<button id="buttonInsertOption" class="buttonDefault buttonInsertOption">Insert Option</button>
+
+		<button id="buttonCopyField" class="buttonDefault buttonCopyField">Copy Field</button>
+		<div id="divCopyField" style="display:none;padding-top: 5px;" class="propertiesContainer">
+			<button id="buttonCopyFieldInsert" class="buttonDefault buttonSave">Insert Field</button>
+		</div>
+
+		<div id="divQuestionPane" style="width:100%;">
+		</div>
+
+	</div>
+
+
+	</body>
 </html>

@@ -1,10 +1,10 @@
 {
-    "name" : "LegalDocs Example",
+    "name" : "LegalDocs plugin",
     "guid" : "asc.{C05D81BC-92C7-4C48-BA49-E8B9AAFCD776}",
 
     "variations" : [
         {
-            "description" : "LegalDocs Example",
+            "description" : "LegalDocs plugin",
             "url"         : "index.html",
 
             "icons"           : ["icon.png", "icon@2x.png", "icon2.png", "icon2@2x.png"],

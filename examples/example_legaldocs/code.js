@@ -424,6 +424,19 @@
 			else
 				privateCreateInlineControl();
 		};
+
+		document.getElementById("buttonAddListQ").onclick = function()
+		{
+			if ("none" === document.getElementById("divAddListQ").style.display)
+				document.getElementById("divAddListQ").style.display = "block";
+			else
+				document.getElementById("divAddListQ").style.display = "none";
+		};
+
+		document.getElementById("buttonAddListQSave").onclick = function()
+		{
+			document.getElementById("divAddListQ").style.display = "none";
+		};
     };
 
 	window.Asc.plugin.onMethodReturn = function(returnValue)
