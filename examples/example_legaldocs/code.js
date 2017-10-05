@@ -218,6 +218,9 @@
 			var sHeader = document.getElementById("inputAddTextQHeader").value;
 			var sText   = document.getElementById("textareaAddTextQText").value;
 
+			if (!sHeader || !sText)
+				return;
+
 			var oProps = {
 				"isVisible"    : true,
 				"useLogic"     : document.getElementById("checkboxAddTextQLogic").checked,
@@ -365,6 +368,36 @@
 			}
 		}
 
+		function privateOnRemoveListQElement()
+		{
+			var oParentDiv = this.parentNode;
+			if (!oParentDiv)
+				return;
+
+			var oContainerDiv = oParentDiv.parentNode;
+			if (!oContainerDiv)
+				return;
+
+			if (1 === oContainerDiv.children.length)
+			{
+				oParentDiv.children[0].value = "";
+			}
+			else
+			{
+				if (oParentDiv === oContainerDiv.children[oContainerDiv.children.length - 1])
+				{
+					var oAddButton = document.getElementById("buttonAddListQAddElement");
+					oAddButton.parentNode.removeChild(oAddButton);
+					oContainerDiv.removeChild(oParentDiv);
+					oContainerDiv.children[oContainerDiv.children.length - 1].appendChild(oAddButton);
+				}
+				else
+				{
+					oContainerDiv.removeChild(oParentDiv);
+				}
+			}
+		}
+
 		document.getElementById("buttonAddTextQRemoveSub").onclick = privateOnRemoveTextQSub;
 
 		document.getElementById("buttonAddTextQAddSub").onclick = function()
@@ -436,6 +469,36 @@
 		document.getElementById("buttonAddListQSave").onclick = function()
 		{
 			document.getElementById("divAddListQ").style.display = "none";
+		};
+
+		document.getElementById("buttonAddListQRemoveElement").onclick = privateOnRemoveListQElement;
+
+		document.getElementById("buttonAddListQAddElement").onclick = function()
+		{
+			this.parentNode.removeChild(this);
+			var oContainer = document.getElementById("divAddListQContainerElements");
+
+			var oDiv       = document.createElement("div");
+			oDiv.className = "divAddTextQContainerSubElement";
+			oContainer.appendChild(oDiv);
+
+			var oInput            = document.createElement("input");
+			oInput.className      = "inputDefault inputTextQSubfields";
+			oInput.style["float"] = "left";
+			oDiv.appendChild(oInput);
+
+			var oButton            = document.createElement("button");
+			oButton.className      = "roundButton";
+			oButton.style["float"] = "left";
+			oDiv.appendChild(oButton);
+
+			var oSpan       = document.createElement("span");
+			oSpan.innerHTML = "-";
+			oButton.appendChild(oSpan);
+
+			oButton.onclick = privateOnRemoveListQElement;
+
+			oDiv.appendChild(this);
 		};
     };
 

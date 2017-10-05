@@ -321,14 +321,14 @@
 			</div>
 			<textarea id="textareaAddListQText" class="textAreaDefault" style="width:calc(100% - 4px);float:left;"></textarea>
 
-			<div id="divAddListQContainerSub" style="margin-top:5px; width:100%;float:left;">
+			<div id="divAddListQContainerElements" style="margin-top:5px; width:100%;float:left;">
 
-				<div class="divAddListQContainerSubElement">
-					<input id="inputAddListQSub0" type="text" class="inputDefault inputTextQSubfields"
+				<div class="divAddTextQContainerSubElement">
+					<input id="inputAddListQElements0" type="text" class="inputDefault inputTextQSubfields"
 						   style="float:left;"/>
-					<button id="buttonAddListQRemoveSub" class="roundButton" style="float:left;"><span>-</span>
+					<button id="buttonAddListQRemoveElement" class="roundButton" style="float:left;"><span>-</span>
 					</button>
-					<button id="buttonAddListQAddSub" class="roundButton" style="float:left;"><span>+</span>
+					<button id="buttonAddListQAddElement" class="roundButton" style="float:left;"><span>+</span>
 					</button>
 				</div>
 
@@ -363,7 +363,10 @@
 
 		<button id="buttonCopyField" class="buttonDefault buttonCopyField">Copy Field</button>
 		<div id="divCopyField" style="display:none;padding-top: 5px;" class="propertiesContainer">
-			<button id="buttonCopyFieldInsert" class="buttonDefault buttonSave">Insert Field</button>
+
+			<div style="width:100%; border-bottom : 1px solid silver;">
+				<button id="buttonCopyFieldInsert" class="buttonDefault buttonSave">Insert Field</button>
+			</div>
 		</div>
 
 		<div id="divQuestionPane" style="width:100%;">
