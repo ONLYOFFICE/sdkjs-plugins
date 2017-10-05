@@ -195,7 +195,7 @@
 
 		return _scriptObject;
 	}
-	
+
 	String.prototype.replaceAll = function(search, replacement) {
 		var target = this;
 		return target.replace(new RegExp(search, 'g'), replacement);
@@ -308,22 +308,16 @@
 					}
 				}
 
-				var oCopyFieldContainer = document.getElementById("divCopyField");
-				if ("none" !== oCopyFieldContainer.style.display)
-				{
-					oCopyFieldContainer.style.display = "none";
-					while (oCopyFieldContainer.children.length > 1)
-						oCopyFieldContainer.removeChild(oCopyFieldContainer.children[0]);
-				}
+				privateUpdateCopyField();
 			};
 
 			var oField = new CField(oDiv, oProps);
 			arrFields.push(oField);
 
-			console.log(oProps);
+			privateUpdateCopyField();
 		};
 
-		function OnRemoveTextQSub()
+		function privateOnRemoveTextQSub()
 		{
 			var oParentDiv = this.parentNode;
 			if (!oParentDiv)
@@ -353,7 +347,25 @@
 			}
 		}
 
-		document.getElementById("buttonAddTextQRemoveSub").onclick = OnRemoveTextQSub;
+		function privateUpdateCopyField()
+		{
+			var oContainer = document.getElementById("divCopyField");
+
+			while (oContainer.children.length > 1)
+				oContainer.removeChild(oContainer.children[0]);
+
+			var oButton = oContainer.children[0];
+			for (var nIndex = 0, nCount = arrFields.length; nIndex < nCount; ++nIndex)
+			{
+				var arrDivs = arrFields[nIndex].GenerateFieldDivsForInsert();
+				for (var nDivId = 0, nDivsCount = arrDivs.length; nDivId < nDivsCount; ++nDivId)
+				{
+					oContainer.insertBefore(arrDivs[nDivId], oButton);
+				}
+			}
+		}
+
+		document.getElementById("buttonAddTextQRemoveSub").onclick = privateOnRemoveTextQSub;
 
 		document.getElementById("buttonAddTextQAddSub").onclick = function()
 		{
@@ -380,7 +392,7 @@
 			oSpan.innerHTML = "-";
 			oButton.appendChild(oSpan);
 
-			oButton.onclick = OnRemoveTextQSub;
+			oButton.onclick = privateOnRemoveTextQSub;
 
 			oDiv.appendChild(this);
 		};
@@ -391,22 +403,11 @@
 			if ("none" === oContainer.style.display)
 			{
 				oContainer.style.display = "block";
-
-				var oButton = oContainer.children[0];
-				for (var nIndex = 0, nCount = arrFields.length; nIndex < nCount; ++nIndex)
-				{
-					var arrDivs = arrFields[nIndex].GenerateFieldDivsForInsert();
-					for (var nDivId = 0, nDivsCount = arrDivs.length; nDivId < nDivsCount; ++nDivId)
-					{
-						oContainer.insertBefore(arrDivs[nDivId], oButton);
-					}
-				}
+				privateUpdateCopyField();
 			}
 			else
 			{
 				oContainer.style.display = "none";
-				while (oContainer.children.length > 1)
-					oContainer.removeChild(oContainer.children[0]);
 			}
 		};
 
