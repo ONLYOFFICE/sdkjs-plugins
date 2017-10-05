@@ -24,9 +24,9 @@
 			var oDiv = null;
 
 			if (this.CanAddAnother())
-				oDiv = this.private_CreateCombobox(this.m_oRawProps["label"], this, -1, this.m_oRawProps["anotherMax"], this.m_oRawProps["anotherTitle"]);
+				oDiv = this.private_CreateCombobox("TEXT - " + this.m_oRawProps["label"], this, -1, this.m_oRawProps["anotherMax"], this.m_oRawProps["anotherTitle"]);
 			else
-				oDiv = this.private_CreateCombobox(this.m_oRawProps["label"], this, -1);
+				oDiv = this.private_CreateCombobox("TEXT - " + this.m_oRawProps["label"], this, -1);
 
 			oDiv.className = "copyFieldElement";
 			arrDivs.push(oDiv);
@@ -36,6 +36,12 @@
 				oDiv.className = "copyFieldSubElement";
 				arrDivs.push(oDiv);
 			}
+		}
+		else if ("dropDown" === this.m_oRawProps["type"])
+		{
+			oDiv = this.private_CreateCombobox("LIST - " + this.m_oRawProps["label"], this, -1);
+			oDiv.className = "copyFieldElement";
+			arrDivs.push(oDiv);
 		}
 
 		return arrDivs;
@@ -75,6 +81,10 @@
 	{
 		return (this.m_oRawProps["type"] === "text" ? true : false);
 	};
+	CField.prototype.IsListField = function()
+	{
+		return (this.m_oRawProps["type"] === "dropDown" ? true : false);
+	};
 	CField.prototype.CanAddAnother = function()
 	{
 		return (this.m_oRawProps["addAnother"] === true ? true : false);
@@ -106,6 +116,10 @@
 					sResult += " | " + this.m_oRawProps["subFields"][nSubIndex];
 			}
 		}
+		else if (this.IsListField())
+		{
+			sResult = "LIST - " + this.m_oRawProps["label"];
+		}
 
 		return sResult;
 	};
@@ -131,6 +145,32 @@
 			var oRun = oParagraph.AddText(\'" + Label + "\');\r\n\
 			oRun.SetColor(0,0,0);\r\n\
 			oRun.SetShd(\"clear\",71, 222, 186);\r\n\
+			oDocument.InsertContent([oParagraph], true);\r\n\
+			";
+
+		_script = _script.replaceAll("\r\n", "");
+		_script = _script.replaceAll("\n", "");
+
+		var _scriptObject = {
+			"Props" : {
+				"Tag"        : Tag,
+				"Lock"       : 0,
+				"InternalId" : InternalId
+			},
+			"Script" : _script
+		};
+
+		return _scriptObject;
+	}
+
+	function privateCreateScriptForListQ(Tag, Label, InternalId)
+	{
+		var _script = "\r\n\
+			var oDocument = Api.GetDocument();\r\n\
+			var oParagraph = Api.CreateParagraph();\r\n\
+			var oRun = oParagraph.AddText(\'" + Label + "\');\r\n\
+			oRun.SetColor(0,0,0);\r\n\
+			oRun.SetShd(\"clear\",191, 202, 255);\r\n\
 			oDocument.InsertContent([oParagraph], true);\r\n\
 			";
 
@@ -205,6 +245,72 @@
 
     window.Asc.plugin.init = function()
     {
+    	function privateAddField(sHeader, sText, oProps)
+		{
+			var oPaneDiv = document.getElementById("divQuestionPane");
+
+			var oDiv = document.createElement("div");
+			oPaneDiv.appendChild(oDiv);
+			oDiv.className = "paneElement";
+
+			var oButton            = document.createElement("button");
+			oButton.className      = "roundButton";
+			oButton.style["float"] = "left";
+			oDiv.appendChild(oButton);
+
+			var oSpan       = document.createElement("span");
+			oSpan.innerHTML = "-";
+			oButton.appendChild(oSpan);
+
+			var oInfo       = document.createElement("div");
+			oInfo.className = "paneElementInfo";
+			oDiv.appendChild(oInfo);
+
+			var oInfoTitle       = document.createElement("div");
+			oInfoTitle.className = "paneElementInfoTitle";
+			oInfo.appendChild(oInfoTitle);
+			oInfoTitle.innerHTML = sHeader;
+
+			var oInfoText       = document.createElement("div");
+			oInfoText.className = "paneElementInfoText";
+			oInfo.appendChild(oInfoText);
+
+			oInfoText.innerHTML = sText;
+
+			oButton.onclick = function()
+			{
+				// var sText = this.children[0].innerHTML;
+				// if ("-" === sText)
+				// {
+				// 	this.children[0].innerHTML = "+";
+				// 	oInfoText.style.display = "none";
+				// }
+				// else
+				// {
+				// 	this.children[0].innerHTML = "-";
+				// 	oInfoText.style.display = "block";
+				// }
+
+				oPaneDiv.removeChild(oDiv);
+
+				for (var nIndex = 0, nCount = arrFields.length; nIndex < nCount; ++nIndex)
+				{
+					if (arrFields[nIndex].CheckByPaneElement(oDiv))
+					{
+						arrFields.splice(nIndex, 1);
+						break;
+					}
+				}
+
+				privateUpdateCopyField();
+			};
+
+			var oField = new CField(oDiv, oProps);
+			arrFields.push(oField);
+
+			privateUpdateCopyField();
+		}
+
 		document.getElementById("buttonAddTextQ").onclick = function()
 		{
 			if ("none" === document.getElementById("divAddTextQ").style.display)
@@ -255,69 +361,7 @@
 
 			document.getElementById("divAddTextQ").style.display = "none";
 
-			var oPaneDiv = document.getElementById("divQuestionPane");
-
-			var oDiv = document.createElement("div");
-			oPaneDiv.appendChild(oDiv);
-			oDiv.className = "paneElement";
-
-
-			var oButton            = document.createElement("button");
-			oButton.className      = "roundButton";
-			oButton.style["float"] = "left";
-			oDiv.appendChild(oButton);
-
-			var oSpan       = document.createElement("span");
-			oSpan.innerHTML = "-";
-			oButton.appendChild(oSpan);
-
-			var oInfo       = document.createElement("div");
-			oInfo.className = "paneElementInfo";
-			oDiv.appendChild(oInfo);
-
-			var oInfoTitle       = document.createElement("div");
-			oInfoTitle.className = "paneElementInfoTitle";
-			oInfo.appendChild(oInfoTitle);
-			oInfoTitle.innerHTML = "TEXT | " + sHeader;
-
-			var oInfoText       = document.createElement("div");
-			oInfoText.className = "paneElementInfoText";
-			oInfo.appendChild(oInfoText);
-
-			oInfoText.innerHTML = sText;
-
-			oButton.onclick = function()
-			{
-				// var sText = this.children[0].innerHTML;
-				// if ("-" === sText)
-				// {
-				// 	this.children[0].innerHTML = "+";
-				// 	oInfoText.style.display = "none";
-				// }
-				// else
-				// {
-				// 	this.children[0].innerHTML = "-";
-				// 	oInfoText.style.display = "block";
-				// }
-
-				oPaneDiv.removeChild(oDiv);
-
-				for (var nIndex = 0, nCount = arrFields.length; nIndex < nCount; ++nIndex)
-				{
-					if (arrFields[nIndex].CheckByPaneElement(oDiv))
-					{
-						arrFields.splice(nIndex, 1);
-						break;
-					}
-				}
-
-				privateUpdateCopyField();
-			};
-
-			var oField = new CField(oDiv, oProps);
-			arrFields.push(oField);
-
-			privateUpdateCopyField();
+			privateAddField("TEXT | " + sHeader, sText, oProps);
 		};
 
 		function privateOnRemoveTextQSub()
@@ -500,12 +544,45 @@
 
 			oDiv.appendChild(this);
 		};
+
+		document.getElementById("buttonAddListQSave").onclick = function()
+		{
+			var sHeader = document.getElementById("inputAddListQHeader").value;
+			var sText   = document.getElementById("textareaAddListQText").value;
+
+			if (!sHeader || !sText)
+				return;
+
+			var oProps = {
+				"allowMultiple" : document.getElementById("checkboxAddListQAllowMultiple").checked,
+				"isVisible"     : true,
+				"useLogic"      : document.getElementById("checkboxAddListQLogic").checked,
+				"nonEditable"   : false,
+				"question"      : sText,
+				"hint"          : "",
+				"label"         : sHeader,
+				"type"          : "dropDown",
+				"id"            : GetNewId(),
+				"selections"    : []
+			};
+
+			var nElementsCount = document.getElementById("divAddListQContainerElements").children.length;
+			for (var nIndex = 0; nIndex < nElementsCount; ++nIndex)
+			{
+				var sValue = document.getElementById("divAddListQContainerElements").children[nIndex].children[0].value;
+				oProps["selections"].push(sValue);
+			}
+
+			document.getElementById("divAddListQ").style.display = "none";
+
+			privateAddField("List | " + sHeader, sText, oProps);
+		};
     };
 
 	window.Asc.plugin.onMethodReturn = function(returnValue)
 	{
 		var _plugin = window.Asc.plugin;
-		if (_plugin.info.methodName == "AddContentControl")
+		if (_plugin.info.methodName == "AddContentControl" && returnValue)
 		{
 			if (_Control)
 			{
@@ -530,6 +607,11 @@
 						var _obj = privateCreateScriptForTextQ(oField.GetId(), oField.GetLabel(_Control.SubIndex), returnValue.InternalId);
 						window.Asc.plugin.executeMethod("InsertAndReplaceContentControls", [[_obj]]);
 					}
+				}
+				else if (oField.IsListField())
+				{
+					var _obj = privateCreateScriptForListQ(oField.GetId(), oField.GetLabel(), returnValue.InternalId);
+					window.Asc.plugin.executeMethod("InsertAndReplaceContentControls", [[_obj]]);
 				}
 
 				_Control = null;
