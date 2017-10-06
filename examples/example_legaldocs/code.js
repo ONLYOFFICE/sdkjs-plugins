@@ -494,6 +494,9 @@
 				return;
 
 			var oInput = document.querySelector('input[name="radioCopyField"]:checked');
+			if (!oInput)
+				return;
+
 			_Control = oInput["internalInfo"];
 
 			if (_Control.Field.IsTextField() && _Control.Field.CanAddAnother())

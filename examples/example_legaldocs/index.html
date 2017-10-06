@@ -225,6 +225,25 @@
 				font-size   : 12px;
 			}
 
+			select.selectInsertOption {
+				width            : calc(100% - 20px);
+				outline          : none;
+				background-color : rgb(211, 210, 211);
+				border           : 1px solid rgb(143, 143, 143);
+			}
+
+			.selectInsertOptionCondition {
+				width            : calc(50% - 20px);
+				outline          : none;
+				background-color : rgb(211, 210, 211);
+				border           : 1px solid rgb(143, 143, 143);
+			}
+
+			div.selectInsertOptionConditionTitle {
+				width            : calc(50% - 20px);
+				outline          : none;
+			}
+
 
 		</style>
 
@@ -358,8 +377,53 @@
 			</div>
 		</div>
 
-
 		<button id="buttonInsertOption" class="buttonDefault buttonInsertOption">Insert Option</button>
+		<div id="divInsertOption" style="display:block;" class="propertiesContainer">
+			<div class="propertyTitle" style="width:100%;float:left;">
+				This option shows if:
+			</div>
+			<select id="selectInsertOptionField" class="selectInsertOption" style="float:left;">
+			</select>
+
+			<div style="width:100%;float:left;margin-top:5px;">
+				<div class="selectInsertOptionConditionTitle" style="float:left;">
+					Choose Condition
+				</div>
+
+				<div class="selectInsertOptionConditionTitle" style="margin-left:20px;float:left;">
+					Choose option
+				</div>
+			</div>
+
+			<div style="width:100%;float:left;margin-top:5px;">
+				<select id="selectInsertOptionCondition" class="selectInsertOptionCondition" style="float:left;">
+					<option>equals</option>
+					<option>does not equal</option>
+					<option>contains</option>
+					<option>does not contain</option>
+					<option>is more than</option>
+					<option>is less than</option>
+				</select>
+
+				<select id="selectInsertOptionValue" class="selectInsertOptionCondition" style="margin-left:20px; float:left;display: none;">
+				</select>
+
+				<input id="inputInsertOptionValue" class="selectInsertOptionCondition" style="margin-left:20px; float:left;display: none;"/>
+			</div>
+
+			<div style="margin-top: 5px;width:100%;float:left;">
+				<div style="float:left; padding-right: 5px;">
+					<form>
+						<input id="checkboxInsertOptionAdditional" class="checkboxXMark" type="checkbox"/>
+						<label for="checkboxInsertOptionAdditional" class="checkboxXMarkLabel">Add an additional requirement to make the condition true.</label>
+					</form>
+				</div>
+			</div>
+
+			<div style="width:100%;float:left; border-bottom : 1px solid silver;">
+				<button id="buttonInsertOptionInsert" class="buttonDefault buttonSave">Insert</button>
+			</div>
+		</div>
 
 		<button id="buttonCopyField" class="buttonDefault buttonCopyField">Copy Field</button>
 		<div id="divCopyField" style="display:none;padding-top: 5px;" class="propertiesContainer">
