@@ -123,7 +123,21 @@
 
 		return sResult;
 	};
+	CField.prototype.UseLogic = function()
+	{
+		return (this.m_oRawProps["useLogic"] === true ? true : false);
+	};
+	CField.prototype.GetListOptions = function()
+	{
+		if (this.IsListField() && this.m_oRawProps["selections"])
+			return this.m_oRawProps["selections"];
 
+		return [];
+	};
+	CField.prototype.GetHeader = function()
+	{
+		return (this.m_oRawProps["label"] ? this.m_oRawProps["label"] : "");
+	};
 
 	var arrFields = [];
 
@@ -228,6 +242,35 @@
 			"Props" : {
 				"Tag"        : Tag,
 				"Lock"       : 0,
+				"InternalId" : InternalId
+			},
+			"Script" : _script
+		};
+
+		return _scriptObject;
+	}
+
+	function privateCreateScriptForInsertOption(Tag, Label, InternalId)
+	{
+		var _script = "\r\n\
+			var oDocument = Api.GetDocument();\r\n\
+			var oParagraph = Api.CreateParagraph();\r\n\
+			var oRun = oParagraph.AddText(\'" + Label + "\');\r\n\
+			oRun.SetColor(0,0,0);\r\n\
+			oRun.SetShd(\"clear\", 244, 155, 32);\r\n\
+			oRun = oParagraph.AddText(\'Enter your conditional text here\');\r\n\
+			oRun.SetColor(0,0,0);\r\n\
+			oRun.SetShd(\"clear\", 240, 221, 191);\r\n\
+			oDocument.InsertContent([oParagraph], true);\r\n\
+			";
+
+		_script = _script.replaceAll("\r\n", "");
+		_script = _script.replaceAll("\n", "");
+
+		var _scriptObject = {
+			"Props" : {
+				"Tag"        : Tag,
+				"Lock"       : 3,
 				"InternalId" : InternalId
 			},
 			"Script" : _script
@@ -410,6 +453,8 @@
 					oContainer.insertBefore(arrDivs[nDivId], oButton);
 				}
 			}
+
+			privateUpdateInsertOptions();
 		}
 
 		function privateOnRemoveListQElement()
@@ -580,6 +625,138 @@
 
 			privateAddField("List | " + sHeader, sText, oProps);
 		};
+
+		function privateUpdateInsertOptions()
+		{
+			var oSelectField = document.getElementById("selectInsertOptionField");
+
+			while (oSelectField.children.length > 0)
+				oSelectField.removeChild(oSelectField.children[0]);
+
+			for (var nIndex = 0, nCount = arrFields.length; nIndex < nCount; ++nIndex)
+			{
+				var oField = arrFields[nIndex];
+				if (oField.UseLogic())
+				{
+					var oOption = document.createElement("option");
+					oOption.innerHTML = oField.GetLabel(-1);
+					oOption["internalInfo"] = oField;
+					oSelectField.appendChild(oOption);
+				}
+			}
+
+			privateUpdateInsertOptionValue();
+		}
+
+		function privateUpdateInsertOptionValue()
+		{
+			document.getElementById("selectInsertOptionValue").style.display = "none";
+			document.getElementById("inputInsertOptionValue").style.display  = "none";
+
+			var oSelectField = document.getElementById("selectInsertOptionField");
+			var oFieldOption = oSelectField.children[oSelectField.selectedIndex];
+			if (!oFieldOption)
+				return;
+
+			var oField = oFieldOption["internalInfo"];
+			if (!oField)
+				return;
+
+			if (oField.IsTextField())
+			{
+				document.getElementById("inputInsertOptionValue").style.display = "block";
+			}
+			else if (oField.IsListField())
+			{
+				var oSelectValue = document.getElementById("selectInsertOptionValue");
+				oSelectValue.style.display = "block";
+
+				while (oSelectValue.children.length > 0)
+					oSelectValue.removeChild(oSelectValue.children[0]);
+
+				var arrValueOptions = oField.GetListOptions();
+				for (var nIndex = 0, nCount = arrValueOptions.length; nIndex < nCount; ++nIndex)
+				{
+					var oOption = document.createElement("option");
+					oOption.innerHTML = arrValueOptions[nIndex];
+					oSelectValue.appendChild(oOption);
+				}
+			}
+		}
+
+		document.getElementById("buttonInsertOption").onclick = function()
+		{
+			if ("none" === document.getElementById("divInsertOption").style.display)
+			{
+				document.getElementById("divInsertOption").style.display = "block";
+				privateUpdateInsertOptions();
+			}
+			else
+			{
+				document.getElementById("divInsertOption").style.display = "none";
+			}
+		};
+
+		document.getElementById("selectInsertOptionField").onchange = privateUpdateInsertOptionValue;
+
+		document.getElementById("buttonInsertOptionInsert").onclick = function()
+		{
+			var oSelectField = document.getElementById("selectInsertOptionField");
+			var oFieldOption = oSelectField.children[oSelectField.selectedIndex];
+			if (!oFieldOption)
+				return;
+
+			var oField = oFieldOption["internalInfo"];
+			if (!oField)
+				return;
+
+			var oSelectCondition = document.getElementById("selectInsertOptionCondition");
+			var oConditionOption = oSelectCondition.children[oSelectCondition.selectedIndex];
+			if (!oConditionOption)
+				return;
+
+			var sCondition = oConditionOption.innerHTML;
+			var sValue     = "";
+
+			if (oField.IsTextField())
+			{
+				sValue = document.getElementById("inputInsertOptionValue").value;
+			}
+			else if (oField.IsListField())
+			{
+				var oSelectValue = document.getElementById("selectInsertOptionValue");
+				var oValueOption = oSelectValue.children[oSelectValue.selectedIndex];
+				if (!oValueOption)
+					return;
+
+				sValue = oValueOption.innerHTML;
+			}
+			else
+			{
+				return;
+			}
+
+			var oProps = {
+				"condition" : sCondition,
+				"type"      : "conditional",
+				"value"     : sValue,
+				"id"        : GetNewId(),
+				"input_id"  : oField.GetId()
+			};
+
+			document.getElementById("divInsertOption").style.display = "none";
+
+			if (_Control)
+				return;
+
+			_Control = {
+				Conditional : true,
+				Props       : oProps,
+				Field       : oField
+			};
+
+			privateCreateInlineControl(false);
+		};
     };
 
 	window.Asc.plugin.onMethodReturn = function(returnValue)
@@ -590,7 +767,14 @@
 			if (_Control)
 			{
 				var oField = _Control.Field;
-				if (oField.IsTextField())
+
+				if (true === _Control.Conditional)
+				{
+					var sLabel = "OPTION - IF \"" + oField.GetHeader() + "\" " + _Control.Props["condition"] + " \"" + _Control.Props["value"] + "\"";
+					var _obj = privateCreateScriptForInsertOption(oField.GetId(), sLabel, returnValue.InternalId);
+					window.Asc.plugin.executeMethod("InsertAndReplaceContentControls", [[_obj]]);
+				}
+				else if (oField.IsTextField())
 				{
 					if (oField.CanAddAnother())
 					{
