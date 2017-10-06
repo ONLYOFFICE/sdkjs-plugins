@@ -255,9 +255,13 @@
 		var _script = "\r\n\
 			var oDocument = Api.GetDocument();\r\n\
 			var oParagraph = Api.CreateParagraph();\r\n\
-			var oRun = oParagraph.AddText(\'" + Label + "\');\r\n\
+			var oInlineContainer = oParagraph.AddInlineLvlSdt();\r\n\
+			oInlineContainer.SetLock('contentLocked');\r\n\
+			var oRun = Api.CreateRun();\r\n\
+			oRun.AddText(\'" + Label + "\');\r\n\
 			oRun.SetColor(0,0,0);\r\n\
 			oRun.SetShd(\"clear\", 244, 155, 32);\r\n\
+			oInlineContainer.AddElement(oRun, 0);\r\n\
 			oRun = oParagraph.AddText(\'Enter your conditional text here\');\r\n\
 			oRun.SetColor(0,0,0);\r\n\
 			oRun.SetShd(\"clear\", 240, 221, 191);\r\n\
@@ -384,6 +388,8 @@
 				"anotherTitle" : "",
 				"anotherMax"   : -1
 			};
+
+			console.log(oProps);
 
 			var nSubfieldsCount = document.getElementById("divAddTextQContainerSub").children.length;
 			if (1 < nSubfieldsCount || (1 === nSubfieldsCount && "" !== document.getElementById("divAddTextQContainerSub").children[0].children[0].value))
@@ -614,6 +620,8 @@
 				"selections"    : []
 			};
 
+			console.log(oProps);
+
 			var nElementsCount = document.getElementById("divAddListQContainerElements").children.length;
 			for (var nIndex = 0; nIndex < nElementsCount; ++nIndex)
 			{
@@ -743,6 +751,8 @@
 				"id"        : GetNewId(),
 				"input_id"  : oField.GetId()
 			};
+
+			console.log(oProps);
 
 			document.getElementById("divInsertOption").style.display = "none";
 
