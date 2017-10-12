@@ -4,11 +4,19 @@
 	var player = null;
 	var isWindowPlayer = false;
 	
-	function validateYoutubeUrl(url)
+	function validateYoutubeUrl1(url)
 	{
         var p = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
         return (url.match(p)) ? true : false;
 	}
+	function validateYoutubeUrl2(url)
+	{
+        var p = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
+        var match = url.match(p);
+		return (match && match[2] && match[2].length == 11) ? true : false;
+	}
+	
+	var validateYoutubeUrl = validateYoutubeUrl2;
 	
 	function getVideoId(url)
 	{
