@@ -107,8 +107,15 @@
 	
 	window.Asc.plugin.button = function(id)
 	{
-		if (player)
-			player.stopVideo();
+		try
+		{
+			if (player && player.stopVideo)
+				player.stopVideo();
+		}
+		catch (err)
+		{
+		}
+
 		if (id == 0)
 		{
 	        url = document.getElementById("textbox_url").value;
