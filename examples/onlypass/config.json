@@ -1,0 +1,26 @@
+{
+    "name" : "OnlyPass",
+    "guid" : "asc.{F2402876-659F-47FB-A646-67B49F2B57D0}",
+
+    "variations" : [
+        {
+            "description" : "onlychain",
+            "url"         : "index.html",
+
+            "icons"           : ["icon.png", "icon@2x.png", "icon.png", "icon@2x.png"],
+            "isViewer"        : false,
+            "EditorsSupport"  : ["word", "cell", "slide"],
+
+            "isVisual"        : false,
+            "isModal"         : false,
+            "isInsideMode"    : false,
+
+            "initDataType"    : "desktop",
+            "initData"        : "",
+
+            "isUpdateOleOnResize" : false,
+
+            "buttons"         : []
+        }
+    ]
+}
