@@ -1,5 +1,14 @@
 (function(window, undefined){
 
+    window.oncontextmenu = function(e)
+	{
+		if (e.preventDefault)
+			e.preventDefault();
+		if (e.stopPropagation)
+			e.stopPropagation();
+		return false;
+    };
+    
 	var _userAgent = navigator.userAgent.toLowerCase();
 	var _userAgentIE =  ((_userAgent.indexOf("msie") > -1 || _userAgent.indexOf("trident") > -1) && (_userAgent.indexOf("edge") < 0));
 
