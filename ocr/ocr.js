@@ -1,4 +1,14 @@
 (function(window, undefined){
+
+    window.oncontextmenu = function(e)
+	{
+		if (e.preventDefault)
+			e.preventDefault();
+		if (e.stopPropagation)
+			e.stopPropagation();
+		return false;
+    };
+    
     function escapeHtml(string) {
         var res = string;
         res = res.replace(/[\', \", \\,]/g, function (sSymbol) {
