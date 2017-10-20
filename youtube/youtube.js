@@ -93,8 +93,11 @@
 				}
 				else
 				{
-					player.stopVideo();
-					player.loadVideoById(getVideoId(url));
+					if (player.stopVideo && player.loadVideoById)
+					{
+						player.stopVideo();
+						player.loadVideoById(getVideoId(url));
+					}
 				}
 			}
 		};
