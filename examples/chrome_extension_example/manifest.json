@@ -13,12 +13,14 @@
 	},	
 	"web_accessible_resources": [
 		"/pluginBase.js",
+		"/plugins.css",
 		"/main.js",		
 		"/chess/chess.js",
-		"/chess/config.js",
+		"/chess/config.json",
 		"/chess/icon.png",
 		"/chess/icon@2x.png",
-		"/chess/index.html"
+		"/chess/index.html",
+		"/chess/index_about.html"
 	],
 	"content_scripts": [
 	{
@@ -33,5 +35,6 @@
 		"file:///*",
 		"<all_urls>",
 		"tabs"
-	]
+	],
+	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }

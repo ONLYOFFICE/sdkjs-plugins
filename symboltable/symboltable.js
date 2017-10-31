@@ -1,6 +1,16 @@
 (function(window, undefined){
 
-
+    window.oncontextmenu = function(e)
+	{
+		if (e.preventDefault)
+			e.preventDefault();
+		if (e.stopPropagation)
+			e.stopPropagation();
+		return false;
+    };
+    
+	var _userAgent = navigator.userAgent.toLowerCase();
+	var _userAgentIE =  ((_userAgent.indexOf("msie") > -1 || _userAgent.indexOf("trident") > -1) && (_userAgent.indexOf("edge") < 0));
 
         var oRangeNames = {};
        oRangeNames[1] =  'Basic Latin';                                    
@@ -1202,12 +1212,24 @@
 
     window.Asc.plugin.onExternalMouseUp = function()
     {
-        var event = new MouseEvent('mouseup', {
-            'view': window,
-            'bubbles': true,
-            'cancelable': true
-        });
-        document.dispatchEvent(event);
+    	if (!_userAgentIE)
+		{
+			var event = new MouseEvent('mouseup', {
+				'view':       window,
+				'bubbles':    true,
+				'cancelable': true
+			});
+
+			document.dispatchEvent(event);
+		}
+		else
+		{
+			var mouseUpEvent = document.createEvent ('MouseEvents');
+			mouseUpEvent.initEvent("mouseup", true, true);
+			document.dispatchEvent(mouseUpEvent);
+
+			document.dispatchEvent(mouseUpEvent);
+		}
     };
 
     window.Asc.plugin.button = function(id){

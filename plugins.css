@@ -9,6 +9,11 @@
     cursor: pointer;
 }
 
+.btn-text-default::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+
 .btn-text-default.primary {
 	color: #fff;
 	background-color: #7d858c;
