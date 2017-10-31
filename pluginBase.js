@@ -35,11 +35,17 @@
 
     window.onload = function()
     {
+        if (!window.Asc || !window.Asc.plugin)
+            return;
+
         var xhr = new XMLHttpRequest();
         xhr.open("get", "./config.json", true);
         xhr.responseType = "json";
         xhr.onload = function()
         {
+            if (!window.Asc || !window.Asc.plugin)
+                return;
+
             if (xhr.status == 200 || (xhr.status == 0 && xhr.readyState == 4))
             {
                 var objConfig = xhr.response;
@@ -84,7 +90,7 @@
 
     function onMessage(event)
     {
-        if (!window.Asc.plugin)
+        if (!window.Asc || !window.Asc.plugin)
             return;
 
         if (window.plugin_onMessage)
@@ -118,5 +124,13 @@
     {
         window.attachEvent("onmessage", onMessage);
     }
+
+    window.onunload = function()
+	{
+		if (window.addEventListener)
+			window.removeEventListener("message", onMessage, false);
+		else
+			window.detachEvent("onmessage", onMessage);
+	}
 	
 })(window, undefined);
