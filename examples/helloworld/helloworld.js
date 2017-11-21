@@ -34,11 +34,11 @@
             case 2:
             {
                 // call command with external variables
-                scope.text = text; // export variable to plugin scope
+                Asc.scope.text = text; // export variable to plugin scope
                 this.callCommand(function() {
                     var oDocument = Api.GetDocument();
                     var oParagraph = Api.CreateParagraph();
-                    oParagraph.AddText(scope.text);
+                    oParagraph.AddText(Asc.scope.text); // or oParagraph.AddText(scope.text);
                     oDocument.InsertContent([oParagraph]);
                 }, true);
                 break;
