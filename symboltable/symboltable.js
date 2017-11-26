@@ -368,6 +368,9 @@
     }
 
     function getCodeByLinearIndex(arrRanges, nIndex){
+        if(nIndex < 0){
+            return -1;
+        }
         var nCount = 0;
         var oCurRange = arrRanges[0];
         var nDiff;
