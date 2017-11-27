@@ -6,6 +6,16 @@
     window.Asc = window.Asc || {};
     window.Asc.plugin = {};
 
+    window.Asc.scope = {};
+    window.Asc.scope.prototype = 
+    {
+        clear : function() 
+        {    
+            for (var i in window.Asc.scope) 
+                delete window.Asc.scope[i];
+        }
+    };
+
     function CopyObj(Obj, ObjectExt)
     {
         if( !Obj || !("object" == typeof(Obj) || "array" == typeof(Obj)) )

@@ -123,19 +123,9 @@
 			return;
 		}
 
-		var client = new XMLHttpRequest();
-		var _url = "./templates/" + _templates[_index][0] + "/script.txt";
-		client.open("GET", _url);
-
-		var _indexTmp = _index;
-		client.onreadystatechange = function() {
-			if (client.readyState == 4 && (client.status == 200 || location.href.indexOf("file:") == 0))
-			{
-				_templates_code[_indexTmp] = client.responseText;
-				window.template_run(_indexTmp);
-			}
-		};
-		client.send();
+		window.Asc.plugin.callModule("./templates/" + _templates[_index][0] + "/script.txt", function(content){
+			_templates_code[_index] = content;
+		});
 	};
 
 	window.Asc.plugin.onExternalMouseUp = function()
