@@ -252,19 +252,8 @@ editor.ternTooltip = new TernTooltip(editor, ternServer);
         if (null == docMacros)
         {
             // test
-            Content = {
-                
-                macrosArray : [
-                    { name : "Macros 1", value : "(function()\n{\n})();" },
-                    { name : "Macros 2", value : "(function()\n{\n})();" },
-                    { name : "Macros 3", value : "(function()\n{\n})();" },
-                    { name : "Macros 4", value : "(function()\n{\n})();" },
-                    { name : "Macros 5", value : "(function()\n{\n})();" },
-                    { name : "Macros 6", value : "(function()\n{\n})();" }
-                ],
-                
-                current : -1
-            };
+            var testStr = '{"macrosArray":[{"name":"Macros 1","value":"(function()\\n{\\n    var oDocument = Api.GetDocument();\\n    var oParagraph = Api.CreateParagraph();\\n    oParagraph.AddText(\\"Hello world!\\");\\n    oDocument.InsertContent([oParagraph]);\\n})();"},{"name":"Macros 2","value":"(function()\\n{\\n})();"}],"current":0}';
+            Content = JSON.parse(testStr);
         }
         else
         {
