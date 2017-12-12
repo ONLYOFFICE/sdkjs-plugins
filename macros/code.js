@@ -128,13 +128,13 @@ editor.ternTooltip = new TernTooltip(editor, ternServer);
     window.onItemClick = onItemClick;
 
     document.getElementById("button_new").onclick = function() {
-        var indexMax = 1;
+        var indexMax = 0;
         for (var i = 0; i < Content.macrosArray.length; i++)
         {
             if (0 == Content.macrosArray[i].name.indexOf("Macros"))
             {
                 var index = parseInt(Content.macrosArray[i].name.substr(6));
-                if (!isNaN(index))
+                if (!isNaN(index) && (indexMax < index))
                     indexMax = index;
             }
         }
@@ -248,18 +248,11 @@ editor.ternTooltip = new TernTooltip(editor, ternServer);
 
     window.Asc.plugin.init = function(text)
 	{
-        var docMacros = localStorage.getItem("macros");
-        if (null == docMacros)
-        {
-            // test
-            var testStr = '{"macrosArray":[{"name":"Macros 1","value":"(function()\\n{\\n    var oDocument = Api.GetDocument();\\n    var oParagraph = Api.CreateParagraph();\\n    oParagraph.AddText(\\"Hello world!\\");\\n    oDocument.InsertContent([oParagraph]);\\n})();"},{"name":"Macros 2","value":"(function()\\n{\\n})();"}],"current":0}';
-            Content = JSON.parse(testStr);
-        }
-        else
-        {
+        this.executeMethod("GetMacros", [JSON.stringify(Content)], function(data) {
+            
             try
             {
-                Content = JSON.parse(docMacros);
+                Content = JSON.parse(data);
             }
             catch (err)
             {
@@ -268,19 +261,23 @@ editor.ternTooltip = new TernTooltip(editor, ternServer);
                     current : -1
                 };
             }
-        }
-
-        updateMenu();
+            
+            updateMenu();
+        });
 	};
 	
 	window.Asc.plugin.button = function(id)
-	{
+	{   
         if (id == 0)
         {
-            localStorage.setItem("macros", JSON.stringify(Content));
+            this.executeMethod("SetMacros", [JSON.stringify(Content)], function(){
+                this.executeCommand("close", "");    
+            });
         }
-
-		this.executeCommand("close", "");
+        else
+        {
+            this.executeCommand("close", "");
+        }
 	};
 
 })(window, undefined);
