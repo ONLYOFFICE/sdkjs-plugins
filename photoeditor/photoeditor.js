@@ -6,6 +6,10 @@
     var oImage = false;
 
     window.Asc.plugin.init = function(sHtml){
+		if(typeof $ === "undefined"){			
+            this.executeCommand("close", "");
+			return;
+		}
         oImage = $(sHtml)[0];
         if(!oImage || !$(oImage).is('img')){
             oImage = $(sHtml).find('img')[0];
@@ -17,6 +21,10 @@
         }
 
         this.resizeWindow(10000, 10000, 10000, 10000, 10000, 10000);
+		if(typeof Aviary === "undefined"){			
+            this.executeCommand("close", "");
+			return;
+		}
         oFeatherEditor = new Aviary.Feather({
             apiKey: '1234567',
             appendTo: 'editor_container',
