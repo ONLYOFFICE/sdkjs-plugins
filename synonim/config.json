@@ -7,7 +7,7 @@
             "description" : "Synonim",
             "url"         : "index.html",
 
-            "icons"           : ["ic_text_fields_black_24dp_1x.png", "ic_text_fields_black_24dp_2x.png", "ic_text_fields_black_24dp_1x.png", "ic_text_fields_black_24dp_2x.png"],
+            "icons"           : ["icon.png", "icon2.png", "icon.png", "icon2.png"],
             "isViewer"        : true,
             "EditorsSupport"  : ["word", "cell", "slide"],
 

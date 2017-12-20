@@ -16,8 +16,8 @@
 		var synonim_data = "";
 		var synonim_data_send = null;
 		var isBreakSynonime = false;
-		var data = [];		//Font storage
-		var isFontInit = false;
+		var data = [];		//Fonts storage
+		var isFontInit = false;		//font initialization flag
 		var breakTimeoutId = -1;
 
 	
@@ -77,7 +77,6 @@
 		   $(document).ready(function () {
 
 			   var oCurFont, oLastFont;
-			   //var data = [];
 			   var oFontsByName = {};
 			   var sCurFontNameInMap;
 			   for(var i = 0; i < returnValue.length; ++i){
@@ -112,22 +111,22 @@
 		   {
 			   InitFont();
 		   }
-			   function	InitFont ()
-		   		{
-		  			 //initialize params
-		   			aFontSelects = data;	  
-		   			//fill fonts combo box
-		   			var oFontSelector = $('#font-select');
-            		oFontSelector.empty();
-            		var oOption;
-            		for(i = 0; i < aFontSelects.length; ++i){
-                	oOption = $('<option></option>');
-                	oOption.attr('value', i);
-                	oOption.text(aFontSelects[i].m_wsFontName);
-                	oFontSelector.append(oOption);
-					}
-					isFontInit = true;
+			function InitFont ()
+		   	{
+		  		//initialize params
+		   		aFontSelects = data;	  
+		   		//fill fonts combo box
+		   		var oFontSelector = $('#font-select');
+            	oFontSelector.empty();
+            	var oOption;
+            	for(i = 0; i < aFontSelects.length; ++i){
+                oOption = $('<option></option>');
+                oOption.attr('value', i);
+                oOption.text(aFontSelects[i].m_wsFontName);
+                oFontSelector.append(oOption);
 				}
+				isFontInit = true;
+			}
 			
 		}
 	
@@ -169,6 +168,7 @@
 			{
 				if (this.readyState == 4 && this.status == 404)
 				{
+					//if synonims/antonims not found
 					var _select1 = document.getElementById("synonim_id");
 					_select1.innerHTML = "<option value='" + req_text + "'>" + req_text + "</option>";
 					var _select2 = document.getElementById("antonym_id");
@@ -186,16 +186,17 @@
 						}
 	
 						var _obj  = JSON.parse(this.responseText);
-						var _text = getSynonim(_obj); 
-						var _antonim = getAntonym(_obj);
-						var _select1 = document.getElementById("synonim_id");
-						var _select2 = document.getElementById("antonym_id");
-						var _font = document.getElementById("font-select");
-						var _synonim = "";
+						var _text = getSynonim(_obj); 	//take synonims
+						var _antonim = getAntonym(_obj);	//take antonyms
+						var _select1 = document.getElementById("synonim_id");	//synonims
+						var _select2 = document.getElementById("antonym_id");	//antonims
+						var _font = document.getElementById("font-select");		//font
+						var _synonim = "";	
 						var _ant = "";
 	
 						if (1 == synonim_data_send.current)
 						{
+							// if _text !=null
 							if(_text)
 							{
 								for (var i = 0; i < _text.length; i++)
@@ -206,9 +207,9 @@
 							}
 							else 
 							{
-								_select1.innerHTML ="<option value='" + req_text + "'>" + req_text + "</option>" + _synonim;
+								_select1.innerHTML ="<option value='" + req_text + "'>" + req_text + "</option>";
 							}
-							
+							// if _antonim !=null
 							if(_antonim)
 							{
 								for (var i = 0; i < _antonim.length; i++)
@@ -222,7 +223,7 @@
 								_select2.innerHTML ="<option value='" + req_text + "'>" + req_text + "</option>";
 							}
 							_select1.onchange = function(e) { 								
-								sFont = _font.options[_font.selectedIndex].text;
+								sFont = _font.options[_font.selectedIndex].text;	//take selected font
       							var _htmlPaste = "<span style=\"font-family:'" + sFont + "'\">" + _select1.options[_select1.selectedIndex].text +" "+ "</span>";
 								window.Asc.plugin.executeMethod("PasteHtml", [_htmlPaste]);
 							 };
@@ -255,7 +256,6 @@
 			xhr.send(null);
 		}
 		
-	
 		function synonim()
 		{
 			isBreakSynonime = false;
@@ -308,7 +308,6 @@
 				else
 				{
 					isBreakSynonime = true;
-	
 					document.getElementById("id_progress").style.display = "block";
 					breakTimeoutId = setTimeout(function() { synonim(); }, 5000);
 				}
@@ -334,8 +333,8 @@
 			let j = [];
 			if (responceObj.verb) {
 				if(responceObj.verb.syn && (responceObj.noun && responceObj.noun.syn))
-					return j.concat(responceObj.verb.syn, responceObj.noun.syn);
-				return responceObj.verb.syn;			// if you want more synonyms you should concat all items
+					return j.concat(responceObj.verb.syn, responceObj.noun.syn);   // if you want more synonyms you should concat all items
+				return responceObj.verb.syn;			
 			} else if (responceObj.noun && responceObj.noun.syn) {
 				return responceObj.noun.syn;	// if you want more synonyms you should concat all items
 			}
@@ -361,5 +360,5 @@
 				return;
 			}
 		};
-	
+			  
 	})(window, undefined);
