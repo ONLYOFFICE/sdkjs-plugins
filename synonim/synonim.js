@@ -12,65 +12,12 @@
 		var ApiKey = '34aacef03e39ff2e622f10d1fc5313f3'; // generated APi key on bighugelabs.com
 		var SynonimFormat = 'json';
 		var version = 2;
-
 		var synonim_data = "";
-		var synonim_data_send = null;
 		var isBreakSynonime = false;
 		var data = [];		//Fonts storage
 		var isFontInit = false;		//font initialization flag
 		var breakTimeoutId = -1;
-
-	
 		var isInit = false;
-	
-		function updateScroll()
-		{
-			var container = document.getElementById('scrollable-container-id');
-			Ps.update(container);
-			if($('.ps__scrollbar-y').height() === 0){
-				$('.ps__scrollbar-y').css('border-width', '0px');
-			}
-			else{
-				$('.ps__scrollbar-y').css('border-width', '1px');
-			}
-		}
-	
-	
-		function getSynonimArray(data)
-		{
-			var return_array = [];
-			// split by max_size
-			var max_size = 9000;
-			var index = 0;
-			var test_border = max_size - 500;
-	
-			var chars = [".", "%2C", "%20"];
-	
-			while (data.length > max_size)
-			{
-				for (var i = 0; i < chars.length; i++)
-				{	
-					index = data.lastIndexOf(chars[i], max_size);
-	
-					if (index > test_border)
-					{
-						index += chars[i].length;
-						break;
-					}
-					else
-					{
-						index = max_size;
-					}
-				}
-	
-				return_array.push(data.substr(0, index));
-				data = data.substr(index);
-			}
-	
-			return_array.push(data);
-	
-			return { parts : return_array, current : 0 };
-		}
 
 		window.Asc.plugin.onMethodReturn = function(returnValue)
 		{
@@ -130,35 +77,27 @@
 			
 		}
 	
-		function synonimIter()
+		
+		function synonim()
 		{
-			if (!synonim_data_send)
-				return;
-	
-			if (synonim_data_send.current >= synonim_data_send.parts.length)
+			isBreakSynonime = false;
+			if (-1 != breakTimeoutId)
 			{
-				synonim_data_send = null;	
-	
-				document.getElementById("id_progress").style.display = "none";
-	
-				return;
+				clearTimeout(breakTimeoutId);
+				breakTimeoutId = -1;
 			}
 	
-			var _text = synonim_data_send.parts[synonim_data_send.current];
-			synonim_data_send.current++;
+			if (synonim_data == "")
+				return;
+
+			if (!synonim_data)
+				return;
 	
+			var _text = synonim_data;
+			
 			if (_text == "")
-				return synonimIter();
-	
-			if (synonim_data_send.parts.length != 1)
-			{
-				document.getElementById("id_progress").style.display = "block";
-				var _cur = (100 * synonim_data_send.current / synonim_data_send.parts.length) >> 0;
-				if (_cur > 100)
-					_cur = 100;
-				document.getElementById("id_progress").style.width = _cur + "%";
-			}
-	
+				return synonim();
+		
 			var xhr = new XMLHttpRequest();
 			var req_text = decodeURIComponent(_text.replace('%0D%0A', ' ')).trim() ;
 			var _url = `https://words.bighugelabs.com/api/${version}/${ApiKey}/${req_text}/${SynonimFormat}`;
@@ -194,8 +133,7 @@
 						var _synonim = "";	
 						var _ant = "";
 	
-						if (1 == synonim_data_send.current)
-						{
+						
 							// if _text !=null
 							if(_text)
 							{
@@ -233,10 +171,7 @@
 								window.Asc.plugin.executeMethod("PasteHtml", [_htmlPaste]);
 							 };
 							
-						}
-						else
-						updateScroll();
-						synonimIter();
+						
 					}
 					catch (err)
 					{
@@ -250,65 +185,31 @@
 						synonim();
 						return;
 					}
-					synonimIter();
+					synonim();
 				}
 			};
 			xhr.send(null);
-		}
 		
-		function synonim()
-		{
-			isBreakSynonime = false;
-			if (-1 != breakTimeoutId)
-			{
-				clearTimeout(breakTimeoutId);
-				breakTimeoutId = -1;
-			}
-	
-			
-			updateScroll();
-	
-			if (synonim_data == "")
-				return;
-	
-	
-			synonim_data_send = getSynonimArray(encodeURIComponent(synonim_data));
-	
-			synonimIter();
 		}
 	
 		window.Asc.plugin.init = function(text)
 		{
 			window.Asc.plugin.executeMethod("GetFontList");
-			
-			updateScroll();
-	
 			text = text.replace(/;/g, "%3B");
-	
 			synonim_data = text;
 			if (!isInit)
 			{
-				var container = document.getElementById('scrollable-container-id');
-				Ps.initialize(container, {
-					theme : 'custom-theme'
-				});
 				synonim();	
-				window.onresize = function()
-				{
-					updateScroll();
-					
-				};
 			}
 			else
 			{
-				if (null == synonim_data_send)
+				if (null == synonim_data)
 				{
 					synonim();
 				}
 				else
 				{
 					isBreakSynonime = true;
-					document.getElementById("id_progress").style.display = "block";
 					breakTimeoutId = setTimeout(function() { synonim(); }, 5000);
 				}
 			}
@@ -330,35 +231,42 @@
 		};
 		//return array synonims
 		function getSynonim(responceObj) {
-			let j = [];
-			if (responceObj.verb) {
-				if(responceObj.verb.syn && (responceObj.noun && responceObj.noun.syn))
-					return j.concat(responceObj.verb.syn, responceObj.noun.syn);   // if you want more synonyms you should concat all items
-				return responceObj.verb.syn;			
-			} else if (responceObj.noun && responceObj.noun.syn) {
-				return responceObj.noun.syn;	// if you want more synonyms you should concat all items
-			}
+			let temp_syn = []; // array for synonims
+			if (responceObj.verb || responceObj.noun) {
+				if((responceObj.verb.syn && responceObj.verb) && (responceObj.noun && responceObj.noun.syn))
+					temp_syn = temp_syn.concat(responceObj.verb.syn, responceObj.noun.syn);   // if you want more synonims you should concat all items
+				if ((responceObj.verb.syn && responceObj.verb) && (!temp_syn.length))
+					temp_syn = temp_syn.concat(temp_syn, responceObj.verb.syn);
+				if ((responceObj.noun && responceObj.noun.syn) && (!temp_syn.length))
+					temp_syn = temp_syn.concat(temp_syn, responceObj.noun.syn);		
+			} 
 			else if (responceObj.adjective && responceObj.adjective.sim) {
-				return responceObj.adjective.sim;
+				temp_syn = temp_syn.concat(temp_syn, responceObj.adjective.sim);
 			}
 			else {
 				return;
 			}
+			return temp_syn;
 		};
 		
 		//return array antonyms
 		function getAntonym(responceObj) {
-			if (responceObj.noun && responceObj.noun.ant) {
-				return responceObj.noun.ant;			// if you want more antonyms you should concat all items
-			} else if(responceObj.verb && responceObj.verb.ant) {
-				return responceObj.verb.ant;	// if you want more antonyms you should concat all items
-			}
-			else if(responceObj.adjective && responceObj.adjective.ant) {
-				return responceObj.adjective.ant;
+			let temp_ant = [];	// array for antonyms
+			if (responceObj.verb || responceObj.noun) {
+				if((responceObj.verb.ant && responceObj.verb) && (responceObj.noun && responceObj.noun.ant))
+					temp_ant = temp_ant.concat(responceObj.verb.ant, responceObj.noun.ant);   // if you want more antonyms you should concat all items
+				if ((responceObj.verb.ant && responceObj.verb) && (!temp_ant.length))
+					temp_ant = temp_ant.concat(temp_ant, responceObj.verb.ant);
+				if ((responceObj.noun && responceObj.noun.ant) && (!temp_ant.length))
+					temp_ant = temp_ant.concat(temp_ant, responceObj.noun.ant);		
+			} 
+			else if (responceObj.adjective && responceObj.adjective.ant) {
+				temp_ant = temp_ant.concat(temp_ant, responceObj.adjective.ant);
 			}
 			else {
 				return;
 			}
+			return temp_ant;
 		};
 			  
 	})(window, undefined);
