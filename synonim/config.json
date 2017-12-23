@@ -1,13 +1,13 @@
 {
-    "name" : "Synonim",
+    "name" : "Thesaurus",
     "guid" : "asc.{BE5CBF95-C0AD-4842-B157-AC40FEDD9840}",
 
     "variations" : [
         {
-            "description" : "Synonim",
+            "description" : "Thesaurus",
             "url"         : "index.html",
 
-            "icons"           : ["icon.png", "icon2.png", "icon.png", "icon2.png"],
+            "icons"           : ["icon.png", "icon@2x.png", "icon.png", "icon@2x.png"],
             "isViewer"        : true,
             "EditorsSupport"  : ["word", "cell", "slide"],
 
