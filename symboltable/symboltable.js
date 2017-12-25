@@ -304,6 +304,9 @@
 
     var nMaxRecent = 36;
 	var bScrollMouseUp = false;
+	
+	var sInitFont = "";
+	var sInitSymbol = "";
 
 
     function encodeSurrogateChar(nUnicode)
@@ -320,6 +323,25 @@
             return String.fromCharCode(nLeadingChar) + String.fromCharCode(nTrailingChar);
         }
     }
+	
+	
+	function fixedCharCodeAt(str, idx) {
+	  idx = idx || 0;
+	  var code = str.charCodeAt(idx);
+	  var hi, low;
+	  if (0xD800 <= code && code <= 0xDBFF) {
+		hi = code;
+		low = str.charCodeAt(idx + 1);
+		if (isNaN(low)) {
+		  throw 'Старшая часть суррогатной пары без следующей младшей в fixedCharCodeAt()';
+		}
+		return ((hi - 0xD800) * 0x400) + (low - 0xDC00) + 0x10000;
+	  }
+	  if (0xDC00 <= code && code <= 0xDFFF) {
+		return false;
+	  }
+	  return code;
+	}
 
     function getArrRangesByFont(nFontName){
         var _ret = getSupportedRangesByFont(aFontSelects[nFontName]);
@@ -870,9 +892,17 @@
 
             //initialize params
             aFontSelects = data;
-            if(oFontsByName['Cambria Math']){
+            if(!oFontsByName[sInitFont]){
+                if(oFontsByName['Cambria Math']){
+                    sInitFont = 'Cambria Math';
+                }
+                else if(oFontsByName['Asana-Math']){
+                    sInitFont = 'Asana-Math';
+                }
+            }
+            if(oFontsByName[sInitFont]){
                 for(i = 0; i < aFontSelects.length; ++i){
-                    if(aFontSelects[i].m_wsFontName === 'Cambria Math'){
+                    if(aFontSelects[i].m_wsFontName === sInitFont){
                         nCurrentFont = i;
                         break;
                     }
@@ -881,7 +911,26 @@
 			if (nCurrentFont < 0)
 				nCurrentFont = 0;
             aRanges = getArrRangesByFont(nCurrentFont);
-            nCurrentSymbol = aRanges[0].Start;
+			if(sInitSymbol && sInitSymbol.length > 0){
+                nCurrentSymbol = fixedCharCodeAt(sInitSymbol[0], 0);
+                if(false === nCurrentSymbol){
+                    nCurrentSymbol = -1;
+                }
+                else{
+                    for(i = 0; i < aRanges.length; ++i){
+                        if(nCurrentSymbol >= aRanges[i].Start && nCurrentSymbol <= aRanges[i].End){
+                            break;
+                        }
+                    }
+                    if(i === aRanges.length){
+                        nCurrentSymbol = -1;
+                    }
+                }
+            }
+			if(nCurrentSymbol === -1){
+				nCurrentSymbol = aRanges[0].Start;	
+			}
+            
 
 
             //fill fonts combo box
@@ -1208,6 +1257,30 @@
     };
 
     window.Asc.plugin.init = function(data){
+		var oData = $(data);		
+		if(oData[0]){
+		    var oFirstSpan = null;
+			var oFirstElem = $(oData[0]);
+			if(oFirstElem.is("span")){
+                oFirstSpan = oFirstElem;
+            }
+            else{
+			    var oParFirstChild = oFirstElem.children().first();
+			    if(oParFirstChild.is("span")){
+                    oFirstSpan = oParFirstChild;
+                }
+            }
+
+            if(oFirstSpan){
+                sInitSymbol = oFirstSpan.text();
+                if(sInitSymbol && sInitSymbol.length > 0){
+                    sInitFont = oFirstSpan.css("font-family");
+                    if(sInitFont.length > 1 && sInitFont[0] === "\"" && sInitFont[sInitFont.length-1] === "\""){
+                        sInitFont = sInitFont.slice(1, sInitFont.length - 1);
+                    }
+                }
+            }
+		}
         window.Asc.plugin.executeMethod("GetFontList");
     };
 
