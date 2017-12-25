@@ -38,27 +38,28 @@
 				background: #a8d1ff;
 			}
 			.button {
-				background-color: transparent;
-				box-shadow: none;
+				color: #fff;
+  				background-color: #7d858c;
+				border: 1px solid #cfcfcf;
+				border-radius: 2px;
 				outline: none;
-				height: 21px;
+				font-size: 11px;
+				font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+				height: 22px;
+				cursor: pointer;
 				flex: 0.1;
 			}
 			.input-synonim {
+				outline-color: #7d858c;
 				flex: 0.9;
+				height: 18px;
+				border: 1px solid #cfcfcf;
 			}
-			.div-info {
-				background: rgba(200, 200, 200, 0.5); 
-				position: relative; 
-				margin: 0px; 
-				padding: 0px; 
-				box-sizing: border-box; 
-				width: 100%; 
-				height: 60px; 
-				overflow: hidden; 
-				color: #444444; 
-				font-size: 14px; 
-				font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+			.input-synonim::selection {
+				background: #D8DADC; /* WebKit/Blink Browsers */
+			}
+			.textSelect::-moz-selection {
+				background: #D8DADC; /* Gecko Browsers */
 			}
 			.input-field {
 				display: flex;
@@ -82,13 +83,13 @@
 				font-size: 14px;
 				margin-left: 10px;
 				margin-top: 10px;
+				cursor: pointer;
 			}
 			.global {
 				height: 100%;
 				display: flex;
 				width: 96%;
 				flex-flow: column;
-				/*overflow: auto;*/
 			}
 			.label-syn {
 				font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -98,6 +99,7 @@
 				position: relative;
 				overflow: hidden;
 				flex: 1;
+				user-select: none;
 			}
 			div::-moz-selection {
 				background: #a8d1ff;
@@ -107,15 +109,12 @@
 	</head>
 	<body class='body'>
 		<div id="synonimresult_id" class = "input-field">
-			<input type="search" class = "input-synonim" name="q" id = "inp_search" placeholder="Search" >
+			<input type="text" class = "input-synonim" name="q" id = "inp_search" placeholder="Search" >
 			<button class = "button" id ="btn_search">Lookup</button>
 		</div>		
 		<div id="scrollable-container-id" class='content-items'>
 			<div id = "global" class="global"></div>
 		</div>
-		<div class="div-info">
-			Получено с сервива «Big Huge Thesaurus»
-			<a href="https://words.bighugelabs.com" target="_blank">https://words.bighugelabs.com</a>
-		</div>
+		
 	</body>
 </html>

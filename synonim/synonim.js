@@ -13,59 +13,64 @@
 	var SynonimFormat = 'json';
 	var version = 2;
 	var synonim_data = "";
-	var isBreakSynonime = false;
 	var inputSerch;
 	var isInit = false;
+	var isInitp = false;
+	var predata = "";
 	
-	window.Asc.plugin.onMethodReturn = function(returnValue)
-	{
-		var c;
-		
-		
-	   $(document).ready(function () {
-
-		   	//event mouseout
-			$('body').on('mouseout', '.label-words', function() {
-				$(this).removeClass('label-selected');
+	$(document).ready(function () {
+		//event mouseout
+		$('body').on('mouseout', '.label-words', function() {
+			$(this).removeClass('label-selected');
+		});
+		//event mouseover
+		$('body').on('mouseover', '.label-words', function() {
+			$(this).addClass('label-selected');
+			//$(this).toggleClass("label-selected");
 			});
-			//event mouseover
-			$('body').on('mouseover', '.label-words', function() {
-				$(this).addClass('label-selected');
-			 });
-			 //event click
-			$('body').on('click', '.label-words', function() {
-				var _htmlPaste = "<span >" + $(this).text() +" "+ "</span>";
-				window.Asc.plugin.executeMethod("PasteText", [$(this).text() +" "]);	
-			});
-			//event button click
-			button = document.getElementById("btn_search");
-			button.onclick = function() {
-				$('#global').empty();
-				synonim_data = inputSerch.value;
-				if (null!=synonim_data)
-					synonim();
-					if (!isInit)
-		{
-			var container = document.getElementById('scrollable-container-id');
-			Ps.initialize(container, {
-				theme : 'custom-theme'
-			});
-			window.onresize = function()
+			//event click
+		$('body').on('click', '.label-words', function() {
+			var _htmlPaste = "<span >" + $(this).text() +" "+ "</span>";
+			window.Asc.plugin.executeMethod("PasteText", [$(this).text() +" "]);	
+		});
+		//event button click
+		button = document.getElementById("btn_search");
+		button.onclick = function() {
+			synonim_data = inputSerch.value;
+			if ((null!=synonim_data) && (predata != synonim_data))
 			{
+				$('#global').empty(); // cleared global div
+				synonim();
+			}
+			if (!isInit)
+			{
+				var container = document.getElementById('scrollable-container-id');
+				Ps.initialize(container, {
+					theme : 'custom-theme'
+				});
+				window.onresize = function()
+				{
+					updateScroll();
+				};
 				updateScroll();
-			};
-			isInit = true;
-		}
-			  };
-			
-	   });
-	
-	}
-
+				isInit = true;
+			}
+		};
+	});	
 
 	function synonim()
 		{
-			isBreakSynonime = false;
+			if (!isInit)
+			{
+				var container = document.getElementById('scrollable-container-id');
+				Ps.initialize(container, {
+					theme : 'custom-theme'
+				});
+				updateScroll();
+				updateScroll();
+				isInit = true;
+			}
+			predata = synonim_data;
 			var xhr = new XMLHttpRequest();
 			var req_text = decodeURIComponent(synonim_data.replace('%0D%0A', ' ')).trim() ;
 			var _url = `https://words.bighugelabs.com/api/${version}/${ApiKey}/${req_text}/${SynonimFormat}`;
@@ -77,20 +82,14 @@
 				{
 					$('#global').append("<h3 id = \"not_found\" class = \"not-found\">This word not found</h3>");
 					//if synonym not found
-					
+					updateScroll();
+					updateScroll();
 				}
 				if (this.readyState == 4 && this.status == 200  && !closed)
 				{
 					try
 					{
-						if (isBreakSynonime)
-						{
-							synonim();
-							return;
-						}
-	
 						var _obj  = JSON.parse(this.responseText);
-						
 						if (_obj.noun)			//if noun exist
 						{
 							drawWords(_obj.noun,"Noun");
@@ -103,7 +102,7 @@
 						{
 							drawWords(_obj.verb,"Vebr")
 						}
-								
+						updateScroll();
 						updateScroll();
 					}
 					catch (err)
@@ -112,12 +111,6 @@
 				}
 				else if (401 == this.readyState || 500 == this.readyState || 403 == this.status)
 				{
-					
-					if (isBreakSynonime)
-					{
-						synonim();
-						return;
-					}
 					synonim();
 				}
 			};
@@ -127,16 +120,37 @@
 
 	window.Asc.plugin.init = function(text)
 	{
-		inputSerch = document.getElementById("inp_search");
-		$('#global').empty(); // cleared global div
-		updateScroll();
-		inputSerch.value=text;
-
-		
-
-		//old
-		window.Asc.plugin.executeMethod("GetFontList");
-		
+		if (!isInitp)
+		{
+			inputSerch = document.getElementById("inp_search");
+			inputSerch.value = text;
+			synonim_data = text;
+			if (null!=synonim_data)
+				synonim();
+			window.onresize = function()
+			{
+				updateScroll();
+				updateScroll();
+			};
+		}
+		else
+		{
+			inputSerch.value = text;
+			synonim_data = text;
+			if (null == synonim_data)
+			{
+				synonim();
+			}
+			else if (predata == synonim_data)
+			{
+				return;
+			}
+			else {
+				$('#global').empty(); // cleared global div
+				synonim();
+			}
+		}
+		isInitp = true;
 	};
 	
 	window.Asc.plugin.button = function(id)
