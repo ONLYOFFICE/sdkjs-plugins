@@ -9,8 +9,8 @@
 		return false;
 	};
 	
-	var ApiKey = '34aacef03e39ff2e622f10d1fc5313f3'; // generated APi key on bighugelabs.com
-	var SynonimFormat = 'json';
+	var ApiKey = "34aacef03e39ff2e622f10d1fc5313f3"; // generated APi key on bighugelabs.com
+	var SynonimFormat = "json";
 	var version = 2;
 	var synonim_data = "";
 	var inputSerch;
@@ -73,7 +73,11 @@
 			predata = synonim_data;
 			var xhr = new XMLHttpRequest();
 			var req_text = decodeURIComponent(synonim_data.replace('%0D%0A', ' ')).trim() ;
-			var _url = `https://words.bighugelabs.com/api/${version}/${ApiKey}/${req_text}/${SynonimFormat}`;
+			var _url = "https://words.bighugelabs.com/api/";
+			_url += version + "/";
+			_url += ApiKey + "/";
+			_url += req_text + "/";
+			_url += SynonimFormat;
 			xhr.open('POST', _url, true);
 			xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 			xhr.onreadystatechange = function()
