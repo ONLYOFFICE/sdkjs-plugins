@@ -14,10 +14,7 @@
 		language_select,					//select for languages
 		_htmlPast,							//from paste in document
 		curLang,							//current language
-		code_field;							//field for higlight code
-		//для сохранения курсора
-		var selection,
-				range;//для сохранения курсора
+		code_field;							//field for higlight code						
 	
 	$(document).ready(function () {	
 		$("div").keydown(function(event){
@@ -32,7 +29,7 @@
 			});
 		});
 	});
-	
+
 	window.Asc.plugin.init = function(text)
 	{
 		code_field = document.getElementById("code_id");		
@@ -50,12 +47,20 @@
 				ChangeCode(curLang);
 				flag = true;	
 		};
+
+		function deleteSelected(start,end)
+		{
+			text = document.getElementById("code_id").innerText;
+			text = text.substring(0,start) + text.substring(end);
+			ChangeCode(curLang);	
+		}
+
 		if (!flag)
 		{
 			document.getElementById("code_id").focus();
 			ChangeCode(curLang);
-			//text = "";
 		}
+
 		function ChangeCode(curLang) {
 			if ((curLang == "Auto") && text)
 			{
@@ -67,24 +72,41 @@
 				temp_code = hljs.highlight(curLang, text, true, 0);
 				createPreview(temp_code);	
 			}
+			else
+			{
+				document.getElementById("code_id").innerHTML="";
+			}
 		};	
-		//document.getElementById("code_id").focus();
 
-		code_field.oninput = function() {
+		$("#code_id").keydown(function(event){
 			text = document.getElementById("code_id").innerText;
 			ChangeCode(curLang);
-		};
-
-		window.onresize = function()
-		{
-			//to update div
-			update();
-		};
+			if( event.keyCode == 13)
+			{
+				var selection_start = $('#code_id').get_selection_start();
+				var selection_end = $('#code_id').get_selection_end();
+				if(selection_start == selection_end)
+				{
+					if (selection_end == document.getElementById("code_id").innerText.length)
+					{
+						insertHTML("\n");
+					}
+					insertHTML("\n");
+					$('#code_id').set_selection(++selection_start, ++selection_end);
+					cancelEvent(event);
+				}
+				else
+				{
+					deleteSelected(selection_start,selection_end);
+					//insertHTML("\n");
+					insertHTML("\n");
+					$('#code_id').set_selection(selection_start+1, selection_start+1);
+					cancelEvent(event);
+				}
+			}
+			
+		});
 		window.Asc.plugin.resizeWindow(880, 600, 390, 400, 0, 0);				//resize plugin window		
-	};
-	function update()
-	{
-		//to do
 	};
 
 	function initLang()
@@ -120,29 +142,12 @@
 	}
 
 	function createPreview(code)
-	{
-		
-			//var selection = window.getSelection(),
-				//range = selection.getRangeAt(0),
-				//insertion = document.createDocumentFragment();
-			//range.deleteContents();	//delete the value
-			//range.insertNode(insertion);
-
-				//selection = window.getSelection();
-				//range = selection.getRangeAt(0);
-				//insertion = document.createDocumentFragment();
-				//selection.removeAllRanges();
-				//selection.addRange(range);
-
-				//sel = window.getSelection();
-				//sel.removeAllRanges();
-				//sel.addRange(range);
+	{		
+		var selection_start = $('#code_id').get_selection_start();
+        var selection_end = $('#code_id').get_selection_end();	
+		code_field.innerHTML = code.value;   // innerHtml вставка!
+    	$('#code_id').set_selection(selection_start, selection_end);		
 				
-				code_field.innerHTML = code.value;
-				
-				
-				
-
 		for (let i=0; i<language_select.length;i++)
 		{
 			if (language_select.options[i].text == code.language)
@@ -228,6 +233,101 @@
 			</html>"; 
 	};
 
+	$.fn.get_selection_start = function(){
+		var result = this.get(0).selectionStart;
+		if (typeof(result) == 'undefined') result = this.get_selection_range().selection_start;
+		return result;
+	}
+	
+	$.fn.get_selection_end = function(){
+		var result = this.get(0).selectionEnd;
+		if (typeof(result) == 'undefined') result = this.get_selection_range().selection_end;
+		return result;
+	}
+	
+	$.fn_get_selected_text = function(){
+		var value = this.get(0).value;
+		if (typeof(value) == 'undefined'){
+			var result = this.get_selection_range().selected_text;
+		}else{
+			var result = value.substring(this.selectionStart, this.selectionEnd);
+		}
+		return result;
+	}
+	
+	$.fn.get_selection_range = function(){
+		var range = window.getSelection().getRangeAt(0);
+		var cloned_range = range.cloneRange();
+		cloned_range.selectNodeContents(this.get(0));
+		cloned_range.setEnd(range.startContainer, range.startOffset);
+		var selection_start = cloned_range.toString().length;
+		var selected_text = range.toString();
+		var selection_end = selection_start + selected_text.length;
+		var result = {
+			selection_start: selection_start,
+			selection_end: selection_end,
+			selected_text: selected_text
+		}
+		return result;
+	}
+	
+	$.fn.set_selection = function(selection_start, selection_end){
+		var target_element = this.get(0);
+		selection_start = selection_start || 0;
+		if (typeof(target_element.selectionStart) == 'undefined'){
+			if (typeof(selection_end) == 'undefined') selection_end = target_element.innerHTML.length;
+	
+			var character_index = 0;
+			var rang = document.createRange();
+			rang.setStart(target_element, 0);
+			rang.collapse(true);
+			var node_stack = [target_element];
+			var node = null;
+			var start_found = false;
+			var stop = false;
+	
+			while (!stop && (node = node_stack.pop())) {
+				if (node.nodeType == 3){
+					var next_character_index = character_index + node.length;
+					if (!start_found && selection_start >= character_index && selection_start <= next_character_index){
+						rang.setStart(node, selection_start - character_index);
+						start_found = true;
+					}
+					
+					if (start_found && selection_end >= character_index && selection_end <= next_character_index){
+						rang.setEnd(node, selection_end - character_index);
+						stop = true;
+					}
+					character_index = next_character_index;
+				}else{
+					var child_counter = node.childNodes.length;
+					while (child_counter --){
+						node_stack.push(node.childNodes[child_counter]);
+					}
+				}
+			}
+			
+			var sel = window.getSelection();
+			sel.removeAllRanges();
+			sel.addRange(rang);
+		}else{
+			if (typeof(selection_end) == 'undefined') selection_end = target_element.value.length;
+		target_element.focus();
+		target_element.selectionStart = selection_start;
+			target_element.selectionEnd = selection_end;
+		}
+	}
+
+	function cancelEvent(e)
+	{
+		if (e && e.preventDefault) {
+			e.stopPropagation(); // DOM style (return false doesn't always work in FF)
+			e.preventDefault();
+		}
+		else {
+			window.event.cancelBubble = true;//IE stopPropagation
+		}
+	}
 	window.Asc.plugin.button = function(id)
 	{
 		if(id==0)
