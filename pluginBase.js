@@ -126,14 +126,40 @@
         }
     }
 
+    function onReloadPage(isCtrl)
+    {
+        var obj = 
+        {
+            type : "reload",
+            guid : window.Asc.plugin.guid,
+            ctrl : isCtrl
+        };
+        window.parent.postMessage(JSON.stringify(obj), "*");
+    }
+    function onBaseKeyDown(e)
+    {
+        var isCtrl = (e.metaKey || e.ctrlKey) ? true : false;
+        if (e.keyCode == 116)
+        {
+            onReloadPage(isCtrl);
+            if (e.preventDefault)
+                e.preventDefault();
+            if (e.stopPropagation)
+                e.stopPropagation();
+            return false;
+        }
+    }
+    
     if (window.addEventListener)
     {
         window.addEventListener("message", onMessage, false);
+        window.addEventListener("keydown", onBaseKeyDown, false);
     }
     else
     {
         window.attachEvent("onmessage", onMessage);
-    }
+        window.attachEvent("keydown", onBaseKeyDown);
+    }    
 
     window.onunload = function()
 	{

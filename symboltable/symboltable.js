@@ -539,6 +539,11 @@
         var oRecentsDiv = $('#recent-table');
         oRecentsDiv.empty();
         var nRecents = Math.min(getColsCount(), aRecents.length);
+		if(aRecents.length === 0){
+			oRecentsDiv.css('border', '1px solid rgb(247, 247, 247)');
+			return;
+		}
+		oRecentsDiv.css('border', '1px solid rgb(122, 122, 122)');
         for(var i = 0; i < nRecents; ++i){
             var oCell = createCell(aRecents[i].symbol, aRecents[i].font);
 
