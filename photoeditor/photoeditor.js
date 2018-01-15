@@ -6,6 +6,32 @@
     var oImage = false;
 
     window.Asc.plugin.init = function(sHtml){
+		
+		function showAlert(sMessage, fCallback){
+			var oMessageMask = document.getElementById("idMessageMask");
+			oMessageMask.style.display = "block";
+			var oMessageDiv = document.getElementById("idMessage");
+			oMessageDiv.style.display = "block";
+			var oMaskParagraph = document.getElementById("message_paragraph");
+			oMaskParagraph.textContent = sMessage;
+			var oMessageButton = document.getElementById("message_button");			
+			var fEventListener = function(e){
+				oMessageMask.style.display = "none";
+				oMessageDiv.style.display = "none";
+				oMaskParagraph.textContent = "";
+				oMessageButton.removeEventListener("click", fEventListener);
+				fCallback();
+			};
+			oMessageButton.addEventListener("click", fEventListener);
+		}
+		
+		if(typeof $ === "undefined" || typeof Aviary === "undefined"){		
+			showAlert("There is no Internet connection", function(){
+				window.Asc.plugin.executeCommand("close", "");
+			});            
+			return;
+		}
+
         oImage = $(sHtml)[0];
         if(!oImage || !$(oImage).is('img')){
             oImage = $(sHtml).find('img')[0];
@@ -17,6 +43,10 @@
         }
 
         this.resizeWindow(10000, 10000, 10000, 10000, 10000, 10000);
+		if(typeof Aviary === "undefined"){			
+            this.executeCommand("close", "");
+			return;
+		}
         oFeatherEditor = new Aviary.Feather({
             apiKey: '1234567',
             appendTo: 'editor_container',
@@ -37,6 +67,9 @@
 				window.Asc.plugin.executeCommand("close", sScript);                
             },
             onError: function(e){
+					showAlert(e.message, function(){
+						window.Asc.plugin.executeCommand("close", "");
+					});            
             },
             onClose: function(isDirty){
                 window.Asc.plugin.executeCommand("close", "");
