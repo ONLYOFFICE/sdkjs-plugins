@@ -31,20 +31,26 @@
 			.codefield {
 				display: block; 
 				position: relative; 
-				overflow: auto; 
+				overflow: hidden; 
 				margin: 1% 0% 1% 1%;
 				width: 98%; 
 				box-sizing:border-box; 
-				color: #444444; 
-				font-size: 14px; 
-				font-family: 'Helvetica Neue', Helvetica, Consolas, sans-serif; 
-				word-wrap: break-word;
-				outline: none;
-				white-space: pre;
 				border-width: 3px;
 				border-style: solid;
 				border-color: rgba(68,68,68,0.266666666666);
 				flex: 0.80%;
+			}
+			.content{
+				display: block; 
+				position: relative; 
+				overflow: hidden; 
+				/*width: 98%;*/ 
+				box-sizing:padding-box;  
+				font-size: 14px; 
+				font-family: 'Helvetica Neue', Helvetica, Consolas, sans-serif; 
+				word-break:break-all;
+				outline: none;
+				white-space: pre;
 			}
 			.combo {
 				background: #fff;
@@ -57,25 +63,76 @@
 				cursor: pointer;
 				margin: 0px 0px 10px 0px;
 				box-sizing: border-box;
+				flex: 0.95;
 			}
 			label {
 				font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 				font-size: 11px;
 			}
 			.language {
+				display: flex;
 				margin: 0px; 
-				padding: 10px; 
+				padding: 2px 10px 0px; 
 				box-sizing: border-box; 
 				width: 100%;
+			}
+			.TabColor {
+				display: inline-flex;
+				padding-left: 10px;
+			}
+			.tabselect {
+				margin: 0px;
+			}
+			.button {
+				color: #fff;
+  				background-color: #7d858c;
+				border: 1px solid #cfcfcf;
+				border-radius: 2px;
+				outline: none;
+				font-size: 11px;
+				font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+				height: 22px;
+				cursor: pointer;
+				flex: 0.05;
+				padding-right: 14px;
+			}
+			.colorselect {
+				padding: 12px 0px 0px 10px;
+				
+			}
+			.divbutton {
+				padding: 15px 0px 0px 10px;
+				
+			}
+			.label
+			{
+				font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+				font-size: 13px;
 			}
 		</style>
 	</head>
 	<body>
+		<label class="noselect" style = "padding: 5px 0px 0px 12px">Language</label>
 		<div class="language">	
-			<label class="noselect">Language</label>
 			<select id="language_id" class="noselect combo"></select>
+			<button class = "button" id ="btn_highlight">Highlight</button>
 		</div>
-		<div contentEditable="true" data-target="insert" id="code_id" class="codefield">
+		<div class="TabColor">
+			<div class="tabselect">	
+				<label class="label">Replace Tab with spaces</label>
+				<select id="tab_replace_id" class="noselect combo">
+					<option value="0">Don`t replaces</option>
+					<option value="2">Replace by 2 spaces</option>
+					<option value="4">Replace by 4 spaces</option>
+				</select>
+			</div>
+			<div class="colorselect">
+					<label for="background_color" class="label">Choose background color</label>
+					<input id="background_color" type="color" value="#ffffff">		
+			</div>
+		</div>
+		<div id="scrollable-container-id" class='codefield'>
+			<div contentEditable="true" data-target="insert" id="code_id" class="content"></div>
 		</div>
 	</body>
 </html>
