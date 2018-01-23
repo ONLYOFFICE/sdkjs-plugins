@@ -29,7 +29,7 @@
 }
 
 .btn-text-default.primary:hover {
-	background-color: #666d73; !important;
+	background-color: #666d73 !important;
 }
 
 .btn-text-default:active,
@@ -137,12 +137,14 @@
     position: absolute; /* please don't change 'position' */
     bottom: 3px; /* there must be 'right' for ps-scrollbar-y-rail */
     height: 10px;
+    margin: 0 13px 0 0;
 }
 
 .ps__scrollbar-y-rail {
     position: absolute; /* please don't change 'position' */
     right: 3px; /* there must be 'right' for ps-scrollbar-y-rail */
     width: 10px;
+    margin: 0 0 13px 0;
 }
 
 .ps__scrollbar-x {
@@ -156,7 +158,7 @@
     visibility: visible;
     display: block;
     box-sizing: border-box;
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAANCAQAAAAz1Zf0AAAAIUlEQVR42mNgAILz/0GQAQo+/gdBBqLAqE5ydH5k+sgEANHgUH2JtDRHAAAAAElFTkSuQmCC);
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAOCAYAAAD0f5bSAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAxSURBVChTYyAVfPz4kYkJyiYJMAF1/gcxiKWB4C95NkHpUXD+/HlwUJJCD78gZ2AAAEPHMr93vNFrAAAAAElFTkSuQmCC);
     background-repeat: no-repeat;
     background-position: 0 center;
     border: 1px solid #cfcfcf;
@@ -198,8 +200,9 @@
 }
 
 .ps__scrollbar-y-rail .ps__scrollbar-y {
-	background-position: -7px center;
+	background-position: 0 center;
 }
+
 
 .ps__scrollbar-x-rail .ps__scrollbar-x {
 	background-position: center -7px;

@@ -43,14 +43,18 @@
 			.content{
 				display: block; 
 				position: relative; 
-				/*overflow: hidden;*/
-				/*width: 98%;*/ 
+				width: fit-content;
+				width: -moz-fit-content;
+				min-width: 95%;
+				min-height: 95%;
 				box-sizing:padding-box;  
 				font-size: 14px; 
-				font-family: 'Helvetica Neue', Helvetica, Consolas, sans-serif; 
+				font-family: "Helvetica Neue", Helvetica, Consolas, sans-serif; 
 				word-break:break-all;
 				outline: none;
 				white-space: pre;
+				margin-bottom: 15px;
+				padding-right: 15px;
 			}
 			.combo {
 				background: #fff;
@@ -65,9 +69,13 @@
 				box-sizing: border-box;
 				flex: 0.95;
 			}
-			label {
+			.label {
 				font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 				font-size: 11px;
+				-khtml-user-select: none;
+				user-select: none;
+				-moz-user-select: none;
+				-webkit-user-select: none;
 			}
 			.language {
 				display: flex;
@@ -81,7 +89,7 @@
 				padding-left: 10px;
 			}
 			.tabselect {
-				margin: 0px;
+				padding-top: 5px;
 			}
 			.button {
 				color: #fff;
@@ -94,10 +102,14 @@
 				height: 22px;
 				cursor: pointer;
 				flex: 0.05;
-				padding-right: 14px;
 			}
 			.colorselect {
-				padding: 12px 0px 0px 10px;
+				padding-left: 10px;
+				padding-top: 3px;
+				-khtml-user-select: none;
+				user-select: none;
+				-moz-user-select: none;
+				-webkit-user-select: none;
 				
 			}
 			.divbutton {
@@ -109,18 +121,46 @@
 				font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 				font-size: 13px;
 			}
+			.line {
+				display: inline-block;
+				width: 15px;
+				height: 15px;
+				border-radius: 15px;
+				background-color: #4b9cdb;
+			}
+			.load{
+				display: none;
+				position: absolute;
+			}
+			/* =Animate the stuff
+			------------------------ */
+			.load .line:nth-last-child(1) {animation: loadingC .6s .1s linear infinite;}
+			.load .line:nth-last-child(2) {animation: loadingC .6s .2s linear infinite;}
+			.load .line:nth-last-child(3) {animation: loadingC .6s .3s linear infinite;}
+
+			@keyframes loadingC {
+				0 {transform: translate(0,0);}
+				50% {transform: translate(0,15px);}
+				100% {transform: translate(0,0);}
+			}
+
 		</style>
 	</head>
 	<body>
-		<label class="noselect" style = "padding: 5px 0px 0px 12px">Language</label>
+			<div id="load" class="load">
+					<div class="line"></div>
+					<div class="line"></div>
+					<div class="line"></div>
+				</div>
+		<label class="label" style = "padding: 5px 0px 0px 12px">Language</label>
 		<div class="language">	
-			<select id="language_id" class="noselect combo"></select>
+			<select id="language_id" class="combo"></select>
 			<button class = "button" id ="btn_highlight">Highlight</button>
 		</div>
 		<div class="TabColor">
-			<div class="tabselect">	
+			<div id="tabselect" class="tabselect">	
 				<label class="label">Replace Tab with spaces</label>
-				<select id="tab_replace_id" class="noselect combo">
+				<select id="tab_replace_id" class="combo">
 					<option value="0">Don`t replaces</option>
 					<option value="2">Replace by 2 spaces</option>
 					<option value="4">Replace by 4 spaces</option>
@@ -128,7 +168,7 @@
 			</div>
 			<div class="colorselect">
 					<label for="background_color" class="label">Choose background color</label>
-					<input id="background_color" type="color" value="#ffffff">		
+					<input id="background_color" style="padding: 0" type="color" value="#ffffff">		
 			</div>
 		</div>
 		<div id="scrollable-container-id" class='codefield'>

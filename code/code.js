@@ -15,15 +15,15 @@
 		_htmlPast,							//from paste in document
 		curLang,							//current language
 		code_field,							//field for higlight code		
-		container;							//scrollable conteiner	
-		
-		
+		container,							//scrollable conteiner	
+		timer,								//for timer 
+		flag_select = false;
+
 	function checkInternetExplorer(){
-		let rv = -1;
+		var rv = -1;
 		if (window.navigator.appName == 'Microsoft Internet Explorer') {
 			const ua = window.navigator.userAgent;
 			const re = new RegExp('MSIE ([0-9]{1,}[\.0-9]{0,})');
-
 			if (re.exec(ua) != null) {
 				rv = parseFloat(RegExp.$1);
 			}
@@ -39,19 +39,22 @@
 	};
 	const isIE = checkInternetExplorer();	//check IE
 	
-	$(document).ready(function(){	
+	$(document).ready(function(){
 		$("div").keydown(function(event){
-			// выходим если это не кропка tab
+			//exit if it's not a tab
 			if( (event.keyCode != 9) ||  isIE )
 			{
 				return;
 			}
-			event.preventDefault(); 
+			//event.preventDefault(); 
+			cancelEvent(event);
 			$(function () {
 				var $content = $("[data-target=\"insert\"]");
-					$content.trigger("focus");
-					insertHTML("\t");
+				$content.trigger("focus");
+				insertHTML("\t");
 			});
+			updateScroll();
+			updateScroll();
 		});	
 	});
 
@@ -64,17 +67,17 @@
 			$('.ps__scrollbar-y').css('border-width', '1px');
 		}
 		if($('.ps__scrollbar-x').width() === 0){
-			$('.ps__scrollbar-x').css('border-heiht', '0px');
+			$('.ps__scrollbar-x').css('border-height', '0px');
 		}
 		else{
 			$('.ps__scrollbar-x').css('border-height', '1px');
 		}
-	}
+	};
 
 	window.Asc.plugin.init = function(text){
-		code_field = document.getElementById("code_id");		
+		code_field = document.getElementById("code_id");
 		language_select = document.getElementById("language_id");
-		let background_color = document.getElementById("background_color");
+		var background_color = document.getElementById("background_color");
 		var temp_code,
 			flag = false;	//flag change code (true = changed)
 
@@ -83,9 +86,16 @@
 			document.getElementById("btn_highlight").style.display ="none";
 			document.getElementById("language_id").style.flex ="1";
 		}
+
+		if (isIE)
+		{
+			document.getElementById("tabselect").style.display ="none";
+		}
+
 		background_color.onchange = function () {
 			container.style.background = background_color.value;
 		}
+
 		if (!isInitLang)
 		{
 			initLang();
@@ -94,24 +104,63 @@
 				theme : 'custom-theme'
 			});
 		}
+
+		/* //for scroll
+		code_field.onmousedown = function() {
+			flag_select= true;
+		}
+		code_field.onmouseup = function() {
+			flag_select= false;
+		}
+		$("#code_id").mouseenter(function(){
+			flag_select = false;
+		});
+		document.onmousemove = function() {
+			if(flag_select)
+			{
+				let pol = container.getBoundingClientRect();
+				let pol_end = code_field.getBoundingClientRect();
+				//let left = code_field.offsetLeft;
+				//let top = code_field.offsetTop;
+				let height = pol.height * 0.1;
+				let width = pol.width * 0.1;
+				if ( (event.clientY > pol.bottom) && (pol_end.bottom > pol.bottom) )
+				{
+					container.scrollBy(0,height);
+				}
+				if (event.clientX > pol.right)
+				{
+					container.scrollBy(width,0);
+				}
+				if (event.clientY < pol.top)
+				{
+					container.scrollBy(0,-height);
+				}
+				if (event.clientX < pol.left)
+				{
+					container.scrollBy(-width,0);
+				}
+			}
+		}*/
+
 		curLang = language_select.options[language_select.selectedIndex].text;		//get current language
 		language_select.onchange = function(e) {
-			text = document.getElementById("code_id").innerText;				
+			text = code_field.innerText;
 			curLang = language_select.options[language_select.selectedIndex].text;		// change current language
 				ChangeCode(curLang);
-				flag = true;	
+				flag = true;
 		};
 
-		function deleteSelected(start,end){
-			text = document.getElementById("code_id").innerText;;
-			let temp_text = text.substring(end);
-			text = text.substring(0,start) + temp_text;			//working in IE
-			ChangeCode(curLang);	
-		}
+		function deleteSelected(start,end) {
+			text = code_field.innerText;
+			var temp_text = text.substring(end);
+			text = text.substring(0,start) + temp_text;
+			ChangeCode(curLang);
+		};
 
 		if (!flag)
 		{
-			document.getElementById("code_id").focus();
+			code_field.focus();
 			ChangeCode(curLang);
 		}
 
@@ -124,55 +173,93 @@
 			else if(text) 
 			{
 				temp_code = hljs.highlight(curLang, text, true, 0);
-				createPreview(temp_code,text);	
+				createPreview(temp_code,text);
 			}
 			else
 			{
-				document.getElementById("code_id").innerHTML="";
+				code_field.innerHTML = "";
 			}
 		};	
 
 		$("#code_id").keydown(function(event){
-			if( (event.keyCode == 13) && !isIE ) 
+			if( (event.keyCode == 13) && !isIE )
 			{
 				var selection_start = $("#code_id").get_selection_start();
 				var selection_end = $("#code_id").get_selection_end();
-				if(selection_start == selection_end)
-				{
-					if (selection_end == document.getElementById("code_id").innerText.length)
+				if (selection_end == code_field.innerText.length)
 					{
 						insertHTML("\n");
 					}
+				if(selection_start == selection_end)
+				{
 					insertHTML("\n");
-					$("#code_id").set_selection(selection_start+1, selection_end+1);
-					cancelEvent(event);
-					
-				}else{
 					deleteSelected(selection_start,selection_end);
-					//insertHTML("\n");
-					insertHTML("\n");
 					$("#code_id").set_selection(selection_start+1, selection_start+1);
-					cancelEvent(event);	
+					cancelEvent(event);
+				}else{
+					insertHTML("\n");
+					deleteSelected(selection_start+1,selection_end+1);
+					$("#code_id").set_selection(selection_start+1, selection_start+1);
+					cancelEvent(event);
 				}
 			}
 		});
-		$("#btn_highlight").click(function(event){
-			text = document.getElementById("code_id").innerText;
+
+		document.getElementById("btn_highlight").onclick = function(event){
+			text = code_field.innerHTML;
+			for (var i=0;i<text.length;i++)
+				{
+					text = text.replace("<p>","<div>");
+					text = text.replace("</p>","</div>\n");
+				}
+			for(i=0;i<text.length;i++)
+			{
+				text = text.replace("\n"," %%bpmn%% ");
+				text = text.replace("<br>","");
+			}
+			code_field.innerHTML = text;
+			text = $("#code_id").text();
+			for(i=0;i<text.length;i++)
+			{
+				text = text.replace(" %%bpmn%% ","\n");
+			}
+			code_field.innerHTML = text;
 			ChangeCode(curLang);
+		};
+		
+		$("#code_id").on("input", function(){
+			clearTimeout(timer);
+			timer = setTimeout(grab,1500);
 		});
 
-		$("#code_id").on("input", function(){
+		function grab (){
 			if (!isIE)
 			{
-				text = document.getElementById("code_id").innerText;
+				let load = document.getElementById("load");
+				load.style.display="block";
+				load.style.padding = "40% 0 0 50%";
+				var selection_start = $("#code_id").get_selection_start();
+				var selection_end = $("#code_id").get_selection_end();
+				text = code_field.innerHTML;
+				if( text != code_field.innerText )
+				{
+					for (var i=0;i<text.length;i++)
+					{
+						
+						text = text.replace("<p","<div");
+						text = text.replace("</p>","</div>");
+					}
+				}
+				code_field.innerHTML = text;
+				text = code_field.innerText;
 				ChangeCode(curLang);
-				//setTimeout(ChangeCode, 1000, curLang);			//with timeout = 1s
 				updateScroll();
 				updateScroll();
+				$("#code_id").set_selection(selection_start, selection_start);
+				load.style.display="none";
 			}
-			
-		});
-		window.Asc.plugin.resizeWindow(880, 600, 610, 400, 0, 0);				//resize plugin window		
+		}
+		window.Asc.plugin.resizeWindow(880, 600, 860, 400, 0, 0);				//resize plugin window		
 		
 		window.onresize = function(){
 				updateScroll();
@@ -181,8 +268,8 @@
 	};
 
 	function initLang(){
-		let temp_language = [];
-		for (let i = 0; i < language.length; i++)
+		var temp_language = [];
+		for (var i = 0; i < language.length; i++)
 			{
 				temp_language += ("<option value=\"" + (i + 1) + "\">" + language[i] + "</option>");
 			}
@@ -196,9 +283,7 @@
 				range = selection.getRangeAt(0),
 				temp = document.createElement("div"),
 				insertion = document.createDocumentFragment();
-	
 			temp.innerHTML = html;
-	
 			while (temp.firstChild) {
 				insertion.appendChild(temp.firstChild);
 			}
@@ -212,36 +297,33 @@
 		var selection_start = $("#code_id").get_selection_start();
 		var selection_end = $("#code_id").get_selection_end();
 		$("#code_id").set_selection(selection_end, selection_end);
-	}
+	};
 
-	function createPreview(code,text){	
+	function createPreview(code,text){
 		var selection_start = $("#code_id").get_selection_start();
 		var selection_end = $("#code_id").get_selection_end();
-		code_field.innerHTML = code.value;   // innerHtml вставка!
+		code_field.innerHTML = code.value;   // paste the value
 		if(isIE)
 		{
-			let count=0;
-			let i=0;
+			var count=0;
+			var i=0;
 			//find all \n
-			while (x!=-1) {
+			while (x != -1) {
 					var c = text;
 					var x = c.indexOf("\n",i);
 					if (x>=selection_start)
 					{
-						console.log("vihod: "+x);
 						x=-1;
 					}
 					i=x+1;
 					count++;
 				} 
-		
 			$("#code_id").set_selection((selection_start-count+1), (selection_start-count+1));
-				
 		}else{
 			$("#code_id").set_selection(selection_start, selection_end);
 		}
 			
-		for (let i=0; i<language_select.length;i++)
+		for (var i=0; i<language_select.length;i++)
 		{
 			if (language_select.options[i].text == code.language)
 			{
@@ -250,28 +332,26 @@
 			}	
 		}
 		updateScroll();
-		updateScroll();	
+		updateScroll();
 	};
 	
 	function createHTML(code){
-		let tab_rep_count = $("#tab_replace_id").val();
+		var tab_rep_count = $("#tab_replace_id").val();
 		if(tab_rep_count == 2)
 		{
-			for (let i=0;i<code.length;i++)
+			for (var i=0;i<code.length;i++)
 			{
-				//code = code.replace("\t","&emsp;&emsp;");&nbsp
-				code = code.replace("\t","&nbsp;");
+				//code = code.replace("\t","&emsp;&emsp;");
+				code = code.replace("\t","&nbsp;&nbsp;");
+				code = code.replace("\n","<br>");
 			}
 		}else if (tab_rep_count == 4) {
-			for (let i=0;i<code.length;i++)
+			for (var i=0;i<code.length;i++)
 			{
 				//code = code.replace("\t","&emsp;&emsp;&emsp;&emsp;");
-				code = code.replace("\t","&nbsp;&nbsp;");
+				code = code.replace("\t","&nbsp;&nbsp;&nbsp;&nbsp;");
+				code = code.replace("\n","<br>");
 			}
-		}
-		for (let i=0;i<code.length;i++)
-		{
-			code = code.replace("\n","<br>");
 		}
 		_htmlPast = "<!DOCTYPE html>\
 			<html lang=\"en\"> \
@@ -347,13 +427,13 @@
 		var result = this.get(0).selectionStart;
 		if (typeof(result) == "undefined") result = this.get_selection_range().selection_start;
 		return result;
-	}
+	};
 	
 	$.fn.get_selection_end = function(){
 		var result = this.get(0).selectionEnd;
 		if (typeof(result) == "undefined") result = this.get_selection_range().selection_end;
 		return result;
-	}
+	};
 	
 	$.fn_get_selected_text = function(){
 		var value = this.get(0).value;
@@ -363,7 +443,7 @@
 			var result = value.substring(this.selectionStart, this.selectionEnd);
 		}
 		return result;
-	}
+	};
 	
 	$.fn.get_selection_range = function(){
 		var range = window.getSelection().getRangeAt(0);
@@ -379,8 +459,8 @@
 			selected_text: selected_text
 		}
 		return result;
-	}
-	
+	};
+
 	$.fn.set_selection = function(selection_start, selection_end){
 		var target_element = this.get(0);
 		selection_start = selection_start || 0;
@@ -426,7 +506,7 @@
 		target_element.selectionStart = selection_start;
 			target_element.selectionEnd = selection_end;
 		}
-	}
+	};
 
 	function cancelEvent(e){
 		if (e && e.preventDefault) {
@@ -437,12 +517,12 @@
 		else {
 			window.event.cancelBubble = true;//IE stopPropagation
 		}
-	}
+	};
 	window.Asc.plugin.button = function(id)
 	{
 		if(id==0)
 		{
-			createHTML(document.getElementById("code_id").innerHTML);
+			createHTML(code_field.innerHTML);
 			window.Asc.plugin.executeMethod("PasteHtml", [_htmlPast]);
 			this.executeCommand("close", "");
 		}
