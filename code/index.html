@@ -6,152 +6,18 @@
 		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		<link rel="stylesheet" href="highlight/googlecode.css">
 		<link rel="stylesheet" href="../plugins.css">
+		<link rel="stylesheet" href="code.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 		<script src="../pluginBase.js"></script>
 		<script src="highlight/highlight.pack.js"></script>
 		<script src="code.js"></script>
-		<style>
-			html, body {
-				min-height: 100% !important;
-				height: 100%;
-				overflow-y:hidden;
-				overflow-x: hidden;
-				display: flex;
-				flex-flow: column;
-				width: 100%;
-				margin: 0;				
-			}
-			.noselect {
-				-khtml-user-select: none;
-				user-select: none;
-				-moz-user-select: none;
-				-webkit-user-select: none;
-				width: 100%;
-			}
-			.codefield {
-				display: block; 
-				position: relative; 
-				overflow: hidden; 
-				margin: 1% 0% 1% 1%;
-				width: 98%; 
-				box-sizing:border-box; 
-				border-width: 3px;
-				border-style: solid;
-				border-color: rgba(68,68,68,0.266666666666);
-				flex: 0.80%;
-			}
-			.content{
-				display: block; 
-				position: relative; 
-				width: fit-content;
-				width: -moz-fit-content;
-				min-width: 95%;
-				min-height: 95%;
-				box-sizing:padding-box;  
-				font-size: 14px; 
-				font-family: "Helvetica Neue", Helvetica, Consolas, sans-serif; 
-				word-break:break-all;
-				outline: none;
-				white-space: pre;
-				margin-bottom: 15px;
-				padding-right: 15px;
-			}
-			.combo {
-				background: #fff;
-				border: 1px solid #cfcfcf;
-				border-radius: 2px;
-				color: #444444;
-				font-size: 11px;
-				font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-				height: 22px;
-				cursor: pointer;
-				margin: 0px 0px 10px 0px;
-				box-sizing: border-box;
-				flex: 0.95;
-			}
-			.label {
-				font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-				font-size: 11px;
-				-khtml-user-select: none;
-				user-select: none;
-				-moz-user-select: none;
-				-webkit-user-select: none;
-			}
-			.language {
-				display: flex;
-				margin: 0px; 
-				padding: 2px 10px 0px; 
-				box-sizing: border-box; 
-				width: 100%;
-			}
-			.TabColor {
-				display: inline-flex;
-				padding-left: 10px;
-			}
-			.tabselect {
-				padding-top: 5px;
-			}
-			.button {
-				color: #fff;
-  				background-color: #7d858c;
-				border: 1px solid #cfcfcf;
-				border-radius: 2px;
-				outline: none;
-				font-size: 11px;
-				font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-				height: 22px;
-				cursor: pointer;
-				flex: 0.05;
-			}
-			.colorselect {
-				padding-left: 10px;
-				padding-top: 3px;
-				-khtml-user-select: none;
-				user-select: none;
-				-moz-user-select: none;
-				-webkit-user-select: none;
-				
-			}
-			.divbutton {
-				padding: 15px 0px 0px 10px;
-				
-			}
-			.label
-			{
-				font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-				font-size: 13px;
-			}
-			.line {
-				display: inline-block;
-				width: 15px;
-				height: 15px;
-				border-radius: 15px;
-				background-color: #4b9cdb;
-			}
-			.load{
-				display: none;
-				position: absolute;
-			}
-			/* =Animate the stuff
-			------------------------ */
-			.load .line:nth-last-child(1) {animation: loadingC .6s .1s linear infinite;}
-			.load .line:nth-last-child(2) {animation: loadingC .6s .2s linear infinite;}
-			.load .line:nth-last-child(3) {animation: loadingC .6s .3s linear infinite;}
-
-			@keyframes loadingC {
-				0 {transform: translate(0,0);}
-				50% {transform: translate(0,15px);}
-				100% {transform: translate(0,0);}
-			}
-
-		</style>
 	</head>
 	<body>
-			<div id="load" class="load">
-					<div class="line"></div>
-					<div class="line"></div>
-					<div class="line"></div>
-				</div>
+		<div id="loader" class="loader">
+				<div class="line"></div>
+				<div class="line"></div>
+				<div class="line"></div>
+		</div>
 		<label class="label" style = "padding: 5px 0px 0px 12px">Language</label>
 		<div class="language">	
 			<select id="language_id" class="combo"></select>
@@ -172,7 +38,7 @@
 			</div>
 		</div>
 		<div id="scrollable-container-id" class='codefield'>
-			<div contentEditable="true" data-target="insert" id="code_id" class="content"></div>
+			<div contentEditable="true" spellcheck="false" data-target="insert" id="code_id" class="content"></div>
 		</div>
 	</body>
 </html>

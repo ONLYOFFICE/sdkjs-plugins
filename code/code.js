@@ -12,12 +12,13 @@
 	var language = hljs.listLanguages(),	// array languages
 		isInitLang = false, 				//flag init lang select
 		language_select,					//select for languages
-		_htmlPast,							//from paste in document
+		_htmlPast,							//for paste in document
 		curLang,							//current language
 		code_field,							//field for higlight code		
 		container,							//scrollable conteiner	
 		timer,								//for timer 
-		flag_select = false;
+		lockMouseInterval = -1,				//for scroll
+		mousePos = { x : 0, y : 0 };		//for scroll
 
 	function checkInternetExplorer(){
 		var rv = -1;
@@ -38,27 +39,9 @@
 		return rv !== -1;
 	};
 	const isIE = checkInternetExplorer();	//check IE
-	
-	$(document).ready(function(){
-		$("div").keydown(function(event){
-			//exit if it's not a tab
-			if( (event.keyCode != 9) ||  isIE )
-			{
-				return;
-			}
-			//event.preventDefault(); 
-			cancelEvent(event);
-			$(function () {
-				var $content = $("[data-target=\"insert\"]");
-				$content.trigger("focus");
-				insertHTML("\t");
-			});
-			updateScroll();
-			updateScroll();
-		});	
-	});
 
-	function updateScroll(){
+	function updateScroll()
+	{
 		Ps.update(container);
 		if($('.ps__scrollbar-y').height() === 0){
 			$('.ps__scrollbar-y').css('border-width', '0px');
@@ -76,6 +59,7 @@
 
 	window.Asc.plugin.init = function(text){
 		code_field = document.getElementById("code_id");
+		container = document.getElementById('scrollable-container-id');
 		language_select = document.getElementById("language_id");
 		var background_color = document.getElementById("background_color");
 		var temp_code,
@@ -99,49 +83,10 @@
 		if (!isInitLang)
 		{
 			initLang();
-			container = document.getElementById('scrollable-container-id');
 			Ps.initialize(container, {
 				theme : 'custom-theme'
 			});
 		}
-
-		/* //for scroll
-		code_field.onmousedown = function() {
-			flag_select= true;
-		}
-		code_field.onmouseup = function() {
-			flag_select= false;
-		}
-		$("#code_id").mouseenter(function(){
-			flag_select = false;
-		});
-		document.onmousemove = function() {
-			if(flag_select)
-			{
-				let pol = container.getBoundingClientRect();
-				let pol_end = code_field.getBoundingClientRect();
-				//let left = code_field.offsetLeft;
-				//let top = code_field.offsetTop;
-				let height = pol.height * 0.1;
-				let width = pol.width * 0.1;
-				if ( (event.clientY > pol.bottom) && (pol_end.bottom > pol.bottom) )
-				{
-					container.scrollBy(0,height);
-				}
-				if (event.clientX > pol.right)
-				{
-					container.scrollBy(width,0);
-				}
-				if (event.clientY < pol.top)
-				{
-					container.scrollBy(0,-height);
-				}
-				if (event.clientX < pol.left)
-				{
-					container.scrollBy(-width,0);
-				}
-			}
-		}*/
 
 		curLang = language_select.options[language_select.selectedIndex].text;		//get current language
 		language_select.onchange = function(e) {
@@ -153,8 +98,7 @@
 
 		function deleteSelected(start,end) {
 			text = code_field.innerText;
-			var temp_text = text.substring(end);
-			text = text.substring(0,start) + temp_text;
+			text = text.substring(0,start) + text.substring(end);
 			ChangeCode(curLang);
 		};
 
@@ -183,35 +127,31 @@
 
 		$("#code_id").keydown(function(event){
 			if( (event.keyCode == 13) && !isIE )
-			{
-				var selection_start = $("#code_id").get_selection_start();
-				var selection_end = $("#code_id").get_selection_end();
-				if (selection_end == code_field.innerText.length)
-					{
-						insertHTML("\n");
-					}
-				if(selection_start == selection_end)
-				{
+			{	cancelEvent(event);
+				var range = $("#code_id").get_selection_range();
+				if (range.end == code_field.innerText.length)
 					insertHTML("\n");
-					deleteSelected(selection_start,selection_end);
-					$("#code_id").set_selection(selection_start+1, selection_start+1);
-					cancelEvent(event);
-				}else{
-					insertHTML("\n");
-					deleteSelected(selection_start+1,selection_end+1);
-					$("#code_id").set_selection(selection_start+1, selection_start+1);
-					cancelEvent(event);
-				}
+
+				insertHTML("\n");
+				deleteSelected(range.start+1,range.end+1);
+				$("#code_id").set_selection(range.start+1, range.start+1);
+			}
+			if( (event.keyCode == 9) && !isIE )
+			{ 
+				cancelEvent(event);
+				insertHTML("\t");
+				updateScroll();
+				updateScroll();
 			}
 		});
 
 		document.getElementById("btn_highlight").onclick = function(event){
 			text = code_field.innerHTML;
 			for (var i=0;i<text.length;i++)
-				{
-					text = text.replace("<p>","<div>");
-					text = text.replace("</p>","</div>\n");
-				}
+			{
+				text = text.replace("<p>","<div>");
+				text = text.replace("</p>","</div>\n");
+			}
 			for(i=0;i<text.length;i++)
 			{
 				text = text.replace("\n"," %%bpmn%% ");
@@ -232,20 +172,16 @@
 			timer = setTimeout(grab,1500);
 		});
 
-		function grab (){
+		function grab(){
 			if (!isIE)
 			{
-				let load = document.getElementById("load");
-				load.style.display="block";
-				load.style.padding = "40% 0 0 50%";
-				var selection_start = $("#code_id").get_selection_start();
-				var selection_end = $("#code_id").get_selection_end();
+				create_loader();
+				var range = $("#code_id").get_selection_range();
 				text = code_field.innerHTML;
 				if( text != code_field.innerText )
 				{
 					for (var i=0;i<text.length;i++)
 					{
-						
 						text = text.replace("<p","<div");
 						text = text.replace("</p>","</div>");
 					}
@@ -255,16 +191,38 @@
 				ChangeCode(curLang);
 				updateScroll();
 				updateScroll();
-				$("#code_id").set_selection(selection_start, selection_start);
-				load.style.display="none";
+				$("#code_id").set_selection(range.start, range.start);
+				$(".loader").delay(100).fadeOut();
 			}
+		}
+		function create_loader(){
+			let loader = document.getElementById("loader");
+			loader.style.display ="block"; 
+			loader.style.padding = "40% 0 0 50%";   
 		}
 		window.Asc.plugin.resizeWindow(880, 600, 860, 400, 0, 0);				//resize plugin window		
 		
 		window.onresize = function(){
 				updateScroll();
 				updateScroll();
-			};
+		};
+
+		code_field.onmousedown = function(e) {
+		
+			if (-1 == lockMouseInterval)
+				lockMouseInterval = setInterval(onSelectWheel, 40);
+			
+			mousePos.x = e.pageX || e.clientX;
+			mousePos.y = e.pageY || e.clientY;
+					
+		};
+		code_field.onmouseup = function(e) {
+			
+			if (-1 != lockMouseInterval)
+				clearInterval(lockMouseInterval);
+			lockMouseInterval = -1;
+			
+		};
 	};
 
 	function initLang(){
@@ -276,6 +234,48 @@
 		language_select.innerHTML ="<option value = 0>" + "Auto" + "</option>" + temp_language;
 		isInitLang = true;
 	};
+
+	function onSelectWheel()
+		{
+			var $textElem = $(code_field);
+			var position = $textElem.offset();
+			
+			var width = $textElem.outerWidth();
+			var height = $textElem.outerHeight();
+			
+			var maxX = container.scrollWidth;
+			var maxY = container.scrollHeight;
+					
+			var scrollX = container.scrollLeft;
+			var scrollY = container.scrollTop;
+			
+			var left = position.left + scrollX;
+			var top = position.top + scrollY;
+			
+			var step = 20;
+			if (mousePos.x < left)
+				scrollX -= step;
+			else if (mousePos.x > (left + width))
+				scrollX += step;
+			if (mousePos.y < top)
+				scrollY -= step;
+			else if (mousePos.y > (top + height))
+				scrollY += step;
+			
+			if (scrollX < 0)
+				scrollX = 0;
+			if (scrollX > maxX)
+				scrollX = maxX;
+			if (scrollY < 0)
+				scrollY = 0;
+			if (scrollY > maxY)
+				scrollY = maxY;
+			
+			container.scrollLeft = scrollX;
+			container.scrollTop = scrollY;
+			
+			Ps.update(container);
+		}
 	
 	function insertHTML(html){
 		try {
@@ -294,14 +294,12 @@
 				document.selection.createRange().pasteHTML(html);
 			} catch (z) {}
 		}
-		var selection_start = $("#code_id").get_selection_start();
-		var selection_end = $("#code_id").get_selection_end();
-		$("#code_id").set_selection(selection_end, selection_end);
+		var range = $("#code_id").get_selection_range();
+		$("#code_id").set_selection(range.end, range.end);
 	};
 
 	function createPreview(code,text){
-		var selection_start = $("#code_id").get_selection_start();
-		var selection_end = $("#code_id").get_selection_end();
+		var range = $("#code_id").get_selection_range();
 		code_field.innerHTML = code.value;   // paste the value
 		if(isIE)
 		{
@@ -311,16 +309,17 @@
 			while (x != -1) {
 					var c = text;
 					var x = c.indexOf("\n",i);
-					if (x>=selection_start)
+					if (x>=range.start)
 					{
 						x=-1;
 					}
 					i=x+1;
 					count++;
 				} 
-			$("#code_id").set_selection((selection_start-count+1), (selection_start-count+1));
+			document.getElementById("btn_highlight").focus();
+			//$("#code_id").set_selection((range.start-count+1), (range.start-count+1));
 		}else{
-			$("#code_id").set_selection(selection_start, selection_end);
+			$("#code_id").set_selection(range.start, range.end);
 		}
 			
 		for (var i=0; i<language_select.length;i++)
@@ -423,49 +422,27 @@
 			</html>"; 
 	};
 
-	$.fn.get_selection_start = function(){
-		var result = this.get(0).selectionStart;
-		if (typeof(result) == "undefined") result = this.get_selection_range().selection_start;
-		return result;
-	};
-	
-	$.fn.get_selection_end = function(){
-		var result = this.get(0).selectionEnd;
-		if (typeof(result) == "undefined") result = this.get_selection_range().selection_end;
-		return result;
-	};
-	
-	$.fn_get_selected_text = function(){
-		var value = this.get(0).value;
-		if (typeof(value) == "undefined"){
-			var result = this.get_selection_range().selected_text;
-		}else{
-			var result = value.substring(this.selectionStart, this.selectionEnd);
-		}
-		return result;
-	};
-	
 	$.fn.get_selection_range = function(){
 		var range = window.getSelection().getRangeAt(0);
 		var cloned_range = range.cloneRange();
 		cloned_range.selectNodeContents(this.get(0));
 		cloned_range.setEnd(range.startContainer, range.startOffset);
-		var selection_start = cloned_range.toString().length;
+		var start = cloned_range.toString().length;
 		var selected_text = range.toString();
-		var selection_end = selection_start + selected_text.length;
+		var end = start + selected_text.length;
 		var result = {
-			selection_start: selection_start,
-			selection_end: selection_end,
+			start: start,
+			end: end,
 			selected_text: selected_text
 		}
 		return result;
 	};
 
-	$.fn.set_selection = function(selection_start, selection_end){
+	$.fn.set_selection = function(start, end){
 		var target_element = this.get(0);
-		selection_start = selection_start || 0;
+		start = start || 0;
 		if (typeof(target_element.selectionStart) == "undefined"){
-			if (typeof(selection_end) == "undefined") selection_end = target_element.innerHTML.length;
+			if (typeof(end) == "undefined") end = target_element.innerHTML.length;
 	
 			var character_index = 0;
 			var range = document.createRange();
@@ -479,13 +456,13 @@
 			while (!stop && (node = node_stack.pop())) {
 				if (node.nodeType == 3){
 					var next_character_index = character_index + node.length;
-					if (!start_found && selection_start >= character_index && selection_start <= next_character_index){
-						range.setStart(node, selection_start - character_index);
+					if (!start_found && start >= character_index && start <= next_character_index){
+						range.setStart(node, start - character_index);
 						start_found = true;
 					}
 					
-					if (start_found && selection_end >= character_index && selection_end <= next_character_index){
-						range.setEnd(node, selection_end - character_index);
+					if (start_found && end >= character_index && end <= next_character_index){
+						range.setEnd(node, end - character_index);
 						stop = true;
 					}
 					character_index = next_character_index;
@@ -501,17 +478,16 @@
 			selection.removeAllRanges();
 			selection.addRange(range);
 		}else{
-			if (typeof(selection_end) == "undefined") selection_end = target_element.value.length;
+			if (typeof(end) == "undefined") end = target_element.value.length;
 		target_element.focus();
-		target_element.selectionStart = selection_start;
-			target_element.selectionEnd = selection_end;
+		target_element.selectionStart = start;
+			target_element.selectionEnd = end;
 		}
 	};
 
 	function cancelEvent(e){
 		if (e && e.preventDefault) {
 			e.stopPropagation(); // DOM style (return false doesn't always work in FF)
-			//e.preventDefault(e);	//maybe working in ff
 			e.preventDefault();
 		}
 		else {
@@ -539,5 +515,23 @@
 			false, false, false, false, 0, null);
 		document.dispatchEvent(evt);
 	};
+
+	window.addEventListener('mousemove', function(e) {
+		
+		if (-1 == lockMouseInterval)
+			return;
+		
+		mousePos.x = e.pageX || e.clientX;
+		mousePos.y = e.pageY || e.clientY;
+	
+	}, false);
+	
+	window.addEventListener('mouseup', function() {
+		
+		if (-1 != lockMouseInterval)
+			clearInterval(lockMouseInterval);
+		lockMouseInterval = -1;
+		
+	}, false);
 
 })(window, undefined);
