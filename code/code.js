@@ -16,50 +16,15 @@
 		curLang,							//current language
 		code_field,							//field for higlight code		
 		container,							//scrollable conteiner	
-		timer,								//for timer 
-		lockMouseInterval = -1,				//for scroll
-		mousePos = { x : 0, y : 0 };		//for scroll
-
-	function checkInternetExplorer(){
-		var rv = -1;
-		if (window.navigator.appName == 'Microsoft Internet Explorer') {
-			const ua = window.navigator.userAgent;
-			const re = new RegExp('MSIE ([0-9]{1,}[\.0-9]{0,})');
-			if (re.exec(ua) != null) {
-				rv = parseFloat(RegExp.$1);
-			}
-		} else if (window.navigator.appName == 'Netscape') {
-			const ua = window.navigator.userAgent;
-			const re = new RegExp('Trident/.*rv:([0-9]{1,}[\.0-9]{0,})');
-
-			if (re.exec(ua) != null) {
-				rv = parseFloat(RegExp.$1);
-			}
-		}
-		return rv !== -1;
-	};
+		timer;								//for timer 
 	const isIE = checkInternetExplorer();	//check IE
 
-	function updateScroll()
-	{
-		Ps.update(container);
-		if($('.ps__scrollbar-y').height() === 0){
-			$('.ps__scrollbar-y').css('border-width', '0px');
-		}
-		else{
-			$('.ps__scrollbar-y').css('border-width', '1px');
-		}
-		if($('.ps__scrollbar-x').width() === 0){
-			$('.ps__scrollbar-x').css('border-height', '0px');
-		}
-		else{
-			$('.ps__scrollbar-x').css('border-height', '1px');
-		}
-	};
-
-	window.Asc.plugin.init = function(text){
-		code_field = document.getElementById("code_id");
+	window.Asc.plugin.init = function(text){	
+		result.create_div ("colorselect","97%",0,"90px","1%","1%","1%");
+		code_field = document.getElementById("conteiner_id");
 		container = document.getElementById('scrollable-container-id');
+		$(container).addClass('codefield');
+		$(code_field).addClass('content');
 		language_select = document.getElementById("language_id");
 		var background_color = document.getElementById("background_color");
 		var temp_code,
@@ -83,17 +48,14 @@
 		if (!isInitLang)
 		{
 			initLang();
-			Ps.initialize(container, {
-				theme : 'custom-theme'
-			});
 		}
 
 		curLang = language_select.options[language_select.selectedIndex].text;		//get current language
 		language_select.onchange = function(e) {
 			text = code_field.innerText;
 			curLang = language_select.options[language_select.selectedIndex].text;		// change current language
-				ChangeCode(curLang);
-				flag = true;
+			ChangeCode(curLang);
+			flag = true;
 		};
 
 		function deleteSelected(start,end) {
@@ -109,119 +71,90 @@
 		}
 
 		function ChangeCode(curLang){
+			create_loader();
 			if ((curLang == "Auto") && text)
 			{
 				temp_code = hljs.highlightAuto(text, language);
 				createPreview(temp_code,text);
-			}
-			else if(text) 
+			}else if (text) 
 			{
 				temp_code = hljs.highlight(curLang, text, true, 0);
 				createPreview(temp_code,text);
-			}
-			else
+			}else
 			{
 				code_field.innerHTML = "";
 			}
+			$(".loader").delay(100).fadeOut();
 		};	
 
-		$("#code_id").keydown(function(event){
+		$("#conteiner_id").keydown(function(event){
 			if( (event.keyCode == 13) && !isIE )
 			{	cancelEvent(event);
-				var range = $("#code_id").get_selection_range();
+				var range = $("#conteiner_id").get_selection_range();
 				if (range.end == code_field.innerText.length)
 					insertHTML("\n");
 
 				insertHTML("\n");
 				deleteSelected(range.start+1,range.end+1);
-				$("#code_id").set_selection(range.start+1, range.start+1);
+				$("#conteiner_id").set_selection(range.start+1, range.start+1);
 			}
 			if( (event.keyCode == 9) && !isIE )
 			{ 
 				cancelEvent(event);
 				insertHTML("\t");
-				updateScroll();
-				updateScroll();
+				result.updateScroll();
+				result.updateScroll();
 			}
 		});
 
 		document.getElementById("btn_highlight").onclick = function(event){
 			text = code_field.innerHTML;
-			for (var i=0;i<text.length;i++)
-			{
-				text = text.replace("<p>","<div>");
-				text = text.replace("</p>","</div>\n");
-			}
-			for(i=0;i<text.length;i++)
-			{
-				text = text.replace("\n"," %%bpmn%% ");
-				text = text.replace("<br>","");
-			}
+			text = text.replace(/<p>/g,"<div>");
+			text = text.replace(/<\/p>/g,"</div>\n");
+			text = text.replace(/\n/g," %%bpmn%% ");
+			text = text.replace(/<br>/g,"");
 			code_field.innerHTML = text;
-			text = $("#code_id").text();
-			for(i=0;i<text.length;i++)
-			{
-				text = text.replace(" %%bpmn%% ","\n");
-			}
+			text = $("#conteiner_id").text();
+			text = text.replace(/ %%bpmn%% /g,"\n");
 			code_field.innerHTML = text;
 			ChangeCode(curLang);
 		};
 		
-		$("#code_id").on("input", function(){
+		$("#conteiner_id").on("input", function(){
 			clearTimeout(timer);
-			timer = setTimeout(grab,1500);
+			timer = setTimeout(grab,1000);
 		});
 
 		function grab(){
 			if (!isIE)
 			{
-				create_loader();
-				var range = $("#code_id").get_selection_range();
+				var range = $("#conteiner_id").get_selection_range();
 				text = code_field.innerHTML;
 				if( text != code_field.innerText )
 				{
-					for (var i=0;i<text.length;i++)
-					{
-						text = text.replace("<p","<div");
-						text = text.replace("</p>","</div>");
-					}
+					text = text.replace(/<p/g,"<div");
+					text = text.replace(/<\/p>/g,"</div>");	
 				}
 				code_field.innerHTML = text;
 				text = code_field.innerText;
 				ChangeCode(curLang);
-				updateScroll();
-				updateScroll();
-				$("#code_id").set_selection(range.start, range.start);
-				$(".loader").delay(100).fadeOut();
+				result.updateScroll();
+				result.updateScroll();
+				$("#conteiner_id").set_selection(range.start, range.start);
 			}
 		}
 		function create_loader(){
 			let loader = document.getElementById("loader");
 			loader.style.display ="block"; 
-			loader.style.padding = "40% 0 0 50%";   
+			loader.style.paddingTop = document.getElementsByTagName("body")[0].clientHeight*0.6 +"px";
+			loader.style.paddingLeft = "50%";
+			
 		}
 		window.Asc.plugin.resizeWindow(880, 600, 860, 400, 0, 0);				//resize plugin window		
 		
 		window.onresize = function(){
-				updateScroll();
-				updateScroll();
-		};
-
-		code_field.onmousedown = function(e) {
-		
-			if (-1 == lockMouseInterval)
-				lockMouseInterval = setInterval(onSelectWheel, 40);
-			
-			mousePos.x = e.pageX || e.clientX;
-			mousePos.y = e.pageY || e.clientY;
-					
-		};
-		code_field.onmouseup = function(e) {
-			
-			if (-1 != lockMouseInterval)
-				clearInterval(lockMouseInterval);
-			lockMouseInterval = -1;
-			
+			result.updateScroll();
+			result.updateScroll();
 		};
 	};
 
@@ -234,48 +167,6 @@
 		language_select.innerHTML ="<option value = 0>" + "Auto" + "</option>" + temp_language;
 		isInitLang = true;
 	};
-
-	function onSelectWheel()
-		{
-			var $textElem = $(code_field);
-			var position = $textElem.offset();
-			
-			var width = $textElem.outerWidth();
-			var height = $textElem.outerHeight();
-			
-			var maxX = container.scrollWidth;
-			var maxY = container.scrollHeight;
-					
-			var scrollX = container.scrollLeft;
-			var scrollY = container.scrollTop;
-			
-			var left = position.left + scrollX;
-			var top = position.top + scrollY;
-			
-			var step = 20;
-			if (mousePos.x < left)
-				scrollX -= step;
-			else if (mousePos.x > (left + width))
-				scrollX += step;
-			if (mousePos.y < top)
-				scrollY -= step;
-			else if (mousePos.y > (top + height))
-				scrollY += step;
-			
-			if (scrollX < 0)
-				scrollX = 0;
-			if (scrollX > maxX)
-				scrollX = maxX;
-			if (scrollY < 0)
-				scrollY = 0;
-			if (scrollY > maxY)
-				scrollY = maxY;
-			
-			container.scrollLeft = scrollX;
-			container.scrollTop = scrollY;
-			
-			Ps.update(container);
-		}
 	
 	function insertHTML(html){
 		try {
@@ -294,18 +185,17 @@
 				document.selection.createRange().pasteHTML(html);
 			} catch (z) {}
 		}
-		var range = $("#code_id").get_selection_range();
-		$("#code_id").set_selection(range.end, range.end);
+		var range = $("#conteiner_id").get_selection_range();
+		$("#conteiner_id").set_selection(range.end, range.end);
 	};
 
 	function createPreview(code,text){
-		var range = $("#code_id").get_selection_range();
+		var range = $("#conteiner_id").get_selection_range();
 		code_field.innerHTML = code.value;   // paste the value
 		if(isIE)
 		{
 			var count=0;
 			var i=0;
-			//find all \n
 			while (x != -1) {
 					var c = text;
 					var x = c.indexOf("\n",i);
@@ -317,9 +207,9 @@
 					count++;
 				} 
 			document.getElementById("btn_highlight").focus();
-			//$("#code_id").set_selection((range.start-count+1), (range.start-count+1));
+			//$("#conteiner_id").set_selection((range.start-count+1), (range.start-count+1));
 		}else{
-			$("#code_id").set_selection(range.start, range.end);
+			$("#conteiner_id").set_selection(range.start, range.end);
 		}
 			
 		for (var i=0; i<language_select.length;i++)
@@ -330,28 +220,21 @@
 				language_select.selectedIndex = i;
 			}	
 		}
-		updateScroll();
-		updateScroll();
+	result.updateScroll();
+	result.updateScroll();
 	};
 	
 	function createHTML(code){
 		var tab_rep_count = $("#tab_replace_id").val();
 		if(tab_rep_count == 2)
 		{
-			for (var i=0;i<code.length;i++)
-			{
-				//code = code.replace("\t","&emsp;&emsp;");
-				code = code.replace("\t","&nbsp;&nbsp;");
-				code = code.replace("\n","<br>");
-			}
+			//code = code.replace(/\t/g,"&emsp;&emsp;");
+			code = code.replace(/\t/g,"&nbsp;&nbsp;");
 		}else if (tab_rep_count == 4) {
-			for (var i=0;i<code.length;i++)
-			{
-				//code = code.replace("\t","&emsp;&emsp;&emsp;&emsp;");
-				code = code.replace("\t","&nbsp;&nbsp;&nbsp;&nbsp;");
-				code = code.replace("\n","<br>");
-			}
+			//code = code.replace(/\t/g,"&emsp;&emsp;&emsp;&emsp;");
+			code = code.replace(/\t/g,"&nbsp;&nbsp;&nbsp;&nbsp;");
 		}
+		code = code.replace(/\n/g,"<br>");
 		_htmlPast = "<!DOCTYPE html>\
 			<html lang=\"en\"> \
 				<head>\
@@ -473,7 +356,7 @@
 					}
 				}
 			}
-			
+
 			var selection = window.getSelection();
 			selection.removeAllRanges();
 			selection.addRange(range);
@@ -483,6 +366,25 @@
 		target_element.selectionStart = start;
 			target_element.selectionEnd = end;
 		}
+	};
+
+	function checkInternetExplorer(){
+		var rv = -1;
+		if (window.navigator.appName == 'Microsoft Internet Explorer') {
+			const ua = window.navigator.userAgent;
+			const re = new RegExp('MSIE ([0-9]{1,}[\.0-9]{0,})');
+			if (re.exec(ua) != null) {
+				rv = parseFloat(RegExp.$1);
+			}
+		} else if (window.navigator.appName == 'Netscape') {
+			const ua = window.navigator.userAgent;
+			const re = new RegExp('Trident/.*rv:([0-9]{1,}[\.0-9]{0,})');
+
+			if (re.exec(ua) != null) {
+				rv = parseFloat(RegExp.$1);
+			}
+		}
+		return rv !== -1;
 	};
 
 	function cancelEvent(e){
@@ -515,23 +417,5 @@
 			false, false, false, false, 0, null);
 		document.dispatchEvent(evt);
 	};
-
-	window.addEventListener('mousemove', function(e) {
-		
-		if (-1 == lockMouseInterval)
-			return;
-		
-		mousePos.x = e.pageX || e.clientX;
-		mousePos.y = e.pageY || e.clientY;
-	
-	}, false);
-	
-	window.addEventListener('mouseup', function() {
-		
-		if (-1 != lockMouseInterval)
-			clearInterval(lockMouseInterval);
-		lockMouseInterval = -1;
-		
-	}, false);
 
 })(window, undefined);
