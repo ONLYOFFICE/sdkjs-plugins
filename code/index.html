@@ -6,13 +6,14 @@
 		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		<link rel="stylesheet" href="highlight/googlecode.css">
 		<link rel="stylesheet" href="../plugins.css">
-		<link rel="stylesheet" href="code.css">
+		<link rel="stylesheet" href="plugin_style.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 		<script src="../pluginBase.js"></script>
 		<script src="highlight/highlight.pack.js"></script>
 		<script src="code.js"></script>
+		<script src="scrollable_div.js"></script>
 	</head>
-	<body>
+	<body spellcheck="false">
 		<div id="loader" class="loader">
 				<div class="line"></div>
 				<div class="line"></div>
@@ -32,13 +33,10 @@
 					<option value="4">Replace by 4 spaces</option>
 				</select>
 			</div>
-			<div class="colorselect">
+			<div id="colorselect" class="colorselect">
 					<label for="background_color" class="label">Choose background color</label>
 					<input id="background_color" style="padding: 0" type="color" value="#ffffff">		
 			</div>
-		</div>
-		<div id="scrollable-container-id" class='codefield'>
-			<div contentEditable="true" spellcheck="false" data-target="insert" id="code_id" class="content"></div>
 		</div>
 	</body>
 </html>

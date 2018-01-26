@@ -16,30 +16,13 @@ html, body {
   width: 100%;
 }
 .codefield { 
-  position: absolute; 
-  overflow: hidden; 
-  width: 98%; 
-  box-sizing:border-box; 
   border-width: 3px;
   border-style: solid;
   border-color: rgba(68,68,68,0.266666666666);  
-  left: 1%; 
-  top: 90px;  
-  bottom: 1%;
-  right: 1%; 
 }
-.content{ 
-  position: absolute; 
-  box-sizing:padding-box;  
+.content{  
   font-size: 14px; 
   font-family: "Helvetica Neue", Helvetica, Consolas, sans-serif; 
-  word-break:break-all;
-  outline: none;
-  white-space: pre;
-  left:0;
-  top:0;
-  width:98%;
-  height:98%;
 }
 .content::selection {
   background: #D8DADC; /* WebKit/Blink Browsers */
@@ -59,6 +42,10 @@ html, body {
   margin: 0px 0px 10px 0px;
   box-sizing: border-box;
   flex: 0.95;
+  outline-color: #D8DADC;
+}
+select:focus > option:checked { 
+  background: #D8DADC !important;
 }
 .label {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -84,7 +71,7 @@ html, body {
 }
 .button {
   color: #fff;
-    background-color: #7d858c;
+  background-color: #7d858c;
   border: 1px solid #cfcfcf;
   border-radius: 2px;
   outline: none;
