@@ -19,10 +19,21 @@
 		timer;								//for timer 
 	const isIE = checkInternetExplorer();	//check IE
 
+	var myscroll = window.Asc.ScrollableDiv;
+
 	window.Asc.plugin.init = function(text){	
-		result.create_div ("colorselect","97%",0,"90px","1%","1%","1%");
-		code_field = document.getElementById("conteiner_id");
-		container = document.getElementById('scrollable-container-id');
+		myscroll = window.Asc.ScrollableDiv;
+		myscroll.create_div("colorselect",{
+					width: "",
+					height: "",
+					left: "10px",
+					right: "10px",
+					top: "90px",
+					bottom: "5px"
+		});
+		myscroll.addEventListener();
+		code_field = document.getElementById("conteiner_id1");
+		container = document.getElementById('scrollable-container-id1');
 		$(container).addClass('codefield');
 		$(code_field).addClass('content');
 		language_select = document.getElementById("language_id");
@@ -37,13 +48,11 @@
 		}
 
 		if (isIE)
-		{
 			document.getElementById("tabselect").style.display ="none";
-		}
 
 		background_color.onchange = function () {
 			container.style.background = background_color.value;
-		}
+		};
 
 		if (!isInitLang)
 		{
@@ -61,7 +70,8 @@
 		function deleteSelected(start,end) {
 			text = code_field.innerText;
 			text = text.substring(0,start) + text.substring(end);
-			ChangeCode(curLang);
+			clearTimeout(timer);
+			timer = setTimeout(ChangeCode,35,curLang);
 		};
 
 		if (!flag)
@@ -87,32 +97,33 @@
 			$(".loader").delay(100).fadeOut();
 		};	
 
-		$("#conteiner_id").keydown(function(event){
+		$("#conteiner_id1").keydown(function(event){
 			if( (event.keyCode == 13) && !isIE )
 			{	
 				cancelEvent(event);
-				var range = $("#conteiner_id").get_selection_range();
+				var range = $("#conteiner_id1").get_selection_range();
 				if (range.end == code_field.innerText.length)
 					insertHTML("\n");
 
 				insertHTML("\n");
 				deleteSelected(range.start+1,range.end+1);
-				$("#conteiner_id").set_selection(range.start+1, range.start+1);
+				myscroll.updateScroll(code_field);
+				myscroll.updateScroll(code_field);
+				$("#conteiner_id1").set_selection(range.start+1, range.start+1);
 			}
 			if( (event.keyCode == 9) && !isIE )
 			{ 
 				cancelEvent(event);
 				tab_untab(event);
-				result.updateScroll();
-				result.updateScroll();
+				myscroll.updateScroll(code_field);
+				myscroll.updateScroll(code_field);
 			}
-			
 		});
 
 		function tab_untab(event){
 			let f = false;
-			var range = $("#conteiner_id").get_selection_range();
-			text = $("#conteiner_id").text();
+			var range = $("#conteiner_id1").get_selection_range();
+			text = $("#conteiner_id1").text();
 			let start = range.start;
 			let end = range.end;
 			let arr = text.substring(range.start,range.end);
@@ -155,9 +166,10 @@
 			if(!event.shiftKey && f)
 				range.start= start;
 			code_field.innerHTML= text;
-			ChangeCode(curLang);
-			$("#conteiner_id").set_selection(range.start, range.end);
-		}
+			clearTimeout(timer);
+			timer = setTimeout(ChangeCode,35,curLang);
+			$("#conteiner_id1").set_selection(range.start, range.end);
+		};
 		
 		document.getElementById("btn_highlight").onclick = function(event){
 			text = code_field.innerHTML;
@@ -166,47 +178,43 @@
 			text = text.replace(/\n/g," %%bpmn%% ");
 			text = text.replace(/<br>/g,"");
 			code_field.innerHTML = text;
-			text = $("#conteiner_id").text();
+			text = $("#conteiner_id1").text();
 			text = text.replace(/ %%bpmn%% /g,"\n");
 			code_field.innerHTML = text;
 			ChangeCode(curLang);
 		};
 		
-		$("#conteiner_id").on("input", function(){
+		$("#conteiner_id1").on("input", function(){
+
 			clearTimeout(timer);
-			timer = setTimeout(grab,1000);
+			if (!isIE)
+				timer = setTimeout(grab,1000);
 		});
 
 		function grab(){
-			if (!isIE)
+			var range = $("#conteiner_id1").get_selection_range();
+			text = code_field.innerHTML;
+			if( text != code_field.innerText )
 			{
-				var range = $("#conteiner_id").get_selection_range();
-				text = code_field.innerHTML;
-				if( text != code_field.innerText )
-				{
-					text = text.replace(/<p/g,"<div");
-					text = text.replace(/<\/p>/g,"</div>");	
-				}
-				code_field.innerHTML = text;
-				text = code_field.innerText;
-				ChangeCode(curLang);
-				result.updateScroll();
-				result.updateScroll();
-				$("#conteiner_id").set_selection(range.start, range.start);
+				text = text.replace(/<p/g,"<div");
+				text = text.replace(/<\/p>/g,"</div>");	
 			}
-		}
+			code_field.innerHTML = text;
+			text = code_field.innerText;
+			ChangeCode(curLang);
+			$("#conteiner_id1").set_selection(range.start, range.start);
+		};
 		function create_loader(){
 			let loader = document.getElementById("loader");
 			loader.style.display ="block"; 
 			loader.style.paddingTop = document.getElementsByTagName("body")[0].clientHeight*0.6 +"px";
 			loader.style.paddingLeft = "50%";
-			
-		}
+		};
 		window.Asc.plugin.resizeWindow(880, 600, 860, 400, 0, 0);				//resize plugin window		
 		
 		window.onresize = function(){
-			result.updateScroll();
-			result.updateScroll();
+			myscroll.updateScroll(code_field);
+			myscroll.updateScroll(code_field);
 		};
 	};
 
@@ -237,12 +245,12 @@
 				document.selection.createRange().pasteHTML(html);
 			} catch (z) {}
 		}
-		var range = $("#conteiner_id").get_selection_range();
-		$("#conteiner_id").set_selection(range.end, range.end);
+		var range = $("#conteiner_id1").get_selection_range();
+		$("#conteiner_id1").set_selection(range.end, range.end);
 	};
 
 	function createPreview(code,text){
-		var range = $("#conteiner_id").get_selection_range();
+		var range = $("#conteiner_id1").get_selection_range();
 		code_field.innerHTML = code.value;   // paste the value
 		if(isIE)
 		{
@@ -259,9 +267,9 @@
 					count++;
 				} 
 			document.getElementById("btn_highlight").focus();
-			//$("#conteiner_id").set_selection((range.start-count+1), (range.start-count+1));
+			//$("#conteiner_id1").set_selection((range.start-count+1), (range.start-count+1));
 		}else{
-			$("#conteiner_id").set_selection(range.start, range.end);
+			$("#conteiner_id1").set_selection(range.start, range.end);
 		}
 			
 		for (var i=0; i<language_select.length;i++)
@@ -272,8 +280,8 @@
 				language_select.selectedIndex = i;
 			}	
 		}
-	result.updateScroll();
-	result.updateScroll();
+		myscroll.updateScroll(code_field);
+		myscroll.updateScroll(code_field);
 	};
 	
 	function createHTML(code){
@@ -448,6 +456,7 @@
 			window.event.cancelBubble = true;//IE stopPropagation
 		}
 	};
+
 	window.Asc.plugin.button = function(id)
 	{
 		if(id==0)
