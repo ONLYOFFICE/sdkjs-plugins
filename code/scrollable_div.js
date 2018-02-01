@@ -92,10 +92,10 @@ You can apply your classes to this divs
 				$('.ps__scrollbar-y').css('border-width', '1px');
 			}
 			if($('.ps__scrollbar-x').width() === 0){
-				$('.ps__scrollbar-x').css('border-height', '0px');
+				$('.ps__scrollbar-x').css('border-width', '0px');
 			}
 			else{
-				$('.ps__scrollbar-x').css('border-height', '1px');
+				$('.ps__scrollbar-x').css('border-width', '1px');
 			}
 		},
 
