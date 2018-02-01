@@ -12,6 +12,8 @@
 	var language = hljs.listLanguages(),	// array languages
 		isInitLang = false, 				//flag init lang select
 		language_select,					//select for languages
+		style_select,						//select for style
+		style_value,						//current value style
 		_htmlPast,							//for paste in document
 		curLang,							//current language
 		code_field,							//field for higlight code		
@@ -37,6 +39,7 @@
 		$(container).addClass('codefield');
 		$(code_field).addClass('content');
 		language_select = document.getElementById("language_id");
+		style_select = document.getElementById("style_id");
 		var background_color = document.getElementById("background_color");
 		var temp_code,
 			flag = false;	//flag change code (true = changed)
@@ -57,15 +60,25 @@
 		if (!isInitLang)
 		{
 			initLang();
+			$.get( "https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.12.0/build/styles/googlecode.min.css", function( data ) {
+				style_value = data;
+			});
 		}
 
 		curLang = language_select.options[language_select.selectedIndex].text;		//get current language
-		language_select.onchange = function(e) {
+		language_select.onchange = function() {
 			text = code_field.innerText;
 			curLang = language_select.options[language_select.selectedIndex].text;		// change current language
 			ChangeCode(curLang);
 			flag = true;
 		};
+		
+		style_select.onchange = function(){
+			document.getElementById("style").href = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/" + style_select.options[style_select.selectedIndex].value;
+			$.get( "https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.12.0/build/styles/" + style_select.options[style_select.selectedIndex].value, function( data ) {
+				style_value = data;
+			});
+		}
 
 		function deleteSelected(start,end) {
 			text = code_field.innerText;
@@ -295,73 +308,12 @@
 			code = code.replace(/\t/g,"&nbsp;&nbsp;&nbsp;&nbsp;");
 		}
 		code = code.replace(/\n/g,"<br>");
-		_htmlPast = "<!DOCTYPE html>\
-			<html lang=\"en\"> \
+		_htmlPast = "<html lang=\"en\"> \
 				<head>\
 					<meta charset=\"UTF-8\"> \
-					<style>\
-					body {\
-						background-color: black;\
-					}\
-					.hljs {\
-						display: block;\
-						overflow-x: auto;\
-						padding: 0.5em;\
-						background: white;\
-						color: black;}\
-					.hljs-comment,\
-					.hljs-quote {\
-						color: #800;}\
-					.hljs-keyword,\
-					.hljs-selector-tag,\
-					.hljs-section,\
-					.hljs-title,\
-					.hljs-name {\
-						color: #008;}\
-					.hljs-variable,\
-					.hljs-template-variable {\
-						color: #660;}\
-					.hljs-string,\
-					.hljs-selector-attr,\
-					.hljs-selector-pseudo,\
-					.hljs-regexp {\
-						color: #080;}\
-					.hljs-literal,\
-					.hljs-symbol,\
-					.hljs-bullet,\
-					.hljs-meta,\
-					.hljs-number,\
-					.hljs-link {\
-						color: #066;}\
-					.hljs-title,\
-					.hljs-doctag,\
-					.hljs-type,\
-					.hljs-attr,\
-					.hljs-built_in,\
-					.hljs-builtin-name,\
-					.hljs-params {\
-						color: #606;}\
-					.hljs-attribute,\
-					.hljs-subst {\
-						color: #000;}\
-					.hljs-formula {\
-						background-color: #eee;\
-						font-style: italic;}\
-					.hljs-selector-id,\
-					.hljs-selector-class {\
-						color: #9B703F;}\
-					.hljs-addition {\
-						background-color: #baeeba;}\
-					.hljs-deletion {\
-						background-color: #ffc8bd;}\
-					.hljs-doctag,\
-					.hljs-strong {\
-						font-weight: bold;}\
-					.hljs-emphasis {\
-						font-style: italic;}\
-					</style>\
+					<style>" + style_value + "</style>\
 				</head> \
-				<body style = white-space: pre; background-color:'" + container.style.background + "'; font-family: Consolas\">" + code.trim(); + "</body>\
+				<body style = white-space: pre; background-color:" + container.style.background + "; font-family: Consolas\">" + code.trim(); + "</body>\
 			</html>"; 
 	};
 

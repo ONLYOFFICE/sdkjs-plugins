@@ -41,19 +41,6 @@
 				$('#global').empty(); // cleared global div
 				synonim();
 			}
-			if (!isInit)
-			{
-				var container = document.getElementById('scrollable-container-id');
-				Ps.initialize(container, {
-					theme : 'custom-theme'
-				});
-				window.onresize = function()
-				{
-					updateScroll();
-				};
-				updateScroll();
-				isInit = true;
-			}
 		};
 	});	
 
@@ -182,8 +169,10 @@
 		Ps.update(container);
 		if($('.ps__scrollbar-y').height() === 0){
 			$('.ps__scrollbar-y').css('border-width', '0px');
+			$('.ps__scrollbar-y').css('display', 'none');
 		}else{
 			$('.ps__scrollbar-y').css('border-width', '1px');
+			$('.ps__scrollbar-y').css('display', 'block');
 		}
 		$('.ps__scrollbar-x').css('border-width', '0px');
 	};

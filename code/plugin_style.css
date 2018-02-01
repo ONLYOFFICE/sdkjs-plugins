@@ -67,6 +67,14 @@ select:focus > option:checked {
   padding-left: 10px;
 }
 .tabselect {
+  padding-left: 10px;
+  padding-top: 5px;
+  -khtml-user-select: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+.styleselect{
   padding-top: 5px;
 }
 .button {
@@ -83,12 +91,11 @@ select:focus > option:checked {
 }
 .colorselect {
   padding-left: 10px;
-  padding-top: 3px;
+  padding-top: 2px;
   -khtml-user-select: none;
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
-  
 }
 .divbutton {
   padding: 15px 0px 0px 10px;
