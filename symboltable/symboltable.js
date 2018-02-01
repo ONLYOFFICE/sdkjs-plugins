@@ -917,7 +917,7 @@
 				nCurrentFont = 0;
             aRanges = getArrRangesByFont(nCurrentFont);
 			if(sInitSymbol && sInitSymbol.length > 0){
-                nCurrentSymbol = fixedCharCodeAt(sInitSymbol[0], 0);
+                nCurrentSymbol = fixedCharCodeAt(sInitSymbol, 0);
                 if(false === nCurrentSymbol){
                     nCurrentSymbol = -1;
                 }
