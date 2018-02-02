@@ -1323,6 +1323,12 @@
                 continue;
             _ret.push(_range);
 		}
+		
+		if(_ret.length === 0)
+		{
+			_ret.push(new CRange(0x0020, 0x007E, c_oUnicodeRangesLID.Basic_Latin, lcid_enUS, [(1 << c_oUnicodeRangeOS2_1.Basic_Latin), 0, 0, 0, (1 << c_oCodePagesOS2_1.Latin_1), 0]));
+			_ret.push(new CRange(0x00A0, 0x00FF, c_oUnicodeRangesLID.Latin_1_Supplement, lcid_unknown, [(1 << c_oUnicodeRangeOS2_1.Basic_Latin) | (1 << c_oUnicodeRangeOS2_1.Latin_1_Supplement), 0, 0, 0, (1 << c_oCodePagesOS2_1.Latin_1), 0]));			            
+		}
 		return _ret;
 	};
 
