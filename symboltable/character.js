@@ -1304,7 +1304,7 @@
             if (_param[3] != (_select.m_ulUnicodeRange4 & _param[3]))
                 continue;
 
-            if (_range.Name == c_oUnicodeRangesLID.CJK_Unified_Ideographs)
+            /*if (_range.Name == c_oUnicodeRangesLID.CJK_Unified_Ideographs)
             {
                 if (0 == (_select.m_ulCodePageRange1 & _param[4]))
                     continue;
@@ -1313,8 +1313,12 @@
             {
                 if (_param[4] != (_select.m_ulCodePageRange1 & _param[4]))
                     continue;
-            }
+            }*/
 
+			
+			if (_param[4] != (_select.m_ulCodePageRange1 & _param[4]))
+				continue;
+			
             if (_param[5] != (_select.m_ulCodePageRange2 & _param[5]))
                 continue;
             _ret.push(_range);
