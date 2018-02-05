@@ -60,8 +60,8 @@
 		if (!isInitLang)
 		{
 			initLang();
-			$.get( "https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.12.0/build/styles/googlecode.min.css", function( data ) {
-				style_value = data;
+			window.Asc.plugin.callModule("./highlight/styles/googlecode.css", function(content){
+				style_value = content;
 			});
 		}
 
@@ -74,9 +74,9 @@
 		};
 		
 		style_select.onchange = function(){
-			document.getElementById("style").href = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/" + style_select.options[style_select.selectedIndex].value;
-			$.get( "https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.12.0/build/styles/" + style_select.options[style_select.selectedIndex].value, function( data ) {
-				style_value = data;
+			document.getElementById("style").href = "highlight/styles/" + style_select.options[style_select.selectedIndex].value;
+			window.Asc.plugin.callModule("./highlight/styles/" + style_select.options[style_select.selectedIndex].value , function(content){
+				style_value = content;
 			});
 		}
 
