@@ -38,6 +38,7 @@
 		container = document.getElementById('scrollable-container-id1');
 		$(container).addClass('codefield');
 		$(code_field).addClass('content');
+		$(container).addClass('hljs');
 		language_select = document.getElementById("language_id");
 		style_select = document.getElementById("style_id");
 		var background_color = document.getElementById("background_color");
@@ -60,9 +61,20 @@
 		if (!isInitLang)
 		{
 			initLang();
-			window.Asc.plugin.callModule("./highlight/styles/googlecode.css", function(content){
+			window.Asc.plugin.loadModule("./highlight/styles/googlecode.css", function(content){
 				style_value = content;
+				background_color.value = hexc($(container).css('backgroundColor'));
 			});
+		}
+
+		function hexc (colorval) {
+			var parts = colorval.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+			delete(parts[0]);
+			for (var i = 1; i <= 3; ++i) {
+				parts[i] = parseInt(parts[i]).toString(16);
+				if (parts[i].length == 1) parts[i] = '0' + parts[i];
+			}
+			return ('#' + parts.join(''));
 		}
 
 		curLang = language_select.options[language_select.selectedIndex].text;		//get current language
@@ -75,8 +87,9 @@
 		
 		style_select.onchange = function(){
 			document.getElementById("style").href = "highlight/styles/" + style_select.options[style_select.selectedIndex].value;
-			window.Asc.plugin.callModule("./highlight/styles/" + style_select.options[style_select.selectedIndex].value , function(content){
+			window.Asc.plugin.loadModule("./highlight/styles/" + style_select.options[style_select.selectedIndex].value , function(content){
 				style_value = content;
+				background_color.value = hexc($(container).css('backgroundColor'));
 			});
 		}
 
@@ -223,7 +236,7 @@
 			loader.style.paddingTop = document.getElementsByTagName("body")[0].clientHeight*0.6 +"px";
 			loader.style.paddingLeft = "50%";
 		};
-		window.Asc.plugin.resizeWindow(880, 600, 860, 400, 0, 0);				//resize plugin window		
+		window.Asc.plugin.resizeWindow(800, 600, 800, 600, 0, 0);				//resize plugin window		
 		
 		window.onresize = function(){
 			myscroll.updateScroll(code_field);
