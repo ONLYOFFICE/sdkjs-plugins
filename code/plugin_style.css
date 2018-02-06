@@ -21,6 +21,7 @@ html, body {
   border-color: rgba(68,68,68,0.266666666666);  
 }
 .content{  
+  font-weight: bold;
   font-size: 14px; 
   font-family: "Helvetica Neue", Helvetica, Consolas, sans-serif; 
 }

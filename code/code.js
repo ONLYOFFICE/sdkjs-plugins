@@ -147,19 +147,22 @@
 		});
 
 		function tab_untab(event){
-			let f = false;
+			let one_line = false;
+			let right_tab = false;
 			var range = $("#conteiner_id1").get_selection_range();
 			text = $("#conteiner_id1").text();
+			let substr = text.substring(range.start,range.start-1);
+			if((substr =="\t" && event.shiftKey))
+				range.start--;
 			let start = range.start;
 			let end = range.end;
 			let arr = text.substring(range.start,range.end);
 			arr = arr.split("\n");
-			let substr = text.substring(range.start,range.start-1);
 
 			if(!event.shiftKey)
 			{
 				if(range.start!=range.end)
-					f= true;
+					one_line = true;
 				for (let i in arr) {
 					arr[i] = '\t' + arr[i];
 					end++;
@@ -170,15 +173,21 @@
 				if (range.start!=range.end)
 					for (let i in arr)
 						if (arr[i][0] == "\t")
-							f = true;	
-				if((substr != "\t") && !f)
+							one_line = true;	
+				if((substr != "\t") && !one_line)
 					return;
-				if((substr == "\t") && !f && arr.length>1)
+				if((substr == "\t") && !one_line && arr.length>1)
 					end--;
-				if((range.start == range.end) || !f)
+				if((range.start == range.end) || !one_line)
 					range.start--;
 				for (let i in arr) {
-					if (arr[i][0] == '\t')
+					if ( text.substring(range.end,range.end+1) == '\t')
+					{
+						text = text.slice(0, range.end) + text.slice((range.end+1));
+						right_tab = true;
+						continue;
+					}
+						if (arr[i][0] == '\t')
 						arr[i] = arr[i].substr(1);
 					else if (arr.length>1)
 						end++;
@@ -189,7 +198,9 @@
 			text = text.slice(0, range.start) + arr + text.slice(range.end);
 			range.start = range.start != range.end ? range.start : end;
 			range.end = end;
-			if(!event.shiftKey && f)
+			if(right_tab)
+				range.start = end;
+			if(!event.shiftKey && one_line)
 				range.start= start;
 			code_field.innerHTML= text;
 			clearTimeout(timer);
@@ -199,19 +210,18 @@
 		
 		document.getElementById("btn_highlight").onclick = function(event){
 			text = code_field.innerHTML;
-			text = text.replace(/<p>/g,"<div>");
-			text = text.replace(/<\/p>/g,"</div>\n");
-			text = text.replace(/\n/g," %%bpmn%% ");
-			text = text.replace(/<br>/g,"");
+			if( text != code_field.innerText )
+			{
+				text = text.replace(/<p/g,"<div");
+				text = text.replace(/<\/p>/g,"</div>");	
+			}
 			code_field.innerHTML = text;
-			text = $("#conteiner_id1").text();
-			text = text.replace(/ %%bpmn%% /g,"\n");
-			code_field.innerHTML = text;
+			text = code_field.innerText;
 			ChangeCode(curLang);
 		};
+
 		
 		$("#conteiner_id1").on("input", function(){
-
 			clearTimeout(timer);
 			if (!isIE)
 				timer = setTimeout(grab,1000);
@@ -280,20 +290,7 @@
 		code_field.innerHTML = code.value;   // paste the value
 		if(isIE)
 		{
-			var count=0;
-			var i=0;
-			while (x != -1) {
-					var c = text;
-					var x = c.indexOf("\n",i);
-					if (x>=range.start)
-					{
-						x=-1;
-					}
-					i=x+1;
-					count++;
-				} 
 			document.getElementById("btn_highlight").focus();
-			//$("#conteiner_id1").set_selection((range.start-count+1), (range.start-count+1));
 		}else{
 			$("#conteiner_id1").set_selection(range.start, range.end);
 		}
