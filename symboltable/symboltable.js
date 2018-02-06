@@ -772,11 +772,21 @@
             var nSymbolsCount = getAllSymbolsCount(aRanges);
             var nAllRowsCount = Math.ceil(nSymbolsCount/getColsCount());
             var nFullHeight = nAllRowsCount*CELL_HEIGHT;
+			
+            var nOldHeight = $("#fake-symbol-table-wrap").height();
             $("#fake-symbol-table-wrap").height(nHeight);
             $("#fake-symbol-table").height(nFullHeight);
 
-            bShowTooltip = false;
-            var container = document.getElementById('fake-symbol-table-wrap');
+			
+			var container = document.getElementById('fake-symbol-table-wrap');
+			if(nOldHeight !== nHeight){	
+				Ps.destroy(container);
+				Ps.initialize(container, {
+					theme: 'custom-theme',
+					minScrollbarLength: Math.max((CELL_HEIGHT*2.0/3.0 + 0.5) >> 0, ((nHeight/8.0 + 0.5) >> 0))
+				});			
+			}
+            bShowTooltip = false;            
             container.scrollTop = nRowSkip*CELL_HEIGHT;
             Ps.update(container);
             if($('.ps__scrollbar-y').height() === 0 || (nFullHeight < nHeight)){
