@@ -202,7 +202,7 @@
 				range.start = end;
 			if(!event.shiftKey && one_line)
 				range.start= start;
-			code_field.innerHTML= text;
+			code_field.innerText= text;
 			clearTimeout(timer);
 			timer = setTimeout(ChangeCode,35,curLang);
 			$("#conteiner_id1").set_selection(range.start, range.end);
@@ -323,8 +323,8 @@
 					<meta charset=\"UTF-8\"> \
 					<style>" + style_value + "</style>\
 				</head> \
-				<body style = white-space: pre; background-color:" + container.style.background + "; font-family: Consolas\">" + code.trim(); + "</body>\
-			</html>"; 
+				<body style = white-space: pre; background-color:" + background_color.value + "; font-family: Consolas\">" + code.trim();
+		_htmlPast +="</body></html>"; 
 	};
 
 	$.fn.get_selection_range = function(){
