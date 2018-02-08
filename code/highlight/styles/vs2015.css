@@ -11,6 +11,13 @@
   color: #DCDCDC;
 }
 
+p {
+  margin: 0;
+  line-height: 1;
+  font-family: 'Consolas';
+  color: #DCDCDC;
+}
+
 .hljs-keyword,
 .hljs-literal,
 .hljs-symbol,

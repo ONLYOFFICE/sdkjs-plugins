@@ -12,6 +12,12 @@ Qt Creator light color scheme
   background: #ffffff;
 }
 
+p {
+  margin: 0;
+  line-height: 1;
+  font-family: 'Consolas';
+}
+
 .hljs,
 .hljs-subst,
 .hljs-tag,

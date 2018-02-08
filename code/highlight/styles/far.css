@@ -11,6 +11,13 @@ FAR Style (c) MajestiC <majestic2k@gmail.com>
   background: #000080;
 }
 
+p {
+  margin: 0;
+  line-height: 1;
+  font-family: 'Consolas';
+  color: #0ff;
+}
+  
 .hljs,
 .hljs-subst {
   color: #0ff;

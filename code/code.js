@@ -14,7 +14,6 @@
 		language_select,					//select for languages
 		style_select,						//select for style
 		style_value,						//current value style
-		_htmlPast,							//for paste in document
 		curLang,							//current language
 		code_field,							//field for higlight code		
 		container,							//scrollable conteiner	
@@ -25,7 +24,7 @@
 
 	window.Asc.plugin.init = function(text){	
 		myscroll = window.Asc.ScrollableDiv;
-		myscroll.create_div("colorselect",{
+		myscroll.create_div("TabColor",{
 					width: "",
 					height: "",
 					left: "10px",
@@ -103,11 +102,14 @@
 		if (!flag)
 		{
 			code_field.focus();
+			code_field.innerHTML = text;
+			text = code_field.innerHTML;
+			code_field.innerHTML = "";
 			ChangeCode(curLang);
 		}
 
 		function ChangeCode(curLang){
-			create_loader();
+			text = text.replace(/&nbsp;&nbsp;&nbsp;&nbsp;/g,"\t");
 			if ((curLang == "Auto") && text)
 			{
 				temp_code = hljs.highlightAuto(text, language);
@@ -120,7 +122,6 @@
 			{
 				code_field.innerHTML = "";
 			}
-			$(".loader").delay(100).fadeOut();
 		};	
 
 		$("#conteiner_id1").keydown(function(event){
@@ -170,15 +171,22 @@
 						start++;
 				}
 			}else{
+				if((end==0) && (start==0) && (text.substring(0,1) == "\t") )
+				{
+					text = text.substring(1);
+					code_field.innerText= text;
+					ChangeCode(curLang);
+					return;
+				}
 				if (range.start!=range.end)
 					for (let i in arr)
 						if (arr[i][0] == "\t")
 							one_line = true;	
-				if((substr != "\t") && !one_line)
+				if((substr != "\t") && !one_line && (substr != "\n"))
 					return;
 				if((substr == "\t") && !one_line && arr.length>1)
 					end--;
-				if((range.start == range.end) || !one_line)
+				if(((range.start == range.end) || !one_line) && (substr != "\n"))
 					range.start--;
 				for (let i in arr) {
 					if ( text.substring(range.end,range.end+1) == '\t')
@@ -191,7 +199,8 @@
 						arr[i] = arr[i].substr(1);
 					else if (arr.length>1)
 						end++;
-					end--;
+					if(substr != "\n")
+						end--;
 				}
 			}
 			arr = arr.join('\n');
@@ -203,8 +212,7 @@
 			if(!event.shiftKey && one_line)
 				range.start= start;
 			code_field.innerText= text;
-			clearTimeout(timer);
-			timer = setTimeout(ChangeCode,35,curLang);
+			ChangeCode(curLang);
 			$("#conteiner_id1").set_selection(range.start, range.end);
 		};
 		
@@ -220,8 +228,7 @@
 			ChangeCode(curLang);
 		};
 
-		
-		$("#conteiner_id1").on("input", function(){
+		$("#conteiner_id1").on("input", function(event){
 			clearTimeout(timer);
 			if (!isIE)
 				timer = setTimeout(grab,1000);
@@ -233,19 +240,15 @@
 			if( text != code_field.innerText )
 			{
 				text = text.replace(/<p/g,"<div");
-				text = text.replace(/<\/p>/g,"</div>");	
+				text = text.replace(/<\/p>/g,"</div>");
+				text = text.replace(/&nbsp;&nbsp;&nbsp;&nbsp;/g,"\t");
 			}
 			code_field.innerHTML = text;
 			text = code_field.innerText;
 			ChangeCode(curLang);
 			$("#conteiner_id1").set_selection(range.start, range.start);
 		};
-		function create_loader(){
-			let loader = document.getElementById("loader");
-			loader.style.display ="block"; 
-			loader.style.paddingTop = document.getElementsByTagName("body")[0].clientHeight*0.6 +"px";
-			loader.style.paddingLeft = "50%";
-		};
+		
 		window.Asc.plugin.resizeWindow(800, 600, 800, 600, 0, 0);				//resize plugin window		
 		
 		window.onresize = function(){
@@ -311,20 +314,21 @@
 		var tab_rep_count = $("#tab_replace_id").val();
 		if(tab_rep_count == 2)
 		{
-			//code = code.replace(/\t/g,"&emsp;&emsp;");
 			code = code.replace(/\t/g,"&nbsp;&nbsp;");
 		}else if (tab_rep_count == 4) {
-			//code = code.replace(/\t/g,"&emsp;&emsp;&emsp;&emsp;");
 			code = code.replace(/\t/g,"&nbsp;&nbsp;&nbsp;&nbsp;");
 		}
-		code = code.replace(/\n/g,"<br>");
-		_htmlPast = "<html lang=\"en\"> \
-				<head>\
-					<meta charset=\"UTF-8\"> \
-					<style>" + style_value + "</style>\
-				</head> \
-				<body style = white-space: pre; background-color:" + background_color.value + "; font-family: Consolas\">" + code.trim();
-		_htmlPast +="</body></html>"; 
+		else{
+			code = code.replace(/\t/g,"<span style='mso-tab-count:1'></span>");
+		}
+		code = code.split("\n");
+		for (var i in code)
+			if ( code[i] == "" )
+				{code[i] = "<p>&nbsp</p>"}
+			else
+				{code[i] = "<p>" +code[i] + "</p>"}
+		
+		window.Asc.plugin.executeMethod("PasteHtml",['<html lang=\"en\"><head><style> p{background:'+background_color.value+'}'+style_value +'</style></head><body><div style = \"white-space: pre;\">'+code.join("")+'</div></body></html>']);
 	};
 
 	$.fn.get_selection_range = function(){
@@ -424,7 +428,6 @@
 		if(id==0)
 		{
 			createHTML(code_field.innerHTML);
-			window.Asc.plugin.executeMethod("PasteHtml", [_htmlPast]);
 			this.executeCommand("close", "");
 		}
 		if((id==-1) || (id==1))

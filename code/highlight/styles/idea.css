@@ -12,6 +12,13 @@ Intellij Idea-like styling (c) Vasily Polovnyov <vast@whiteants.net>
   background: #fff;
 }
 
+p {
+  margin: 0;
+  line-height: 1;
+  font-family: 'Consolas';
+  color: #000;
+}
+
 .hljs-subst,
 .hljs-title {
   font-weight: normal;

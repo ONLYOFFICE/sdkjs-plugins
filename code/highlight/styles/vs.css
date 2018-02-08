@@ -11,6 +11,13 @@ Visual Studio-like style based on original C# coloring by Jason Diamond <jason@d
   color: black;
 }
 
+p {
+  margin: 0;
+  line-height: 1;
+  font-family: 'Consolas';
+  color: black;
+}
+
 .hljs-comment,
 .hljs-quote,
 .hljs-variable {

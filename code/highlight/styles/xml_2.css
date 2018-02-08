@@ -5,7 +5,12 @@
   background: white;
   color: black;
 }
-
+p {
+  margin: 0;
+  line-height: 1;
+  font-family: 'Consolas';
+  color: black;
+}
 .hljs-tag{
   color: #2008c0;
 }

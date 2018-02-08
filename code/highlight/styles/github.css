@@ -12,6 +12,13 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
   background: #f8f8f8;
 }
 
+p {
+  margin: 0;
+  line-height: 1;
+  font-family: 'Consolas';
+  color: #333;
+}
+
 .hljs-comment,
 .hljs-quote {
   color: #998;

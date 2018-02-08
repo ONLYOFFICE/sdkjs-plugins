@@ -11,6 +11,13 @@
   overflow-x: auto;
 }
 
+p {
+  margin: 0;
+  line-height: 1;
+  font-family: 'Consolas';
+  color: #333333;
+}
+
 .hljs-comment,
 .hljs-meta {
   color: #969896;

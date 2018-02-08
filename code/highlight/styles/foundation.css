@@ -13,6 +13,13 @@ Date: 2013-04-02
   background: #eee; color: black;
 }
 
+p {
+  margin: 0;
+  line-height: 1;
+  font-family: 'Consolas';
+  color: black;
+}
+
 .hljs-link,
 .hljs-emphasis,
 .hljs-attribute,

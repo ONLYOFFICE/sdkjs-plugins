@@ -10,6 +10,12 @@ Author: Pedro Oliveira <kanytu@gmail . com>
   overflow-x: auto;
   padding: 0.5em;
 }
+p {
+  margin: 0;
+  line-height: 1;
+  font-family: 'Consolas';
+  color: #a9b7c6;
+}
 
 .hljs-number,
 .hljs-literal,

@@ -113,25 +113,3 @@ span::selection {
 span::-moz-selection {
   background: #D8DADC; /* Gecko Browsers */
 }
-.line {
-  display: inline-block;
-  width: 15px;
-  height: 15px;
-  border-radius: 15px;
-  background-color: #7d858c;
-}
-.loader{
-  display: none;
-  position: absolute;
-}
-/* =Animate the stuff
------------------------- */
-.loader .line:nth-last-child(1) {animation: loadingC .6s .1s linear infinite;}
-.loader .line:nth-last-child(2) {animation: loadingC .6s .2s linear infinite;}
-.loader .line:nth-last-child(3) {animation: loadingC .6s .3s linear infinite;}
-
-@keyframes loadingC {
-  0 {transform: translate(0,0);}
-  50% {transform: translate(0,15px);}
-  100% {transform: translate(0,0);}
-}
