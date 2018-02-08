@@ -100,16 +100,28 @@
 		};
 
 		if (!flag)
-		{
+		{ 
+			text = text.replace(/<span style="mso-tab-count:1;">	<\/span>/g,"%%%bpmn%%%");
+			text = text.replace(/<p style="mso-line-height-rule:/g,"<div style=\"mso-line-height-rule:");
+			text = text.replace(/<\/span><\/p>/g,"</span></div>");
 			code_field.focus();
 			code_field.innerHTML = text;
+			text = code_field.innerText;
+			code_field.innerText = text;
 			text = code_field.innerHTML;
+			text = text.replace(/%%%bpmn%%%/g,"\t");
+			text = text.replace(/&nbsp;&nbsp;&nbsp;&nbsp;/g,"\t");
+			
 			code_field.innerHTML = "";
+			text = text.replace(/&nbsp;/g," ");
+			text = text.replace(/<br>/g,"\n");
+			text = text.replace(/&lt;/g,"<");
+			text = text.replace(/&gt;/g,">");
+			//text = text.replace(/    /g,"\t");	//if you need replace all  "    "
 			ChangeCode(curLang);
 		}
 
 		function ChangeCode(curLang){
-			text = text.replace(/&nbsp;&nbsp;&nbsp;&nbsp;/g,"\t");
 			if ((curLang == "Auto") && text)
 			{
 				temp_code = hljs.highlightAuto(text, language);
@@ -152,8 +164,9 @@
 			let right_tab = false;
 			var range = $("#conteiner_id1").get_selection_range();
 			text = $("#conteiner_id1").text();
-			let substr = text.substring(range.start,range.start-1);
-			if((substr =="\t" && event.shiftKey))
+			let substr_left = text.substring(range.start,range.start-1);
+			let substr_right = text.substring(range.start,range.end+1);
+			if((substr_left =="\t" && event.shiftKey))
 				range.start--;
 			let start = range.start;
 			let end = range.end;
@@ -182,11 +195,11 @@
 					for (let i in arr)
 						if (arr[i][0] == "\t")
 							one_line = true;	
-				if((substr != "\t") && !one_line && (substr != "\n"))
+				if((substr_left != "\t") && !one_line && (substr_left != "\n") && (substr_right != "\t"))
 					return;
-				if((substr == "\t") && !one_line && arr.length>1)
+				if((substr_left == "\t") && !one_line && arr.length>1)
 					end--;
-				if(((range.start == range.end) || !one_line) && (substr != "\n"))
+				if(((range.start == range.end) || !one_line) && (substr_left != "\n") && (substr_right != "\t"))
 					range.start--;
 				for (let i in arr) {
 					if ( text.substring(range.end,range.end+1) == '\t')
@@ -199,7 +212,7 @@
 						arr[i] = arr[i].substr(1);
 					else if (arr.length>1)
 						end++;
-					if(substr != "\n")
+					if(substr_left != "\n")
 						end--;
 				}
 			}
@@ -311,6 +324,7 @@
 	};
 	
 	function createHTML(code){
+		code = code.substring(0,(code.length-1));
 		var tab_rep_count = $("#tab_replace_id").val();
 		if(tab_rep_count == 2)
 		{
