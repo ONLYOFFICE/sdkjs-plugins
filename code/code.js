@@ -17,7 +17,8 @@
 		curLang,							//current language
 		code_field,							//field for higlight code		
 		container,							//scrollable conteiner	
-		timer;								//for timer 
+		timer,								//for timer 
+		f_Paste = false;					//flag paste 
 	const isIE = checkInternetExplorer();	//check IE
 
 	var myscroll = window.Asc.ScrollableDiv;
@@ -102,22 +103,20 @@
 		if (!flag)
 		{ 
 			text = text.replace(/<span style="mso-tab-count:1;">	<\/span>/g,"%%%bpmn%%%");
-			text = text.replace(/<p style="mso-line-height-rule:/g,"<div style=\"mso-line-height-rule:");
-			text = text.replace(/<\/span><\/p>/g,"</span></div>");
+			text = text.replace(/<p/g,"<div");
+			text = text.replace(/<\/p>/g,"</div>");
 			code_field.focus();
 			code_field.innerHTML = text;
 			text = code_field.innerText;
 			code_field.innerText = text;
 			text = code_field.innerHTML;
 			text = text.replace(/%%%bpmn%%%/g,"\t");
-			text = text.replace(/&nbsp;&nbsp;&nbsp;&nbsp;/g,"\t");
-			
+			//text = text.replace(/&nbsp;&nbsp;&nbsp;&nbsp;/g,"\t");
 			code_field.innerHTML = "";
 			text = text.replace(/&nbsp;/g," ");
 			text = text.replace(/<br>/g,"\n");
 			text = text.replace(/&lt;/g,"<");
 			text = text.replace(/&gt;/g,">");
-			//text = text.replace(/    /g,"\t");	//if you need replace all  "    "
 			ChangeCode(curLang);
 		}
 
@@ -241,25 +240,60 @@
 			ChangeCode(curLang);
 		};
 
+		document.addEventListener('paste', function(){
+			var range = $("#conteiner_id1").get_selection_range();
+			text = code_field.innerText.substring(0,range.start) + "%%%bpmn%%%" + code_field.innerText.substring(range.end);
+			f_Paste = true;
+			code_field.innerHTML ="";
+		});
+
 		$("#conteiner_id1").on("input", function(event){
+			if(f_Paste){
+				grab();
+				f_Paste = false;
+				return;
+			}
 			clearTimeout(timer);
 			if (!isIE)
 				timer = setTimeout(grab,1000);
 		});
 
 		function grab(){
-			var range = $("#conteiner_id1").get_selection_range();
-			text = code_field.innerHTML;
-			if( text != code_field.innerText )
+			if(f_Paste)
 			{
-				text = text.replace(/<p/g,"<div");
-				text = text.replace(/<\/p>/g,"</div>");
-				text = text.replace(/&nbsp;&nbsp;&nbsp;&nbsp;/g,"\t");
+				let count = code_field.innerHTML;
+				if( count != code_field.innerText )
+				{
+					count = count.replace(/<p/g,"<div");
+					count = count.replace(/<\/p>/g,"</div>");
+				}
+				code_field.innerHTML = count;
+				count = code_field.innerText;
+				count = count.substring(0);
+				count = count.split("\n");
+				if (navigator.userAgent.search(/Firefox/) <= 0)
+					if(count[count.length-1] == "")
+						count.pop();
+				text = text.replace(/&nbsp;/g," ");
+				text = text.split("%%%bpmn%%%");
+				let new_text = text[0] + count.join('\n') + text[1];
+				if (navigator.userAgent.search(/Firefox/) > 0)
+					new_text = new_text.replace(/\n/g,"╫");
+				code_field.innerText = new_text;
+				var start = (new_text.length - text[1].length);
+				$("#conteiner_id1").set_selection((start), (start));
+				text = code_field.innerText;
+				if (navigator.userAgent.search(/Firefox/) > 0)
+					text = text.replace(/╫/g,"\n");
+				ChangeCode(curLang);
+			}else{
+				var range = $("#conteiner_id1").get_selection_range();
+				text = code_field.innerHTML;
+				code_field.innerHTML = text;
+				text = code_field.innerText;
+				ChangeCode(curLang);
+				$("#conteiner_id1").set_selection(range.start, range.start);
 			}
-			code_field.innerHTML = text;
-			text = code_field.innerText;
-			ChangeCode(curLang);
-			$("#conteiner_id1").set_selection(range.start, range.start);
 		};
 		
 		window.Asc.plugin.resizeWindow(800, 600, 800, 600, 0, 0);				//resize plugin window		
@@ -324,7 +358,6 @@
 	};
 	
 	function createHTML(code){
-		code = code.substring(0,(code.length-1));
 		var tab_rep_count = $("#tab_replace_id").val();
 		if(tab_rep_count == 2)
 		{
@@ -341,8 +374,9 @@
 				{code[i] = "<p>&nbsp</p>"}
 			else
 				{code[i] = "<p>" +code[i] + "</p>"}
-		
-		window.Asc.plugin.executeMethod("PasteHtml",['<html lang=\"en\"><head><style> p{background:'+background_color.value+'}'+style_value +'</style></head><body><div style = \"white-space: pre;\">'+code.join("")+'</div></body></html>']);
+		if (code[code.length-1] == "<p>&nbsp</p>")
+			code.pop();
+		window.Asc.plugin.executeMethod("PasteHtml",['<html lang=\"en\"><head><style> p{background:'+background_color.value+'}'+style_value +'</style></head><body><div style = \"white-space: pre;\"><span style =\"font-size:12pt;\">'+code.join("")+'</span></div></body></html>']);
 	};
 
 	$.fn.get_selection_range = function(){
