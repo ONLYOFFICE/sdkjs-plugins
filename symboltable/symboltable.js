@@ -567,7 +567,7 @@
         return nMaxHeight;
     }
     function getRowsCount() {
-        return  ((getMaxHeight()/CELL_HEIGHT) >> 0);
+        return  Math.max(1, ((getMaxHeight()/CELL_HEIGHT) >> 0));
     }
 
     function getAllSymbolsCount(arrRanges){
@@ -589,7 +589,7 @@
         var nIndexSymbol = getLinearIndexByCode(aRanges, nStartCode);
         var nAllSymbolsCount = getAllSymbolsCount(aRanges);
         var nAllRowsCount = Math.ceil(nAllSymbolsCount/nColsCount);
-        var nRowsSkip = Math.min(nAllRowsCount - nRowsCount, ((nIndexSymbol / nColsCount) >> 0));
+        var nRowsSkip = Math.max(0, Math.min(nAllRowsCount - nRowsCount, ((nIndexSymbol / nColsCount) >> 0)));
         var nFirst = nRowsSkip*nColsCount;
         var nSymbolsCount = nRowsCount*nColsCount;
         var aSymbols = [];
@@ -687,7 +687,7 @@
         var nFullHeight = nAllRowsCount*CELL_HEIGHT;
 
 
-            var nRowSkip = Math.min(nAllRowsCount - nRows, (nAllRowsCount*container.scrollTop/nFullHeight + 0.5) >> 0);
+            var nRowSkip = Math.max(0, Math.min(nAllRowsCount - nRows, (nAllRowsCount*container.scrollTop/nFullHeight + 0.5) >> 0));
         container.scrollTop = nRowSkip*CELL_HEIGHT;
         nLastScroll = container.scrollTop;
         if(!bMainFocus){
@@ -754,6 +754,28 @@
 			}
         }
 		
+		 if(bUpdateTable !== false){
+            //fill fonts combo box
+            var oFontSelector = $('#font-select');
+            oFontSelector.val(nCurrentFont);
+             //
+             // var oFont2 = oFontSelector.next()[0];
+             // oFont2.css('width', 'auto');
+
+
+            // var oRange2 = $('#range-select').next();
+            //  oRange2.css('width', 'auto');
+
+
+
+            //
+			// var nResultWidth = Math.max(oFont2[0].clientWidth, oRange2[0].clientWidth);
+            //
+             // oFont2.width(nResultWidth);
+             // oRange2.width(nResultWidth);
+				
+        }
+		
         //main table
         var nRowsCount = getRowsCount();
 
@@ -789,7 +811,7 @@
             bShowTooltip = false;            
             container.scrollTop = nRowSkip*CELL_HEIGHT;
             Ps.update(container);
-            if($('.ps__scrollbar-y').height() === 0 || (nFullHeight < nHeight)){
+            if($('.ps__scrollbar-y').height() === 0 || ((nFullHeight) <= (nHeight + 1))){
                 $('.ps__scrollbar-y').css('border-width', '0px');
 				$('.ps__scrollbar-y').hide();
             }
@@ -860,6 +882,13 @@
             }
             oRangeSelector.val(''+oCurrentRange.Name);
         }
+		
+		oRangeSelector.on('select2:select select2:unselecting', function(){});
+		oRangeSelector.select2("destroy");
+		oRangeSelector.select2({
+			minimumResultsForSearch: Infinity
+		});
+        $('#range-select').next().css('width', $('#font-select').next()[0].clientWidth + 'px');
     }
 
     window.Asc.plugin.onMethodReturn = function(returnValue)
@@ -925,6 +954,8 @@
             }
 			if (nCurrentFont < 0)
 				nCurrentFont = 0;
+			
+			
             aRanges = getArrRangesByFont(nCurrentFont);
 			if(sInitSymbol && sInitSymbol.length > 0){
                 nCurrentSymbol = fixedCharCodeAt(sInitSymbol, 0);
@@ -944,9 +975,7 @@
             }
 			if(nCurrentSymbol === -1){
 				nCurrentSymbol = aRanges[0].Start;	
-			}
-            
-
+			}            
 
             //fill fonts combo box
             var oFontSelector = $('#font-select');
@@ -957,7 +986,8 @@
                 oOption.attr('value', i);
                 oOption.text(aFontSelects[i].m_wsFontName);
                 oFontSelector.append(oOption);
-            }
+            }			
+            oFontSelector.val(nCurrentFont).trigger("change");
             //fill recents
             fillRecentSymbols();
 
@@ -990,15 +1020,23 @@
                     updateView();
                 }
             );
+			
+			
+		$('#range-select').on('select2:select select2:unselecting', function () {
+                    var oCurrentRange = getRangeByName(aRanges, parseInt($('#range-select').val()));
+                    nCurrentSymbol = oCurrentRange.Start;
+                    bMainFocus = true;
+                    updateView();
+                });
 
-            $('#range-select').change(
+            /*$('#range-select').change(
                 function () {
                     var oCurrentRange = getRangeByName(aRanges, parseInt($('#range-select').val()));
                     nCurrentSymbol = oCurrentRange.Start;
                     bMainFocus = true;
                     updateView();
                 }
-            );
+            );*/
 
             $('#symbol-code-input').on('input',
                 function(){
@@ -1168,6 +1206,11 @@
                 theme: 'custom-theme',
                 minScrollbarLength: 50
             });
+			
+			$('#font-select').select2();
+			$('#range-select').select2({
+				minimumResultsForSearch: Infinity
+			});
 
             //$($('.ps__scrollbar-y')[0]).append('<span id=\"tooltip-span\" class=\"tooltiptext\">sdfsdfsdf</span>');
 
@@ -1181,6 +1224,12 @@
                     return;
                 }
 
+                if($("#font-select").select2("isOpen")){
+                    return;
+                }
+                if($("#range-select").select2("isOpen")){
+                    return;
+                }
                 if(bMainFocus){
                     var nCode = -1;
                     if ( e.keyCode === 37 ){//left
@@ -1268,7 +1317,9 @@
                 }
             } )
 
-        });
+        
+			
+		});
     };
 
     window.Asc.plugin.init = function(data){
