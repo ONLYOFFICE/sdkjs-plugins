@@ -1218,9 +1218,22 @@
 			nLastScroll = 0;
 
 
+            $('.select2-input').on("keydown", function(e) {
+                if (e.keyCode == 13) {
+                    $("#select2-drop-mask").click();
+                    $('#name').focus();
+                    e.preventDefault();
+                }
+            });
+
+
             $(document).on( "keydown", function(e){
 
                 if($('#symbol-code-input').is(':focus')){
+                    return;
+                }
+
+                if($('.select2-search__field').is(':focus')){
                     return;
                 }
 
@@ -1230,6 +1243,13 @@
                 if($("#range-select").select2("isOpen")){
                     return;
                 }
+
+                if(document.activeElement){
+                    if(document.activeElement.nodeName && document.activeElement.nodeName.toLowerCase() === 'span'){
+                        return;
+                    }
+                }
+
                 if(bMainFocus){
                     var nCode = -1;
                     if ( e.keyCode === 37 ){//left
