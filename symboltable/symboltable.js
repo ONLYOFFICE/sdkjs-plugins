@@ -1226,6 +1226,11 @@
                 }
             });
 
+            $('.select2-selection').on('keyup', function (e) {
+                if (e.keyCode === 13) {
+                    console.log("keyup");
+                }
+            });
 
             $(document).on( "keydown", function(e){
 
@@ -1337,9 +1342,46 @@
                 }
             } )
 
-        
-			
-		});
+
+
+
+            $(document).on( "keypress", function(e){
+
+                if($('#symbol-code-input').is(':focus')){
+                    return;
+                }
+
+                if($('.select2-search__field').is(':focus')){
+                    return;
+                }
+
+                if($("#font-select").select2("isOpen")){
+                    return;
+                }
+                if($("#range-select").select2("isOpen")){
+                    return;
+                }
+
+                if(document.activeElement){
+                    if(document.activeElement.nodeName && document.activeElement.nodeName.toLowerCase() === 'span'){
+                        return;
+                    }
+                }
+
+                var value = e.keyCode;
+                if(!isNaN(value) && value > 0x1F){
+                    var oRange = getRangeBySymbol(aRanges, value);
+                    if(oRange){
+                        var bUpdateTable = ($("#c" + value).length === 0);
+                        nCurrentSymbol = value;
+                        bMainFocus = true;
+                        updateView(bUpdateTable, undefined, true);
+                    }
+                }
+            } )
+
+
+        });
     };
 
     window.Asc.plugin.init = function(data){
