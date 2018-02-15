@@ -1227,9 +1227,7 @@
             });
 
             $('.select2-selection').on('keyup', function (e) {
-                if (e.keyCode === 13) {
-                    console.log("keyup");
-                }
+                
             });
 
             $(document).on( "keydown", function(e){
