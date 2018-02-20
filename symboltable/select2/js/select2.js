@@ -5223,6 +5223,9 @@ S2.define('select2/core',[
     var self = this;
 
     this.$element.on('change.select2', function () {
+		if(!self.dataAdapter){
+			return;
+		}
       self.dataAdapter.current(function (data) {
         self.trigger('selection:update', {
           data: data
@@ -5392,12 +5395,26 @@ S2.define('select2/core',[
           evt.preventDefault();
         }
       } else {
-        if (key === KEYS.ENTER || key === KEYS.SPACE ||
-            (key === KEYS.DOWN && evt.altKey)) {
-          self.open();
+			if (key === KEYS.ENTER || key === KEYS.SPACE ||
+				((key === KEYS.DOWN || key === KEYS.UP) && evt.altKey)) {
+			  self.open();
 
-          evt.preventDefault();
-        }
+			  evt.preventDefault();
+			}
+			if (key === KEYS.DOWN) {
+			  if (undefined != this.$element.find('option:selected').next().val()) {
+				this.$element.val(this.$element.find('option:selected').next().val());
+				this.$element.trigger('change');
+			  }
+			  evt.preventDefault();
+			}
+			if (key === KEYS.UP) {
+			  if (undefined != this.$element.find('option:selected').prev().val()) {
+				this.$element.val(this.$element.find('option:selected').prev().val());
+				this.$element.trigger('change');
+			  }
+			  evt.preventDefault();
+			}
       }
     });
   };

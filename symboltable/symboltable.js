@@ -1022,21 +1022,21 @@
             );
 			
 			
-		$('#range-select').on('select2:select select2:unselecting', function () {
+		/*$('#range-select').on('select2:select select2:unselecting', function () {
                     var oCurrentRange = getRangeByName(aRanges, parseInt($('#range-select').val()));
                     nCurrentSymbol = oCurrentRange.Start;
                     bMainFocus = true;
                     updateView();
-                });
+                });*/
 
-            /*$('#range-select').change(
+           $('#range-select').change(
                 function () {
                     var oCurrentRange = getRangeByName(aRanges, parseInt($('#range-select').val()));
                     nCurrentSymbol = oCurrentRange.Start;
                     bMainFocus = true;
                     updateView();
                 }
-            );*/
+            );
 
             $('#symbol-code-input').on('input',
                 function(){
@@ -1226,10 +1226,7 @@
                 }
             });
 
-            $('.select2-selection').on('keyup', function (e) {
-                
-            });
-
+            
             $(document).on( "keydown", function(e){
 
                 if($('#symbol-code-input').is(':focus')){
