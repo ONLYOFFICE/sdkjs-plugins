@@ -81,7 +81,7 @@ editor.ternTooltip = new TernTooltip(editor, ternServer);
             menuContent += item;
         }
         
-        document.getElementById("menu").innerHTML = menuContent;
+        document.getElementById("menu_content").innerHTML = menuContent;
         
         onItemClick(Content.current, true);
         updateScrollMenu();
@@ -181,6 +181,15 @@ editor.ternTooltip = new TernTooltip(editor, ternServer);
         {
             $('.ps__scrollbar-y').css('border-width', '1px');
         }
+
+        if($('.ps__scrollbar-x').width() === 0)
+        {
+            $('.ps__scrollbar-x').css('border-width', '0px');
+        }
+        else
+        {
+            $('.ps__scrollbar-x').css('border-width', '1px');
+        }
     }
 
     var isShowRename = false;
@@ -278,6 +287,15 @@ editor.ternTooltip = new TernTooltip(editor, ternServer);
         {
             this.executeCommand("close", "");
         }
-	};
+    };
+    
+    window.Asc.plugin.onExternalMouseUp = function()
+    {
+        var evt = document.createEvent("MouseEvents");
+        evt.initMouseEvent("mouseup", true, true, window, 1, 0, 0, 0, 0,
+            false, false, false, false, 0, null);
+
+        document.dispatchEvent(evt);
+    };
 
 })(window, undefined);
