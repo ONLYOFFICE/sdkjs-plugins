@@ -81,7 +81,8 @@ editor.ternTooltip = new TernTooltip(editor, ternServer);
             menuContent += item;
         }
         
-        document.getElementById("menu_content").innerHTML = menuContent;
+        var elem = document.getElementById("menu_content");
+        elem.innerHTML = menuContent;
         
         onItemClick(Content.current, true);
         updateScrollMenu();
@@ -169,6 +170,7 @@ editor.ternTooltip = new TernTooltip(editor, ternServer);
     };
 
     Ps.initialize(document.getElementById("menu"), { theme : 'custom-theme' });
+    updateScrollMenu();
 
     function updateScrollMenu()
     {

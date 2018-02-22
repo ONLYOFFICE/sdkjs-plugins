@@ -87,7 +87,7 @@
 						width: '100%',
 						videoId: getVideoId(url),
 						playerVars: { 
-							'fs' : 0
+							'fs' : 1
 						}
 					});
 				}
