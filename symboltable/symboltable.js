@@ -1226,6 +1226,8 @@
                 }
             });
 
+			var lastTime = -1;
+			var lastKeyCode = -1;
             
             $(document).on( "keydown", function(e){
 
@@ -1250,6 +1252,8 @@
                     }
                 }
 
+				lastKeyCode = e.keyCode;
+				lastTime = (new Date()).getTime();
                 if(bMainFocus){
                     var nCode = -1;
                     if ( e.keyCode === 37 ){//left
@@ -1283,6 +1287,9 @@
                         nCurrentSymbol = nCode;
                         var bUpdateTable =  $('#c' + nCurrentSymbol).length === 0;
                         updateView(bUpdateTable);
+						if(bUpdateTable){							
+							nLastScroll = document.getElementById('fake-symbol-table-wrap').scrollTop;
+						}
                     }
                 }
                 else{
@@ -1364,6 +1371,11 @@
                 }
 
                 var value = e.keyCode;
+				if(lastKeyCode === value){
+					if(Math.abs(lastTime - (new Date()).getTime()) < 1000){
+						return;
+					}
+				}
                 if(!isNaN(value) && value > 0x1F){
                     var oRange = getRangeBySymbol(aRanges, value);
                     if(oRange){
