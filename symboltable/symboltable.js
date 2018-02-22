@@ -726,7 +726,7 @@
     }
     var bShowTooltip = true;
 
-    function updateView(bUpdateTable, nTopSymbol, bUpdateInput, bUpdateRecents) {
+    function updateView(bUpdateTable, nTopSymbol, bUpdateInput, bUpdateRecents, bUpdateRanges) {
         if(bUpdateTable !== false){
             //fill fonts combo box
             var oFontSelector = $('#font-select');
@@ -734,7 +734,9 @@
         }
         //fill ranges combo box
         if(bMainFocus){
-            updateRangeSelector();
+			if(bUpdateRanges !== false){
+				updateRangeSelector();	
+			}
         }
 		
 		if(bMainFocus){
@@ -1034,7 +1036,7 @@
                     var oCurrentRange = getRangeByName(aRanges, parseInt($('#range-select').val()));
                     nCurrentSymbol = oCurrentRange.Start;
                     bMainFocus = true;
-                    updateView();
+                    updateView(undefined, undefined, undefined, undefined, false);
                 }
             );
 
