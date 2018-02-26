@@ -1254,37 +1254,41 @@
                     }
                 }
 
-				lastKeyCode = e.keyCode;
-				lastTime = (new Date()).getTime();
+				var value = e.which || e.charCode || e.keyCode || 0;
+				
+				var bFill = true;
                 if(bMainFocus){
                     var nCode = -1;
-                    if ( e.keyCode === 37 ){//left
+                    if ( value === 37 ){//left
                         nCode = getCodeByLinearIndex(aRanges, getLinearIndexByCode(aRanges, nCurrentSymbol) - 1);
                     }
-                    else if ( e.keyCode === 38 ){//top
+                    else if ( value === 38 ){//top
                         nCode = getCodeByLinearIndex(aRanges, getLinearIndexByCode(aRanges, nCurrentSymbol) - getColsCount());
                     }
-                    else if ( e.keyCode === 39 ){//right
+                    else if ( value === 39 ){//right
                         nCode = getCodeByLinearIndex(aRanges, getLinearIndexByCode(aRanges, nCurrentSymbol) + 1);
                     }
-                    else if ( e.keyCode === 40 ){//bottom
+                    else if ( value === 40 ){//bottom
                         nCode = getCodeByLinearIndex(aRanges, getLinearIndexByCode(aRanges, nCurrentSymbol) + getColsCount());
                     }
-                    else if(e.keyCode === 36){//home
+                    else if(value === 36){//home
                         if(aRanges.length > 0){
                             nCode = aRanges[0].Start;
                         }
                     }
-                    else if(e.keyCode === 35){//end
+                    else if(value === 35){//end
                         if(aRanges.length > 0){
                             nCode = aRanges[aRanges.length - 1].End;
                         }
                     }
-                    else if(e.keyCode === 13){//enter
+                    else if(value === 13){//enter
                         checkRecent(nCurrentSymbol, aFontSelects[nCurrentFont].m_wsFontName);
                         var _htmlPaste = "<span style=\"font-family:'" + aFontSelects[nCurrentFont].m_wsFontName + "'\">" + encodeSurrogateChar(nCurrentSymbol) + "</span>";
                         window.Asc.plugin.executeMethod("PasteHtml", [_htmlPaste]);
-                    }
+                    }					
+					else{
+						bFill = false;
+					}
                     if(nCode > -1){
                         nCurrentSymbol = nCode;
                         var bUpdateTable =  $('#c' + nCurrentSymbol).length === 0;
@@ -1296,7 +1300,7 @@
                 }
                 else{
                     var oSelectedCell, aStrings;
-                    if ( e.keyCode === 37 ){//left
+                    if ( value === 37 ){//left
                         oSelectedCell = $('.cell-selected')[0];
                         if(oSelectedCell && oSelectedCell.id[0] === 'r'){
                             var oPresCell = $(oSelectedCell).prev();
@@ -1308,7 +1312,7 @@
                             }
                         }
                     }
-                    else if ( e.keyCode === 39 ){//right
+                    else if ( value === 39 ){//right
                         oSelectedCell = $('.cell-selected')[0];
                         if(oSelectedCell && oSelectedCell.id[0] === 'r'){
                             var oNextCell = $(oSelectedCell).next();
@@ -1320,7 +1324,7 @@
                             }
                         }
                     }
-                    else if(e.keyCode === 36){//home
+                    else if(value === 36){//home
                         var oFirstCell = $('#recent-table').children()[0];
                         if(oFirstCell){
                             aStrings = oFirstCell.id.split('_');
@@ -1329,7 +1333,7 @@
                             updateView(false);
                         }
                     }
-                    else if(e.keyCode === 35){//end
+                    else if(value === 35){//end
                         var aChildren = $('#recent-table').children();
                         var oLastCell = aChildren[aChildren.length - 1];
                         if(oLastCell){
@@ -1339,19 +1343,27 @@
                             updateView(false);
                         }
                     }
-                    else if(e.keyCode === 13){//enter
+                    else if(value === 13){//enter
                         var _htmlPaste = "<span style=\"font-family:'" + aFontSelects[nFontNameRecent].m_wsFontName + "'\">" + encodeSurrogateChar(nCurrentSymbol) + "</span>";
                         window.Asc.plugin.executeMethod("PasteHtml", [_htmlPaste]);
                     }
+					else{
+						bFill = false;
+					}
                 }
-            } )
+            
+				if(bFill){
+					lastKeyCode = value;
+					lastTime = (new Date()).getTime();
+				}
+			} )
 
 
 
-
-            $(document).on( "keypress", function(e){
+			var fKeyPressHandler = function(e){
 
                 if($('#symbol-code-input').is(':focus')){
+					
                     return;
                 }
 
@@ -1371,8 +1383,7 @@
                         return;
                     }
                 }
-
-                var value = e.keyCode;
+				var value = e.which || e.charCode || e.keyCode || 0;
 				if(lastKeyCode === value){
 					if(Math.abs(lastTime - (new Date()).getTime()) < 1000){
 						return;
@@ -1387,7 +1398,10 @@
                         updateView(bUpdateTable, undefined, true);
                     }
                 }
-            } )
+				e.preventDefault && e.preventDefault();
+            };
+
+            $(document).on( "keypress", fKeyPressHandler)
 
 
         });
