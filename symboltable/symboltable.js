@@ -938,6 +938,7 @@
 
             //initialize params
             aFontSelects = data;
+			aFontSelects.sort(function(a, b){return (a.m_wsFontName.toLowerCase() > b.m_wsFontName.toLowerCase()) ? 1 : -1;});
             if(!oFontsByName[sInitFont]){
                 if(oFontsByName['Cambria Math']){
                     sInitFont = 'Cambria Math';
