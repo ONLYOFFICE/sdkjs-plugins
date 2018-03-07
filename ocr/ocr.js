@@ -95,6 +95,17 @@
             function () {
 
                 var arrImagesCopy = [].concat(arrImages);
+                for (var i = 0; i < arrImagesCopy.length; i++)
+                {
+                    if (arrImagesCopy[i] && (0 == arrImagesCopy[i].naturalWidth) && (0 == arrImagesCopy[i].naturalHeight))
+                    {
+                        arrImagesCopy.splice(i, 1);
+                        i--;
+                    }
+                }
+                if (0 == arrImagesCopy.length)
+                    return;
+
                 var oTextContainer = document.getElementById('text-container-div');
                 while (oTextContainer.firstChild) {
                     oTextContainer.removeChild(oTextContainer.firstChild);
