@@ -51,6 +51,17 @@
 
         $('#images-input').change(function(e) {
             var arrFiles = e.target.files;
+			//check for images in file list
+			var arrFiles2 = [];
+			for(var i = 0; i < arrFiles.length; ++i){
+				if(arrFiles[i] && arrFiles[i].type && arrFiles[i].type.indexOf('image') === 0){
+					arrFiles2.push(arrFiles[i]);
+				}
+				else{
+					alert(arrFiles[i].name + "\nOCR plugin cannot read this file.");
+				}
+			}
+			arrFiles = arrFiles2;
             if(arrFiles.length > 0){
                 window.Asc.plugin.resizeWindow(800, 571, 800, 571);
 
@@ -95,6 +106,17 @@
             function () {
 
                 var arrImagesCopy = [].concat(arrImages);
+                for (var i = 0; i < arrImagesCopy.length; i++)
+                {
+                    if (arrImagesCopy[i] && (0 == arrImagesCopy[i].naturalWidth) && (0 == arrImagesCopy[i].naturalHeight))
+                    {
+                        arrImagesCopy.splice(i, 1);
+                        i--;
+                    }
+                }
+                if (0 == arrImagesCopy.length)
+                    return;
+
                 var oTextContainer = document.getElementById('text-container-div');
                 while (oTextContainer.firstChild) {
                     oTextContainer.removeChild(oTextContainer.firstChild);
@@ -102,6 +124,7 @@
                 arrParsedData.length = 0;
                 document.getElementById('recognize-button').setAttribute('disabled', '');
                 document.getElementById('lang-select').setAttribute('disabled', '');
+                document.getElementById('load-file-button-id').setAttribute('disabled', '');
                 var fTesseractCall = function(){
                     Tesseract.recognize(arrImagesCopy.splice(0, 1)[0], {lang: $('#lang-select option:selected')[0].value}).progress(function (progress) {
                         if(progress && progress.status === "recognizing text"){
@@ -112,6 +135,7 @@
                                 $('#status-label').text('');
                                 document.getElementById('recognize-button').removeAttribute('disabled');
                                 document.getElementById('lang-select').removeAttribute('disabled');
+								document.getElementById('load-file-button-id').removeAttribute('disabled', '');
 						
 					}).then(function(result){						
 						 document.getElementById('text-container-div').appendChild($(result.html)[0]);
@@ -120,6 +144,12 @@
                             if(arrImagesCopy.length > 0){
                                 fTesseractCall();
                             }
+							else{								
+                                $('#status-label').text('');
+                                document.getElementById('recognize-button').removeAttribute('disabled');
+                                document.getElementById('lang-select').removeAttribute('disabled');
+								document.getElementById('load-file-button-id').removeAttribute('disabled', '');
+							}
 					});
                 };
                 $('#status-label').text('Recognizing: 0%');
