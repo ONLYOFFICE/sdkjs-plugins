@@ -28,6 +28,13 @@
 		else{
 			$('.ps__scrollbar-y').css('border-width', '1px');
 		}
+
+		if($('.ps__scrollbar-x').width() === 0){
+			$('.ps__scrollbar-x').css('border-width', '0px');
+		}
+		else{
+			$('.ps__scrollbar-x').css('border-width', '1px');
+		}
 	}
 
 	function getLanguagesSupport()
@@ -244,6 +251,9 @@
 
 		_select1.setAttribute("disabled", "disabled");
 		_select2.setAttribute("disabled", "disabled");
+
+		if (!_select1.options[_select1.selectedIndex])
+			return;
 
 		if (_select1.selectedIndex != 0)
 			language_current += (_select1.options[_select1.selectedIndex].value + "-");

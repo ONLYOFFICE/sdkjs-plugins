@@ -1,0 +1,26 @@
+{
+    "name" : "LegalDocs plugin",
+    "guid" : "asc.{C05D81BC-92C7-4C48-BA49-E8B9AAFCD776}",
+
+    "variations" : [
+        {
+            "description" : "LegalDocs plugin",
+            "url"         : "index.html",
+
+            "icons"           : ["icon.png", "icon@2x.png", "icon2.png", "icon2@2x.png"],
+            "isViewer"        : false,
+            "EditorsSupport"  : ["word"],
+
+            "isVisual"        : true,
+            "isModal"         : false,
+            "isInsideMode"    : true,
+
+            "initDataType"    : "none",
+            "initData"        : "",
+
+            "isUpdateOleOnResize" : false,
+
+            "buttons"         : []
+        }
+    ]
+}

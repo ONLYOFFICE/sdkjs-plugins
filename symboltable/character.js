@@ -1,5 +1,5 @@
 /*
- * (c) Copyright Ascensio System SIA 2010-2017
+ * (c) Copyright Ascensio System SIA 2010-2018
  *
  * This program is a free software product. You can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License (AGPL)
@@ -1304,7 +1304,7 @@
             if (_param[3] != (_select.m_ulUnicodeRange4 & _param[3]))
                 continue;
 
-            if (_range.Name == c_oUnicodeRangesLID.CJK_Unified_Ideographs)
+            /*if (_range.Name == c_oUnicodeRangesLID.CJK_Unified_Ideographs)
             {
                 if (0 == (_select.m_ulCodePageRange1 & _param[4]))
                     continue;
@@ -1313,11 +1313,21 @@
             {
                 if (_param[4] != (_select.m_ulCodePageRange1 & _param[4]))
                     continue;
-            }
+            }*/
 
+			
+			if (_param[4] != (_select.m_ulCodePageRange1 & _param[4]))
+				continue;
+			
             if (_param[5] != (_select.m_ulCodePageRange2 & _param[5]))
                 continue;
             _ret.push(_range);
+		}
+		
+		if(_ret.length === 0)
+		{
+			_ret.push(new CRange(0x0020, 0x007E, c_oUnicodeRangesLID.Basic_Latin, lcid_enUS, [(1 << c_oUnicodeRangeOS2_1.Basic_Latin), 0, 0, 0, (1 << c_oCodePagesOS2_1.Latin_1), 0]));
+			_ret.push(new CRange(0x00A0, 0x00FF, c_oUnicodeRangesLID.Latin_1_Supplement, lcid_unknown, [(1 << c_oUnicodeRangeOS2_1.Basic_Latin) | (1 << c_oUnicodeRangeOS2_1.Latin_1_Supplement), 0, 0, 0, (1 << c_oCodePagesOS2_1.Latin_1), 0]));			            
 		}
 		return _ret;
 	};

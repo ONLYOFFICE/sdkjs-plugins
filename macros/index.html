@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>ONLYOFFICE MACROS EDITOR</title>
+
+  <link rel="stylesheet" href="../plugins.css">
   <style type="text/css" media="screen">
     body {
         overflow: hidden;
@@ -131,6 +133,7 @@
 <body>
 
 	<div id="menu">
+		<div id="menu_content" style="position:absolute;left:0px;top:0px;width:100%;height:100%;margin:0;padding:0;border:none;"></div>
 	</div>
 	
 	<div id="editorWrapper">
@@ -177,15 +180,11 @@
 	<script src="tern.ace/demos/browser.json.js"></script>
 	<script src="tern.ace/demos/ecma5.json.js"></script>
 	
-	<!-- scroll -->
-	<script src="scroll.js"></script>
-
 	<!-- jquery -->
 	<script src="jquery.min.js"></script>
 	
 	<!-- plugin -->
-	<script type='text/javascript' src='../pluginBase.js'></script>
-    <link rel="stylesheet" href="../plugins.css">
+	<script type='text/javascript' src='../pluginBase.js'></script>    
 
 	<!-- code -->
 	<script src="code.js"></script>

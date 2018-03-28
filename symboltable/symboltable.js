@@ -304,6 +304,9 @@
 
     var nMaxRecent = 36;
 	var bScrollMouseUp = false;
+	
+	var sInitFont = "";
+	var sInitSymbol = "";
 
 
     function encodeSurrogateChar(nUnicode)
@@ -320,6 +323,25 @@
             return String.fromCharCode(nLeadingChar) + String.fromCharCode(nTrailingChar);
         }
     }
+	
+	
+	function fixedCharCodeAt(str, idx) {
+	  idx = idx || 0;
+	  var code = str.charCodeAt(idx);
+	  var hi, low;
+	  if (0xD800 <= code && code <= 0xDBFF) {
+		hi = code;
+		low = str.charCodeAt(idx + 1);
+		if (isNaN(low)) {
+		  throw 'Старшая часть суррогатной пары без следующей младшей в fixedCharCodeAt()';
+		}
+		return ((hi - 0xD800) * 0x400) + (low - 0xDC00) + 0x10000;
+	  }
+	  if (0xDC00 <= code && code <= 0xDFFF) {
+		return false;
+	  }
+	  return code;
+	}
 
     function getArrRangesByFont(nFontName){
         var _ret = getSupportedRangesByFont(aFontSelects[nFontName]);
@@ -368,6 +390,9 @@
     }
 
     function getCodeByLinearIndex(arrRanges, nIndex){
+        if(nIndex < 0){
+            return -1;
+        }
         var nCount = 0;
         var oCurRange = arrRanges[0];
         var nDiff;
@@ -514,6 +539,11 @@
         var oRecentsDiv = $('#recent-table');
         oRecentsDiv.empty();
         var nRecents = Math.min(getColsCount(), aRecents.length);
+		if(aRecents.length === 0){
+			oRecentsDiv.css('border', '1px solid rgb(247, 247, 247)');
+			return;
+		}
+		oRecentsDiv.css('border', '1px solid rgb(122, 122, 122)');
         for(var i = 0; i < nRecents; ++i){
             var oCell = createCell(aRecents[i].symbol, aRecents[i].font);
 
@@ -537,7 +567,7 @@
         return nMaxHeight;
     }
     function getRowsCount() {
-        return  ((getMaxHeight()/CELL_HEIGHT) >> 0);
+        return  Math.max(1, ((getMaxHeight()/CELL_HEIGHT) >> 0));
     }
 
     function getAllSymbolsCount(arrRanges){
@@ -559,7 +589,7 @@
         var nIndexSymbol = getLinearIndexByCode(aRanges, nStartCode);
         var nAllSymbolsCount = getAllSymbolsCount(aRanges);
         var nAllRowsCount = Math.ceil(nAllSymbolsCount/nColsCount);
-        var nRowsSkip = Math.min(nAllRowsCount - nRowsCount, ((nIndexSymbol / nColsCount) >> 0));
+        var nRowsSkip = Math.max(0, Math.min(nAllRowsCount - nRowsCount, ((nIndexSymbol / nColsCount) >> 0)));
         var nFirst = nRowsSkip*nColsCount;
         var nSymbolsCount = nRowsCount*nColsCount;
         var aSymbols = [];
@@ -657,7 +687,7 @@
         var nFullHeight = nAllRowsCount*CELL_HEIGHT;
 
 
-            var nRowSkip = Math.min(nAllRowsCount - nRows, (nAllRowsCount*container.scrollTop/nFullHeight + 0.5) >> 0);
+            var nRowSkip = Math.max(0, Math.min(nAllRowsCount - nRows, (nAllRowsCount*container.scrollTop/nFullHeight + 0.5) >> 0));
         container.scrollTop = nRowSkip*CELL_HEIGHT;
         nLastScroll = container.scrollTop;
         if(!bMainFocus){
@@ -696,7 +726,7 @@
     }
     var bShowTooltip = true;
 
-    function updateView(bUpdateTable, nTopSymbol, bUpdateInput, bUpdateRecents) {
+    function updateView(bUpdateTable, nTopSymbol, bUpdateInput, bUpdateRecents, bUpdateRanges) {
         if(bUpdateTable !== false){
             //fill fonts combo box
             var oFontSelector = $('#font-select');
@@ -704,7 +734,9 @@
         }
         //fill ranges combo box
         if(bMainFocus){
-            updateRangeSelector();
+			if(bUpdateRanges !== false){
+				updateRangeSelector();	
+			}
         }
 		
 		if(bMainFocus){
@@ -722,6 +754,28 @@
 			else{
 				$("#font-name-label").text('');
 			}
+        }
+		
+		 if(bUpdateTable !== false){
+            //fill fonts combo box
+            var oFontSelector = $('#font-select');
+            oFontSelector.val(nCurrentFont);
+             //
+             // var oFont2 = oFontSelector.next()[0];
+             // oFont2.css('width', 'auto');
+
+
+            // var oRange2 = $('#range-select').next();
+            //  oRange2.css('width', 'auto');
+
+
+
+            //
+			// var nResultWidth = Math.max(oFont2[0].clientWidth, oRange2[0].clientWidth);
+            //
+             // oFont2.width(nResultWidth);
+             // oRange2.width(nResultWidth);
+				
         }
 		
         //main table
@@ -742,14 +796,24 @@
             var nSymbolsCount = getAllSymbolsCount(aRanges);
             var nAllRowsCount = Math.ceil(nSymbolsCount/getColsCount());
             var nFullHeight = nAllRowsCount*CELL_HEIGHT;
+			
+            var nOldHeight = $("#fake-symbol-table-wrap").height();
             $("#fake-symbol-table-wrap").height(nHeight);
             $("#fake-symbol-table").height(nFullHeight);
 
-            bShowTooltip = false;
-            var container = document.getElementById('fake-symbol-table-wrap');
+			
+			var container = document.getElementById('fake-symbol-table-wrap');
+			if(nOldHeight !== nHeight){	
+				Ps.destroy(container);
+				Ps.initialize(container, {
+					theme: 'custom-theme',
+					minScrollbarLength: Math.max((CELL_HEIGHT*2.0/3.0 + 0.5) >> 0, ((nHeight/8.0 + 0.5) >> 0))
+				});			
+			}
+            bShowTooltip = false;            
             container.scrollTop = nRowSkip*CELL_HEIGHT;
             Ps.update(container);
-            if($('.ps__scrollbar-y').height() === 0 || (nFullHeight < nHeight)){
+            if($('.ps__scrollbar-y').height() === 0 || ((nFullHeight) <= (nHeight + 1))){
                 $('.ps__scrollbar-y').css('border-width', '0px');
 				$('.ps__scrollbar-y').hide();
             }
@@ -820,6 +884,13 @@
             }
             oRangeSelector.val(''+oCurrentRange.Name);
         }
+		
+		oRangeSelector.on('select2:select select2:unselecting', function(){});
+		oRangeSelector.select2("destroy");
+		oRangeSelector.select2({
+			minimumResultsForSearch: Infinity
+		});
+        $('#range-select').next().css('width', $('#font-select').next()[0].clientWidth + 'px');
     }
 
     window.Asc.plugin.onMethodReturn = function(returnValue)
@@ -867,9 +938,18 @@
 
             //initialize params
             aFontSelects = data;
-            if(oFontsByName['Cambria Math']){
+			aFontSelects.sort(function(a, b){return (a.m_wsFontName.toLowerCase() > b.m_wsFontName.toLowerCase()) ? 1 : -1;});
+            if(!oFontsByName[sInitFont]){
+                if(oFontsByName['Cambria Math']){
+                    sInitFont = 'Cambria Math';
+                }
+                else if(oFontsByName['Asana-Math']){
+                    sInitFont = 'Asana-Math';
+                }
+            }
+            if(oFontsByName[sInitFont]){
                 for(i = 0; i < aFontSelects.length; ++i){
-                    if(aFontSelects[i].m_wsFontName === 'Cambria Math'){
+                    if(aFontSelects[i].m_wsFontName === sInitFont){
                         nCurrentFont = i;
                         break;
                     }
@@ -877,9 +957,28 @@
             }
 			if (nCurrentFont < 0)
 				nCurrentFont = 0;
+			
+			
             aRanges = getArrRangesByFont(nCurrentFont);
-            nCurrentSymbol = aRanges[0].Start;
-
+			if(sInitSymbol && sInitSymbol.length > 0){
+                nCurrentSymbol = fixedCharCodeAt(sInitSymbol, 0);
+                if(false === nCurrentSymbol){
+                    nCurrentSymbol = -1;
+                }
+                else{
+                    for(i = 0; i < aRanges.length; ++i){
+                        if(nCurrentSymbol >= aRanges[i].Start && nCurrentSymbol <= aRanges[i].End){
+                            break;
+                        }
+                    }
+                    if(i === aRanges.length){
+                        nCurrentSymbol = -1;
+                    }
+                }
+            }
+			if(nCurrentSymbol === -1){
+				nCurrentSymbol = aRanges[0].Start;	
+			}            
 
             //fill fonts combo box
             var oFontSelector = $('#font-select');
@@ -890,7 +989,8 @@
                 oOption.attr('value', i);
                 oOption.text(aFontSelects[i].m_wsFontName);
                 oFontSelector.append(oOption);
-            }
+            }			
+            oFontSelector.val(nCurrentFont).trigger("change");
             //fill recents
             fillRecentSymbols();
 
@@ -923,13 +1023,21 @@
                     updateView();
                 }
             );
-
-            $('#range-select').change(
-                function () {
+			
+			
+		/*$('#range-select').on('select2:select select2:unselecting', function () {
                     var oCurrentRange = getRangeByName(aRanges, parseInt($('#range-select').val()));
                     nCurrentSymbol = oCurrentRange.Start;
                     bMainFocus = true;
                     updateView();
+                });*/
+
+           $('#range-select').change(
+                function () {
+                    var oCurrentRange = getRangeByName(aRanges, parseInt($('#range-select').val()));
+                    nCurrentSymbol = oCurrentRange.Start;
+                    bMainFocus = true;
+                    updateView(undefined, undefined, undefined, undefined, false);
                 }
             );
 
@@ -1101,6 +1209,11 @@
                 theme: 'custom-theme',
                 minScrollbarLength: 50
             });
+			
+			$('#font-select').select2();
+			$('#range-select').select2({
+				minimumResultsForSearch: Infinity
+			});
 
             //$($('.ps__scrollbar-y')[0]).append('<span id=\"tooltip-span\" class=\"tooltiptext\">sdfsdfsdf</span>');
 
@@ -1108,50 +1221,87 @@
 			nLastScroll = 0;
 
 
+            $('.select2-input').on("keydown", function(e) {
+                if (e.keyCode == 13) {
+                    $("#select2-drop-mask").click();
+                    $('#name').focus();
+                    e.preventDefault();
+                }
+            });
+
+			var lastTime = -1;
+			var lastKeyCode = -1;
+            
             $(document).on( "keydown", function(e){
 
                 if($('#symbol-code-input').is(':focus')){
                     return;
                 }
 
+                if($('.select2-search__field').is(':focus')){
+                    return;
+                }
+
+                if($("#font-select").select2("isOpen")){
+                    return;
+                }
+                if($("#range-select").select2("isOpen")){
+                    return;
+                }
+
+                if(document.activeElement){
+                    if(document.activeElement.nodeName && document.activeElement.nodeName.toLowerCase() === 'span'){
+                        return;
+                    }
+                }
+
+				var value = e.which || e.charCode || e.keyCode || 0;
+				
+				var bFill = true;
                 if(bMainFocus){
                     var nCode = -1;
-                    if ( e.keyCode === 37 ){//left
+                    if ( value === 37 ){//left
                         nCode = getCodeByLinearIndex(aRanges, getLinearIndexByCode(aRanges, nCurrentSymbol) - 1);
                     }
-                    else if ( e.keyCode === 38 ){//top
+                    else if ( value === 38 ){//top
                         nCode = getCodeByLinearIndex(aRanges, getLinearIndexByCode(aRanges, nCurrentSymbol) - getColsCount());
                     }
-                    else if ( e.keyCode === 39 ){//right
+                    else if ( value === 39 ){//right
                         nCode = getCodeByLinearIndex(aRanges, getLinearIndexByCode(aRanges, nCurrentSymbol) + 1);
                     }
-                    else if ( e.keyCode === 40 ){//bottom
+                    else if ( value === 40 ){//bottom
                         nCode = getCodeByLinearIndex(aRanges, getLinearIndexByCode(aRanges, nCurrentSymbol) + getColsCount());
                     }
-                    else if(e.keyCode === 36){//home
+                    else if(value === 36){//home
                         if(aRanges.length > 0){
                             nCode = aRanges[0].Start;
                         }
                     }
-                    else if(e.keyCode === 35){//end
+                    else if(value === 35){//end
                         if(aRanges.length > 0){
                             nCode = aRanges[aRanges.length - 1].End;
                         }
                     }
-                    else if(e.keyCode === 13){//enter
+                    else if(value === 13){//enter
                         checkRecent(nCurrentSymbol, aFontSelects[nCurrentFont].m_wsFontName);
                         var _htmlPaste = "<span style=\"font-family:'" + aFontSelects[nCurrentFont].m_wsFontName + "'\">" + encodeSurrogateChar(nCurrentSymbol) + "</span>";
                         window.Asc.plugin.executeMethod("PasteHtml", [_htmlPaste]);
-                    }
+                    }					
+					else{
+						bFill = false;
+					}
                     if(nCode > -1){
                         nCurrentSymbol = nCode;
                         var bUpdateTable =  $('#c' + nCurrentSymbol).length === 0;
                         updateView(bUpdateTable);
+						if(bUpdateTable){							
+							nLastScroll = document.getElementById('fake-symbol-table-wrap').scrollTop;
+						}
                     }
                 }
                 else{
                     var oSelectedCell, aStrings;
-                    if ( e.keyCode === 37 ){//left
+                    if ( value === 37 ){//left
                         oSelectedCell = $('.cell-selected')[0];
                         if(oSelectedCell && oSelectedCell.id[0] === 'r'){
                             var oPresCell = $(oSelectedCell).prev();
@@ -1163,7 +1313,7 @@
                             }
                         }
                     }
-                    else if ( e.keyCode === 39 ){//right
+                    else if ( value === 39 ){//right
                         oSelectedCell = $('.cell-selected')[0];
                         if(oSelectedCell && oSelectedCell.id[0] === 'r'){
                             var oNextCell = $(oSelectedCell).next();
@@ -1175,7 +1325,7 @@
                             }
                         }
                     }
-                    else if(e.keyCode === 36){//home
+                    else if(value === 36){//home
                         var oFirstCell = $('#recent-table').children()[0];
                         if(oFirstCell){
                             aStrings = oFirstCell.id.split('_');
@@ -1184,7 +1334,7 @@
                             updateView(false);
                         }
                     }
-                    else if(e.keyCode === 35){//end
+                    else if(value === 35){//end
                         var aChildren = $('#recent-table').children();
                         var oLastCell = aChildren[aChildren.length - 1];
                         if(oLastCell){
@@ -1194,17 +1344,95 @@
                             updateView(false);
                         }
                     }
-                    else if(e.keyCode === 13){//enter
+                    else if(value === 13){//enter
                         var _htmlPaste = "<span style=\"font-family:'" + aFontSelects[nFontNameRecent].m_wsFontName + "'\">" + encodeSurrogateChar(nCurrentSymbol) + "</span>";
                         window.Asc.plugin.executeMethod("PasteHtml", [_htmlPaste]);
                     }
+					else{
+						bFill = false;
+					}
                 }
-            } )
+            
+				if(bFill){
+					lastKeyCode = value;
+					lastTime = (new Date()).getTime();
+				}
+			} )
+
+
+
+			var fKeyPressHandler = function(e){
+
+                if($('#symbol-code-input').is(':focus')){
+					
+                    return;
+                }
+
+                if($('.select2-search__field').is(':focus')){
+                    return;
+                }
+
+                if($("#font-select").select2("isOpen")){
+                    return;
+                }
+                if($("#range-select").select2("isOpen")){
+                    return;
+                }
+
+                if(document.activeElement){
+                    if(document.activeElement.nodeName && document.activeElement.nodeName.toLowerCase() === 'span'){
+                        return;
+                    }
+                }
+				var value = e.which || e.charCode || e.keyCode || 0;
+				if(lastKeyCode === value){
+					if(Math.abs(lastTime - (new Date()).getTime()) < 1000){
+						return;
+					}
+				}
+                if(!isNaN(value) && value > 0x1F){
+                    var oRange = getRangeBySymbol(aRanges, value);
+                    if(oRange){
+                        var bUpdateTable = ($("#c" + value).length === 0);
+                        nCurrentSymbol = value;
+                        bMainFocus = true;
+                        updateView(bUpdateTable, undefined, true);
+                    }
+                }
+				e.preventDefault && e.preventDefault();
+            };
+
+            $(document).on( "keypress", fKeyPressHandler)
+
 
         });
     };
 
     window.Asc.plugin.init = function(data){
+		var oData = $(data);		
+		if(oData[0]){
+		    var oFirstSpan = null;
+			var oFirstElem = $(oData[0]);
+			if(oFirstElem.is("span")){
+                oFirstSpan = oFirstElem;
+            }
+            else{
+			    var oParFirstChild = oFirstElem.children().first();
+			    if(oParFirstChild.is("span")){
+                    oFirstSpan = oParFirstChild;
+                }
+            }
+
+            if(oFirstSpan){
+                sInitSymbol = oFirstSpan.text();
+                if(sInitSymbol && sInitSymbol.length > 0){
+                    sInitFont = oFirstSpan.css("font-family");
+                    if(sInitFont.length > 1 && sInitFont[0] === "\"" && sInitFont[sInitFont.length-1] === "\""){
+                        sInitFont = sInitFont.slice(1, sInitFont.length - 1);
+                    }
+                }
+            }
+		}
         window.Asc.plugin.executeMethod("GetFontList");
     };
 

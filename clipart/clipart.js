@@ -271,6 +271,15 @@
             else{
                 $('.ps__scrollbar-y').css('border-width', '1px');
             }
+
+            if($('.ps__scrollbar-x').width() === 0)
+            {
+                $('.ps__scrollbar-x').css('border-width', '0px');
+            }
+            else
+            {
+                $('.ps__scrollbar-x').css('border-width', '1px');
+            }
         }
         updateScroll();
         loadClipArtPage(1, sLastQuery);

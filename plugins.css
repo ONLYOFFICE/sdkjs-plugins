@@ -29,7 +29,7 @@
 }
 
 .btn-text-default.primary:hover {
-	background-color: #666d73; !important;
+	background-color: #666d73 !important;
 }
 
 .btn-text-default:active,
@@ -129,11 +129,39 @@
     -webkit-user-select: none;
 }
 
+.ps {
+	position: absolute; /* please don't change 'position' */
+}
 
-.ps .ps__scrollbar-y-rail {
+.ps__scrollbar-x-rail {
+    position: absolute; /* please don't change 'position' */
+    bottom: 3px; /* there must be 'right' for ps-scrollbar-y-rail */
+    height: 10px;
+    margin: 0 13px 0 0;
+}
+
+.ps__scrollbar-y-rail {
     position: absolute; /* please don't change 'position' */
     right: 3px; /* there must be 'right' for ps-scrollbar-y-rail */
     width: 10px;
+    margin: 0 0 13px 0;
+}
+
+.ps__scrollbar-x {
+    position: absolute; /* please don't change 'position' */
+    bottom: 0; /* there must be 'bottom' for ps-scrollbar-x */
+    height: 9px;
+    background-color: rgb(241, 241, 241);
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    visibility: visible;
+    display: block;
+    box-sizing: border-box;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAOCAYAAAD0f5bSAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAxSURBVChTYyAVfPz4kYkJyiYJMAF1/gcxiKWB4C95NkHpUXD+/HlwUJJCD78gZ2AAAEPHMr93vNFrAAAAAElFTkSuQmCC);
+    background-repeat: no-repeat;
+    background-position: 0 center;
+    border: 1px solid #cfcfcf;
 }
 
 .ps__scrollbar-y {
@@ -153,13 +181,29 @@
     border: 1px solid #cfcfcf;
 }
 
-.ps .ps__scrollbar-y-rail:hover .ps__scrollbar-y, .ps .ps__scrollbar-y-rail.hover .ps__scrollbar-y {
+.ps .ps__scrollbar-y-rail:hover .ps__scrollbar-y {
     background-color: rgb(207, 207, 207);
-    background-position: -7px center;
 }
 
-.ps.ps--in-scrolling .ps__scrollbar-y-rail .ps__scrollbar-y{
+.ps .ps__scrollbar-x-rail:hover .ps__scrollbar-x {
+    background-color: rgb(207, 207, 207);
+}
+
+.ps.ps--in-scrolling .ps__scrollbar-y-rail .ps__scrollbar-y {
     background-color: #adadad;
-    border-color: #adadad;
-    background-position: -7px center;
+    border-color: #adadad;    
+}
+
+.ps.ps--in-scrolling .ps__scrollbar-x-rail .ps__scrollbar-x {
+    background-color: #adadad;
+    border-color: #adadad;    
+}
+
+.ps__scrollbar-y-rail .ps__scrollbar-y {
+	background-position: 0 center;
+}
+
+
+.ps__scrollbar-x-rail .ps__scrollbar-x {
+	background-position: center -7px;
 }
