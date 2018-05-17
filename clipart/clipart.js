@@ -188,6 +188,7 @@
             }
         }
 
+		var nLastQueryIndex, sLastQuery2;
         function loadClipArtPage(nIndex, sQuery) {
             $.ajax({
                 method: 'GET',
@@ -199,7 +200,18 @@
                 Ps.update(container);
                 updateNavigation(oResponse.info.current_page, oResponse.info.pages);
                 fillTableFromResponse(oResponse.payload);
-            });
+            }).error(function(){       
+			
+				container = document.getElementById('scrollable-container-id');
+                container.scrollTop = 0;
+                Ps.update(container);
+                updateNavigation(0, 0);                
+				var oContainer = $('#preview-images-container-id');
+				oContainer.empty();
+				var oParagraph = $('<p style=\"font-size: 15px; font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\">Error has occured when loading data.</p>');
+				
+                oContainer.append(oParagraph);
+				});
         }
 
         function fillTableFromResponse(aPayLoad) {
