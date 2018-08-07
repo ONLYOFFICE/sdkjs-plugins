@@ -282,7 +282,7 @@ editor.ternTooltip = new TernTooltip(editor, ternServer);
         if (id == 0)
         {
             this.executeMethod("SetMacros", [JSON.stringify(Content)], function(){
-                this.executeCommand("close", "");    
+                window.Asc.plugin.executeCommand("close", "");    
             });
         }
         else
