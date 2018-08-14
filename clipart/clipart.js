@@ -12,26 +12,22 @@
     var nAmount = 20;//Count images on page
     var widthPix = 185;
     var sEmptyQuery = 'play';
-    function createScriptFromArray(aSelected){
+    function createScript(oElement, w, h){
         var sScript = '';
 
-        if(aSelected.length > 0) {
+        if(oElement) {
             switch (window.Asc.plugin.info.editorType) {
                 case 'word': {
                     sScript += 'var oDocument = Api.GetDocument();';
                     sScript += '\nvar oParagraph, oRun, arrInsertResult = [], oImage;';
 
-                    for (var i = 0; i < aSelected.length; ++i) {
-                        var oElement = aSelected[i];
                         sScript += '\noParagraph = Api.CreateParagraph();';
                         sScript += '\narrInsertResult.push(oParagraph);';
                         var sSrc = oElement.svg.png_full_lossy;
-                        var nEmuWidth = ((oElement.dimensions.png_thumb.width / 96) * 914400) >> 0;
-                        var nEmuHeight = ((oElement.dimensions.png_thumb.height / 96) * 914400) >> 0;
+                        var nEmuWidth = ((w / 96) * 914400) >> 0;
+                        var nEmuHeight = ((h / 96) * 914400) >> 0;
                         sScript += '\n oImage = Api.CreateImage(\'' + sSrc + '\', ' + nEmuWidth + ', ' + nEmuHeight + ');';
                         sScript += '\noParagraph.AddDrawing(oImage);';
-
-                    }
                     sScript += '\noDocument.InsertContent(arrInsertResult);';
                     break;
                 }
@@ -41,15 +37,12 @@
                     sScript += '\nvar oSlide = oPresentation.GetCurrentSlide()';
                     sScript += '\nif(oSlide){';
                         sScript += '\nvar fSlideWidth = oSlide.GetWidth(), fSlideHeight = oSlide.GetHeight();';
-                        for (var i = 0; i < aSelected.length; ++i) {
-                            var oElement = aSelected[i];
-                            var sSrc = oElement.svg.png_full_lossy;
-                            var nEmuWidth = ((oElement.dimensions.png_thumb.width / 96) * 914400) >> 0;
-                            var nEmuHeight = ((oElement.dimensions.png_thumb.height / 96) * 914400) >> 0;
-                            sScript += '\n oImage = Api.CreateImage(\'' + sSrc + '\', ' + nEmuWidth + ', ' + nEmuHeight + ');';
-                            sScript += '\n oImage.SetPosition((fSlideWidth -' + nEmuWidth +  ')/2, (fSlideHeight -' + nEmuHeight +  ')/2);';
-                            sScript += '\n oSlide.AddObject(oImage);';
-                        }
+						var sSrc = oElement.svg.png_full_lossy;
+						var nEmuWidth = ((w / 96) * 914400) >> 0;
+						var nEmuHeight = ((h / 96) * 914400) >> 0;
+						sScript += '\n oImage = Api.CreateImage(\'' + sSrc + '\', ' + nEmuWidth + ', ' + nEmuHeight + ');';
+						sScript += '\n oImage.SetPosition((fSlideWidth -' + nEmuWidth +  ')/2, (fSlideHeight -' + nEmuHeight +  ')/2);';
+						sScript += '\n oSlide.AddObject(oImage);';
                     sScript += '\n}'
                     break;
                 }
@@ -58,13 +51,10 @@
                     sScript += '\nif(oWorksheet){';
                     sScript += '\nvar oActiveCell = oWorksheet.GetActiveCell();';
                     sScript += '\nvar nCol = oActiveCell.GetCol(), nRow = oActiveCell.GetRow();';
-                    for (var i = 0; i < aSelected.length; ++i) {
-                        var oElement = aSelected[i];
-                        var sSrc = oElement.svg.png_full_lossy;
-                        var nEmuWidth = ((oElement.dimensions.png_thumb.width / 96) * 914400) >> 0;
-                        var nEmuHeight = ((oElement.dimensions.png_thumb.height / 96) * 914400) >> 0;
-                        sScript += '\n oImage = oWorksheet.AddImage(\'' + sSrc + '\', ' + nEmuWidth + ', ' + nEmuHeight + ', nCol, 0, nRow, 0);';
-                    }
+					var sSrc = oElement.svg.png_full_lossy;
+					var nEmuWidth = ((w / 96) * 914400) >> 0;
+					var nEmuHeight = ((h / 96) * 914400) >> 0;
+					sScript += '\n oImage = oWorksheet.AddImage(\'' + sSrc + '\', ' + nEmuWidth + ', ' + nEmuHeight + ', nCol, 0, nRow, 0);';
                     sScript += '\n}';
                     break;
                 }
@@ -243,6 +233,21 @@
                 var oImgElement = $('<img>');
                 var nWidth = (oImageTh.width * fCoeff) >> 0;
                 var nHeight = (oImageTh.height * fCoeff) >> 0;
+				if(nWidth === 0 || nHeight === 0){
+					 oImgElement.on('load', function(event) {
+
+					 
+						var nMaxSize = Math.max(this.naturalWidth, this.naturalHeight);
+						var fCoeff = nImageWidth/nMaxSize;
+						var nWidth = (this.naturalWidth * fCoeff) >> 0;
+						var nHeight = (this.naturalHeight * fCoeff) >> 0;
+						
+						$(this).css('width', nWidth + 'px');
+						$(this).css('height', nHeight + 'px');
+						$(this).css('margin-left', (((nImageWidth - nWidth)/2) >> 0) + 'px');
+						$(this).css('margin-top', (((nImageWidth - nHeight)/2) >> 0) + 'px');
+					 });
+				}
                 oImgElement.css('width', nWidth + 'px');
                 oImgElement.css('height', nHeight + 'px');
                 oImgElement.css('margin-left', (((nImageWidth - nWidth)/2) >> 0) + 'px');
@@ -263,10 +268,11 @@
                     function (e) {
                         var oElement = aPayLoad[parseInt(this.dataset.index)];
                         window.Asc.plugin.info.recalculate = true;
-                        window.Asc.plugin.executeCommand("command", createScriptFromArray([oElement]));
+                        window.Asc.plugin.executeCommand("command", createScript(oElement, this.naturalWidth, this.naturalHeight));
                     }
                 );
                 oImgElement.on('dragstart', function(event) { event.preventDefault(); });
+				
                 oDivElement.append(oImgElement);
                 oContainer.append(oDivElement);
             }
