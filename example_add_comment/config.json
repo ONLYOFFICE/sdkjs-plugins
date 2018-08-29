@@ -1,10 +1,10 @@
 {
-    "name" : "Example work with content controls navigation",
+    "name" : "Example add comment",
     "guid" : "asc.{C36DDFB5-08F0-4A68-B829-5FB1F7D49728}",
 
     "variations" : [
         {
-            "description" : "Example work with content controls navigation",
+            "description" : "Example add comment",
             "url"         : "index.html",
 
             "icons"           : ["icon.png", "icon@2x.png", "icon2.png", "icon2@2x.png"],
@@ -15,14 +15,13 @@
             "isModal"         : false,
             "isInsideMode"    : true,
 
-            "initDataType"    : "text",
+            "initDataType"    : "",
             "initData"        : "",
 
             "isUpdateOleOnResize" : false,
 
-            "buttons"         : [],
+            "buttons"         : []
             
-            "initOnSelectionChanged" : true
         }
     ]
 }
