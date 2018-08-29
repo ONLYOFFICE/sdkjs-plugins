@@ -4,18 +4,26 @@
     {
 		// console.log("Selected: " + text);
 
-		document.getElementById("divS").innerHTML = text.replace(/\n/g,"<br>");;
+		document.getElementById("divS").innerHTML = text.replace(/\n/g,"<br>");
+
+		document.getElementById("buttonIDPaste").onclick = function() {
+
+			window.Asc.plugin.executeMethod("PasteText", ["Test paste for document"]);	
+
+		};
 
 		document.getElementById("buttonIDGetAll").onclick = function() {
 
 			window.Asc.plugin.executeMethod("GetAllContentControls");
 
 		};
+
 		document.getElementById("buttonIDShowCurrent").onclick = function() {
 
 			window.Asc.plugin.executeMethod("GetCurrentContentControl");
 
 		};
+
 		$('body').on('mouseout', '.label-info', function() {
 			$(this).removeClass('label-hovered');
 		});
