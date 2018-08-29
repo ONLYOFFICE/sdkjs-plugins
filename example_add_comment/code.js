@@ -16,28 +16,4 @@
 		this.executeCommand("close", "");
     };
 
-	// window.Asc.plugin.onMethodReturn = function(returnValue)
-	// {
-	// 	var _plugin = window.Asc.plugin;
-	// 	if (_plugin.info.methodName == "GetAllContentControls")
-	// 	{
-	// 		document.getElementById("divG").innerHTML = "";
-
-	// 		for (var i = 0; i < returnValue.length; i++) {
-	// 			$('#divG').append("<label id = \"" + returnValue[i].InternalId + "\" class =\"label-info\">"+ returnValue[i].InternalId + "	" + (returnValue[i].Id || 'null') +"</label>");
-	// 		}
-
-	// 	} else if (_plugin.info.methodName == "GetCurrentContentControl") {
-	// 		if (document.getElementById(returnValue))
-	// 		{
-	// 			$('.label-selected').removeClass('label-selected');
-	// 			$('#' + returnValue).addClass('label-selected');
-
-	// 		} else {
-	// 			$('#divG').append("<label id = \"" + returnValue + "\" class =\"label-info\">"+ returnValue + "	null</label>");
-	// 			$('#' + returnValue).addClass('label-selected');
-	// 		}
-	// 	}
-	// };
-
 })(window, undefined);
