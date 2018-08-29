@@ -2,7 +2,9 @@
 
     window.Asc.plugin.init = function(text)
     {
-		console.log("Selected: " + text);
+		// console.log("Selected: " + text);
+
+		document.getElementById("divS").innerHTML = text.replace(/\n/g,"<br>");;
 
 		document.getElementById("buttonIDGetAll").onclick = function() {
 
@@ -26,6 +28,7 @@
 			$(this).addClass('label-selected');
 			window.Asc.plugin.executeMethod("SelectContentControl",[this.id]);
 		});
+		document.getElementById("buttonIDGetAll").click();
 	};
 	
     window.Asc.plugin.button = function(id)
