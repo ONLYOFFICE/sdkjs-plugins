@@ -67,5 +67,10 @@
 			}
 		}
 	};
+	
+	window.Asc.plugin.event_onTargetPositionChanged = function()
+	{
+		window.Asc.plugin.executeMethod("GetCurrentContentControl");
+	};
 
 })(window, undefined);
