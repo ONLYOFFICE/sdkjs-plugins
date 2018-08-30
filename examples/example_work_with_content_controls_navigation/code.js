@@ -2,7 +2,6 @@
 
     window.Asc.plugin.init = function(text)
     {
-		// console.log("Selected: " + text);
 
 		document.getElementById("divS").innerHTML = text.replace(/\n/g,"<br>");
 
@@ -56,14 +55,18 @@
 			}
 
 		} else if (_plugin.info.methodName == "GetCurrentContentControl") {
-			if (document.getElementById(returnValue))
-			{
-				$('.label-selected').removeClass('label-selected');
-				$('#' + returnValue).addClass('label-selected');
+			if (!($('.label-selected').length && $('.label-selected')[0].id === returnValue) && returnValue) {
+				if (document.getElementById(returnValue))
+				{
+					$('.label-selected').removeClass('label-selected');
+					$('#' + returnValue).addClass('label-selected');
 
-			} else {
-				$('#divG').append("<label id = \"" + returnValue + "\" class =\"label-info\">"+ returnValue + "	null</label>");
-				$('#' + returnValue).addClass('label-selected');
+				} else {
+					$('#divG').append("<label id = \"" + returnValue + "\" class =\"label-info\">"+ returnValue + "	null</label>");
+					$('#' + returnValue).addClass('label-selected');
+				}
+			} else if (!returnValue) {
+				$('.label-selected').removeClass('label-selected');
 			}
 		}
 	};
