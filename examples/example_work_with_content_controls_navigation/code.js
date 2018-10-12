@@ -1,4 +1,5 @@
 (function(window, undefined){
+	var flagInit = false;
 
     window.Asc.plugin.init = function(text)
     {
@@ -23,22 +24,36 @@
 
 		};
 
-		$('body').on('mouseout', '.label-info', function() {
-			$(this).removeClass('label-hovered');
-		});
-
-		$('body').on('mouseover', '.label-info', function() {
-			$(this).addClass('label-hovered');
-		});
-		$('body').on('click', '.label-info', function() {
-			$('.label-selected').removeClass('label-selected');
-			$(this).addClass('label-selected');
-			window.Asc.plugin.executeMethod("SelectContentControl",[this.id]);
-		});
-		document.getElementById("buttonIDGetAll").click();
+		if (!flagInit) {
+			flagInit = true;
+			document.getElementById("buttonIDGetAll").click();
+		}
 	};
 	
-    window.Asc.plugin.button = function(id)
+	addLabel = (returnValue) => {
+		$('#divG').append(
+			$('<label>',{
+				id : returnValue.InternalId,
+				class : 'label-info',
+				text : returnValue.InternalId + "	" + (returnValue.Id || 'null'),
+				on : {
+					click: function(){
+						$('.label-selected').removeClass('label-selected');
+						$(this).addClass('label-selected');
+						window.Asc.plugin.executeMethod("SelectContentControl",[this.id]);
+					},
+					mouseover: function(){
+						$(this).addClass('label-hovered');
+					},
+					mouseout: function(){
+						$(this).removeClass('label-hovered');
+					}
+				}
+			})
+		);
+	};
+	
+    window.Asc.plugin.button = function()
     {
 		this.executeCommand("close", "");
     };
@@ -49,9 +64,8 @@
 		if (_plugin.info.methodName == "GetAllContentControls")
 		{
 			document.getElementById("divG").innerHTML = "";
-
-			for (var i = 0; i < returnValue.length; i++) {
-				$('#divG').append("<label id = \"" + returnValue[i].InternalId + "\" class =\"label-info\">"+ returnValue[i].InternalId + "	" + (returnValue[i].Id || 'null') +"</label>");
+			for (var i = 0; i < returnValue.length; i++) {	
+				addLabel(returnValue[i]);
 			}
 
 		} else if (_plugin.info.methodName == "GetCurrentContentControl") {
@@ -62,7 +76,8 @@
 					$('#' + returnValue).addClass('label-selected');
 
 				} else {
-					$('#divG').append("<label id = \"" + returnValue + "\" class =\"label-info\">"+ returnValue + "	null</label>");
+					$('.label-selected').removeClass('label-selected');
+					addLabel({InternalId: returnValue});
 					$('#' + returnValue).addClass('label-selected');
 				}
 			} else if (!returnValue) {
