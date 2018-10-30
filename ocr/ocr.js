@@ -44,10 +44,51 @@
         });
 
         $('#load-file-button-id').click(
-            function (e) {
+          					
+			function (e) {
+				
+				if (window["AscDesktopEditor"])
+				{
+					window["AscDesktopEditor"]["OpenFilenameDialog"]("images", true, function(files) {
+						arrImages = [];
+						if (files.length == 0)
+							return;
+						
+						window.Asc.plugin.resizeWindow(800, 571, 800, 571);
+						
+						var oImagesContainer = document.getElementById('image-container-div');
+						while (oImagesContainer.firstChild) {
+							oImagesContainer.removeChild(oImagesContainer.firstChild);
+						}
+						var oTextContainer = document.getElementById('text-container-div');
+						while (oTextContainer.firstChild) {
+							oTextContainer.removeChild(oTextContainer.firstChild);
+						}
+						
+						for (var i = 0; i < files.length; i++) 
+						{
+							var oImgElement = document.createElement('img');
+							oImgElement.src = window["AscDesktopEditor"]["GetImageBase64"](files[i], false);
+							oImgElement.style.width = '100%';
+							oImgElement.style.marginBottom = "10px";
+							arrImages.push(oImgElement);
+							oImagesContainer.appendChild(oImgElement);
+						}
+						
+						document.getElementById('lang-select').removeAttribute('disabled');
+						document.getElementById('recognize-button').removeAttribute('disabled');
+						nStartFilesCount = files.length;
+						$('#status-label').text('');
+						$('#scrollable-image-text-div').css('display', 'inline-block');
+						updateScroll();
+					});
+					
+					return;							
+				}
+			
                 $('#images-input').click();
             }
-        );
+        );				
 
         $('#images-input').change(function(e) {
             var arrFiles = e.target.files;
