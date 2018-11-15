@@ -129,42 +129,79 @@
     -webkit-user-select: none;
 }
 
+/*
+ * Container style
+ */
 .ps {
-	position: absolute; /* please don't change 'position' */
+  overflow: hidden !important;
+  overflow-anchor: none;
+  -ms-overflow-style: none;
+  touch-action: auto;
+  -ms-touch-action: auto;
 }
 
-.ps__scrollbar-x-rail {
-    position: absolute; /* please don't change 'position' */
-    bottom: 3px; /* there must be 'right' for ps-scrollbar-y-rail */
-    height: 10px;
-    margin: 0 13px 0 0;
+/*
+ * Scrollbar rail styles
+ */
+.ps__rail-x {
+  display: none;
+bottom: 3px; /* there must be 'right' for ps-scrollbar-y-rail */
+height: 10px;
+margin: 0 13px 0 0;
+  /* please don't change 'position' */
+  position: absolute;
 }
 
-.ps__scrollbar-y-rail {
-    position: absolute; /* please don't change 'position' */
-    right: 3px; /* there must be 'right' for ps-scrollbar-y-rail */
-    width: 10px;
-    margin: 0 0 13px 0;
+.ps__rail-y {
+  display: none;
+	right: 3px; /* there must be 'right' for ps-scrollbar-y-rail */
+	width: 10px;
+	margin: 0 0 13px 0;
+  /* please don't change 'position' */
+  position: absolute;
 }
 
-.ps__scrollbar-x {
-    position: absolute; /* please don't change 'position' */
-    bottom: 0; /* there must be 'bottom' for ps-scrollbar-x */
-    height: 9px;
-    background-color: rgb(241, 241, 241);
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    border-radius: 2px;
-    visibility: visible;
-    display: block;
-    box-sizing: border-box;
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAOCAYAAAD0f5bSAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAxSURBVChTYyAVfPz4kYkJyiYJMAF1/gcxiKWB4C95NkHpUXD+/HlwUJJCD78gZ2AAAEPHMr93vNFrAAAAAElFTkSuQmCC);
-    background-repeat: no-repeat;
-    background-position: 0 center;
-    border: 1px solid #cfcfcf;
+.ps--active-x > .ps__rail-x,
+.ps--active-y > .ps__rail-y {
+  display: block;
+  background-color: transparent;
 }
 
-.ps__scrollbar-y {
+.ps:hover > .ps__rail-x,
+.ps:hover > .ps__rail-y,
+.ps--focus > .ps__rail-x,
+.ps--focus > .ps__rail-y,
+.ps--scrolling-x > .ps__rail-x,
+.ps--scrolling-y > .ps__rail-y {
+  opacity: 0.6;
+}
+
+.ps .ps__rail-x:hover,
+.ps .ps__rail-y:hover,
+.ps .ps__rail-x:focus,
+.ps .ps__rail-y:focus,
+.ps .ps__rail-x.ps--clicking,
+.ps .ps__rail-y.ps--clicking {
+  background-color: #eee;
+  opacity: 0.9;
+}
+
+/*
+ * Scrollbar thumb styles
+ */
+.ps__thumb-x {
+  background-color: #aaa;
+  border-radius: 6px;
+  transition: background-color .2s linear, height .2s ease-in-out;
+  -webkit-transition: background-color .2s linear, height .2s ease-in-out;
+  height: 6px;
+  /* there must be 'bottom' for ps__thumb-x */
+  bottom: 2px;
+  /* please don't change 'position' */
+  position: absolute;
+}
+
+.ps__thumb-y {
     position: absolute; /* please don't change 'position' */
     right: 0; /* there must be 'right' for ps-scrollbar-y */
     width: 9px;
@@ -181,29 +218,38 @@
     border: 1px solid #cfcfcf;
 }
 
-.ps .ps__scrollbar-y-rail:hover .ps__scrollbar-y {
-    background-color: rgb(207, 207, 207);
+
+.ps__rail-x:hover > .ps__thumb-x{
+  background-color: rgb(207, 207, 207);
 }
 
-.ps .ps__scrollbar-x-rail:hover .ps__scrollbar-x {
-    background-color: rgb(207, 207, 207);
-}
-
-.ps.ps--in-scrolling .ps__scrollbar-y-rail .ps__scrollbar-y {
-    background-color: #adadad;
-    border-color: #adadad;    
-}
-
-.ps.ps--in-scrolling .ps__scrollbar-x-rail .ps__scrollbar-x {
-    background-color: #adadad;
-    border-color: #adadad;    
-}
-
-.ps__scrollbar-y-rail .ps__scrollbar-y {
-	background-position: 0 center;
+.ps__rail-x:focus > .ps__thumb-x,
+.ps__rail-x.ps--clicking .ps__thumb-x {
+   background-color: #adadad;
+   border-color: #adadad;  
 }
 
 
-.ps__scrollbar-x-rail .ps__scrollbar-x {
-	background-position: center -7px;
+
+.ps__rail-y:hover > .ps__thumb-y{
+  background-color: rgb(207, 207, 207);
+}
+
+.ps__rail-y:focus > .ps__thumb-y,
+.ps__rail-y.ps--clicking .ps__thumb-y {
+   background-color: #adadad;
+   border-color: #adadad;  
+}
+
+/* MS supports */
+@supports (-ms-overflow-style: none) {
+  .ps {
+    overflow: auto !important;
+  }
+}
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .ps {
+    overflow: auto !important;
+  }
 }

@@ -2,8 +2,7 @@
 
 	function updateScroll()
 	{
-		var container = document.getElementById('scrollable-container-id');
-		Ps.update(container);
+		Ps.update();
 		if($('.ps__scrollbar-y').height() === 0){
 			$('.ps__scrollbar-y').css('border-width', '0px');
 		}
@@ -102,9 +101,8 @@
 	window.Asc.plugin.init = function(text)
 	{
 		var container = document.getElementById('scrollable-container-id');
-		Ps.initialize(container, {
-			theme : 'custom-theme'
-		});
+		
+		Ps = new PerfectScrollbar('#' + container.id, {});
 
 		fill_templates();
 	};

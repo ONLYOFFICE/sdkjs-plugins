@@ -1,5 +1,4 @@
-(function(window, undefined){
-
+(function(window, undefined){	
     window.oncontextmenu = function(e)
 	{
 		if (e.preventDefault)
@@ -804,23 +803,14 @@
 			
 			var container = document.getElementById('fake-symbol-table-wrap');
 			if(nOldHeight !== nHeight){	
-				Ps.destroy(container);
-				Ps.initialize(container, {
-					theme: 'custom-theme',
+				Ps.destroy();
+				Ps = new PerfectScroll('#' + container.id, {
 					minScrollbarLength: Math.max((CELL_HEIGHT*2.0/3.0 + 0.5) >> 0, ((nHeight/8.0 + 0.5) >> 0))
 				});			
 			}
             bShowTooltip = false;            
             container.scrollTop = nRowSkip*CELL_HEIGHT;
-            Ps.update(container);
-            if($('.ps__scrollbar-y').height() === 0 || ((nFullHeight) <= (nHeight + 1))){
-                $('.ps__scrollbar-y').css('border-width', '0px');
-				$('.ps__scrollbar-y').hide();
-            }
-            else{
-				$('.ps__scrollbar-y').show();
-                $('.ps__scrollbar-y').css('border-width', '1px');
-            }
+            Ps.update();
             bShowTooltip = true;
             var aCells = $('#symbols-table > .cell');
             aCells.mousedown(cellClickHandler);
@@ -1205,7 +1195,7 @@
             $("#main-div").show();
 
             var container = document.getElementById('fake-symbol-table-wrap');
-            Ps.initialize(container, {
+			Ps = new PerfectScroll('#' + container.id, {
                 theme: 'custom-theme',
                 minScrollbarLength: 50
             });

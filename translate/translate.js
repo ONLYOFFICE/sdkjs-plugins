@@ -1,5 +1,4 @@
 (function(window, undefined){
-
 	window.oncontextmenu = function(e)
 	{
 		if (e.preventDefault)
@@ -20,21 +19,7 @@
 
 	function updateScroll()
 	{
-		var container = document.getElementById('scrollable-container-id');
 		Ps.update(container);
-		if($('.ps__scrollbar-y').height() === 0){
-			$('.ps__scrollbar-y').css('border-width', '0px');
-		}
-		else{
-			$('.ps__scrollbar-y').css('border-width', '1px');
-		}
-
-		if($('.ps__scrollbar-x').width() === 0){
-			$('.ps__scrollbar-x').css('border-width', '0px');
-		}
-		else{
-			$('.ps__scrollbar-x').css('border-width', '1px');
-		}
 	}
 
 	function getLanguagesSupport()
@@ -276,9 +261,8 @@
 		if (!isInit)
 		{
 			var container = document.getElementById('scrollable-container-id');
-			Ps.initialize(container, {
-				theme : 'custom-theme'
-			});
+					
+			Ps = new PerfectScrollbar('#' + container.id, {});
 
 			getLanguagesSupport();
 

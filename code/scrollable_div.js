@@ -27,7 +27,6 @@ You can apply your classes to this divs
 */
 
 (function(window,undefined) {
-
 	window.Asc.ScrollableDiv = window.Asc.ScrollableDiv || {
 		cout: 0,
 		lockMouseInterval: -1,
@@ -84,19 +83,7 @@ You can apply your classes to this divs
 
 		updateScroll: function (div)
 		{
-			Ps.update(div.parentElement);
-			if($('.ps__scrollbar-y').height() === 0){
-				$('.ps__scrollbar-y').css('border-width', '0px');
-			}
-			else{
-				$('.ps__scrollbar-y').css('border-width', '1px');
-			}
-			if($('.ps__scrollbar-x').width() === 0){
-				$('.ps__scrollbar-x').css('border-width', '0px');
-			}
-			else{
-				$('.ps__scrollbar-x').css('border-width', '1px');
-			}
+			Ps.update();
 		},
 
 		onSelectWheel: function (div)
@@ -140,10 +127,8 @@ You can apply your classes to this divs
 			div.scrollTop = scrollY;
 		},
 
-		initialize: function() {
-			Ps.initialize(container, {
-				theme : 'custom-theme'
-			});
+		initialize: function() {			
+			Ps = new PerfectScrollbar('#' + container.id, {});
 		},
 
 		addEventListener: function() {
@@ -275,7 +260,7 @@ You can apply your classes to this divs
 
 		updateScroll: function (div)
 		{
-			Ps.update(div.parentElement);
+			Ps.update();
 			if($('.ps__scrollbar-y').height() === 0){
 				$('.ps__scrollbar-y').css('border-width', '0px');
 			}
@@ -331,10 +316,8 @@ You can apply your classes to this divs
 			div.scrollTop = scrollY;
 		},
 
-		initialize: function() {
-			Ps.initialize(container, {
-				theme : 'custom-theme'
-			});
+		initialize: function() {							  
+			Ps = new PerfectScrollbar('#' + container.id, {});
 		},
 
 		addEventListener: function() {

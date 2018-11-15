@@ -49,7 +49,6 @@ editor.ternTooltip = new TernTooltip(editor, ternServer);
         }
     }
     */
-
     var Content = {
 
         macrosArray : [],
@@ -169,29 +168,12 @@ editor.ternTooltip = new TernTooltip(editor, ternServer);
         unShowRename(false);
     };
 
-    Ps.initialize(document.getElementById("menu"), { theme : 'custom-theme' });
+	Ps = new PerfectScrollbar("#menu", {});
     updateScrollMenu();
 
     function updateScrollMenu()
     {
-        Ps.update(document.getElementById("menu"));
-        if($('.ps__scrollbar-y').height() === 0)
-        {
-            $('.ps__scrollbar-y').css('border-width', '0px');
-        }
-        else
-        {
-            $('.ps__scrollbar-y').css('border-width', '1px');
-        }
-
-        if($('.ps__scrollbar-x').width() === 0)
-        {
-            $('.ps__scrollbar-x').css('border-width', '0px');
-        }
-        else
-        {
-            $('.ps__scrollbar-x').css('border-width', '1px');
-        }
+        Ps.update();
     }
 
     var isShowRename = false;
