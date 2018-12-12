@@ -804,7 +804,7 @@
 			var container = document.getElementById('fake-symbol-table-wrap');
 			if(nOldHeight !== nHeight){	
 				Ps.destroy();
-				Ps = new PerfectScroll('#' + container.id, {
+				Ps = new PerfectScrollbar('#' + container.id, {
 					minScrollbarLength: Math.max((CELL_HEIGHT*2.0/3.0 + 0.5) >> 0, ((nHeight/8.0 + 0.5) >> 0))
 				});			
 			}
@@ -1195,7 +1195,7 @@
             $("#main-div").show();
 
             var container = document.getElementById('fake-symbol-table-wrap');
-			Ps = new PerfectScroll('#' + container.id, {
+			Ps = new PerfectScrollbar('#' + container.id, {
                 theme: 'custom-theme',
                 minScrollbarLength: 50
             });
