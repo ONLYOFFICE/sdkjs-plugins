@@ -258,4 +258,24 @@
         }
     };
 
-})(window, undefined);
+
+	window.Asc.plugin.onTranslate = function(){
+		var elem = document.getElementById("label1");
+		if (elem){
+			elem.innerHTML = window.Asc.plugin.tr("Tesseract.js lets recognize text in pictures (png, jpg)");
+		}
+		elem = document.getElementById("load-file-button-id");
+		if (elem){
+			elem.innerHTML = window.Asc.plugin.tr("Load File");
+		}	
+		elem = document.getElementById("label2");
+		if (elem){
+			elem.innerHTML = window.Asc.plugin.tr("Choose language");
+		}
+		elem = document.getElementById("recognize-button");
+		if (elem){
+			elem.innerHTML = window.Asc.plugin.tr("Recognize");
+		}
+	};
+	
+	})(window, undefined);

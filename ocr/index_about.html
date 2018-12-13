@@ -40,12 +40,45 @@
         {
             this.executeCommand("close", "");
         };
+		
+		window.Asc.plugin.onTranslate = function(){
+			var elem = document.getElementById("label1");
+			if (elem){
+				elem.innerHTML = window.Asc.plugin.tr("Tesseract.js lets recognize text in pictures (png, jpg)");
+			}
+			elem = document.getElementById("load-file-button-id");
+			if (elem){
+				elem.innerHTML = window.Asc.plugin.tr("Load File");
+			}	
+			elem = document.getElementById("label2");
+			if (elem){
+				elem.innerHTML = window.Asc.plugin.tr("Choose language");
+			}
+			elem = document.getElementById("recognize-button");
+			if (elem){
+				elem.innerHTML = window.Asc.plugin.tr("Recognize");
+			}
+			elem = document.getElementById("p1");
+			if (elem){
+				elem.innerHTML = window.Asc.plugin.tr("Tesseract.js Add-on");
+			}
+			elem = document.getElementById("p2");
+			if (elem){
+				elem.innerHTML = window.Asc.plugin.tr("Tesseract.js is a pure javascript version of the") + 
+				" <a href=\"http://tesseract.projectnaptha.com\" target=\"_blank\">Tesseract OCR Engine<\/a> " + 
+				window.Asc.plugin.tr("that recognize English, Chinese, Russian, Meme and 60 other languages.");
+			}		
+			elem = document.getElementById("a1");
+			if (elem){
+				elem.innerHTML = window.Asc.plugin.tr("Source code");
+			}
+		};
 
     </script>
 </head>
 <body style="padding-left: 20px; padding-right: 20px">
-<p style="font-size: 15px">Tesseract.js Add-on</p>
-<p style="font-size: 12px">Tesseract.js is a pure javascript version of the <a href="http://tesseract.projectnaptha.com" target="_blank">Tesseract OCR Engine</a> that recognize English, Chinese, Russian, Meme and 60 other languages.</p>
-<a href="https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/ocr" target="_blank">Source code</a>
+<p style="font-size: 15px" id="p1">Tesseract.js Add-on</p>
+<p style="font-size: 12px" id="p2">Tesseract.js is a pure javascript version of the <a href="http://tesseract.projectnaptha.com" target="_blank">Tesseract OCR Engine</a> that recognize English, Chinese, Russian, Meme and 60 other languages.</p>
+<a href="https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/ocr" target="_blank" id="a1">Source code</a>
 </body>
 </html>
