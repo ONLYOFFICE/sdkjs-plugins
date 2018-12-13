@@ -1,0 +1,9 @@
+{
+	"Tesseract.js lets recognize text in pictures (png, jpg)" : "Tesseract.js позволяет распознавать текст на изображениях (png, jpg)",
+	"Load File" : "Загрузите файл",
+	"Choose language": "Выберите язык",
+	"Recognize" : "Распознать",
+	"Tesseract.js is a pure javascript version of the": "Tesseract.js это javascript версия",
+	"that recognize English, Chinese, Russian, Meme and 60 other languages.": "который распознает английский, китайский, русский и 60 других языков.",
+	"Source code" : "Исходный код"	
+}
