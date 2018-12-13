@@ -492,4 +492,32 @@
 		document.dispatchEvent(evt);
 	};
 
+	window.Asc.plugin.onTranslate = function()
+	{
+		var lb_lanuage = document.getElementById("lb_lanuage");
+		if (lb_lanuage)
+			lb_lanuage.innerHTML = window.Asc.plugin.tr("Language");
+		var btn_highlight = document.getElementById("btn_highlight");
+		if (btn_highlight)
+			btn_highlight.innerHTML = window.Asc.plugin.tr("Highlight");
+		var lb_style = document.getElementById("lb_style");
+		if (lb_style)
+			lb_style.innerHTML = window.Asc.plugin.tr("Style");
+		var lb_repTab = document.getElementById("lb_repTab");
+		if (lb_repTab)
+			lb_repTab.innerHTML = window.Asc.plugin.tr("Replace Tab with spaces");
+		var opt_DontRep = document.getElementById("opt_DontRep");
+		if (opt_DontRep)
+			opt_DontRep.innerHTML = window.Asc.plugin.tr("Don`t replaces");
+		var opt_2sp = document.getElementById("opt_2sp");
+		if (opt_2sp)
+			opt_2sp.innerHTML = window.Asc.plugin.tr("Replace by 2 spaces");
+		var opt_4sp = document.getElementById("opt_4sp");
+		if (opt_4sp)
+			opt_4sp.innerHTML = window.Asc.plugin.tr("Replace by 4 spaces");
+		var lb_bgColor = document.getElementById("lb_bgColor");
+		if (lb_bgColor)
+			lb_bgColor.innerHTML = window.Asc.plugin.tr("Choose background color");
+	};
+
 })(window, undefined);
