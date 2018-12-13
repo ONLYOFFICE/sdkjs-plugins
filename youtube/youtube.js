@@ -3,6 +3,7 @@
 	var url = "";
 	var player = null;
 	var isWindowPlayer = false;
+	var isViewerMode = false;
 	
 	function validateYoutubeUrl1(url)
 	{
@@ -41,6 +42,21 @@
 	        if (e.keyCode == 13) // click on Enter
                 document.getElementById("textbox_button").onclick();
 	    };
+		
+		if (this.info.isViewMode != isViewerMode)
+		{
+			isViewMode = this.info.isViewMode;
+			var _table     = document.getElementsByTagName("table")[0];
+			
+			if (_table)
+			{
+				if (_table.rows[0])
+					_table.rows[0].style.display = isViewMode ? "none" : "";
+				
+				if (_table.rows[1])
+					_table.rows[1].style.display = isViewMode ? "none" : "";
+			}
+		}
 
 		// clear validation on input/paste
         _textbox.oninput = _textbox.onpaste = function(e)
@@ -174,6 +190,13 @@
 		{
 			_frames[0].style.pointerEvents = isEnabled ? "none" : "";
 		}
+	};
+	
+	window.Asc.plugin.onTranslate = function()
+	{
+		var label = document.getElementById("td_labelUrl");
+		if (label)
+			label.innerHTML = window.Asc.plugin.tr("Paste youtube video URL");
 	};
 	
 })(window, undefined);

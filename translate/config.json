@@ -1,10 +1,12 @@
 {
     "name" : "Translator",
+	"nameLocale" : { "ru" : "Переводчик" },
     "guid" : "asc.{7327FC95-16DA-41D9-9AF2-0E7F449F687D}",
 
     "variations" : [
         {
             "description" : "Translator",
+			"descriptionLocale" : { "ru" : "Переводчик" },
             "url"         : "index.html",
 
             "icons"           : ["icon.png", "icon@2x.png", "icon2.png", "icon2@2x.png"],
