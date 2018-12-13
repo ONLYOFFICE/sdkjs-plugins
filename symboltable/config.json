@@ -1,7 +1,8 @@
 {
     "name": "Symbol Table",
     "nameLocale": {
-        "ru": "Таблица символов"
+        "ru": "Таблица символов",
+        "fr": "Table des symboles"
     },
     "guid": "asc.{03C18A8D-8E01-444A-86EB-EDDFA7773157}",
     "baseUrl": "",
@@ -10,7 +11,8 @@
         {
             "description": "Symbol Table",
             "descriptionLocale": {
-                "ru": "Таблица символов"
+                "ru": "Таблица символов",
+                "fr": "Table des symboles"
             },
             "url": "index.html",
 
@@ -32,14 +34,16 @@
                     "text": "Insert",
                     "primary": true,
                     "textLocale": {
-                        "ru": "Вставить"
+                        "ru": "Вставить",
+                        "fr": "Insérer"
                     }
                 },
                 {
                     "text": "Cancel",
                     "primary": false,
                     "textLocale": {
-                        "ru": "Отмена"
+                        "ru": "Отмена",
+                        "fr": "Annuler"
                     }
                 }
             ],

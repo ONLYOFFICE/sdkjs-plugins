@@ -30,7 +30,10 @@
                     "text": "Cancel",
                     "primary": false,
                     "isViewer": false,
-                    "textLocale": "Отмена"
+                    "textLocale": {
+                        "ru": "Отмена",
+                        "fr": "Annuler"
+                    }
                 }
             ],
 
