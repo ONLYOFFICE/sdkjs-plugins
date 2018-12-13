@@ -1,7 +1,7 @@
 {
     "name": "Speech",
     "nameLocale": {
-        "ru": "Πεχό",
+        "ru": "Π ΠµΡ‡Ρ",
         "fr": "Parole"
     },
     "guid": "asc.{D71C2EF0-F15B-47C7-80E9-86D671F9C595}",
@@ -10,7 +10,7 @@
         {
             "description": "Speech",
             "descriptionLocale": {
-                "ru": "Πεχό",
+                "ru": "Π ΠµΡ‡Ρ",
                 "fr": "Parole"
             },
             "url": "index.html",
