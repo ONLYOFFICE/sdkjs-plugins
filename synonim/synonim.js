@@ -88,7 +88,7 @@
 					}
 					if(_obj.verb)		//if verb exist
 					{
-						drawWords(_obj.verb,"Vebr")
+						drawWords(_obj.verb,"Verb")
 					}
 					updateScroll();
 					updateScroll();

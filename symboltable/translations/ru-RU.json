@@ -2,7 +2,7 @@
 	"Font" : "Шрифт",
 	"Range" : "Набор",
 	"Recently used symbols" : "Ранее использовавшиеся символы",
-	"Unicode hex value" : "Код символа",
+	"Unicode hex value" : "Код знака из Юникод (шестн.)",
 	"Font Name" : "Шрифт",
 	"Insert" : "Вставить",
 	"Basic Latin": "Основная латиница",
@@ -278,5 +278,4 @@
 	"Variation Selectors Supplement": "Селекторы вариантов начертания (дополнение)",
 	"Supplementary Private Use Area A": "Дополнительная область для частного использования — A",
 	"Supplementary Private Use Area B": "Дополнительная область для частного использования — B"	
-	
 }
