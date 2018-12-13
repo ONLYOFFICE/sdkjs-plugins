@@ -5,5 +5,6 @@
 	"Recognize" : "Распознать",
 	"Tesseract.js is a pure javascript version of the": "Tesseract.js это javascript версия",
 	"that recognize English, Chinese, Russian, Meme and 60 other languages.": "который распознает английский, китайский, русский и 60 других языков.",
-	"Source code" : "Исходный код"	
+	"Source code" : "Исходный код",
+	"Tesseract.js Add-on" : "Плагин Tesseract.js"
 }
