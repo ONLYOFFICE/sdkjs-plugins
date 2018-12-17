@@ -2,7 +2,8 @@
     "name": "ClipArt",
     "nameLocale": {
         "ru": "Клипарт",
-        "fr": "ClipArt"
+        "fr": "ClipArt",
+        "es": "ClipArt"
     },
     "guid": "asc.{F5BACB61-64C5-4711-AC8A-D01EC3B2B6F1}",
 
@@ -11,7 +12,8 @@
             "description": "ClipArt",
             "descriptionLocale": {
                 "ru": "Клипарт",
-                "fr": "ClipArt"
+                "fr": "ClipArt",
+                "es": "ClipArt"
             },
             "url": "index.html",
 
@@ -31,7 +33,12 @@
             "buttons": [
                 {
                     "text": "Close",
-                    "primary": true
+                    "primary": true,
+                    "textLocale": {
+                        "ru": "Закрыть",
+                        "fr": "Fermer",
+                        "es": "Cerrar"
+                    }
                 }
             ]
         },
@@ -39,7 +46,8 @@
             "description": "About",
             "descriptionLocale": {
                 "ru": "Справка",
-                "fr": "À propos"
+                "fr": "À propos",
+                "es": "Sobre programa"
             },
             "url": "index_about.html",
 

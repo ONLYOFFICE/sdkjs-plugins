@@ -2,7 +2,8 @@
     "name": "OCR",
     "nameLocale": {
         "ru": "Распознавание текста",
-        "fr": "Reconnaissance optique de caractères"
+        "fr": "Reconnaissance optique de caractères",
+        "es": "Reconocimiento óptico de caracteres"
     },
     "guid": "asc.{440EBF13-9B19-4BD8-8621-05200E58140B}",
     "baseUrl": "",
@@ -12,7 +13,8 @@
             "description": "OCR",
             "descriptionLocale": {
                 "ru": "Распознавание текста",
-                "fr": "Reconnaissance optique de caractères"
+                "fr": "Reconnaissance optique de caractères",
+                "es": "Reconocimiento óptico de caracteres"
             },
             "url": "index.html",
 
@@ -35,7 +37,8 @@
                     "primary": true,
                     "textLocale": {
                         "ru": "Вставить текст",
-                        "fr": "Insérer le texte"
+                        "fr": "Insérer le texte",
+                        "es": "Insertar texto"
                     }
                 },
                 {
@@ -43,7 +46,8 @@
                     "primary": false,
                     "textLocale": {
                         "ru": "Отмена",
-                        "fr": "Annuler"
+                        "fr": "Annuler",
+                        "es": "Cancelar"
                     }
                 }
             ],
@@ -54,7 +58,8 @@
             "description": "About",
             "descriptionLocale": {
                 "ru": "Справка",
-                "fr": "À propos"
+                "fr": "À propos",
+                "es": "Sobre programa"
             },
             "url": "index_about.html",
 
