@@ -1,8 +1,8 @@
 {
-	"Font" : "Шрифт",
-	"Range" : "Набор",
-	"Recently used symbols" : "Ранее использовавшиеся символы",
-	"Unicode hex value" : "Код знака из Юникод (шестн.)",
+	"Font:" : "Шрифт:",
+	"Range:" : "Набор:",
+	"Recently used symbols:" : "Ранее использовавшиеся символы:",
+	"Unicode HEX value:" : "Код знака из Юникод (шестн.):",
 	"Font Name" : "Шрифт",
 	"Insert" : "Вставить",
 	"Basic Latin": "Основная латиница",

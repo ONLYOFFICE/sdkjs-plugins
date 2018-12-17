@@ -1468,19 +1468,19 @@
 	window.Asc.plugin.onTranslate = function(){
 		var elem = document.getElementById("l1");
 		if (elem){
-			elem.innerHTML = window.Asc.plugin.tr("Font") + ":";
+			elem.innerHTML = window.Asc.plugin.tr("Font:");
 		}
 		elem = document.getElementById("range-label");
 		if (elem){
-			elem.innerHTML = window.Asc.plugin.tr("Range") + ":";
+			elem.innerHTML = window.Asc.plugin.tr("Range:");
 		}	
 		elem = document.getElementById("l2");
 		if (elem){
-			elem.innerHTML = window.Asc.plugin.tr("Recently used symbols") + ":";
+			elem.innerHTML = window.Asc.plugin.tr("Recently used symbols:");
 		}
 		elem = document.getElementById("l3");
 		if (elem){
-			elem.innerHTML = window.Asc.plugin.tr("Unicode hex value") + ":";
+			elem.innerHTML = window.Asc.plugin.tr("Unicode HEX value:");
 		}
 		elem = document.getElementById("font-name-label");
 		if (elem){
