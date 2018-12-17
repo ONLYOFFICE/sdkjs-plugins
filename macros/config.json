@@ -2,7 +2,8 @@
     "name": "Макросы",
     "nameLocale": {
         "ru": "Макросы",
-        "fr": "Macros"
+        "fr": "Macros",
+        "es": "Macros"
     },
     "guid": "asc.{E6978D28-0441-4BD7-8346-82FAD68BCA3B}",
 
@@ -16,7 +17,8 @@
             "description": "Macros",
             "descriptionLocale": {
                 "ru": "Макросы",
-                "fr": "Macros"
+                "fr": "Macros",
+                "es": "Macros"
             },
             "url": "index.html",
 
@@ -43,7 +45,8 @@
                     "primary": false,
                     "textLocale": {
                         "ru": "Отмена",
-                        "fr": "Annuler"
+                        "fr": "Annuler",
+                        "es": "Cancelar"
                     }
                 }
             ]

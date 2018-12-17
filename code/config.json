@@ -2,7 +2,8 @@
     "name": "Highligh code",
     "nameLocale": {
         "ru": "Подсветка кода",
-        "fr": "Code en surbrillance"
+        "fr": "Code en surbrillance",
+        "es": "Resaltar el código"
     },
     "guid": "asc.{BE5CBF95-C0AD-4842-B157-AC40FEDD9841}",
 
@@ -11,7 +12,8 @@
             "description": "Highligh code",
             "descriptionLocale": {
                 "ru": "Подсветка кода",
-                "fr": "Code en surbrillance"
+                "fr": "Code en surbrillance",
+                "es": "Resaltar el código"
             },
             "url": "index.html",
 
@@ -38,7 +40,8 @@
                     "primary": false,
                     "textLocale": {
                         "ru": "Отмена",
-                        "fr": "Annuler"
+                        "fr": "Annuler",
+                        "es": "Cancelar"
                     }
                 }
             ],

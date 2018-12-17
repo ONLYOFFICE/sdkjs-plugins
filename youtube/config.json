@@ -32,7 +32,8 @@
                     "isViewer": false,
                     "textLocale": {
                         "ru": "Отмена",
-                        "fr": "Annuler"
+                        "fr": "Annuler",
+                        "es": "Cancelar"
                     }
                 }
             ],
