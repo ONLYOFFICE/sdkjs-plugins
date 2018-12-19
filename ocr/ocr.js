@@ -113,7 +113,11 @@
 				if (window["AscDesktopEditor"])
 				{
 					window["AscDesktopEditor"]["OpenFilenameDialog"]("images", true, function(files) {
-						arrImages = [];
+                        arrImages = [];
+                        
+                        if (!Array.isArray(files)) // string detect
+                            files = [files];
+
 						if (files.length == 0)
 							return;
 						
