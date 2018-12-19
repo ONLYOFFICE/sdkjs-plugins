@@ -579,6 +579,12 @@
 		var lb_bgColor = document.getElementById("lb_bgColor");
 		if (lb_bgColor)
 			lb_bgColor.innerHTML = window.Asc.plugin.tr("Choose background color");
+		var btn_sp_cancel = document.getElementById("btn_sp_cancel");
+		if (btn_sp_cancel)
+			btn_sp_cancel.innerHTML = window.Asc.plugin.tr("Cancel");
+		var btn_sp_choose = document.getElementById("btn_sp_choose");
+		if (btn_sp_choose)
+			btn_sp_choose.innerHTML = window.Asc.plugin.tr("Choose");
 	};
 
 })(window, undefined);
