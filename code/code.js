@@ -72,7 +72,7 @@
 			window.Asc.plugin.loadModule("./highlight/styles/googlecode.css", function(content){
 				style_value = content;
 				if (isDE) {
-					initSpectrum(hexc($(container).css('backgroundColor')));
+					$("#jq_color").spectrum("set", (hexc($(container).css('backgroundColor'))));
 				} else {
 					background_color.value = hexc($(container).css('backgroundColor'));
 				}
@@ -102,7 +102,7 @@
 			window.Asc.plugin.loadModule("./highlight/styles/" + style_select.options[style_select.selectedIndex].value , function(content){
 				style_value = content;
 				if (isDE) {
-					initSpectrum(hexc($(container).css('backgroundColor')));
+					$("#jq_color").spectrum("set", (hexc($(container).css('backgroundColor'))));
 				} else {
 					background_color.value = hexc($(container).css('backgroundColor'));
 				}
