@@ -3,7 +3,8 @@
     "nameLocale": {
         "ru": "Фоторедактор",
         "fr": "Photo Editor",
-        "es": "Editor de Fotos"
+        "es": "Editor de Fotos",
+        "de": "Foto Editor"
     },
     "guid": "asc.{DA2BB87B-9F03-4160-8411-3AB4A5C71C39}",
     "baseUrl": "",
@@ -14,7 +15,8 @@
             "descriptionLocale": {
                 "ru": "Фоторедактор",
                 "fr": "Photo Editor",
-                "es": "Editor de Fotos"
+                "es": "Editor de Fotos",
+                "de": "Foto Editor"
             },
             "url": "index.html",
 
@@ -41,7 +43,8 @@
             "descriptionLocale": {
                 "ru": "Справка",
                 "fr": "À propos",
-                "es": "Sobre programa"
+                "es": "Sobre programa",
+                "de": "Über"
             },
             "url": "index_about.html",
 

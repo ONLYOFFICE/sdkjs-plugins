@@ -3,7 +3,8 @@
     "nameLocale": {
         "ru": "Переводчик",
         "fr": "Traducteur",
-        "es": "Traductor"
+        "es": "Traductor",
+        "de": "Übersetzer"
     },
     "guid": "asc.{7327FC95-16DA-41D9-9AF2-0E7F449F687D}",
 
@@ -13,7 +14,8 @@
             "descriptionLocale": {
                 "ru": "Переводчик",
                 "fr": "Traducteur",
-                "es": "Traductor"
+                "es": "Traductor",
+                "de": "Übersetzer"
             },
             "url": "index.html",
 
