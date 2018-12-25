@@ -4,6 +4,27 @@
 	var player = null;
 	var isWindowPlayer = false;
 	var isViewerMode = false;
+
+	function getParam(url, param)
+	{
+		var _questPos = url.indexOf("?");
+		if (_questPos < 0 && _questPos >= (url.length - 1))
+			return undefined;
+
+		var _url = url.substr(_questPos + 1);
+		var _propPos = _url.indexOf(param + "=");
+		if (_propPos < 0 && _propPos >= (url.length - 1))
+			return undefined; 
+
+		_propPos += param.length;
+		_propPos += 1; // '='
+
+		var _last = _url.indexOf("&", _propPos);
+		if (_last < 0)
+			_last = _url.length;
+
+		return _url.substr(_propPos, _last - _propPos);
+	}
 	
 	function validateYoutubeUrl1(url)
 	{
@@ -98,14 +119,20 @@
 
 				if (!player)
 				{
-					player = new YT.Player('content', {
+					var opt = {
 						height: '100%',
 						width: '100%',
 						videoId: getVideoId(url),
 						playerVars: { 
 							'fs' : 1
 						}
-					});
+					};
+
+					var _time = getParam(url, "t");
+					if (_time && _time.length > 0)
+						opt.playerVars.start = parseInt(_time);
+
+					player = new YT.Player('content', opt);
 				}
 				else
 				{
@@ -155,6 +182,10 @@
             }
 
 			var _id = getVideoId(url);
+			var _questPos = _id.indexOf("?");
+			if (_questPos > 0)
+				_id = _id.substr(0, _questPos);
+
             var _url = "http://img.youtube.com/vi/" + _id + "/0.jpg";
 			if (_id)
 			{
