@@ -3,7 +3,8 @@
     "nameLocale": {
         "ru": "Подсветка кода",
         "fr": "Code en surbrillance",
-        "es": "Resaltar el código"
+        "es": "Resaltar el código",
+        "de": "Code hervorheben"
     },
     "guid": "asc.{BE5CBF95-C0AD-4842-B157-AC40FEDD9841}",
 
@@ -13,7 +14,8 @@
             "descriptionLocale": {
                 "ru": "Подсветка кода",
                 "fr": "Code en surbrillance",
-                "es": "Resaltar el código"
+                "es": "Resaltar el código",
+                "de": "Code hervorheben"
             },
             "url": "index.html",
 
@@ -41,7 +43,8 @@
                     "textLocale": {
                         "ru": "Отмена",
                         "fr": "Annuler",
-                        "es": "Cancelar"
+                        "es": "Cancelar",
+                        "de": "Abbrechen"
                     }
                 }
             ],

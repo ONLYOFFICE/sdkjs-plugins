@@ -3,7 +3,8 @@
     "nameLocale": {
         "ru": "Речь",
         "fr": "Parole",
-        "es": "Habla"
+        "es": "Habla",
+        "de": "Rede"
     },
     "guid": "asc.{D71C2EF0-F15B-47C7-80E9-86D671F9C595}",
 
@@ -13,7 +14,8 @@
             "descriptionLocale": {
                 "ru": "Речь",
                 "fr": "Parole",
-                "es": "Habla"
+                "es": "Habla",
+                "de": "Rede"
             },
             "url": "index.html",
 

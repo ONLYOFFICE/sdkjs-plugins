@@ -33,7 +33,8 @@
                     "textLocale": {
                         "ru": "Отмена",
                         "fr": "Annuler",
-                        "es": "Cancelar"
+                        "es": "Cancelar",
+                        "de": "Abbrechen"
                     }
                 }
             ],

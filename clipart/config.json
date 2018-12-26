@@ -3,7 +3,8 @@
     "nameLocale": {
         "ru": "Клипарт",
         "fr": "ClipArt",
-        "es": "ClipArt"
+        "es": "ClipArt",
+        "de": "ClipArt"
     },
     "guid": "asc.{F5BACB61-64C5-4711-AC8A-D01EC3B2B6F1}",
 
@@ -13,7 +14,8 @@
             "descriptionLocale": {
                 "ru": "Клипарт",
                 "fr": "ClipArt",
-                "es": "ClipArt"
+                "es": "ClipArt",
+                "de": "ClipArt"
             },
             "url": "index.html",
 
@@ -37,7 +39,8 @@
                     "textLocale": {
                         "ru": "Закрыть",
                         "fr": "Fermer",
-                        "es": "Cerrar"
+                        "es": "Cerrar",
+                        "de": "Schließen"
                     }
                 }
             ]
@@ -47,7 +50,8 @@
             "descriptionLocale": {
                 "ru": "Справка",
                 "fr": "À propos",
-                "es": "Sobre programa"
+                "es": "Sobre programa",
+                "de": "Über"
             },
             "url": "index_about.html",
 
