@@ -18,7 +18,7 @@
             "url": "index.html",
 
             "icons": [ "icon.png", "icon@2x.png", "icon.png", "icon@2x.png" ],
-            "isViewer": true,
+            "isViewer": false,
             "EditorsSupport": [ "word", "cell", "slide" ],
 
             "isVisual": true,
