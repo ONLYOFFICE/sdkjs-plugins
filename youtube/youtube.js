@@ -94,7 +94,20 @@
 
 		document.getElementById("textbox_button").onclick = function(e)
 		{
-		    var _url = document.getElementById("textbox_url").value;
+			var _url = document.getElementById("textbox_url").value;
+			
+			var _searchDoubleStart = 10;
+			var _findDoubleUrl = _url.indexOf("http://", _searchDoubleStart);
+			if (_findDoubleUrl < 0)
+				_findDoubleUrl = _url.indexOf("https://", _searchDoubleStart);
+			if (_findDoubleUrl < 0)
+				_findDoubleUrl = _url.indexOf("www.", _searchDoubleStart);
+
+			if (_findDoubleUrl > 0)
+			{
+				_url = _url.substr(0, _findDoubleUrl);
+				document.getElementById("textbox_url").value = _url;
+			}
 
 		    if (!validateYoutubeUrl(_url))
             {
