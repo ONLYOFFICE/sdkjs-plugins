@@ -85,7 +85,7 @@
 					}
 					if(_obj.verb)		//if verb exist
 					{
-						drawWords(_obj.verb,"Vebr")
+						drawWords(_obj.verb,"Verb")
 					}
 					updateScroll();
 					updateScroll();
@@ -163,6 +163,16 @@
 	function updateScroll()
 	{
 		Ps.update();
+	};
+
+	window.Asc.plugin.onTranslate = function()
+	{
+		var btn_search = document.getElementById("btn_search");
+		if (btn_search)
+			btn_search.innerHTML = window.Asc.plugin.tr("Lookup");
+		var inp_search = document.getElementById("inp_search");
+		if (inp_search)
+			inp_search.placeholder = window.Asc.plugin.tr("Search");
 	};
 		  
 })(window, undefined);

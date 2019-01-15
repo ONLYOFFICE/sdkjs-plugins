@@ -281,5 +281,13 @@ editor.ternTooltip = new TernTooltip(editor, ternServer);
 
         document.dispatchEvent(evt);
     };
+	
+	window.Asc.plugin.onTranslate = function()
+	{
+		document.getElementById("button_new").innerHTML = window.Asc.plugin.tr("New");
+		document.getElementById("button_delete").innerHTML = window.Asc.plugin.tr("Delete");
+		document.getElementById("button_rename").innerHTML = window.Asc.plugin.tr("Rename");
+		document.getElementById("button_run").innerHTML = window.Asc.plugin.tr("Run");
+	};
 
 })(window, undefined);

@@ -41,12 +41,27 @@
         {
             this.executeCommand("close", "");
         };
+		
+		window.Asc.plugin.onTranslate = function(){
+			var elem = document.getElementById("p1");
+			if (elem){
+				elem.innerHTML = window.Asc.plugin.tr("ClipArt Add-on");
+			}
+			elem = document.getElementById("p2");
+			if (elem){
+				elem.innerHTML = window.Asc.plugin.tr("The add-on is designed to insert the themed image from <a href=\"https://openclipart.org\" target=\"_blank\">Open Clip Art Library</a> into the document editor.");
+			}	
+			elem = document.getElementById("a1");
+			if (elem){
+				elem.innerHTML = window.Asc.plugin.tr("Source code");
+			}
+		};
 
     </script>
 </head>
 <body style="padding-left: 20px; padding-right: 20px">
-<p style="font-size: 15px">ClipArt Add-on</p>
-<p style="font-size: 12px">The add-on is designed to insert the themed image from <a href="https://openclipart.org" target="_blank">Open Clip Art Library</a> into the document editor.</p>
-<a href="https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/clipart" target="_blank">Source code</a>
+<p style="font-size: 15px" id="p1">ClipArt Add-on</p>
+<p style="font-size: 12px" id="p2">The add-on is designed to insert the themed image from <a href="https://openclipart.org" target="_blank">Open Clip Art Library</a> into the document editor.</p>
+<a href="https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/clipart" target="_blank" id="a1">Source code</a>
 </body>
 </html>

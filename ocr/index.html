@@ -49,7 +49,7 @@
 <body style="box-sizing:border-box; width: 100%; height: 100%; margin: 0; padding-left: 22px; background: #F7F7F7;">
     <div style="height: 100%; width: 100%">
         <div style="height: 99px">
-            <label class="noselect" style="display: inline-block; margin-top: 15px; margin-bottom: 22px">Tesseract.js lets recognize text in pictures (png, jpg)</label><br>
+            <label class="noselect" style="display: inline-block; margin-top: 15px; margin-bottom: 22px" id="label1">Tesseract.js lets recognize text in pictures (png, jpg)</label><br>
             <div class="noselect">
                 <div style="margin-right: 0px; width: 175px; overflow: visible;">
                     <button class="btn-text-default" id="load-file-button-id">Load File</button><br>
@@ -58,7 +58,7 @@
                 </div>
             </div>
             <div class="noselect" style="margin-right: 22px">
-                <label class="noselect">Choose language</label>
+                <label class="noselect" id="label2">Choose language</label>
                 <select name = 'lang_combo' disabled  class="noselect" id='lang-select' style="width: 125px">
                     <option value = 'eng'>English</option>
                     <option value = 'chi_sim'>Chinese</option>
@@ -120,7 +120,7 @@
                     <option value = 'frk'>Frankish</option>
                     <option value = 'equ'>Math</option>
                     <option value = 'srp'>Serbian (Latin)</option>
-                    <option value = 'slk'>Slovakian</option>
+                    <option value = 'slk'>Slovak</option>
                 </select>
             </div>
             <div  class="noselect">

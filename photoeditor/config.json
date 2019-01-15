@@ -1,56 +1,74 @@
 {
-    "name" : "Photo Editor",
-    "guid" : "asc.{DA2BB87B-9F03-4160-8411-3AB4A5C71C39}",
-    "baseUrl" : "",
+    "name": "Photo Editor",
+    "nameLocale": {
+        "ru": "Фоторедактор",
+        "fr": "Photo Editor",
+        "es": "Editor de Fotos",
+        "de": "Foto Editor"
+    },
+    "guid": "asc.{DA2BB87B-9F03-4160-8411-3AB4A5C71C39}",
+    "baseUrl": "",
 
-    "variations" : [
+    "variations": [
         {
-            "description" : "photoeditor",
-            "url"         : "index.html",
+            "description": "Photo Editor",
+            "descriptionLocale": {
+                "ru": "Фоторедактор",
+                "fr": "Photo Editor",
+                "es": "Editor de Fotos",
+                "de": "Foto Editor"
+            },
+            "url": "index.html",
 
-            "icons"           : ["icon.png", "icon@2x.png", "icon2.png", "icon2@2x.png"],
-            "isViewer"        : false,
-            "EditorsSupport"  : ["word", "cell", "slide"],
+            "icons": [ "icon.png", "icon@2x.png", "icon2.png", "icon2@2x.png" ],
+            "isViewer": false,
+            "EditorsSupport": [ "word", "cell", "slide" ],
 
-            "isVisual"        : true,
-            "isModal"         : true,
-            "isInsideMode"    : false,
-            "isCustomWindow"  : true,
+            "isVisual": true,
+            "isModal": true,
+            "isInsideMode": false,
+            "isCustomWindow": true,
 
-            "initDataType"    : "html",
-            "initData"        : "",
+            "initDataType": "html",
+            "initData": "",
 
-            "isUpdateOleOnResize" : false,
+            "isUpdateOleOnResize": false,
 
-            "buttons"         : [],
+            "buttons": [],
 
-            "size" : [10000, 10000]
+            "size": [ 10000, 10000 ]
         },
         {
-            "description" : "About",
-            "url"         : "index_about.html",
+            "description": "About",
+            "descriptionLocale": {
+                "ru": "Справка",
+                "fr": "À propos",
+                "es": "Sobre programa",
+                "de": "Über"
+            },
+            "url": "index_about.html",
 
-            "icons"           : ["icon.png", "icon@2x.png", "icon2.png", "icon2@2x.png"],
-            "isViewer"        : false,
-            "EditorsSupport"  : ["word", "cell", "slide"],
+            "icons": [ "icon.png", "icon@2x.png", "icon2.png", "icon2@2x.png" ],
+            "isViewer": false,
+            "EditorsSupport": [ "word", "cell", "slide" ],
 
-            "isVisual"        : true,
-            "isModal"         : true,
-            "isInsideMode"    : false,
+            "isVisual": true,
+            "isModal": true,
+            "isInsideMode": false,
 
-            "initDataType"    : "none",
-            "initData"        : "",
+            "initDataType": "none",
+            "initData": "",
 
-            "isUpdateOleOnResize" : false,
+            "isUpdateOleOnResize": false,
 
-            "buttons"         : [
+            "buttons": [
                 {
                     "text": "Ok",
                     "primary": true
                 }
             ],
 
-            "size" : [392, 147]
+            "size": [ 392, 147 ]
         }
     ]
 }

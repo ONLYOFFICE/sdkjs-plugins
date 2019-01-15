@@ -3,6 +3,28 @@
 	var url = "";
 	var player = null;
 	var isWindowPlayer = false;
+	var isViewerMode = false;
+
+	function getParam(url, param)
+	{
+		var _questPos = url.indexOf("?");
+		if (_questPos < 0 && _questPos >= (url.length - 1))
+			return undefined;
+
+		var _url = url.substr(_questPos + 1);
+		var _propPos = _url.indexOf(param + "=");
+		if (_propPos < 0 && _propPos >= (url.length - 1))
+			return undefined; 
+
+		_propPos += param.length;
+		_propPos += 1; // '='
+
+		var _last = _url.indexOf("&", _propPos);
+		if (_last < 0)
+			_last = _url.length;
+
+		return _url.substr(_propPos, _last - _propPos);
+	}
 	
 	function validateYoutubeUrl1(url)
 	{
@@ -41,6 +63,21 @@
 	        if (e.keyCode == 13) // click on Enter
                 document.getElementById("textbox_button").onclick();
 	    };
+		
+		if (this.info.isViewMode != isViewerMode)
+		{
+			isViewMode = this.info.isViewMode;
+			var _table     = document.getElementsByTagName("table")[0];
+			
+			if (_table)
+			{
+				if (_table.rows[0])
+					_table.rows[0].style.display = isViewMode ? "none" : "";
+				
+				if (_table.rows[1])
+					_table.rows[1].style.display = isViewMode ? "none" : "";
+			}
+		}
 
 		// clear validation on input/paste
         _textbox.oninput = _textbox.onpaste = function(e)
@@ -57,7 +94,20 @@
 
 		document.getElementById("textbox_button").onclick = function(e)
 		{
-		    var _url = document.getElementById("textbox_url").value;
+			var _url = document.getElementById("textbox_url").value;
+			
+			var _searchDoubleStart = 10;
+			var _findDoubleUrl = _url.indexOf("http://", _searchDoubleStart);
+			if (_findDoubleUrl < 0)
+				_findDoubleUrl = _url.indexOf("https://", _searchDoubleStart);
+			if (_findDoubleUrl < 0)
+				_findDoubleUrl = _url.indexOf("www.", _searchDoubleStart);
+
+			if (_findDoubleUrl > 0)
+			{
+				_url = _url.substr(0, _findDoubleUrl);
+				document.getElementById("textbox_url").value = _url;
+			}
 
 		    if (!validateYoutubeUrl(_url))
             {
@@ -82,14 +132,20 @@
 
 				if (!player)
 				{
-					player = new YT.Player('content', {
+					var opt = {
 						height: '100%',
 						width: '100%',
 						videoId: getVideoId(url),
 						playerVars: { 
 							'fs' : 1
 						}
-					});
+					};
+
+					var _time = getParam(url, "t");
+					if (_time && _time.length > 0)
+						opt.playerVars.start = parseInt(_time);
+
+					player = new YT.Player('content', opt);
 				}
 				else
 				{
@@ -139,6 +195,10 @@
             }
 
 			var _id = getVideoId(url);
+			var _questPos = _id.indexOf("?");
+			if (_questPos > 0)
+				_id = _id.substr(0, _questPos);
+
             var _url = "http://img.youtube.com/vi/" + _id + "/0.jpg";
 			if (_id)
 			{
@@ -174,6 +234,13 @@
 		{
 			_frames[0].style.pointerEvents = isEnabled ? "none" : "";
 		}
+	};
+	
+	window.Asc.plugin.onTranslate = function()
+	{
+		var label = document.getElementById("td_labelUrl");
+		if (label)
+			label.innerHTML = window.Asc.plugin.tr("Paste youtube video URL");
 	};
 	
 })(window, undefined);

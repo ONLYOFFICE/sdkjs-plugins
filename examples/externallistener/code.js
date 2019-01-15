@@ -20,14 +20,14 @@
 			}
 			case "insertText":
 			{
-				var sScript = "var oDocument = Api.GetDocument();";
-				sScript += "var oParagraph = Api.CreateParagraph();";
-				sScript += "oParagraph.AddText(\"";
-				sScript += data.text;
-				sScript += "\");";
-				sScript += "oDocument.InsertContent([oParagraph]);";
-				window.Asc.plugin.info.recalculate = true;
-				this.executeCommand("command", sScript);
+				Asc.scope.text = data.text; // export variable to plugin scope
+                this.callCommand(function() {
+                    var oDocument = Api.GetDocument();
+                    var oParagraph = Api.CreateParagraph();
+                    oParagraph.AddText(Asc.scope.text);
+                    oDocument.InsertContent([oParagraph]);
+                }, true);
+				
 				break;
 			}
 		}

@@ -46,6 +46,12 @@
 						languages.push( { id : i, lang : _langs[i] } );
 					}
 
+					var _defLang = "ru";
+					if (window.Asc.plugin.info.lang && window.Asc.plugin.info.lang.length == 5)
+					{
+						_defLang = Asc.plugin.info.lang.substr(0, 2);
+					}
+
 					languages.sort(function(a, b)
 					{
 						if (a.lang > b.lang)
@@ -70,7 +76,7 @@
 					{
 						_langs += ("<option value=\"" + languages[i].id + "\">" + languages[i].lang + "</option>");
 
-						if (languages[i].id == "ru")
+						if (languages[i].id == _defLang)
 							_defaultDest = i - 1;
 					}
 					
