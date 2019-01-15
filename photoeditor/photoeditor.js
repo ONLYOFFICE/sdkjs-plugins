@@ -51,6 +51,7 @@
             apiKey: '1234567',
             appendTo: 'editor_container',
 			theme: 'minimum',
+			language: (typeof window.Asc.plugin.info.lang === "string" ? window.Asc.plugin.info.lang.split('-')[0] : 'en'),
             onLoad: function(){
                 bInit = true;
                 oFeatherEditor.launch(

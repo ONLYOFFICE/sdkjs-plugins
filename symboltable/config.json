@@ -1,30 +1,62 @@
 {
-    "name" : "Symbol Table",
-    "guid" : "asc.{03C18A8D-8E01-444A-86EB-EDDFA7773157}",
-    "baseUrl" : "",
+    "name": "Symbol Table",
+    "nameLocale": {
+        "ru": "Таблица символов",
+        "fr": "Table des symboles",
+        "es": "Tabla de símbolos",
+        "de": "Symboltabelle"
+    },
+    "guid": "asc.{03C18A8D-8E01-444A-86EB-EDDFA7773157}",
+    "baseUrl": "",
 
-    "variations" : [
+    "variations": [
         {
-            "description" : "symboltable",
-            "url"         : "index.html",
+            "description": "Symbol Table",
+            "descriptionLocale": {
+                "ru": "Таблица символов",
+                "fr": "Table des symboles",
+                "es": "Tabla de símbolos",
+                "de": "Symboltabelle"
+            },
+            "url": "index.html",
 
-            "icons"           : ["icon.png", "icon@2x.png", "icon2.png", "icon2@2x.png"],
-            "isViewer"        : false,
-            "EditorsSupport"  : ["word", "cell", "slide"],
+            "icons": [ "icon.png", "icon@2x.png", "icon2.png", "icon2@2x.png" ],
+            "isViewer": false,
+            "EditorsSupport": [ "word", "cell", "slide" ],
 
-            "isVisual"        : true,
-            "isModal"         : false,
-            "isInsideMode"    : true,
+            "isVisual": true,
+            "isModal": false,
+            "isInsideMode": true,
 
-            "initDataType"    : "html",
-            "initData"        : "",
+            "initDataType": "html",
+            "initData": "",
 
-            "isUpdateOleOnResize" : false,
+            "isUpdateOleOnResize": false,
 
-            "buttons"         : [ { "text": "Insert", "primary": true},
-                { "text": "Cancel", "primary": false } ],
+            "buttons": [
+                {
+                    "text": "Insert",
+                    "primary": true,
+                    "textLocale": {
+                        "ru": "Вставить",
+                        "fr": "Insérer",
+                        "es": "Insertar",
+                        "de": "Einfügen"
+                    }
+                },
+                {
+                    "text": "Cancel",
+                    "primary": false,
+                    "textLocale": {
+                        "ru": "Отмена",
+                        "fr": "Annuler",
+                        "es": "Cancelar",
+                        "de": "Abbrechen"
+                    }
+                }
+            ],
 
-            "size" : [600, 700]
+            "size": [ 600, 700 ]
         }
     ]
 }

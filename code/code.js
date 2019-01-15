@@ -9,17 +9,18 @@
 		return false;
 	};
 
-	var language = hljs.listLanguages(),	// array languages
-		isInitLang = false, 				//flag init lang select
-		language_select,					//select for languages
-		style_select,						//select for style
-		style_value,						//current value style
-		curLang,							//current language
-		code_field,							//field for higlight code		
-		container,							//scrollable conteiner	
-		timer,								//for timer 
-		f_Paste = false;					//flag paste 
-	const isIE = checkInternetExplorer();	//check IE
+	var language = hljs.listLanguages(),					//array languages
+		isInitLang = false, 								//flag init lang select
+		language_select,									//select for languages
+		style_select,										//select for style
+		style_value,										//current value style
+		curLang,											//current language
+		code_field,											//field for higlight code		
+		container,											//scrollable conteiner	
+		timer,												//for timer 
+		f_Paste = false;									//flag paste 
+	const isIE = checkInternetExplorer();					//check IE
+	const isDE = (window.AscDesktopEditor) ? true : false;	//check desktope editor
 
 	var myscroll = window.Asc.ScrollableDiv;
 
@@ -54,6 +55,13 @@
 		if (isIE)
 			document.getElementById("tabselect").style.display ="none";
 
+		if (!isDE) {
+			document.getElementById("jq_color").style.display ="none";
+		}
+		if (isDE) {
+			document.getElementById("background_color").style.display ="none";
+			initSpectrum("#FFFFFF");
+		}
 		background_color.onchange = function () {
 			container.style.background = background_color.value;
 		};
@@ -63,7 +71,11 @@
 			initLang();
 			window.Asc.plugin.loadModule("./highlight/styles/googlecode.css", function(content){
 				style_value = content;
-				background_color.value = hexc($(container).css('backgroundColor'));
+				if (isDE) {
+					$("#jq_color").spectrum("set", (hexc($(container).css('backgroundColor'))));
+				} else {
+					background_color.value = hexc($(container).css('backgroundColor'));
+				}
 			});
 		}
 
@@ -89,7 +101,11 @@
 			document.getElementById("style").href = "highlight/styles/" + style_select.options[style_select.selectedIndex].value;
 			window.Asc.plugin.loadModule("./highlight/styles/" + style_select.options[style_select.selectedIndex].value , function(content){
 				style_value = content;
-				background_color.value = hexc($(container).css('backgroundColor'));
+				if (isDE) {
+					$("#jq_color").spectrum("set", (hexc($(container).css('backgroundColor'))));
+				} else {
+					background_color.value = hexc($(container).css('backgroundColor'));
+				}
 			});
 		}
 
@@ -304,6 +320,51 @@
 		};
 	};
 
+	function initSpectrum (clr) {
+		$("#jq_color").spectrum({
+			color: clr,
+			showInput: true,
+			className: "full-spectrum",
+			showInitial: true,
+			showPalette: true,
+			showSelectionPalette: true,
+			maxSelectionSize: 10,
+			preferredFormat: "hex",
+			move: function (color) {
+				
+			},
+			show: function () {
+			
+			},
+			beforeShow: function () {
+			
+			},
+			hide: function (color) {
+				container.style.background = color.toHexString();
+				background_color.value = color.toHexString();
+			},
+			change: function() {
+				
+			},
+			palette: [
+				["rgb(0, 0, 0)", "rgb(67, 67, 67)", "rgb(102, 102, 102)",
+				"rgb(204, 204, 204)", "rgb(217, 217, 217)","rgb(255, 255, 255)"],
+				["rgb(152, 0, 0)", "rgb(255, 0, 0)", "rgb(255, 153, 0)", "rgb(255, 255, 0)", "rgb(0, 255, 0)",
+				"rgb(0, 255, 255)", "rgb(74, 134, 232)", "rgb(0, 0, 255)", "rgb(153, 0, 255)", "rgb(255, 0, 255)"], 
+				["rgb(230, 184, 175)", "rgb(244, 204, 204)", "rgb(252, 229, 205)", "rgb(255, 242, 204)", "rgb(217, 234, 211)", 
+				"rgb(208, 224, 227)", "rgb(201, 218, 248)", "rgb(207, 226, 243)", "rgb(217, 210, 233)", "rgb(234, 209, 220)", 
+				"rgb(221, 126, 107)", "rgb(234, 153, 153)", "rgb(249, 203, 156)", "rgb(255, 229, 153)", "rgb(182, 215, 168)", 
+				"rgb(162, 196, 201)", "rgb(164, 194, 244)", "rgb(159, 197, 232)", "rgb(180, 167, 214)", "rgb(213, 166, 189)", 
+				"rgb(204, 65, 37)", "rgb(224, 102, 102)", "rgb(246, 178, 107)", "rgb(255, 217, 102)", "rgb(147, 196, 125)", 
+				"rgb(118, 165, 175)", "rgb(109, 158, 235)", "rgb(111, 168, 220)", "rgb(142, 124, 195)", "rgb(194, 123, 160)",
+				"rgb(166, 28, 0)", "rgb(204, 0, 0)", "rgb(230, 145, 56)", "rgb(241, 194, 50)", "rgb(106, 168, 79)",
+				"rgb(69, 129, 142)", "rgb(60, 120, 216)", "rgb(61, 133, 198)", "rgb(103, 78, 167)", "rgb(166, 77, 121)",
+				"rgb(91, 15, 0)", "rgb(102, 0, 0)", "rgb(120, 63, 4)", "rgb(127, 96, 0)", "rgb(39, 78, 19)", 
+				"rgb(12, 52, 61)", "rgb(28, 69, 135)", "rgb(7, 55, 99)", "rgb(32, 18, 77)", "rgb(76, 17, 48)"]
+			]
+		});
+	};
+
 	function initLang(){
 		var temp_language = [];
 		for (var i = 0; i < language.length; i++)
@@ -490,6 +551,40 @@
 		evt.initMouseEvent("mouseup", true, true, window, 1, 0, 0, 0, 0,
 			false, false, false, false, 0, null);
 		document.dispatchEvent(evt);
+	};
+
+	window.Asc.plugin.onTranslate = function()
+	{
+		var lb_lanuage = document.getElementById("lb_lanuage");
+		if (lb_lanuage)
+			lb_lanuage.innerHTML = window.Asc.plugin.tr("Language");
+		var btn_highlight = document.getElementById("btn_highlight");
+		if (btn_highlight)
+			btn_highlight.innerHTML = window.Asc.plugin.tr("Highlight");
+		var lb_style = document.getElementById("lb_style");
+		if (lb_style)
+			lb_style.innerHTML = window.Asc.plugin.tr("Style");
+		var lb_repTab = document.getElementById("lb_repTab");
+		if (lb_repTab)
+			lb_repTab.innerHTML = window.Asc.plugin.tr("Replace Tab with spaces");
+		var opt_DontRep = document.getElementById("opt_DontRep");
+		if (opt_DontRep)
+			opt_DontRep.innerHTML = window.Asc.plugin.tr("Don`t replaces");
+		var opt_2sp = document.getElementById("opt_2sp");
+		if (opt_2sp)
+			opt_2sp.innerHTML = window.Asc.plugin.tr("Replace by 2 spaces");
+		var opt_4sp = document.getElementById("opt_4sp");
+		if (opt_4sp)
+			opt_4sp.innerHTML = window.Asc.plugin.tr("Replace by 4 spaces");
+		var lb_bgColor = document.getElementById("lb_bgColor");
+		if (lb_bgColor)
+			lb_bgColor.innerHTML = window.Asc.plugin.tr("Choose background color");
+		var btn_sp_cancel = document.getElementById("btn_sp_cancel");
+		if (btn_sp_cancel)
+			btn_sp_cancel.innerHTML = window.Asc.plugin.tr("Cancel");
+		var btn_sp_choose = document.getElementById("btn_sp_choose");
+		if (btn_sp_choose)
+			btn_sp_choose.innerHTML = window.Asc.plugin.tr("Choose");
 	};
 
 })(window, undefined);

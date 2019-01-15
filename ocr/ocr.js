@@ -1,5 +1,68 @@
 (function(window, undefined){
 
+	var oLangMap = {};    
+    oLangMap['eng'] = "English";
+    oLangMap['chi_sim'] = "Chinese";
+    oLangMap['rus'] = "Russian";
+    oLangMap['meme'] = "Meme";
+    oLangMap['tha'] = "Thai";
+    oLangMap['deu'] = "German";
+    oLangMap['jpn'] = "Japanese";
+    oLangMap['spa'] = "Spanish";
+    oLangMap['fra'] = "French";
+    oLangMap['por'] = "Portuguese";
+    oLangMap['ita'] = "Italian";
+    oLangMap['pol'] = "Polish";
+    oLangMap['tur'] = "Turkish";
+    oLangMap['nld'] = "Dutch";
+    oLangMap['ara'] = "Arabic";
+    oLangMap['ces'] = "Czech";
+    oLangMap['kor'] = "Korean";
+    oLangMap['swe'] = "Swedish";
+    oLangMap['vie'] = "Vietnamese";
+    oLangMap['ron'] = "Romanian";
+    oLangMap['ell'] = "Greek";
+    oLangMap['ind'] = "Indonesian";
+    oLangMap['hun'] = "Hungarian";
+    oLangMap['dan'] = "Danish";
+    oLangMap['bul'] = "Bulgarian";
+    oLangMap['fin'] = "Finnish";
+    oLangMap['nor'] = "Norwegian";
+    oLangMap['ukr'] = "Ukrainian";
+    oLangMap['cat'] = "Catalan";
+    oLangMap['hrv'] = "Croatian";
+    oLangMap['heb'] = "Hebrew";
+    oLangMap['lit'] = "Lithuanian";
+    oLangMap['slv'] = "Slovenian";
+    oLangMap['hin'] = "Hindi";
+    oLangMap['ben'] = "Bengali";
+    oLangMap['tel'] = "Telugu";
+    oLangMap['tam'] = "Tamil";
+    oLangMap['kan'] = "Kannada";
+    oLangMap['mal'] = "Malayalam";
+    oLangMap['tgl'] = "Tagalog";
+    oLangMap['swa'] = "Swahili";
+    oLangMap['aze'] = "Azerbaijani";
+    oLangMap['bel'] = "Belarusian";
+    oLangMap['afr'] = "Afrikaans";
+    oLangMap['sqi'] = "Albanian";
+    oLangMap['eus'] = "Basque";
+    oLangMap['epo'] = "Esperanto";
+    oLangMap['est'] = "Estonian";
+    oLangMap['glg'] = "Galician";
+    oLangMap['isl'] = "Icelandic";
+    oLangMap['lav'] = "Latvian";
+    oLangMap['mkd'] = "Macedonian";
+    oLangMap['msa'] = "Malay";
+    oLangMap['mlt'] = "Maltese";
+    oLangMap['grc'] = "Ancient Greek";
+    oLangMap['chr'] = "Cherokee";
+    oLangMap['enm'] = "English (Old)";
+    oLangMap['frk'] = "Frankish";
+    oLangMap['equ'] = "Math";
+    oLangMap['srp'] = "Serbian (Latin)";
+    oLangMap['slk'] = "Slovak";
+
     window.oncontextmenu = function(e)
 	{
 		if (e.preventDefault)
@@ -50,7 +113,11 @@
 				if (window["AscDesktopEditor"])
 				{
 					window["AscDesktopEditor"]["OpenFilenameDialog"]("images", true, function(files) {
-						arrImages = [];
+                        arrImages = [];
+                        
+                        if (!Array.isArray(files)) // string detect
+                            files = [files];
+
 						if (files.length == 0)
 							return;
 						
@@ -258,4 +325,34 @@
         }
     };
 
-})(window, undefined);
+
+	window.Asc.plugin.onTranslate = function(){
+		var elem = document.getElementById("label1");
+		if (elem){
+			elem.innerHTML = window.Asc.plugin.tr("Tesseract.js lets recognize text in pictures (png, jpg)");
+		}
+		elem = document.getElementById("load-file-button-id");
+		if (elem){
+			elem.innerHTML = window.Asc.plugin.tr("Load File");
+		}	
+		elem = document.getElementById("label2");
+		if (elem){
+			elem.innerHTML = window.Asc.plugin.tr("Choose language");
+		}
+		elem = document.getElementById("recognize-button");
+		if (elem){
+			elem.innerHTML = window.Asc.plugin.tr("Recognize");
+		}
+		elem = document.getElementById("lang-select");
+		if(elem){
+			var sInnerHtml = "";
+			for(var key in oLangMap){
+				if(oLangMap.hasOwnProperty(key)){
+					sInnerHtml += "<option value = \'" + key + "'>" + window.Asc.plugin.tr(oLangMap[key]) + "</option>";
+				}
+			}
+			elem.innerHTML = sInnerHtml;
+		}
+	};
+	
+	})(window, undefined);

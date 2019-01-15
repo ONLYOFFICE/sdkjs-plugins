@@ -1,0 +1,7 @@
+{
+    "Photo Editor": "Фоторедактор",
+    "Close": "Закрыть",
+    "Image Editor Add-on": "Редактор картинок",
+    "<a href=\"https://creativesdk.adobe.com/docs/web/#/articles/imageeditorui/index.html\" target=\"_blank\">The Creative SDK Image Editing component</a> can be embedded in any website with just a few lines of Javascript, adding simple yet powerful image editing to an existing workflow.": "Редактор картинок основан на компоненте <a href=\"https://creativesdk.adobe.com/docs/web/#/articles/imageeditorui/index.html\" target=\"_blank\">The Creative SDK Image Editing component</a>, который может быть встроен на любой сайт с помощью нескольких строк кода на JavaScript.",
+	"Source code": "Исходный код"
+}
