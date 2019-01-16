@@ -2,5 +2,7 @@
     "New": "Crear",
     "Delete": "Eliminar",
     "Rename": "Renombrar",
-    "Run": "Ejecutar"
+    "Run": "Ejecutar",
+	"Cancel" : "Cancelar",
+	"Macros" : "Macros"
 }
