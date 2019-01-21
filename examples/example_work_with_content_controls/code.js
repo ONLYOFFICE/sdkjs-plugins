@@ -52,10 +52,11 @@
 	{\r\n\
 		\"Id\" : 4,\r\n\
 		\"Tag\" : \"{Document5}\",\r\n\
-		\"Lock\" : 0\r\n\
+		\"Lock\" : 0,\r\n\
+		\"Inline\" : true\r\n\
 	},\r\n\
 \r\n\
-	\"Script\" : \"var oDocument = Api.GetDocument();var oParagraph = Api.CreateParagraph();oParagraph.AddText(\'Hello world!\');oDocument.InsertContent([oParagraph]);\"\r\n\
+	\"Script\" : \"var oDocument = Api.GetDocument();var oParagraph = Api.CreateParagraph();oParagraph.AddText(\'Hello world!\');oDocument.InsertContent([oParagraph], true);\"\r\n\
 }\r\n\
 ]";
 
@@ -72,6 +73,8 @@
 		return target.replace(new RegExp(search, 'g'), replacement);
 	};
 
+	var _Control = [];
+
     window.Asc.plugin.init = function(text)
     {
 		document.getElementById("textareaIR").value = _placeholderInsert_Replace;
@@ -79,13 +82,24 @@
 		document.getElementById("textareaG").value = _placeholderGetAll;
 
     	document.getElementById("buttonIDInsertAndContext").onclick = function() {
-
+			_Control = [];
     		var _val = document.getElementById("textareaIR").value;
 			_val = _val.replaceAll("\r\n", "");
 			_val = _val.replaceAll("\n", "");
 			var _obj = JSON.parse(_val);
-			window.Asc.plugin.executeMethod("InsertAndReplaceContentControls", [_obj]);
-
+			for (var i = 0; i <_obj.length; i++) {
+				if(_obj[i].Props.Inline) {
+					_Control.push(_obj[i]);
+					_obj.splice(i,1);
+					i--;
+				}
+			}
+			if (_obj.length) {
+				window.Asc.plugin.executeMethod("InsertAndReplaceContentControls", [_obj]);
+			}
+			if (_Control.length) {
+				PasteInlineContentControl();
+			}
 		};
 		document.getElementById("buttonIDRemove").onclick = function() {
 
@@ -103,6 +117,7 @@
 		};
 		document.getElementById("buttonIDChangeState").onclick = function() {
 
+			_Control = [];
 			window.buttonIDChangeState_click = true;
 			window.Asc.plugin.executeMethod("GetCurrentContentControl");
 
@@ -112,17 +127,32 @@
 			window.Asc.plugin.executeMethod("GetCurrentContentControl");
 
 		};
-    };
+	};
+	
+	function PasteInlineContentControl () {
+		for (var key in _Control) {
+			window.Asc.plugin.executeMethod("AddContentControl", [2, {"Lock" : 3}]);
+		}
+	}
 
     window.Asc.plugin.button = function(id)
     {
 		this.executeCommand("close", "");
-    };
+    }; 
 
 	window.Asc.plugin.onMethodReturn = function(returnValue)
 	{
 		var _plugin = window.Asc.plugin;
-		if (_plugin.info.methodName == "GetAllContentControls")
+		if (_plugin.info.methodName == "AddContentControl" && returnValue)
+		{
+			if (_Control.length)
+			{
+				_Control[0].Props.InternalId = returnValue.InternalId;
+				var _obj = _Control[0];
+				window.Asc.plugin.executeMethod("InsertAndReplaceContentControls", [[_obj]]);
+				_Control.splice(0,1);
+			}
+		} else if (_plugin.info.methodName == "GetAllContentControls")
 		{
 			document.getElementById("textareaG").value = "";
 
