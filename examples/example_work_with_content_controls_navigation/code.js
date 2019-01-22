@@ -1,5 +1,8 @@
 (function(window, undefined){
 	var flagInit = false;
+	var fBtnGetAll = false;
+	var fClickLabel = false;
+	var fClickBtnCur =  false;
 
     window.Asc.plugin.init = function(text)
     {
@@ -12,35 +15,46 @@
 
 		};
 
+		
+
 		document.getElementById("buttonIDGetAll").onclick = function() {
 
 			window.Asc.plugin.executeMethod("GetAllContentControls");
+			fBtnGetAll = true;					
 
 		};
 
 		document.getElementById("buttonIDShowCurrent").onclick = function() {
-
+			
+			fClickBtnCur = true;
 			window.Asc.plugin.executeMethod("GetCurrentContentControl");
 
 		};
 
 		if (!flagInit) {
 			flagInit = true;
-			document.getElementById("buttonIDGetAll").click();
+			window.Asc.plugin.executeMethod("GetAllContentControls");
+			// document.getElementById("buttonIDGetAll").click();
 		}
 	};
 	
-	addLabel = (returnValue) => {
-		$('#divG').append(
+	addLabel = (returnValue, element) => {
+		$(element).append(
 			$('<label>',{
 				id : returnValue.InternalId,
+				for : element,
 				class : 'label-info',
 				text : returnValue.InternalId + "	" + (returnValue.Id || 'null'),
 				on : {
 					click: function(){
+						fClickLabel = true;
 						$('.label-selected').removeClass('label-selected');
 						$(this).addClass('label-selected');
-						window.Asc.plugin.executeMethod("SelectContentControl",[this.id]);
+						if (element === "#divG") {
+							window.Asc.plugin.executeMethod("SelectContentControl",[this.id]);
+						} else {
+							window.Asc.plugin.executeMethod("MoveCursorToContentControl",[this.id, true]);
+						}
 					},
 					mouseover: function(){
 						$(this).addClass('label-hovered');
@@ -63,21 +77,35 @@
 		var _plugin = window.Asc.plugin;
 		if (_plugin.info.methodName == "GetAllContentControls")
 		{
-			document.getElementById("divG").innerHTML = "";
-			for (var i = 0; i < returnValue.length; i++) {	
-				addLabel(returnValue[i]);
+			if (fBtnGetAll) {
+				document.getElementById("divP").innerHTML = "";
+				fBtnGetAll = false;
+				for (var i = 0; i < returnValue.length; i++) {	
+					addLabel(returnValue[i], "#divP");
+				}
+			} else {
+				document.getElementById("divG").innerHTML = "";
+				for (var i = 0; i < returnValue.length; i++) {	
+					addLabel(returnValue[i], "#divG");
+				}
 			}
+			
 
 		} else if (_plugin.info.methodName == "GetCurrentContentControl") {
-			if (!($('.label-selected').length && $('.label-selected')[0].id === returnValue) && returnValue) {
+			if (fClickBtnCur) {
+				window.Asc.plugin.executeMethod("SelectContentControl",[returnValue]);
+				fClickBtnCur = false;
+			} else if (!($('.label-selected').length && $('.label-selected')[0].id === returnValue) && returnValue) {
 				if (document.getElementById(returnValue))
 				{
 					$('.label-selected').removeClass('label-selected');
-					$('#' + returnValue).addClass('label-selected');
+					$('#divG #' + returnValue).addClass('label-selected');
+					$('#divP #' + returnValue).addClass('label-selected');
+
 
 				} else {
 					$('.label-selected').removeClass('label-selected');
-					addLabel({InternalId: returnValue});
+					addLabel({InternalId: returnValue},"#divG");
 					$('#' + returnValue).addClass('label-selected');
 				}
 			} else if (!returnValue) {
@@ -88,7 +116,10 @@
 	
 	window.Asc.plugin.event_onTargetPositionChanged = function()
 	{
-		window.Asc.plugin.executeMethod("GetCurrentContentControl");
+		if (!fClickLabel) {
+			window.Asc.plugin.executeMethod("GetCurrentContentControl");
+		}
+		fClickLabel = false;
 	};
 
 })(window, undefined);
