@@ -1,0 +1,23 @@
+{
+    "name"       : "searchAndReplaceOnStart",
+    "guid"       : "asc.{C820F3CC-1248-4CA2-8D0F-D7EFD44DE09C}",
+    "baseUrl"    : "",
+    "variations" : [
+        {
+            "description"         : "searchAndReplaceOnStart",
+            "url"                 : "index.html",
+            "icons"               : ["icon.png", "icon@2x.png"],
+			"isViewer"            : true,
+            "EditorsSupport"	  : [ "word" ],
+			"isSystem"			  : true,
+            "isVisual"            : false,
+            "isModal"             : false,
+            "isInsideMode"        : false,
+            "initDataType"        : "none",
+            "initData"            : "",
+            "buttons"             : [],
+			
+			"events" : ["onDocumentContentReady"]
+        }
+    ]
+}
