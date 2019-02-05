@@ -129,6 +129,7 @@ editor.ternTooltip = new TernTooltip(editor, ternServer);
 
     document.getElementById("button_new").onclick = function() {
         var indexMax = 0;
+        var macrosTranslate = window.Asc.plugin.tr("Macros");
         for (var i = 0; i < Content.macrosArray.length; i++)
         {
             if (0 == Content.macrosArray[i].name.indexOf("Macros"))
@@ -137,9 +138,15 @@ editor.ternTooltip = new TernTooltip(editor, ternServer);
                 if (!isNaN(index) && (indexMax < index))
                     indexMax = index;
             }
+            else if (0 == Content.macrosArray[i].name.indexOf(macrosTranslate))
+            {
+                var index = parseInt(Content.macrosArray[i].name.substr(macrosTranslate.length));
+                if (!isNaN(index) && (indexMax < index))
+                    indexMax = index;
+            }
         }
         indexMax++;
-        Content.macrosArray.push({ name : ("Macros " + indexMax), value : "(function()\n{\n})();" });
+        Content.macrosArray.push({ name : (macrosTranslate + " " + indexMax), value : "(function()\n{\n})();" });
         Content.current = Content.macrosArray.length - 1;
         updateMenu();
     };
@@ -287,7 +294,9 @@ editor.ternTooltip = new TernTooltip(editor, ternServer);
 		document.getElementById("button_new").innerHTML = window.Asc.plugin.tr("New");
 		document.getElementById("button_delete").innerHTML = window.Asc.plugin.tr("Delete");
 		document.getElementById("button_rename").innerHTML = window.Asc.plugin.tr("Rename");
-		document.getElementById("button_run").innerHTML = window.Asc.plugin.tr("Run");
+        document.getElementById("button_run").innerHTML = window.Asc.plugin.tr("Run");
+        document.getElementById("rename_ok").innerHTML = window.Asc.plugin.tr("Ok");
+        document.getElementById("rename_cancel").innerHTML = window.Asc.plugin.tr("Cancel");
 	};
 
 })(window, undefined);
