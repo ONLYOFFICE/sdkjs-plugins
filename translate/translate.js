@@ -19,7 +19,7 @@
 
 	function updateScroll()
 	{
-		Ps.update(container);
+		Ps.update();
 	}
 
 	function getLanguagesSupport()
@@ -258,8 +258,7 @@
 	window.Asc.plugin.init = function(text)
 	{
 		document.getElementById("translateresult_id").innerHTML = "";
-		updateScroll();
-
+		
 		text = text.replace(/;/g, "%3B");
 
 		translate_data = text;
@@ -291,6 +290,7 @@
 			}
 		}
 		isInit = true;
+		updateScroll();
 	};
 	
 	window.Asc.plugin.button = function(id)

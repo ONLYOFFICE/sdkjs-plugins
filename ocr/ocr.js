@@ -92,7 +92,7 @@
         });
 
         function updateScroll(){
-            Ps.update(container);
+            Ps.update();
         }
         var container = document.getElementById('scrollable-image-text-div');        
 		Ps = new PerfectScrollbar("#" + container.id, {});
