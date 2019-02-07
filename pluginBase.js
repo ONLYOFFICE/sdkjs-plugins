@@ -10,6 +10,9 @@ var Ps = null;
     window.Asc = window.Asc || {};
     window.Asc.plugin = {};
 
+    window.Asc.plugin.tr_init = false;
+    window.Asc.plugin.tr = function(val) { return val; }
+
     window.Asc.scope = {};
     window.Asc.scope.prototype = 
     {
