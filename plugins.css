@@ -190,15 +190,20 @@ margin: 0 13px 0 0;
  * Scrollbar thumb styles
  */
 .ps__thumb-x {
-  background-color: #aaa;
-  border-radius: 6px;
-  transition: background-color .2s linear, height .2s ease-in-out;
-  -webkit-transition: background-color .2s linear, height .2s ease-in-out;
-  height: 6px;
-  /* there must be 'bottom' for ps__thumb-x */
-  bottom: 2px;
-  /* please don't change 'position' */
-  position: absolute;
+    position: absolute; /* please don't change 'position' */
+    bottom: 0; /* there must be 'bottom' for ps-scrollbar-x */
+    width: 9px;
+    background-color: rgb(241, 241, 241);
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    visibility: visible;
+    display: block;
+    box-sizing: border-box;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAOCAYAAAD0f5bSAAAACXBIWXMAAB2HAAAdhwGP5fFlAAAALElEQVQokWNgoBs4f/78f1JpJnIsIkvTsAQfP378TypNxyD/+PEjyRrJsgkAKS81km7nDNQAAAAASUVORK5CYII=);
+    background-repeat: no-repeat;
+    background-position: center 0;
+    border: 1px solid #cfcfcf;
 }
 
 .ps__thumb-y {
