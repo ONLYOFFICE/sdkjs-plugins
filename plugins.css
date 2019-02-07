@@ -192,7 +192,7 @@ margin: 0 13px 0 0;
 .ps__thumb-x {
     position: absolute; /* please don't change 'position' */
     bottom: 0; /* there must be 'bottom' for ps-scrollbar-x */
-    width: 9px;
+    height: 10px;
     background-color: rgb(241, 241, 241);
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
@@ -209,7 +209,7 @@ margin: 0 13px 0 0;
 .ps__thumb-y {
     position: absolute; /* please don't change 'position' */
     right: 0; /* there must be 'right' for ps-scrollbar-y */
-    width: 9px;
+    width: 10px;
     background-color: rgb(241, 241, 241);
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
