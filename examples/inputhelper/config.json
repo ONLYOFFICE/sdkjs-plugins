@@ -1,0 +1,32 @@
+{
+    "name" : "inputhelper",
+    "guid" : "asc.{639E69BC-58DE-4029-9B43-F0420F67E6F9}",
+
+    "variations" : [
+        {
+            "description" : "inputhelper",
+            "url"         : "index.html",
+
+            "icons"           : ["icon.png", "icon@2x.png"],
+            "isViewer"        : false,
+            "EditorsSupport"  : ["word"],
+
+            "isVisual"        : false,
+            "isModal"         : false,
+            "isInsideMode"    : false,
+            "isSystem"        : true,
+
+            "initDataType"    : "none",
+            "initData"        : "",
+
+            "isUpdateOleOnResize" : false,
+
+            "buttons"        : [ ],
+			
+			"events" : [
+				"onTargetPositionChanged",
+				"onInputSymbolCheck"				
+			]
+        }
+    ]
+}

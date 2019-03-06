@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>inputhelper</title>
+	<script src="../pluginBase.js"></script>
+	<script src="code.js"></script>	
+	<link rel="stylesheet" href="../plugins.css">
+	<style>    
+		.main {
+			margin: 0px;
+			padding: 0px;
+			width: 100%;
+			height: 100%;
+			display: inline-block;
+			overflow: hidden;
+			box-sizing: border-box;
+			user-select: none;
+			position: fixed;
+			border: 1px solid #cfcfcf;
+		}
+
+		ul {
+			margin: 0px;
+			padding: 0px;
+			width: 100%;
+			height: 100%;
+			list-style-type: none;
+			outline:none;
+		}
+		
+		li {
+			padding: 10px;
+			font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+			font-size: 12px;
+			font-weight: 400;
+		}
+
+		li:hover {
+			background-color: #D8DADC;
+		}
+
+		.li_selected {
+			background-color: #7D858C;
+			color: white;
+		}
+	</style>
+</head>
+<body style="background:#FFFFFF; width: 100%;height: 100%; margin: 0;">
+	<div class="main" id="elements_area">
+		<ul id="elements_id" role="listbox">			
+		</ul>
+    </div>
+</body>
+</html>
