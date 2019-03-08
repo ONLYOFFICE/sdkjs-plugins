@@ -1052,10 +1052,87 @@
                     updateInput();
                 }
             );
+			
+			
+        var container = document.getElementById('fake-symbol-table-wrap');
+			
+			
+		   $(container).on('ps-scroll-y', function () {
+
+			var oTooltip = $('#tooltip-div');
+			if(!bShowTooltip){
+				bShowTooltip = true;
+				oTooltip.hide();
+				return;
+			}
+			var container = document.getElementById('fake-symbol-table-wrap');
+
+			var nSymbolsCount = getAllSymbolsCount(aRanges);
+			var nColsCount = getColsCount();
+			var nRows = getRowsCount();
+			var nAllRowsCount = Math.ceil(nSymbolsCount/nColsCount);
+			var nFullHeight = nAllRowsCount*CELL_HEIGHT;
+
+			var nSymbol;
+			var nRowSkip = Math.min(nAllRowsCount - nRows, (nAllRowsCount*container.scrollTop/nFullHeight + 0.5) >> 0);
+			if(!bMainFocus){
+				nSymbol = getCodeByLinearIndex(aRanges, nRowSkip*nColsCount);
+			}
+			else{
+				var id = $('#symbols-table').children()[0].id;
+				if(id){
+					var nOldFirstCode = parseInt(id.slice(1, id.length));
+					var nOldFirstLinearIndex = getLinearIndexByCode(aRanges, nOldFirstCode);
+					var nOldCurrentLinearIndex = getLinearIndexByCode(aRanges, nCurrentSymbol);
+					var nDiff = nOldCurrentLinearIndex - nOldFirstLinearIndex;
+					var nNewCurLinearIndex = nRowSkip*nColsCount + nDiff;
+					nSymbol = getCodeByLinearIndex(aRanges, nNewCurLinearIndex);
+				}
+				else{
+					nSymbol = getCodeByLinearIndex(aRanges, nRowSkip*nColsCount);
+				}
+			}
+
+			var oRange = getRangeBySymbol(aRanges, nSymbol);
+			if(!oRange){
+				oTooltip.hide();
+				return;
+			}
+			var sRangeName = oRangeNames[oRange.Name];
+			oTooltip.text(sRangeName);
+			oTooltip.css('top', $('.ps__thumb-y').css('top'));
+			oTooltip.css('right', $('#fake-symbol-table-wrap').width() + 4);
+			if(!oTooltip.is(":visible")){
+				oTooltip.show();
+			}
+			if(bScrollMouseUp){
+				bScrollMouseUp = false;					
+				onScrollEnd();
+			}
+		});
+
+
+		$('.ps__scrollbar-y-rail').on('scroll',
+
+                function () {
+                    bShowTooltip = false;
+                }
+
+                );
+
+            $('.ps__scrollbar-y').on('scroll',
+
+                function () {
+                    bShowTooltip = false;
+                }
+
+                );
+			
 
             $("#fake-symbol-table-wrap").on('mouseup.perfect-scroll', function(){
 				bScrollMouseUp = true;						
 				onScrollEnd();
+                bShowTooltip = false;
 			});
             document.getElementById("fake-symbol-table-wrap").addEventListener("wheel",  function () {
                 onScrollEnd();
