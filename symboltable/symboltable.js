@@ -671,6 +671,7 @@
     var nLastScroll = -1000;
 
 
+    var bShowTooltip = true;
     function onScrollEnd(){
 
         var container = document.getElementById('fake-symbol-table-wrap');
@@ -722,8 +723,9 @@
         }
         $('#tooltip-div').hide();
         updateView(true, getCodeByLinearIndex(aRanges, nRowSkip*nColsCount));
+		
+		bShowTooltip = false;
     }
-    var bShowTooltip = true;
 
     function updateView(bUpdateTable, nTopSymbol, bUpdateInput, bUpdateRecents, bUpdateRanges) {
         if(bUpdateTable !== false){
