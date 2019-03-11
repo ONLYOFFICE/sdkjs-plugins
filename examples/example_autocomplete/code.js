@@ -8,7 +8,7 @@
 		{
 			window.isInit = true;
 
-			window.Asc.plugin.currentContentControl = null;
+			window.Asc.plugin.currentText = "";
 			window.Asc.plugin.createInputHelper();
 			window.Asc.plugin.getInputHelper().createWindow();
 		}
@@ -30,10 +30,37 @@
 
 	window.Asc.plugin.event_onInputHelperClear = function()
 	{
+		window.Asc.plugin.currentText = "";
+		window.Asc.plugin.getInputHelper().unShow();
 	};
 
-	window.Asc.plugin.event_onInputHelperInput = function(text)
+	window.Asc.plugin.event_onInputHelperInput = function(data)
 	{
+		if (data.add)
+			window.Asc.plugin.currentText += data.text;
+		else
+			window.Asc.plugin.currentText = data.text;
+
+		if (window.Asc.plugin.currentText.length < 3)
+			return;
+
+		var variants = window.getAutoComplete(window.Asc.plugin.currentText);
+		if (variants.length == 0)
+		{
+			window.Asc.plugin.getInputHelper().unShow();
+		}
+		else
+		{
+			var items = [];
+			for (var i = 0; i < variants.length; i++)
+			{
+				items.push({ text : variants[i] });
+			}
+
+			window.Asc.plugin.getInputHelper().setItems(items);
+			var _sizes = getInputHelperSize();
+			window.Asc.plugin.getInputHelper().show(_sizes.w, _sizes.h, false);
+		}
 	};
 
 	function getInputHelperSize()
