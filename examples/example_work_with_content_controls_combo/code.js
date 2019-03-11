@@ -27,7 +27,7 @@
 		if (window.Asc.plugin.currentContentControl != null)
 		{
 			window.Asc.plugin.executeMethod("SelectContentControl", [window.Asc.plugin.currentContentControl.InternalId], function() {
-				window.Asc.plugin.executeMethod("PasteHtml", ["<span style=\"font-family:onlyofficeDefaultFont\">" + item.text + "</span>"]);
+				window.Asc.plugin.executeMethod("InputText", [item.text]);
 				window.Asc.plugin.getInputHelper().unShow();	
 			});
 		}
@@ -37,12 +37,14 @@
 		}
 	};	
 	
-	window.Asc.plugin.event_onClick = function()
+	window.Asc.plugin.event_onClick = function(isSelectionUse)
 	{
 		window.Asc.plugin.executeMethod("GetCurrentContentControlPr", [], function(obj) {
 			
 			window.Asc.plugin.currentContentControl = obj;
 			var controlTag = obj ? obj.Tag : "";
+			if (isSelectionUse)
+				controlTag = "";
 			switch (controlTag)
 			{
 				case "{people}": // names
@@ -97,11 +99,12 @@
 		var _size = window.Asc.plugin.getInputHelper().getScrollSizes();
 		var _width = 200;// _size.w
 		var _height = _size.h;
+		var _heightMin = window.Asc.plugin.getInputHelper().getItemsHeight(Math.min(5, window.Asc.plugin.getInputHelper().getItems().length));
 
 		if (_width > 400)
 			_width = 400;
-		if (_height > 150)
-			_height = 150;
+		if (_height > _heightMin)
+			_height = _heightMin;
 
 		_width += 30;
 

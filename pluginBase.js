@@ -332,14 +332,35 @@ var Ps = null;
         window.Asc.plugin.executeMethod("UnShowInputHelper", [this.plugin.info.guid], function() { window.Asc.plugin.ih.isVisible = false; });					
     };
 
+    CIHelper.prototype.getItemHeight = function() 
+    {
+        var _sizeItem = 34;
+        var _items = document.getElementsByTagName("li");
+        if (_items.length > 0 && _items[0].offsetHeight > 0)
+            _sizeItem = _items[0].offsetHeight;
+        return _sizeItem;
+    };
+
+    CIHelper.prototype.getItemsHeight = function(count) 
+    {
+        return 2 + count * this.getItemHeight();
+    };
+
+    CIHelper.prototype.getItems = function() 
+    {
+        return this.items;
+    };
+
     CIHelper.prototype.getScrollSizes = function() 
     {
-        var _size = { w : 200, h : 200 };
+        var _size = { w : 0, h : 0 };
+        var _sizeItem = this.getItemHeight();
+
         var _elem = document.getElementById("ih_elements_id");
         if (_elem)
         {
             _size.w = _elem.scrollWidth;
-            _size.h = _elem.scrollHeight;
+            _size.h = 2 + this.items.length * _sizeItem;
         }
         return _size;
     };
