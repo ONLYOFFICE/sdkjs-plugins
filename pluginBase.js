@@ -75,7 +75,8 @@ var Ps = null;
 		}
 
 		document.getElementById("ih_elements_id").innerHTML = _data;
-		this.updateScrolls();
+        this.updateScrolls();
+        this.scrollToSelected();
     };
 
     CIHelper.prototype.createDefaultEvents = function()
@@ -268,6 +269,21 @@ var Ps = null;
                 _elemH.style.marginRight = "2px";
         }
     };
+
+    CIHelper.prototype.scrollToSelected = function()
+    {
+        var items = document.getElementsByTagName("li");
+        var curIndex = -1;
+        for (var i = 0; i < items.length; i++)
+        {
+            if (items[i].className == "li_selected")
+            {
+                var container = document.getElementById("ih_area");
+                container.scrollTo(0, items[i].offsetTop);
+                return;
+            }
+        }
+    }
 
     CIHelper.prototype.getSelectedItem = function()
     {
