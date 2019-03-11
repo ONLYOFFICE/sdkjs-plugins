@@ -8,7 +8,7 @@
 		{
 			window.isInit = true;
 
-			window.Asc.plugin.currentContentControl = "";
+			window.Asc.plugin.currentContentControl = null;
 			window.Asc.plugin.createInputHelper();
 			window.Asc.plugin.getInputHelper().createWindow();
 		}
@@ -24,9 +24,9 @@
 		if (!item)
 			return;
 
-		if (window.Asc.plugin.currentContentControl != "")
+		if (window.Asc.plugin.currentContentControl != null)
 		{
-			window.Asc.plugin.executeMethod("SelectContentControl", [window.Asc.plugin.currentContentControl], function() {
+			window.Asc.plugin.executeMethod("SelectContentControl", [window.Asc.plugin.currentContentControl.InternalId], function() {
 				window.Asc.plugin.executeMethod("PasteHtml", ["<span style=\"font-family:onlyofficeDefaultFont\">" + item.text + "</span>"]);
 				window.Asc.plugin.getInputHelper().unShow();	
 			});
@@ -39,12 +39,13 @@
 	
 	window.Asc.plugin.event_onClick = function()
 	{
-		window.Asc.plugin.executeMethod("GetCurrentContentControl", [], function(obj) {
+		window.Asc.plugin.executeMethod("GetCurrentContentControlPr", [], function(obj) {
 			
-			window.Asc.plugin.currentContentControl = "" + obj;
-			switch (window.Asc.plugin.currentContentControl)
+			window.Asc.plugin.currentContentControl = obj;
+			var controlTag = obj ? obj.Tag : "";
+			switch (controlTag)
 			{
-				case "428": // names
+				case "{people}": // names
 				{
 					var items = [
 						{ text: "Name1.Family1", id : "0" },
@@ -67,7 +68,7 @@
 					window.Asc.plugin.getInputHelper().show(_sizes.w, _sizes.h, true);
 					break;
 				}
-				case "446": // position
+				case "{position}": // position
 				{
 					var items = [
 						{ text: "manager" }, 
@@ -82,7 +83,7 @@
 				}
 				default:
 				{
-					window.Asc.plugin.currentContentControl = "";
+					window.Asc.plugin.currentContentControl = null;
 					window.Asc.plugin.getInputHelper().unShow();					
 					break;	
 				}
