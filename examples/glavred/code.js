@@ -1,6 +1,14 @@
 (function(window, undefined){
 
     var hints = [];
+	
+	window.Asc.plugin.isEmpty = false;
+	window.Asc.plugin.makeEmpty = function()
+	{
+		document.body.innerHTML = ("<div style=\"font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#848484;font-size:20px;" +
+                    "background:#F4F4F4;display:table;width:100%;height:100%;text-align:center;\">" +
+                    "<span style=\"display:table-cell;vertical-align: middle;\">" + window.Asc.plugin.tr("Please select text before run plugin!") + "</span></div>");
+	}
 
     window.Asc.plugin.init = function(text)
     {
@@ -10,9 +18,8 @@
 
         if (text == "")
         {
-            document.body.innerHTML = ("<div style=\"font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#848484;font-size:20px;" +
-                    "background:#F4F4F4;display:table;width:100%;height:100%;text-align:center;\">" +
-                    "<span style=\"display:table-cell;vertical-align: middle;\">please select text before run plugin!</span></div>");
+			window.Asc.plugin.isEmpty = true;
+            window.Asc.plugin.makeEmpty();
             return;
         }
 
@@ -70,5 +77,10 @@
     {
         this.executeCommand("close", "");
     };
+	
+	window.Asc.plugin.onTranslate = function(){
+		if (window.Asc.plugin.isEmpty)
+			window.Asc.plugin.makeEmpty();
+	};
 
 })(window, undefined);
