@@ -236,6 +236,11 @@ var Ps = null;
             var _id = e.target.getAttribute("id");
             _t.onSelectedItem();
         };
+
+        this.plugin.event_onKeyDown = function(data)
+        {
+            window.onkeydown({ keyCode : data.keyCode });
+        };
     };
 
     CIHelper.prototype.updateScrolls = function()
