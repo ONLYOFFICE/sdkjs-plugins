@@ -41,9 +41,24 @@
 		else
 			window.Asc.plugin.currentText = data.text;
 
-		if (window.Asc.plugin.currentText.length < 3)
-			return;
+		// correct by space
+		var lastIndexSpace = window.Asc.plugin.currentText.lastIndexOf(" ");
+		if (lastIndexSpace >= 0)
+		{
+			if (lastIndexSpace == (window.Asc.plugin.currentText.length - 1))
+				window.Asc.plugin.currentText = "";
+			else
+				window.Asc.plugin.currentText = window.Asc.plugin.currentText.substr(lastIndexSpace + 1);
+		}
 
+		console.log("text: " + window.Asc.plugin.currentText);
+
+		if (window.Asc.plugin.currentText.length < 3)
+		{
+			window.Asc.plugin.getInputHelper().unShow();
+			return;
+		}
+		
 		var variants = window.getAutoComplete(window.Asc.plugin.currentText);
 		if (variants.length == 0)
 		{
