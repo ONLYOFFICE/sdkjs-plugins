@@ -24,7 +24,7 @@
 		if (!item)
 			return;
 
-		window.Asc.plugin.executeMethod("InputText", [item.text]);
+		window.Asc.plugin.executeMethod("InputText", [item.text, window.Asc.plugin.currentText]);
 		window.Asc.plugin.getInputHelper().unShow();
 	};
 
@@ -50,8 +50,6 @@
 			else
 				window.Asc.plugin.currentText = window.Asc.plugin.currentText.substr(lastIndexSpace + 1);
 		}
-
-		console.log("text: " + window.Asc.plugin.currentText);
 
 		if (window.Asc.plugin.currentText.length < 3)
 		{
