@@ -147,7 +147,7 @@
   display: none;
   bottom: 2px; /* there must be 'right' for ps-scrollbar-y-rail */
   height: 9px;
-  margin: 0 5px 0 5px;
+  margin: 0 2px 0 2px;
   /* please don't change 'position' */
   position: absolute;
   -webkit-border-radius: 2px;
@@ -160,7 +160,7 @@
   display: none;
 	right: 2px; /* there must be 'right' for ps-scrollbar-y-rail */
 	width: 9px;
-	margin: 5px 0 5px 0;
+	margin: 2px 0 2px 0;
   /* please don't change 'position' */
   position: absolute;
   -webkit-border-radius: 2px;

@@ -31,10 +31,10 @@ var Ps = null;
 
         var _style_body = ".ih_main { margin: 0px; padding: 0px; width: 100%; height: 100%; display: inline-block; overflow: hidden; box-sizing: border-box; user-select: none; position: fixed; border: 1px solid #cfcfcf; } ";        
         _style_body += "ul { margin: 0px; padding: 0px; width: 100%; height: 100%; list-style-type: none; outline:none; } ";
-        _style_body += "li { padding: 10px; font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 400; } ";
+        _style_body += "li { padding: 5px; font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 400; color: #373737; } ";
         _style_body += "li:hover { background-color: #D8DADC; } ";
-        _style_body += ".li_selected { background-color: #7D858C; color: white; }";
-        _style_body += ".li_selected:hover { background-color: #7D858C; color: white; }";
+        _style_body += ".li_selected { background-color: #D8DADC; color: #373737; }";
+        _style_body += ".li_selected:hover { background-color: #D8DADC; color: #373737; }";
         _style.innerHTML = _style_body;
         _head.appendChild(_style);
 
@@ -165,7 +165,7 @@ var Ps = null;
                             case 34:
                             {
                                 var _indexDif = 1;
-                                var _count = (document.getElementById("ih_area").clientHeight / 34) >> 0;
+                                var _count = (document.getElementById("ih_area").clientHeight / 24) >> 0;
                                 if (_count > 1)
                                     _indexDif = _count;
 
@@ -339,7 +339,7 @@ var Ps = null;
 
     CIHelper.prototype.getItemHeight = function() 
     {
-        var _sizeItem = 34;
+        var _sizeItem = 24;
         var _items = document.getElementsByTagName("li");
         if (_items.length > 0 && _items[0].offsetHeight > 0)
             _sizeItem = _items[0].offsetHeight;
