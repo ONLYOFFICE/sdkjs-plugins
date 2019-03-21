@@ -197,11 +197,17 @@ var Ps = null;
                         var _currentScroll = container.scrollTop;
                         if (_currentOffset < _currentScroll)
                         {
-                            container.scrollTo(0, _currentOffset);
+                            if (container.scrollTo)
+                                container.scrollTo(0, _currentOffset);
+                            else
+                                container.scrollTop = _currentOffset;
                         }
                         else if ((_currentScroll + container.offsetHeight) < (_currentOffset + _currentHeight))
                         {
-                            container.scrollTo(0, _currentOffset - (container.offsetHeight - _currentHeight));
+                            if (container.scrollTo)
+                                container.scrollTo(0, _currentOffset - (container.offsetHeight - _currentHeight));
+                            else
+                                container.scrollTop = _currentOffset - (container.offsetHeight - _currentHeight);
                         }
                     }
                     break;
@@ -284,7 +290,10 @@ var Ps = null;
             if (items[i].className == "li_selected")
             {
                 var container = document.getElementById("ih_area");
-                container.scrollTo(0, items[i].offsetTop);
+                if (container.scrollTo)
+                    container.scrollTo(0, items[i].offsetTop);
+                else
+                    container.scrollTop = items[i].offsetTop;
                 return;
             }
         }
