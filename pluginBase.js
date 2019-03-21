@@ -99,7 +99,7 @@ var Ps = null;
                     if (_t.isVisible)
                     {
                         _t.isVisible = false;
-                        _t.plugin.executeMethod("UnShowInputHelper", [_t.plugin.info.guid]);
+                        _t.plugin.executeMethod("UnShowInputHelper", [_t.plugin.info.guid, true]);
                     }
                     break;
                 }
