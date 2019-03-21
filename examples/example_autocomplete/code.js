@@ -79,7 +79,7 @@
 	function getInputHelperSize()
 	{
 		var _size = window.Asc.plugin.getInputHelper().getScrollSizes();
-		var _width = 200;// _size.w
+		var _width = 150;// _size.w
 		var _height = _size.h;
 		var _heightMin = window.Asc.plugin.getInputHelper().getItemsHeight(Math.min(5, window.Asc.plugin.getInputHelper().getItems().length));
 
