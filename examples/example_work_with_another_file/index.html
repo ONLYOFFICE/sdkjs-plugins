@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+		<title>Example work with content controls</title>
+        
+		<style type="text/css">
+			html, body {
+				margin: 0px;
+				padding: 0px;
+				overflow: hidden;
+				width:100%;
+				height:100%;
+			}
+			.label-hovered	{
+				background: rgba(200, 200, 200, 0.5);
+			}
+			.label-selected	{
+				background: #aaa;
+			}
+			.label-info {
+				cursor: pointer;
+			}
+		</style>
+
+		<link rel="stylesheet" href="../plugins.css">
+
+		<script type="text/javascript" src="../pluginBase.js"></script>
+		<script type="text/javascript" src="code.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    </head>
+    <body>
+			<div style="position: absolute; margin: 0px; padding: 0px; width: 100%; height: 60%; min-height: 200px; box-sizing: border-box;">
+				<div id="divIDList" style="position: absolute; display: flex; flex-flow: column; overflow: auto; margin: 0px; padding: 0px; left: 5px; top: 5px; right: 5px; bottom: 77px; border: 1px solid"></div>
+				<button class="btn-text-default primary" style="margin-left: 50%; left: -50px; width:100px; position:absolute; bottom: 51px;" id="buttonIDAdd">Add</button>
+				<button class="btn-text-default primary" style="margin-left: 50%; left: -50px; width:100px; position:absolute; bottom: 25px;" id="buttonIDEdit">Edit</button>
+				<button class="btn-text-default primary" style="margin-left: 50%; left: -50px; width:100px; position:absolute; bottom: 0px;" id="buttonIDDelete">Delete</button>
+			</div>
+				<div id="divIdLink" style="display: none; position: absolute; margin: 0px; padding: 0px; width: 100%; top: 65%; height: 115px; min-height: 90px; box-sizing: border-box;"><!-- border: 1px solid red> -->
+				<input type="text" class="form-control" style="width:calc(100% - 10px); margin: 5px" id="inputIDFile" placeholder="File" autofocus="autofocus">
+				<input type="text" class="form-control" style="width:calc(100% - 10px); margin: 5px" id="inputIDCell" placeholder="Cell">
+				<button class="btn-text-default primary" style="margin-left: 50%; left: -50px; width:100px; position:absolute; bottom: 25px;" id="buttonIDOk">Ok</button>
+				<button class="btn-text-default primary" style="margin-left: 50%; left: -50px; width:100px; position:absolute; bottom: 0px;" id="buttonIDCancel">Cancel</button>
+			</div>
+    </body>
+</html>
