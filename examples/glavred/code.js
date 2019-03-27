@@ -23,6 +23,9 @@
             return;
         }
 
+        var uAgent = navigator.userAgent.toLowerCase();
+        var isSailfishOS = ((uAgent.indexOf("sailfish") > -1) && (uAgent.indexOf("emulatedevicepixelratio") > -1)) ? true : false;
+
         glvrd.proofread(text, function(result)
         {
             if (result.status == 'ok')
@@ -49,7 +52,24 @@
                 {
                     output += text.substr(last);
                 }
-                document.getElementById("id_text").innerHTML = output;
+
+                if (!isSailfishOS)
+                {
+                    document.getElementById("id_text").innerHTML = output;
+                }
+                else
+                {
+                    var inner = "<div style=\"margin:0;padding:0;\">" + output + "</div>";
+                    var elem = document.getElementById("id_text");
+                    elem.style.overflow = "hidden";
+                    elem.style.boxSizing = "border-box";
+                    elem.style.padding = "5px";
+                    elem.innerHTML = inner;
+
+                    setTimeout(function(){
+                        new IScroll(elem, { mouseWheel: true, scrollX: true });
+                    }, 100);
+                }
 
                 var _elements = document.getElementsByTagName("em");
                 for (var j = 0; j < _elements.length; j++)
@@ -62,7 +82,24 @@
 
                         this.className = "active current";
                         var hintIndex = parseInt(this.getAttribute("id").substr("4"));
-                        document.getElementById("id_hint").innerHTML = hints[hintIndex];
+
+                        if (!isSailfishOS)
+                        {
+                            document.getElementById("id_hint").innerHTML = hints[hintIndex];
+                        }
+                        else
+                        {
+                            var inner = "<div style=\"margin:0;padding:0;word-break:break-all;\">" + hints[hintIndex] + "</div>";
+                            var elem = document.getElementById("id_hint");
+                            elem.style.overflow = "hidden";
+                            elem.style.boxSizing = "border-box";
+                            elem.style.padding = "5px";
+                            elem.innerHTML = inner;
+                            
+                            setTimeout(function(){
+                                new IScroll(elem, { mouseWheel: true, scrollX: true });
+                            }, 100);
+                        }                        
                     };
                 }
             }
