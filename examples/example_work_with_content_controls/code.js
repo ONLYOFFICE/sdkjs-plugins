@@ -6,7 +6,9 @@
 	{\r\n\
 		\"Id\" : 0,\r\n\
 		\"Tag\" : \"{Document1}\",\r\n\
-		\"Lock\" : 0\r\n\
+		\"Lock\" : 0,\r\n\
+		\"Alias\" : \"TestAlias\",\r\n\
+		\"Appearance\" : 2\r\n\
 	},\r\n\
 \r\n\
 	\"Url\" : \"https://personal.onlyoffice.com/products/files/httphandlers/filehandler.ashx?action=view&fileid=1617658&version=0&doc=aEE1OEk0THZWakI4bC9Ydm1CaFdQaGRpOFdLMURzaUFkV3cvRFlXS1dUND0_IjE2MTc2NTgi0\",\r\n\
@@ -18,7 +20,9 @@
 	{\r\n\
 		\"Id\" : 1,\r\n\
 		\"Tag\" : \"{Document2}\",\r\n\
-		\"Lock\" : 1\r\n\
+		\"Lock\" : 1,\r\n\
+		\"Appearance\" : 1,\r\n\
+		\"Color\" : { \"R\" : 0, \"G\" : 255, \"B\" : 0 }\r\n\
 	},\r\n\
 \r\n\
 	\"Url\" : \"https://personal.onlyoffice.com/products/files/httphandlers/filehandler.ashx?action=view&fileid=1617658&version=0&doc=aEE1OEk0THZWakI4bC9Ydm1CaFdQaGRpOFdLMURzaUFkV3cvRFlXS1dUND0_IjE2MTc2NTgi0\",\r\n\
