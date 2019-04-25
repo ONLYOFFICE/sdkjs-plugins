@@ -204,22 +204,28 @@
 			{
 			    var _info = window.Asc.plugin.info;
 
-                var _method = (_info.objectId === undefined) ? "asc_addOleObject" : "asc_editOleObject";
+				var _method = (_info.objectId === undefined) ? "AddOleObject" : "EditOleObject";
+				
+				var _param = {
+					guid : _info.guid,
+					widthPix : (_info.mmToPx * _info.width) >> 0,
+					heightPix : (_info.mmToPx * _info.height) >> 0,
+					width : _info.width ? _info.width : 100,
+					height : _info.height ? _info.height : 70,
+					imgSrc : _url,
+					data : url,
+					objectId : _info.objectId,
+					resize : _info.resize
+				};
 
-                _info.width = _info.width ? _info.width : 100;
-                _info.height = _info.height ? _info.height : 70;
-
-                // TODO: load image & get size
-                _info.widthPix = (_info.mmToPx * _info.width) >> 0;
-                _info.heightPix = (_info.mmToPx * _info.height) >> 0;
-
-                _info.imgSrc = _url;
-                _info.data = url;
-
-                var _code = "Api." + _method + "(" + JSON.stringify(_info) + ");";
-                this.executeCommand("close", _code);
+				window.Asc.plugin.executeMethod(_method, [_param], function() {
+					window.Asc.plugin.executeCommand("close", "");
+				});
 			}
-			this.executeCommand("close", _code);
+			else
+			{
+				this.executeCommand("close", "");
+			}
 		}
 		else
 		{
