@@ -54,7 +54,7 @@
 		}
 		predata = synonim_data;
 		var xhr = new XMLHttpRequest();
-		var req_text = decodeURIComponent(synonim_data.replace('%0D%0A', ' ')).trim() ;
+		var req_text = decodeURIComponent(synonim_data.replace('%0D%0A', ' ').replace(/%/g, "$")).trim();
 		var _url = "https://words.bighugelabs.com/api/";
 		_url += version + "/";
 		_url += ApiKey + "/";
