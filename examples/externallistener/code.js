@@ -26,7 +26,7 @@
                     var oParagraph = Api.CreateParagraph();
                     oParagraph.AddText(Asc.scope.text);
                     oDocument.InsertContent([oParagraph]);
-                }, true);
+                }, false);
 				
 				break;
 			}
