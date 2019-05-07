@@ -47,43 +47,7 @@ var imageEditor = null;
             bInit = true;
         window.onresize = function () {
             imageEditor.ui.resizeEditor();
-        }
-        // this.resizeWindow(10000, 10000, 10000, 10000, 10000, 10000);
-        // if(typeof Aviary === "undefined"){
-        //     this.executeCommand("close", "");
-        // 	return;
-        // }
-
-
-        // oFeatherEditor = new Aviary.Feather({
-        //     apiKey: '1234567',
-        //     appendTo: 'editor_container',
-        // 	theme: 'minimum',
-        // 	language: (typeof window.Asc.plugin.info.lang === "string" ? window.Asc.plugin.info.lang.split('-')[0] : 'en'),
-        //    onLoad: function(){
-        //         bInit = true;
-        //         oFeatherEditor.launch(
-        //             {
-        //                 image: oImage
-        //             }
-        //         )
-        //     },
-        //     onSave: function(imageID, newURL) {
-        //         oImage.src = newURL;
-        // 		var oImageDimensions = oFeatherEditor.getImageDimensions();
-        // 		var sScript = createScript(newURL, oImageDimensions.width, oImageDimensions.height);
-        // 		window.Asc.plugin.info.recalculate = true;
-        // 		window.Asc.plugin.executeCommand("close", sScript);
-        //     },
-        //     onError: function(e){
-        // 			showAlert(e.message, function(){
-        // 				window.Asc.plugin.executeCommand("close", "");
-        // 			});
-        //     },
-        //     onClose: function(isDirty){
-        //         window.Asc.plugin.executeCommand("close", "");
-        //     }
-        // });
+        }  
 
     };
 
@@ -91,7 +55,7 @@ var imageEditor = null;
         if (id == 0) {
             var dataURL = imageEditor.toDataURL();
             oImage.src = dataURL;
-            var saveImage = createScript(dataURL, getEditorDimension.width, getEditorDimension.height);
+            var saveImage = createScript(dataURL, 500, 500);
             window.Asc.plugin.info.recalculate = true;
             window.Asc.plugin.executeCommand("close", saveImage);
         } else {
