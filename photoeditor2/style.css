@@ -1,0 +1,69 @@
+body .avpw .avpw_primary_button,
+body .avpw .avpw_primary_button:link,
+body .avpw .avpw_primary_button:visited,
+body .avpw .avpw_primary_button:active {
+  background-color: #ffffff;
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  color: #444444;
+}
+body .avpw .avpw_primary_button:active {
+  background-color: #ffffff;
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  color: #444444;
+}
+
+body #avpw_tool_content_header {
+    height: 22px;
+}
+
+body #avpw_control_cancel_pane .avpw_close_button {
+    width: 16px;
+    height: 16px;
+    margin-top: 9px;
+    margin-right: 7px;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAB/SURBVDhPpZLRCcAgDAXTLuKHA8VR3UQXcAkXSEmoJQ2m2DbwNJg7EBEQkUop1HtfCrPsADchhCVZs2APLDxiGRFnA53Z7BI9YHbGuYkcDXoSZ+MFTLXWIKUkfc4ZYozS69rP/X3ZK6xe9f/jeIA3E/FJGrHMpy9Xa6WPnxzpACWPQp5celq8AAAAAElFTkSuQmCC) 50% 50% no-repeat;
+    border: 0
+}
+
+body #avpw_control_cancel_pane .avpw_close_inner {
+    display: none
+}
+
+body #avpw_control_cancel_pane {
+    z-index: 2
+}
+body #avpw_tool_content_header .avpw_label {
+    position: relative;
+    top: 3px;
+}
+
+body #avpw_canvas_embed {
+    top: 133px
+}
+
+.divMessage {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		width: 300px;
+		height: 100px;
+		margin: -50px 0px 0px -150px;
+		border-style: solid;
+		border-width: 1px;
+		border-color: #CBCBCB;
+		background: #F1F1F1;
+		z-index: 1001;
+	}
+.divMessageMask {
+	position: fixed;
+	z-index: 1000;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	display: block;
+	background-color: #000000;
+	opacity: 0.2;
+}
