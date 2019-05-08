@@ -10,6 +10,7 @@ var whiteTheme = {
     'header.backgroundImage': 'none',
     'header.backgroundColor': 'transparent',
     'header.border': '0px',
+    'header.display': 'none',
 
     // load button
     'loadButton.backgroundColor': '#fff',
