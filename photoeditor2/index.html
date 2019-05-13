@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <title>Photo Editor</title>
+    <script type='text/javascript' src='../pluginBase.js'></script>
+	<script type='text/javascript' src='photoeditor.js'></script>
+	<script type="text/javascript" src="tui/vendor/fabric.min.js"></script>
+    <script type="text/javascript" src="tui/vendor/tui-code-snippet.min.js"></script>
+    <script type="text/javascript" src="tui/vendor/tui-color-picker.min.js"></script>
+    <script type="text/javascript" src="tui/tui-image-editor.min.js"></script>
+    <script type="text/javascript" src="white-theme.js"></script>
+    <script src='tui/vendor/jquery-3.4.1.min.js'></script>
+	<link type="text/css" href="tui/vendor/tui-color-picker.min.css" rel="stylesheet">
+    <link type="text/css" href="tui/tui-image-editor.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../plugins.css">
+	 <style>
+        #message_paragraph{
+            font-size: 15px;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+		 html, body {
+                height: 100%;
+				weight: 100%;
+                margin: 0;
+            }
+    </style>
+</head>
+
+<body >
+	<div style="height: 100%; width: 100% " id="tui-image-editor-container"></div> 	    		
+</body>
+<style>
+.tui-image-editor-container .tui-image-editor-controls {
+background-color: #f1f1f1;
+}
+.tui-image-editor-container .tui-image-editor-menu>.tui-image-editor-item.active {
+background-color: #7d858c;
+}
+</style>
+</html>
