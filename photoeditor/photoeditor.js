@@ -11,7 +11,8 @@ var imageEditor = null;
     var fEventListener = null;
 
     window.Asc.plugin.init = function(sHtml){
-
+		
+        window.Asc.plugin.resizeWindow();				//resize plugin window	
         oImage = $(sHtml)[0];
         if (!oImage || !$(oImage).is('img')) {
             oImage = $(sHtml).find('img')[0];
