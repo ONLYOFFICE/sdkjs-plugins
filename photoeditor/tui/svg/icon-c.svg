@@ -11,8 +11,8 @@
 </symbol><symbol id="icon-c-ic-crop" viewBox="0 0 24 24">
     <g fill="none" fill-rule="evenodd">
         <path d="M0 0h24v24H0z"/>
-        <path fill="#e9e9e9" d="M4 0h1v20a1 1 0 0 1-1-1V0zM20 17h-1V5h1v12zm0 2v5h-1v-5h1z"/>
-        <path fill="#e9e9e9" d="M5 19h19v1H5zM4.762 4v1H0V4h4.762zM7 4h12a1 1 0 0 1 1 1H7V4z"/>
+        <path fill="#8d8d8d" d="M4 0h1v20a1 1 0 0 1-1-1V0zM20 17h-1V5h1v12zm0 2v5h-1v-5h1z"/>
+        <path fill="#8d8d8d" d="M5 19h19v1H5zM4.762 4v1H0V4h4.762zM7 4h12a1 1 0 0 1 1 1H7V4z"/>
     </g>
 </symbol><symbol id="icon-c-ic-delete-all" viewBox="0 0 24 24">
     <g fill="#e9e9e9" fill-rule="evenodd">
@@ -34,14 +34,14 @@
     </g>
 </symbol><symbol id="icon-c-ic-draw" viewBox="0 0 24 24">
     <g fill="none">
-        <path stroke="#e9e9e9" d="M2.5 21.5H5c.245 0 .48-.058.691-.168l.124-.065.14.01c.429.028.85-.127 1.16-.437L22.55 5.405a.5.5 0 0 0 0-.707l-3.246-3.245a.5.5 0 0 0-.707 0L3.162 16.888a1.495 1.495 0 0 0-.437 1.155l.01.14-.065.123c-.111.212-.17.448-.17.694v2.5z"/>
-        <path fill="#e9e9e9" d="M16.414 3.707l3.89 3.89-.708.706-3.889-3.889z"/>
+        <path stroke="#8d8d8d" d="M2.5 21.5H5c.245 0 .48-.058.691-.168l.124-.065.14.01c.429.028.85-.127 1.16-.437L22.55 5.405a.5.5 0 0 0 0-.707l-3.246-3.245a.5.5 0 0 0-.707 0L3.162 16.888a1.495 1.495 0 0 0-.437 1.155l.01.14-.065.123c-.111.212-.17.448-.17.694v2.5z"/>
+        <path fill="#8d8d8d" d="M16.414 3.707l3.89 3.89-.708.706-3.889-3.889z"/>
     </g>
 </symbol><symbol id="icon-c-ic-filter" viewBox="0 0 24 24">
     <g fill="none" fill-rule="evenodd">
         <path d="M0 0h24v24H0z"/>
-        <path fill="#e9e9e9" d="M12 7v1H2V7h10zm6 0h4v1h-4V7zM12 16v1h10v-1H12zm-6 0H2v1h4v-1z"/>
-        <path fill="#e9e9e9" d="M8.5 20a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7zm0-1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM15.5 11a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7zm0-1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
+        <path fill="#8d8d8d" d="M12 7v1H2V7h10zm6 0h4v1h-4V7zM12 16v1h10v-1H12zm-6 0H2v1h4v-1z"/>
+        <path fill="#8d8d8d" d="M8.5 20a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7zm0-1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM15.5 11a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7zm0-1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
     </g>
 </symbol><symbol id="icon-c-ic-flip-reset" viewBox="0 0 31 32">
     <g fill="none" fill-rule="evenodd">
@@ -62,7 +62,7 @@
 </symbol><symbol id="icon-c-ic-flip" viewBox="0 0 24 24">
     <g fill="none" fill-rule="evenodd">
         <path d="M0 0h24v24H0z"/>
-        <path fill="#e9e9e9" d="M11 0h1v24h-1zM19 21v-1h2v-2h1v2a1 1 0 0 1-1 1h-2zm-2 0h-3v-1h3v1zm5-5h-1v-3h1v3zm0-5h-1V8h1v3zm0-5h-1V4h-2V3h2a1 1 0 0 1 1 1v2zm-5-3v1h-3V3h3zM9 3v1H2v16h7v1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h7z"/>
+        <path fill="#8d8d8d" d="M11 0h1v24h-1zM19 21v-1h2v-2h1v2a1 1 0 0 1-1 1h-2zm-2 0h-3v-1h3v1zm5-5h-1v-3h1v3zm0-5h-1V8h1v3zm0-5h-1V4h-2V3h2a1 1 0 0 1 1 1v2zm-5-3v1h-3V3h3zM9 3v1H2v16h7v1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h7z"/>
     </g>
 </symbol><symbol id="icon-c-ic-icon-arrow-2" viewBox="0 0 32 32">
     <g fill="none" fill-rule="evenodd">
@@ -112,7 +112,7 @@
     </g>
 </symbol><symbol id="icon-c-ic-icon" viewBox="0 0 24 24">
     <g fill="none">
-        <path stroke="#e9e9e9" stroke-linecap="round" stroke-linejoin="round" d="M11.923 19.136L5.424 22l.715-7.065-4.731-5.296 6.94-1.503L11.923 2l3.574 6.136 6.94 1.503-4.731 5.296L18.42 22z"/>
+        <path stroke="#8d8d8d" stroke-linecap="round" stroke-linejoin="round" d="M11.923 19.136L5.424 22l.715-7.065-4.731-5.296 6.94-1.503L11.923 2l3.574 6.136 6.94 1.503-4.731 5.296L18.42 22z"/>
     </g>
 </symbol><symbol id="icon-c-ic-mask-load" viewBox="0 0 32 32">
     <g fill="none" fill-rule="evenodd">
@@ -123,20 +123,20 @@
     </g>
 </symbol><symbol id="icon-c-ic-mask" viewBox="0 0 24 24">
     <g fill="none">
-        <circle cx="12" cy="12" r="4.5" stroke="#e9e9e9"/>
-        <path fill="#e9e9e9" d="M2 1h20a1 1 0 0 1 1 1v20a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zm0 1v20h20V2H2z"/>
+        <circle cx="12" cy="12" r="4.5" stroke="#8d8d8d"/>
+        <path fill="#8d8d8d" d="M2 1h20a1 1 0 0 1 1 1v20a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zm0 1v20h20V2H2z"/>
     </g>
 </symbol><symbol id="icon-c-ic-redo" viewBox="0 0 24 24">
     <g fill="none" fill-rule="evenodd">
         <path d="M0 0h24v24H0z" opacity=".5"/>
-        <path fill="#e9e9e9" d="M21 6H9a6 6 0 1 0 0 12h12v1H9A7 7 0 0 1 9 5h12v1z"/>
-        <path stroke="#e9e9e9" stroke-linecap="square" d="M19 3l2.5 2.5L19 8"/>
+        <path fill="#8d8d8d" d="M21 6H9a6 6 0 1 0 0 12h12v1H9A7 7 0 0 1 9 5h12v1z"/>
+        <path stroke="#8d8d8d" stroke-linecap="square" d="M19 3l2.5 2.5L19 8"/>
     </g>
 </symbol><symbol id="icon-c-ic-reset" viewBox="0 0 24 24">
     <g fill="none" fill-rule="evenodd">
         <path d="M0 0h24v24H0z" opacity=".5"/>
-        <path fill="#e9e9e9" d="M2 13v-1a7 7 0 0 1 7-7h13v1h-1v5h1v1a7 7 0 0 1-7 7H2v-1h1v-5H2zm7-7a6 6 0 0 0-6 6v6h12a6 6 0 0 0 6-6V6H9z"/>
-        <path stroke="#e9e9e9" stroke-linecap="square" d="M19 3l2.5 2.5L19 8M5 16l-2.5 2.5L5 21"/>
+        <path fill="#8d8d8d" d="M2 13v-1a7 7 0 0 1 7-7h13v1h-1v5h1v1a7 7 0 0 1-7 7H2v-1h1v-5H2zm7-7a6 6 0 0 0-6 6v6h12a6 6 0 0 0 6-6V6H9z"/>
+        <path stroke="#8d8d8d" stroke-linecap="square" d="M19 3l2.5 2.5L19 8M5 16l-2.5 2.5L5 21"/>
     </g>
 </symbol><symbol id="icon-c-ic-rotate-clockwise" viewBox="0 0 32 32">
     <g fill="none" fill-rule="evenodd">
@@ -153,8 +153,8 @@
 </symbol><symbol id="icon-c-ic-rotate" viewBox="0 0 24 24">
     <g fill="none" fill-rule="evenodd">
         <path d="M0 0h24v24H0z"/>
-        <path fill="#e9e9e9" d="M8.349 22.254a10.002 10.002 0 0 1-2.778-1.719l.65-.76a9.002 9.002 0 0 0 2.495 1.548l-.367.931zm2.873.704l.078-.997a9 9 0 1 0-.557-17.852l-.14-.99A10.076 10.076 0 0 1 12.145 3c5.523 0 10 4.477 10 10s-4.477 10-10 10c-.312 0-.62-.014-.924-.042zm-7.556-4.655a9.942 9.942 0 0 1-1.253-2.996l.973-.234a8.948 8.948 0 0 0 1.124 2.693l-.844.537zm-1.502-5.91A9.949 9.949 0 0 1 2.88 9.23l.925.382a8.954 8.954 0 0 0-.644 2.844l-.998-.062zm2.21-5.686c.687-.848 1.51-1.58 2.436-2.166l.523.852a9.048 9.048 0 0 0-2.188 1.95l-.771-.636z"/>
-        <path stroke="#e9e9e9" stroke-linecap="square" d="M13 1l-2.5 2.5L13 6"/>
+        <path fill="#8d8d8d" d="M8.349 22.254a10.002 10.002 0 0 1-2.778-1.719l.65-.76a9.002 9.002 0 0 0 2.495 1.548l-.367.931zm2.873.704l.078-.997a9 9 0 1 0-.557-17.852l-.14-.99A10.076 10.076 0 0 1 12.145 3c5.523 0 10 4.477 10 10s-4.477 10-10 10c-.312 0-.62-.014-.924-.042zm-7.556-4.655a9.942 9.942 0 0 1-1.253-2.996l.973-.234a8.948 8.948 0 0 0 1.124 2.693l-.844.537zm-1.502-5.91A9.949 9.949 0 0 1 2.88 9.23l.925.382a8.954 8.954 0 0 0-.644 2.844l-.998-.062zm2.21-5.686c.687-.848 1.51-1.58 2.436-2.166l.523.852a9.048 9.048 0 0 0-2.188 1.95l-.771-.636z"/>
+        <path stroke="#8d8d8d" stroke-linecap="square" d="M13 1l-2.5 2.5L13 6"/>
     </g>
 </symbol><symbol id="icon-c-ic-shape-circle" viewBox="0 0 32 32">
     <g fill="none" fill-rule="evenodd">
@@ -170,8 +170,8 @@
     </g>
 </symbol><symbol id="icon-c-ic-shape" viewBox="0 0 24 24">
     <g fill="none" fill-rule="evenodd">
-        <path fill="#e9e9e9" d="M14.706 8H21a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-4h1v4h12V9h-5.706l-.588-1z"/>
-        <path stroke="#e9e9e9" stroke-linecap="round" stroke-linejoin="round" d="M8.5 1.5l7.5 13H1z"/>
+        <path fill="#8d8d8d" d="M14.706 8H21a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-4h1v4h12V9h-5.706l-.588-1z"/>
+        <path stroke="#8d8d8d" stroke-linecap="round" stroke-linejoin="round" d="M8.5 1.5l7.5 13H1z"/>
     </g>
 </symbol><symbol id="icon-c-ic-text-align-center" viewBox="0 0 32 32">
     <g fill="none" fill-rule="evenodd">
@@ -206,7 +206,7 @@
         <path fill="#e9e9e9" d="M5 2h5v1H5zM22 2h5v1h-5z"/>
     </g>
 </symbol><symbol id="icon-c-ic-text" viewBox="0 0 24 24">
-    <g fill="#e9e9e9" fill-rule="evenodd">
+    <g fill="#8d8d8d" fill-rule="evenodd">
         <path d="M4 3h15a1 1 0 0 1 1 1H3a1 1 0 0 1 1-1zM3 4h1v1H3zM19 4h1v1h-1z"/>
         <path d="M11 3h1v18h-1z"/>
         <path d="M10 20h3v1h-3z"/>
@@ -214,8 +214,8 @@
 </symbol><symbol id="icon-c-ic-undo" viewBox="0 0 24 24">
     <g fill="none" fill-rule="evenodd">
         <path d="M24 0H0v24h24z" opacity=".5"/>
-        <path fill="#e9e9e9" d="M3 6h12a6 6 0 1 1 0 12H3v1h12a7 7 0 0 0 0-14H3v1z"/>
-        <path stroke="#e9e9e9" stroke-linecap="square" d="M5 3L2.5 5.5 5 8"/>
+        <path fill="#8d8d8d" d="M3 6h12a6 6 0 1 1 0 12H3v1h12a7 7 0 0 0 0-14H3v1z"/>
+        <path stroke="#8d8d8d" stroke-linecap="square" d="M5 3L2.5 5.5 5 8"/>
     </g>
 </symbol><symbol id="icon-c-img-bi" viewBox="0 0 257 26">
     <g fill="#FDBA3B">
