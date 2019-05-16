@@ -34,8 +34,24 @@
 .tui-image-editor-container .tui-image-editor-controls {
 background-color: #f1f1f1;
 }
+.tui-image-editor-container .tui-image-editor-menu>.tui-image-editor-item{
+cursor: default;
+}
+#tie-btn-undo:hover,#tie-btn-redo:hover,#tie-btn-reset:hover,#tie-btn-delete:hover,#tie-btn-delete-all:hover,#tie-btn-crop:hover,#tie-btn-flip:hover,#tie-btn-rotate:hover,#tie-btn-draw:hover,#tie-btn-shape:hover,#tie-btn-icon:hover,#tie-btn-text:hover,#tie-btn-mask:hover,#tie-btn-filter:hover{ 
+background-color: #d8dadc;
+cursor:pointer;
+}
 .tui-image-editor-container .tui-image-editor-menu>.tui-image-editor-item.active {
-background-color: #7d858c;
+background-color: #7d858c !important;
+}
+.tui-image-editor-container .tui-image-editor-submenu {
+ background-color: rgba(226,226,226,0.96)
+}
+.tui-image-editor-container .tui-image-editor-main {
+  top: 0px;
+}
+.tui-image-editor-container .tui-image-editor-partition > div {
+ border-left: 1px solid #282828;
 }
 </style>
 </html>

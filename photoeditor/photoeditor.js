@@ -11,7 +11,7 @@ var imageEditor = null;
     var fEventListener = null;
 
     window.Asc.plugin.init = function(sHtml){
-
+		
         oImage = $(sHtml)[0];
         if (!oImage || !$(oImage).is('img')) {
             oImage = $(sHtml).find('img')[0];
@@ -20,7 +20,9 @@ var imageEditor = null;
             oImage = document.createElement("img");
             //white rect
             oImage.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAIAAAD2HxkiAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAMrSURBVHhe7dMxAQAADMOg+TfdycgDHrgBKQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJISYhBCTEGISQkxCiEkIMQkhJiHEJITU9vSZzteUMFOrAAAAAElFTkSuQmCC';
-        }
+            oImage.width = 300;
+			oImage.height = 300;
+		}
         imageEditor = new tui.ImageEditor('#tui-image-editor-container', {
 
             includeUI: {
@@ -37,14 +39,16 @@ var imageEditor = null;
 
             },
             cssMaxWidth: 700,
-            cssMaxHeight: 1200,
+            cssMaxHeight: 500,
             selectionStyle: {
                 cornerSize: 20,
                 rotatingPointOffset: 70
             }
         });
-
-        if (oImage != false)
+       
+	   window.Asc.plugin.resizeWindow( undefined, undefined, oImage.width, oImage.height, 0, 0);				//resize plugin window	
+      
+	  if (oImage != false)
             bInit = true;
         window.onresize = function () {
             imageEditor.ui.resizeEditor();
@@ -96,4 +100,5 @@ var imageEditor = null;
         }
         return sScript;
     };
+	
 })(window, undefined);
