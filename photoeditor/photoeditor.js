@@ -59,8 +59,8 @@ var imageEditor = null;
     window.Asc.plugin.button = function (id) {
         if (id == 0) {
             var dataURL = imageEditor.toDataURL();
-            oImage.src = dataURL;
-            var saveImage = createScript(dataURL, oImage.width, oImage.height);
+			var editorDimension = imageEditor.ui._getEditorDimension();
+            var saveImage = createScript(dataURL, editorDimension.width, editorDimension.height);
             window.Asc.plugin.info.recalculate = true;
             window.Asc.plugin.executeCommand("close", saveImage);
         } else {
