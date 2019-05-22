@@ -4,12 +4,6 @@ var imageEditor = null;
 
 (function(window, undefined){
 
-    var bCloseAfterSave = false;
-    var oFeatherEditor = null;
-    var bInit = false;
-    var oMessageButton = null;
-    var fEventListener = null;
-
     window.Asc.plugin.init = function(sHtml){
 		
         oImage = $(sHtml)[0];
@@ -48,21 +42,29 @@ var imageEditor = null;
        
 	   window.Asc.plugin.resizeWindow( undefined, undefined, oImage.width, oImage.height, 0, 0);				//resize plugin window	
       
-	  if (oImage != false)
-            bInit = true;
         window.onresize = function () {
             imageEditor.ui.resizeEditor();
         }  
-
+	
     };
 
     window.Asc.plugin.button = function (id) {
+		
         if (id == 0) {
-            var dataURL = imageEditor.toDataURL();
+			if (imageEditor.getDrawingMode() === 'CROPPER') {
+			var imageData = imageEditor._graphics.getCroppedImageData(imageEditor.getCropzoneRect());
+			var dataURL = imageData.url;
+            var saveImage = createScript(dataURL, imageEditor.getCropzoneRect().width, imageEditor.getCropzoneRect().height);
+            window.Asc.plugin.info.recalculate = true;
+            window.Asc.plugin.executeCommand("close", saveImage);
+		    }
+      else {
+		    var dataURL = imageEditor.toDataURL();
 			var editorDimension = imageEditor.ui._getEditorDimension();
             var saveImage = createScript(dataURL, editorDimension.width, editorDimension.height);
             window.Asc.plugin.info.recalculate = true;
             window.Asc.plugin.executeCommand("close", saveImage);
+	  }
         } else {
             this.executeCommand("close", "");
         }
