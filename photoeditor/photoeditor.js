@@ -29,78 +29,76 @@ var imageEditor = null;
                 initMenu: 'filter',
                 menuBarPosition: 'bottom',
                 locale: (typeof window.Asc.plugin.info.lang === "string" ? window.Asc.plugin.info.lang.split('-')[0] : 'en'),
-
-
             },
             cssMaxWidth: 700,
             cssMaxHeight: 500,
-            selectionStyle: {
-                cornerSize: 20,
-                rotatingPointOffset: 70
-            }
-        });
-       
-	   window.Asc.plugin.resizeWindow( undefined, undefined, oImage.width, oImage.height, 0, 0);				//resize plugin window	
-      
-        window.onresize = function () {
-            imageEditor.ui.resizeEditor();
-        }  
-	
+        });	
+		var imageHeight = null;
+      oImage.height > 500 ? imageHeight = 500 : imageHeight = oImage.height;
+        window.Asc.plugin.resizeWindow( undefined, undefined, 870, imageHeight + 300, 0, 0);
     };
 
     window.Asc.plugin.button = function (id) {
-		
+
         if (id == 0) {
-			if (imageEditor.getDrawingMode() === 'CROPPER') {
-			var imageData = imageEditor._graphics.getCroppedImageData(imageEditor.getCropzoneRect());
-			var dataURL = imageData.url;
-            var saveImage = createScript(dataURL, imageEditor.getCropzoneRect().width, imageEditor.getCropzoneRect().height);
-            window.Asc.plugin.info.recalculate = true;
-            window.Asc.plugin.executeCommand("close", saveImage);
-		    }
-      else {
-		    var dataURL = imageEditor.toDataURL();
-			var editorDimension = imageEditor.ui._getEditorDimension();
-            var saveImage = createScript(dataURL, editorDimension.width, editorDimension.height);
-            window.Asc.plugin.info.recalculate = true;
-            window.Asc.plugin.executeCommand("close", saveImage);
-	  }
+            if (imageEditor.getDrawingMode() === 'CROPPER') {
+                var imageData = imageEditor.crop(imageEditor.getCropzoneRect()).then(function () {
+                        saveImage();
+                    }
+                );
+            } else {
+                saveImage();
+            }
         } else {
             this.executeCommand("close", "");
         }
     };
+	
+    window.saveImage = function () {
 
-    window.createScript = function (sUrl, width, height) {
-        var sScript = '';
+	        Asc.scope.dataURL = imageEditor.toDataURL();
+			var editorDimension = imageEditor.getCanvasSize();
+			Asc.scope.editorDimensionWidth = editorDimension.width;
+			Asc.scope.editorDimensionHeight = editorDimension.height;
+            var saveImage = createScript();
+    }
+    window.createScript = function () {
+
         switch (window.Asc.plugin.info.editorType) {
             case 'word': {
-                sScript += 'var oDocument = Api.GetDocument();';
-                sScript += '\nvar oParagraph, oRun, arrInsertResult = [], oImage;';
-                sScript += '\noParagraph = Api.CreateParagraph();';
-                sScript += '\narrInsertResult.push(oParagraph);';
-                var nEmuWidth = ((width / 96) * 914400 + 0.5) >> 0;
-                var nEmuHeight = ((height / 96) * 914400 + 0.5) >> 0;
-                sScript += '\n oImage = Api.CreateImage(\'' + sUrl + '\', ' + nEmuWidth + ', ' + nEmuHeight + ');';
-                sScript += '\noParagraph.AddDrawing(oImage);';
-                sScript += '\noDocument.InsertContent(arrInsertResult);';
+                window.Asc.plugin.callCommand(function() {
+                    var oDocument = Api.GetDocument();
+                    var oParagraph, oRun, arrInsertResult = [], oImage;
+                    oParagraph = Api.CreateParagraph();
+                    arrInsertResult.push(oParagraph);
+                    var nEmuWidth = ((Asc.scope.editorDimensionWidth / 96) * 914400 + 0.5) >> 0;
+                    var nEmuHeight = ((Asc.scope.editorDimensionHeight / 96) * 914400 + 0.5) >> 0;
+                    oImage = Api.CreateImage(Asc.scope.dataURL, nEmuWidth, nEmuHeight);
+                    oParagraph.AddDrawing(oImage);
+                    oDocument.InsertContent(arrInsertResult);
+                }, true);
                 break;
+
             }
             case 'cell': {
-                sScript += 'var oWorksheet = Api.GetActiveSheet();';
-                var nEmuWidth = ((width / 96) * 914400 + 0.5) >> 0;
-                var nEmuHeight = ((height / 96) * 914400 + 0.5) >> 0;
-                sScript += '\n oWorksheet.ReplaceCurrentImage(\'' + sUrl + '\', ' + nEmuWidth + ', ' + nEmuHeight + ');';
+                window.Asc.plugin.callCommand(function() {
+                    var oWorksheet = Api.GetActiveSheet();
+                    var nEmuWidth = ((Asc.scope.editorDimensionWidth / 96) * 914400 + 0.5) >> 0;
+                    var nEmuHeight = ((Asc.scope.editorDimensionHeight / 96) * 914400 + 0.5) >> 0;
+                    oWorksheet.ReplaceCurrentImage(Asc.scope.dataURL, nEmuWidth, nEmuHeight);
+                }, true);
                 break;
             }
             case 'slide': {
-                sScript += 'var oPresentation = Api.GetPresentation();';
-                var nEmuWidth = ((width / 96) * 914400 + 0.5) >> 0;
-                var nEmuHeight = ((height / 96) * 914400 + 0.5) >> 0;
-                sScript += '\n oPresentation.ReplaceCurrentImage(\'' + sUrl + '\', ' + nEmuWidth + ', ' + nEmuHeight + ');';
+                window.Asc.plugin.callCommand(function() {
+                    var oPresentation = Api.GetPresentation();
+                    var nEmuWidth  = ((Asc.scope.editorDimensionWidth / 96) * 914400 + 0.5) >> 0;
+                    var nEmuHeight = ((Asc.scope.editorDimensionHeight / 96) * 914400 + 0.5) >> 0;
+                    oPresentation.ReplaceCurrentImage(Asc.scope.dataURL , nEmuWidth , nEmuHeight);
+                }, true);
                 break;
             }
+
         }
-        return sScript;
     };
-	
 })(window, undefined);
