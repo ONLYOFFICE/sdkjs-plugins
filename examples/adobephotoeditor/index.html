@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <title>Photo Editor</title>
+    <script type='text/javascript' src='../pluginBase.js'></script>
+    <script type='text/javascript' src='photoeditor.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js'></script>
+	<script type='text/javascript' src='https://dme0ih8comzn4.cloudfront.net/imaging/v3/editor.js'></script>
+    <link rel="stylesheet" href="../plugins.css">
+    <link rel="stylesheet" href="./style.css">
+	 <style>
+        #message_paragraph{
+            font-size: 15px;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+    </style>
+</head>
+
+<body style="box-sizing:border-box; width: 100%; height: 100%; margin: 0; padding-left: 22px; background: #F7F7F7;">
+	<div class="divMessageMask" id="idMessageMask" style="display: none">		
+	</div>
+	<div class="divMessage" id="idMessage" style="display: none; text-align:center; vertical-align: middle">
+		<p id="message_paragraph"></p>
+		<button class="btn-text-default primary" id="message_button" style="width: 70px">Close</button>		
+	</div>
+
+    <div style="height: 100%; width: 100%" id="editor_container">
+		
+    </div>
+</body>
+</html>

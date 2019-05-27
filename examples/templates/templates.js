@@ -3,12 +3,6 @@
 	function updateScroll()
 	{
 		Ps.update();
-		if($('.ps__scrollbar-y').height() === 0){
-			$('.ps__scrollbar-y').css('border-width', '0px');
-		}
-		else{
-			$('.ps__scrollbar-y').css('border-width', '1px');
-		}
 	}
 
 	var _templates = [
