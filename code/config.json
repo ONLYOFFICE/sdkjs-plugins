@@ -1,5 +1,5 @@
 {
-    "name": "Highligh code",
+    "name": "Highlight code",
     "nameLocale": {
         "ru": "Подсветка кода",
         "fr": "Code en surbrillance",
@@ -10,7 +10,7 @@
 
     "variations": [
         {
-            "description": "Highligh code",
+            "description": "Highlight code",
             "descriptionLocale": {
                 "ru": "Подсветка кода",
                 "fr": "Code en surbrillance",

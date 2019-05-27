@@ -1,3 +1,4 @@
+var  Ps;
 (function(window, undefined) {
 
 	window.oncontextmenu = function(e)
@@ -62,12 +63,12 @@
         }
         return sScript;
     }
-
     window.Asc.plugin.init = function () {
         var container = document.getElementById('scrollable-container-id');
-        Ps.initialize(container, {
-           theme: 'custom-theme'
-        });
+        
+        
+		Ps = new PerfectScrollbar('#scrollable-container-id', {});
+		
         var nAmount = 20;//Count images on page
         var sLastQuery = 'play';
         var nImageWidth = 90;
@@ -187,14 +188,14 @@
             }).success(function (oResponse) {
                 container = document.getElementById('scrollable-container-id');
                 container.scrollTop = 0;
-                Ps.update(container);
+                Ps.update();
                 updateNavigation(oResponse.info.current_page, oResponse.info.pages);
                 fillTableFromResponse(oResponse.payload);
             }).error(function(){       
 			
 				container = document.getElementById('scrollable-container-id');
                 container.scrollTop = 0;
-                Ps.update(container);
+                Ps.update();
                 updateNavigation(0, 0);                
 				var oContainer = $('#preview-images-container-id');
 				oContainer.empty();
@@ -280,24 +281,7 @@
         }
 
         function updateScroll(){
-
-            var container = document.getElementById('scrollable-container-id');
-            Ps.update(container);
-            if($('.ps__scrollbar-y').height() === 0){
-                $('.ps__scrollbar-y').css('border-width', '0px');
-            }
-            else{
-                $('.ps__scrollbar-y').css('border-width', '1px');
-            }
-
-            if($('.ps__scrollbar-x').width() === 0)
-            {
-                $('.ps__scrollbar-x').css('border-width', '0px');
-            }
-            else
-            {
-                $('.ps__scrollbar-x').css('border-width', '1px');
-            }
+            Ps.update();
         }
         updateScroll();
         loadClipArtPage(1, sLastQuery);

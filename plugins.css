@@ -129,25 +129,65 @@
     -webkit-user-select: none;
 }
 
+/*
+ * Container style
+ */
 .ps {
-	position: absolute; /* please don't change 'position' */
+  overflow: hidden !important;
+  overflow-anchor: none;
+  -ms-overflow-style: none;
+  touch-action: auto;
+  -ms-touch-action: auto;
 }
 
-.ps__scrollbar-x-rail {
-    position: absolute; /* please don't change 'position' */
-    bottom: 3px; /* there must be 'right' for ps-scrollbar-y-rail */
-    height: 10px;
-    margin: 0 13px 0 0;
+/*
+ * Scrollbar rail styles
+ */
+.ps__rail-x {
+  display: none;
+  bottom: 2px; /* there must be 'right' for ps-scrollbar-y-rail */
+  height: 9px;
+  margin: 0 2px 0 2px;
+  /* please don't change 'position' */
+  position: absolute;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  transition: background-color .2s linear, opacity .2s linear;
 }
 
-.ps__scrollbar-y-rail {
-    position: absolute; /* please don't change 'position' */
-    right: 3px; /* there must be 'right' for ps-scrollbar-y-rail */
-    width: 10px;
-    margin: 0 0 13px 0;
+.ps__rail-y {
+  display: none;
+	right: 2px; /* there must be 'right' for ps-scrollbar-y-rail */
+	width: 9px;
+	margin: 2px 0 2px 0;
+  /* please don't change 'position' */
+  position: absolute;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  transition: background-color .2s linear, opacity .2s linear;
 }
 
-.ps__scrollbar-x {
+.ps--active-x > .ps__rail-x,
+.ps--active-y > .ps__rail-y {
+  display: block;
+  background-color: transparent;
+}
+
+.ps .ps__rail-x:hover,
+.ps .ps__rail-y:hover,
+.ps .ps__rail-x:focus,
+.ps .ps__rail-y:focus,
+.ps .ps__rail-x.ps--clicking,
+.ps .ps__rail-y.ps--clicking {
+  background-color: #EEEEEE;
+}
+
+/*
+ * Scrollbar thumb styles
+ */
+.ps__thumb-x {
     position: absolute; /* please don't change 'position' */
     bottom: 0; /* there must be 'bottom' for ps-scrollbar-x */
     height: 9px;
@@ -158,13 +198,14 @@
     visibility: visible;
     display: block;
     box-sizing: border-box;
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAOCAYAAAD0f5bSAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAxSURBVChTYyAVfPz4kYkJyiYJMAF1/gcxiKWB4C95NkHpUXD+/HlwUJJCD78gZ2AAAEPHMr93vNFrAAAAAElFTkSuQmCC);
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAOCAYAAAD0f5bSAAAACXBIWXMAAB2HAAAdhwGP5fFlAAAALElEQVQokWNgoBs4f/78f1JpJnIsIkvTsAQfP378TypNxyD/+PEjyRrJsgkAKS81km7nDNQAAAAASUVORK5CYII=);
+    image-rendering: pixelated;
     background-repeat: no-repeat;
-    background-position: 0 center;
+    background-position: center 0;
     border: 1px solid #cfcfcf;
 }
 
-.ps__scrollbar-y {
+.ps__thumb-y {
     position: absolute; /* please don't change 'position' */
     right: 0; /* there must be 'right' for ps-scrollbar-y */
     width: 9px;
@@ -176,34 +217,47 @@
     display: block;
     box-sizing: border-box;
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAANCAQAAAAz1Zf0AAAAIUlEQVR42mNgAILz/0GQAQo+/gdBBqLAqE5ydH5k+sgEANHgUH2JtDRHAAAAAElFTkSuQmCC);
+    image-rendering: pixelated;
     background-repeat: no-repeat;
     background-position: 0 center;
     border: 1px solid #cfcfcf;
 }
 
-.ps .ps__scrollbar-y-rail:hover .ps__scrollbar-y {
-    background-color: rgb(207, 207, 207);
+.ps__rail-x:hover > .ps__thumb-x {
+  background-color: rgb(207, 207, 207);
+}
+.ps__thumb-x:hover {
+  background-position: center -7px;
+}
+.ps__rail-x:focus > .ps__thumb-x,
+.ps__rail-x.ps--clicking .ps__thumb-x {
+  background-color: #adadad;
+  border-color: #adadad;
+  background-position: center -7px;
 }
 
-.ps .ps__scrollbar-x-rail:hover .ps__scrollbar-x {
-    background-color: rgb(207, 207, 207);
+.ps__rail-y:hover > .ps__thumb-y {
+  background-color: rgb(207, 207, 207);
+}
+.ps__thumb-y:hover {
+  background-position: -7px center;
+}
+.ps__rail-y:focus > .ps__thumb-y,
+.ps__rail-y.ps--clicking .ps__thumb-y {
+  background-color: #adadad;
+  border-color: #adadad;
+  background-position: -7px center;
 }
 
-.ps.ps--in-scrolling .ps__scrollbar-y-rail .ps__scrollbar-y {
-    background-color: #adadad;
-    border-color: #adadad;    
+/* MS supports */
+@supports (-ms-overflow-style: none) {
+  .ps {
+    overflow: auto !important;
+  }
 }
 
-.ps.ps--in-scrolling .ps__scrollbar-x-rail .ps__scrollbar-x {
-    background-color: #adadad;
-    border-color: #adadad;    
-}
-
-.ps__scrollbar-y-rail .ps__scrollbar-y {
-	background-position: 0 center;
-}
-
-
-.ps__scrollbar-x-rail .ps__scrollbar-x {
-	background-position: center -7px;
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .ps {
+    overflow: auto !important;
+  }
 }

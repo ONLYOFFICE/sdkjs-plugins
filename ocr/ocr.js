@@ -92,20 +92,10 @@
         });
 
         function updateScroll(){
-            var container = document.getElementById('scrollable-image-text-div');
-            Ps.update(container);
-            if($('.ps__scrollbar-y').height() === 0){
-                $('.ps__scrollbar-y').css('border-width', '0px');
-            }
-            else{
-                $('.ps__scrollbar-y').css('border-width', '1px');
-            }
+            Ps.update();
         }
-        var container = document.getElementById('scrollable-image-text-div');
-        Ps.initialize(container, {
-            theme: 'custom-theme'
-        });
-
+        var container = document.getElementById('scrollable-image-text-div');        
+		Ps = new PerfectScrollbar("#" + container.id, {});
         $('#load-file-button-id').click(
           					
 			function (e) {

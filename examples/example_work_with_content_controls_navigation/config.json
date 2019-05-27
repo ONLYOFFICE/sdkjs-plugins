@@ -1,0 +1,30 @@
+{
+    "name" : "Example work with content controls navigation",
+    "guid" : "asc.{C36DDFB5-08F0-4A68-B829-5FB1F7D49728}",
+
+    "variations" : [
+        {
+            "description" : "Example work with content controls navigation",
+            "url"         : "index.html",
+
+            "icons"           : ["icon.png", "icon@2x.png", "icon2.png", "icon2@2x.png"],
+            "isViewer"        : false,
+            "EditorsSupport"  : ["word"],
+
+            "isVisual"        : true,
+            "isModal"         : false,
+            "isInsideMode"    : true,
+
+            "initDataType"    : "text",
+            "initData"        : "",
+
+            "isUpdateOleOnResize" : false,
+
+            "buttons"         : [],
+            
+            "initOnSelectionChanged" : true,
+			
+			"events" : ["onTargetPositionChanged"]
+        }
+    ]
+}

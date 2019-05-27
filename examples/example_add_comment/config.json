@@ -1,0 +1,27 @@
+{
+    "name" : "Example add comment",
+    "guid" : "asc.{EF5735E0-69A7-4D4A-9ABE-F58FD70F488D}",
+
+    "variations" : [
+        {
+            "description" : "Example add comment",
+            "url"         : "index.html",
+
+            "icons"           : ["icon.png", "icon@2x.png", "icon2.png", "icon2@2x.png"],
+            "isViewer"        : false,
+            "EditorsSupport"  : ["word"],
+
+            "isVisual"        : true,
+            "isModal"         : false,
+            "isInsideMode"    : true,
+
+            "initDataType"    : "",
+            "initData"        : "",
+
+            "isUpdateOleOnResize" : false,
+
+            "buttons"         : []
+            
+        }
+    ]
+}

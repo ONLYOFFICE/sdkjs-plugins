@@ -1,5 +1,4 @@
 (function(window, undefined){
-
 	window.oncontextmenu = function(e)
 	{
 		if (e.preventDefault)
@@ -20,21 +19,7 @@
 
 	function updateScroll()
 	{
-		var container = document.getElementById('scrollable-container-id');
-		Ps.update(container);
-		if($('.ps__scrollbar-y').height() === 0){
-			$('.ps__scrollbar-y').css('border-width', '0px');
-		}
-		else{
-			$('.ps__scrollbar-y').css('border-width', '1px');
-		}
-
-		if($('.ps__scrollbar-x').width() === 0){
-			$('.ps__scrollbar-x').css('border-width', '0px');
-		}
-		else{
-			$('.ps__scrollbar-x').css('border-width', '1px');
-		}
+		Ps.update();
 	}
 
 	function getLanguagesSupport()
@@ -108,6 +93,18 @@
 				catch (err)
 				{
 					window.Asc.plugin.executeCommand("close", "");
+				}
+			}
+			else if (this.readyState == 4)
+			{
+				try
+				{
+					var _obj = JSON.parse(this.responseText);
+					if (_obj.message)
+						console.log("[translator] : " + _obj.message);
+				}
+				catch (err)
+				{					
 				}
 			}
 		};
@@ -209,7 +206,9 @@
 					var _obj  = JSON.parse(this.responseText);
 					var _text = _obj.text[0];
 
-					if (1 == translate_data_send.current)
+					if (null == translate_data_send)
+						document.getElementById("translateresult_id").innerHTML = "";
+					else if (1 == translate_data_send.current)
 						document.getElementById("translateresult_id").innerHTML = _text;
 					else
 						document.getElementById("translateresult_id").innerHTML += _text;
@@ -230,6 +229,18 @@
 					return;
 				}
 				translateIter();
+			}
+			else if (this.readyState == 4)
+			{
+				try
+				{
+					var _obj = JSON.parse(this.responseText);
+					if (_obj.message)
+						console.log("[translator] : " + _obj.message);
+				}
+				catch (err)
+				{					
+				}
 			}
 		};
 		xhr.send(null);
@@ -273,8 +284,7 @@
 	window.Asc.plugin.init = function(text)
 	{
 		document.getElementById("translateresult_id").innerHTML = "";
-		updateScroll();
-
+		
 		text = text.replace(/;/g, "%3B");
 
 		translate_data = text;
@@ -282,9 +292,8 @@
 		if (!isInit)
 		{
 			var container = document.getElementById('scrollable-container-id');
-			Ps.initialize(container, {
-				theme : 'custom-theme'
-			});
+					
+			Ps = new PerfectScrollbar('#' + container.id, { minScrollbarLength: 20 });
 
 			getLanguagesSupport();
 
@@ -307,6 +316,7 @@
 			}
 		}
 		isInit = true;
+		updateScroll();
 	};
 	
 	window.Asc.plugin.button = function(id)

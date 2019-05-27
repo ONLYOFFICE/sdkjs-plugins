@@ -1,0 +1,21 @@
+{
+    "name"       : "settings",
+    "guid"       : "asc.{CF3A000F-C6B4-451D-AC0B-F3DDAB1880D2}",
+    "baseUrl"    : "",
+    "variations" : [
+        {
+            "description"         : "settings",
+            "url"                 : "index.html",
+            "icons"               : ["icon.png", "icon@2x.png"],
+			"isViewer"            : true,
+            "EditorsSupport"	  : [ "word", "cell", "slide" ],
+			"isSystem"			  : true,
+            "isVisual"            : false,
+            "isModal"             : false,
+            "isInsideMode"        : false,
+            "initDataType"        : "none",
+            "initData"            : "",
+            "buttons"             : []
+        }
+    ]
+}

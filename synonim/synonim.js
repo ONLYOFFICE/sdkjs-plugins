@@ -1,5 +1,4 @@
 (function(window, undefined){
-	
 	window.oncontextmenu = function(e)
 	{
 		if (e.preventDefault)
@@ -47,17 +46,15 @@
 	function synonim() {
 		if (!isInit)
 		{
-			var container = document.getElementById('scrollable-container-id');
-			Ps.initialize(container, {
-				theme : 'custom-theme'
-			});
+			var container = document.getElementById('scrollable-container-id');			
+			Ps = new PerfectScrollbar('#' + container.id, {});
 			updateScroll();
 			updateScroll();
 			isInit = true;
 		}
 		predata = synonim_data;
 		var xhr = new XMLHttpRequest();
-		var req_text = decodeURIComponent(synonim_data.replace('%0D%0A', ' ')).trim() ;
+		var req_text = decodeURIComponent(synonim_data.replace('%0D%0A', ' ').replace(/%/g, "$")).trim();
 		var _url = "https://words.bighugelabs.com/api/";
 		_url += version + "/";
 		_url += ApiKey + "/";
@@ -165,16 +162,7 @@
 
 	function updateScroll()
 	{
-		var container = document.getElementById('scrollable-container-id');
-		Ps.update(container);
-		if($('.ps__scrollbar-y').height() === 0){
-			$('.ps__scrollbar-y').css('border-width', '0px');
-			$('.ps__scrollbar-y').css('display', 'none');
-		}else{
-			$('.ps__scrollbar-y').css('border-width', '1px');
-			$('.ps__scrollbar-y').css('display', 'block');
-		}
-		$('.ps__scrollbar-x').css('border-width', '0px');
+		Ps.update();
 	};
 
 	window.Asc.plugin.onTranslate = function()
