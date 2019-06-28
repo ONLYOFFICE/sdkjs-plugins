@@ -40,7 +40,7 @@ var language = null;
             'Flip X': window.Asc.plugin.tr("Flip X"),
             'Flip Y': window.Asc.plugin.tr("Flip Y"),
             'Crop': window.Asc.plugin.tr("Crop"),
-            'Delete all': window.Asc.plugin.tr("Delete all"),
+            'Delete-all': window.Asc.plugin.tr("Delete all"),
             'Delete': window.Asc.plugin.tr("Delete"),
             'Reset': window.Asc.plugin.tr("Reset"),
             'Redo': window.Asc.plugin.tr("Redo"),
