@@ -69,5 +69,6 @@
   "Straight": "Direct",
   "Range": "Gamme",
   "Custom": "Personnalisé",
-  "Square": "Carré"
+  "Square": "Carré",
+  "Grayscale" : "Niveaux de gris"
 }
