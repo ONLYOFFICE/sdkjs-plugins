@@ -566,19 +566,28 @@
         {
             var _info = window.Asc.plugin.info;
 
-            var _method = (_info.objectId === undefined) ? "asc_addOleObject" : "asc_editOleObject";
-
+            var _method = (_info.objectId === undefined) ? "AddOleObject" : "EditOleObject";
+			
             _info.width = _info.width ? _info.width : 70;
             _info.height = _info.height ? _info.height : 70;
+			_info.widthPix = (_info.mmToPx * _info.width) >> 0;
+			_info.heightPix = (_info.mmToPx * _info.height) >> 0;
+			
+			var _param = {
+				guid : _info.guid,
+				widthPix : _info.widthPix,
+				heightPix : _info.heightPix,
+				width : _info.width,
+				height : _info.height,
+				imgSrc : window.g_board.getResult(_info.widthPix, _info.heightPix).image,
+				data : window.g_board.getData(),
+				objectId : _info.objectId,
+				resize : _info.resize
+			};
 
-            _info.widthPix = (_info.mmToPx * _info.width) >> 0;
-            _info.heightPix = (_info.mmToPx * _info.height) >> 0;
-
-            _info.imgSrc = window.g_board.getResult(_info.widthPix, _info.heightPix).image;
-            _info.data = window.g_board.getData();
-
-            var _code = "Api." + _method + "(" + JSON.stringify(_info) + ");";
-            this.executeCommand("close", _code);
+			window.Asc.plugin.executeMethod(_method, [_param], function() {
+				window.Asc.plugin.executeCommand("close", "");
+			});
         }
         else
         {
