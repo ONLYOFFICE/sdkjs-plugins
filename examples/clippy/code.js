@@ -18,6 +18,8 @@
 
                     initMenu();
                     initActions();
+
+                    $('.clippy').css('z-index', 2000);
                 });
                 return _agentDfd.promise();
             };
