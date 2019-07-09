@@ -4,7 +4,7 @@
         "ru": "Фоторедактор",
         "fr": "Photo Editor",
         "es": "Editor de Fotos",
-        "de": "Foto Editor"
+        "de": "Foto-Editor"
     },
     "guid": "asc.{07FD8DFA-DFE0-4089-AL24-0730933CC80A}",
     "baseUrl": "",
@@ -16,7 +16,7 @@
                 "ru": "Фоторедактор",
                 "fr": "Photo Editor",
                 "es": "Editor de Fotos",
-                "de": "Foto Editor"
+                "de": "Foto-Editor"
             },
             "url": "index.html",
 
