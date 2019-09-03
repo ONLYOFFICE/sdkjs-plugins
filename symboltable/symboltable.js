@@ -1102,7 +1102,9 @@
 			}
 			var sRangeName = oRangeNames[oRange.Name];
 			oTooltip.text(sRangeName);
-			oTooltip.css('top', $('.ps__thumb-y').css('top'));
+			if(!oTooltip.is(":visible")){
+				oTooltip.css('top', $('.ps__thumb-y').css('top'));
+			}
 			oTooltip.css('right', $('#fake-symbol-table-wrap').width() + 4);
 			if(!oTooltip.is(":visible")){
 				oTooltip.show();
