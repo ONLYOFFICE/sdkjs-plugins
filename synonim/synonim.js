@@ -60,7 +60,7 @@
 		_url += ApiKey + "/";
 		_url += req_text + "/";
 		_url += SynonimFormat;
-		xhr.open('POST', _url, true);
+		xhr.open('GET', _url, true);
 		xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 		xhr.onreadystatechange = function()
 		{
@@ -104,7 +104,7 @@
 			inputSerch = document.getElementById("inp_search");
 			inputSerch.value = text;
 			synonim_data = text;
-			if (null!=synonim_data)
+			if (null != synonim_data && synonim_data != "")
 				synonim();
 		}else{
 			inputSerch.value = text;

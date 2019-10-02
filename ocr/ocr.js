@@ -224,12 +224,6 @@
                 document.getElementById('lang-select').setAttribute('disabled', '');
                 document.getElementById('load-file-button-id').setAttribute('disabled', '');
                 var fTesseractCall = function(){
-                    window.Tesseract = Tesseract.create({
-                      workerPath:  location.protocol + '//' + location.host + '/sdkjs-plugins/ocr/worker.js',
-                      langPath: location.protocol + '//' + location.host + '/sdkjs-plugins/ocr/tessdata/',
-                      corePath:  location.protocol + '//' + location.host + '/sdkjs-plugins/ocr/index.js'
-                    })
-                    
                     Tesseract.recognize(arrImagesCopy.splice(0, 1)[0], {lang: $('#lang-select option:selected')[0].value}).progress(function (progress) {
                         if(progress && progress.status === "recognizing text"){
                             var nPercent =  (100*(progress.progress + nStartFilesCount - arrImagesCopy.length - 1)/nStartFilesCount) >> 0;
