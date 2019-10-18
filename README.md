@@ -26,7 +26,7 @@ Currently the following plugins are available:
 
 Official website: [https://www.onlyoffice.com/](https://www.onlyoffice.com/?utm_source=github&utm_medium=cpc&utm_campaign=GitHubPlugins)
 
-Code repository: [https://github.com/ONLYOFFICE/web-apps](https://github.com/ONLYOFFICE/web-apps "https://github.com/ONLYOFFICE/web-apps")
+Code repository: [https://github.com/ONLYOFFICE/web-apps-pro](https://github.com/ONLYOFFICE/web-apps-pro "https://github.com/ONLYOFFICE/web-apps-pro")
 
 SaaS version: [https://www.onlyoffice.com/cloud-office.aspx](https://www.onlyoffice.com/cloud-office.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubPlugins)
 
