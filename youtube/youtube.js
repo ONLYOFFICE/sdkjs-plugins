@@ -118,9 +118,8 @@
 
 			if (!isWindowPlayer)
 			{
-				var _table     = document.getElementsByTagName("table")[0];
-				var _row       = _table.insertRow(_table.rows.length);
-				_row.innerHTML = "<td colspan=\"2\" style=\"background-color:transparent;height:100%;\"><div id=\"content\" style=\"width:100%;height:100%;\"></td>";
+				var _table     = document.getElementById("id_player");
+				_table.innerHTML = "<div id=\"content\" style=\"position:absolute;padding:0;margin:0;left:0;top:0;width:100%;height:100%;\"></div>";
 				isWindowPlayer = true;
 
 				window.Asc.plugin.resizeWindow(620, 480, 390, 400, 0, 0);

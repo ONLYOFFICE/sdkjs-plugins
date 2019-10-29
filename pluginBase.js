@@ -605,7 +605,7 @@ var Ps = null;
             if (isRetina)
                 retinaPixelRatio = 2;
 
-            if (isMobile)
+            if (isMobileVersion)
             {
                 isRetina = (window.devicePixelRatio >= 1.9);
                 retinaPixelRatio = window.devicePixelRatio;
