@@ -551,11 +551,10 @@ var Ps = null;
     }    
 
     window.onunload = function()
-	{
-		if (window.addEventListener)
-			window.removeEventListener("message", onMessage, false);
-		else
-			window.detachEvent("onmessage", onMessage);
-	}
-	
+    {
+        if (window.addEventListener)
+			      window.removeEventListener("message", onMessage, false);
+		    else
+			      window.detachEvent("onmessage", onMessage);
+	  };
 })(window, undefined);
