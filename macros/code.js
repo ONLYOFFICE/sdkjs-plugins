@@ -351,6 +351,10 @@ editor.ternTooltip = new TernTooltip(editor, ternServer);
                     window.CustomContextMenu.position(e.pageX, e.pageY);
                     return;
                 }
+                if (e.srcElement.id && (0 == e.srcElement.id.indexOf("menu_") || 0 == e.srcElement.id.indexOf("button")))
+                {
+                    e.preventDefault();
+                }
                 if (window.CustomContextMenu.visible)
                     window.CustomContextMenu.hide();
             });
