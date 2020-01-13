@@ -46,19 +46,15 @@
 		var temp_code,
 			flag = false;	//flag change code (true = changed)
 
-		if (!isIE)
-		{
-			document.getElementById("btn_highlight").style.display ="none";
-			document.getElementById("language_id").style.flex ="1";
-		}
-
 		if (isIE)
+		{
+			document.getElementById("btn_highlight").style.display ="inline";
 			document.getElementById("tabselect").style.display ="none";
-
-		if (!isDE) {
-			document.getElementById("jq_color").style.display ="none";
+			document.getElementById("language_id").style.flex ="0.95";
 		}
+
 		if (isDE) {
+			document.getElementById("jq_color").style.display ="inline";
 			document.getElementById("background_color").style.display ="none";
 			initSpectrum("#FFFFFF");
 		}
