@@ -18,8 +18,8 @@
 	<body spellcheck="false">
 		<label id="lb_lanuage" class="label" style = "padding: 5px 0px 0px 12px">Language</label>
 		<div class="language">	
-			<select id="language_id" class="combo"></select>
-			<button class = "button" id ="btn_highlight">Highlight</button>
+			<select id="language_id" style="flex: 1" class="combo"></select>
+			<button class = "button" id ="btn_highlight" style="display: none;">Highlight</button>
 		</div>
 		<div id="TabColor" class="TabColor">
 			<div class="styleselect">
@@ -52,7 +52,7 @@
 			<div id="colorselect" class="colorselect">
 					<label id="lb_bgColor" for="background_color" class="label">Choose background color</label>
 					<input id="background_color" style="padding: 0" type="color" value="#ffffff">
-					<input type='text' style="padding: 0" id="jq_color"/>		
+					<input type='text' style="display: none; padding: 0" id="jq_color"/>		
 			</div>
 		</div>
 	</body>
