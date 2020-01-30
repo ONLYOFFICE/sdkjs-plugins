@@ -1,5 +1,6 @@
 (function (window, undefined) {
-	var apiCurrency = 'https://api.fixer.io/';
+	var apiCurrency = 'http://data.fixer.io/api/';
+	var access_key = 'abd009701042b282bda944c660c90fb2';
 
 	function formatDate(date) {
 		var month = '' + (date.getMonth() + 1);
@@ -18,6 +19,8 @@
 
 	function loadCurrency(date, base, callback) {
 		base = base ? base : 'RUB';
+		//if you need use base then create an account on fixer.io, select  subscription plan BASIC or expensive and paste your access_key
+		//default base = EUR
 		date = date ? formatDate(date) : 'latest';
 		var httpRequest;
 		if (window.XMLHttpRequest) { // Mozilla, Safari, ...
@@ -38,7 +41,9 @@
 				callback(httpRequest.status === 200 ? httpRequest.responseText : null);
 			}
 		};
-		httpRequest.open('GET', apiCurrency + date + '?base=' + base, true);
+		httpRequest.open('GET', apiCurrency + date + '?access_key=' + access_key, true);
+		//use this reques if your subscription plan is base or expensive
+		// httpRequest.open('GET', apiCurrency + date + '?access_key=' + access_key + '&base=' + base, true);
 		httpRequest.send();
 	}
 
@@ -48,7 +53,7 @@
 
 	window.Asc.plugin.button = function (id) {
 		var t = this;
-		loadCurrency($('#DP').datepicker('getDate'), null, function (value) {
+		loadCurrency($('#DP').datepicker('getDate'), null,  function (value) {
 			var command = '';
 			if (value) {
 				try {
