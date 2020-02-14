@@ -17,6 +17,8 @@ Currently the following plugins are available:
 * [Macros](https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/macros) for creating JavaScript macros to run in your documents.
 * [Highlight code](https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/code) for highlighting syntax of the code selecting the necessary language, style, and background color.
 
+If you want to create your own plugin, check out the [examples folder](https://github.com/ONLYOFFICE/sdkjs-plugins/tree/release/v5.5.0/examples).
+
 All the plugins are released under an [MIT license](https://opensource.org/licenses/MIT). See the LICENSE file for more information.
 
 ## How to add plugins to ONLYOFFICE solutions
@@ -40,7 +42,7 @@ Turn your plugin into a browser extension. Currently, it works for Chrome users 
 
 Use [chrome_extension_example](https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/examples/chrome_extension_example) to learn how to transform an ONLYOFFICE plugin into a Chrome extension.
 
-Detailed installation instructions for all versions can be found in the [API documentation] (https://api.onlyoffice.com/plugin/installation).
+Detailed installation instructions for all versions can be found in the [API documentation](https://api.onlyoffice.com/plugin/installation).
 
 ## Project information
 
