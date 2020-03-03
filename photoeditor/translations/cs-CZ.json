@@ -2,7 +2,7 @@
   "Photo Editor": "Fotoeditor",
   "Close": "Zavřít",
   "Image Editor Add-on": "Doplněk – editor obrázků",
-  "<a href=\"https://creativesdk.adobe.com/docs/web/#/articles/imageeditorui/index.html\" target=\"_blank\">Součást vývojářské sady pro kreativní upravování obrázků</a> je možné vložit do libovolné webové stránky a to pomocí několika málo řádek v Javascript kódu, pro jednoduchý ale užitečné upravování obrázků do existujícího pracovního postupu.": "<a href=\\\"https://creativesdk.adobe.com/docs/web/#/articles/imageeditorui/index.html\\\" target=\\\"_blank\\\">",
+  "<a href=\"https://creativesdk.adobe.com/docs/web/#/articles/imageeditorui/index.html\" target=\"_blank\">The Creative SDK Image Editing component</a> can be embedded in any website with just a few lines of Javascript, adding simple yet powerful image editing to an existing workflow.": "<a href=\"https://creativesdk.adobe.com/docs/web/#/articles/imageeditorui/index.html\" target=\"_blank\">Součást vývojářské sady pro kreativní upravování obrázků</a> je možné vložit do libovolné webové stránky a to pomocí několika málo řádek v Javascript kódu, pro jednoduchý ale užitečné upravování obrázků do existujícího pracovního postupu.",
   "Source code": "Zdrojové kódy",
   "Sepia": "Sépiový efekt",
   "Blur": "Rozmazat",
