@@ -162,7 +162,7 @@
 
 	function updateScroll()
 	{
-		Ps.update();
+		Ps && Ps.update();
 	};
 
 	window.Asc.plugin.onTranslate = function()

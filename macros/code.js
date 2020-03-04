@@ -76,7 +76,10 @@ editor.ternTooltip = new TernTooltip(editor, ternServer);
         for (var i = 0; i < Content.macrosArray.length; i++)
         {
             var cl = (i == Content.current) ? "macrosSelected" : "macros";
-            var item = "<div class=\"" + cl + "\" id=\"item" + i + "\" onclick=\"window.onItemClick(" + i + ");\">" + Content.macrosArray[i].name + "</div>";
+            var item = "<div class=\"" + cl + "\" id=\"item" + i + "\" onclick=\"window.onItemClick(" + i + ");\">" + Content.macrosArray[i].name;
+            if (true === Content.macrosArray[i].autostart)
+                item += ("<div class=\"macrosAutostart\">(A)</div>");
+            item += "</div>";
             menuContent += item;
         }
         
@@ -108,12 +111,14 @@ editor.ternTooltip = new TernTooltip(editor, ternServer);
             Content.current = index;
         }
         
+        var buttonAutoStart = document.getElementById("button_autostart");
         if (-1 == Content.current)
         {
             window.isDisable = true;
             editor.setValue('');
             editor.setReadOnly(true);
             window.isDisable = false;
+            buttonAutoStart.style.display = "none";
         }
         else
         {
@@ -121,6 +126,11 @@ editor.ternTooltip = new TernTooltip(editor, ternServer);
             editor.setValue(Content.macrosArray[index].value);
             editor.setReadOnly(false);
             window.isDisable = false;
+            buttonAutoStart.style.display = "inline-block";
+            if (Content.macrosArray[Content.current].autostart)
+                buttonAutoStart.classList.add("primary");
+            else
+                buttonAutoStart.classList.remove("primary");
         }
             
         editor.selection.clearSelection();
@@ -159,6 +169,11 @@ editor.ternTooltip = new TernTooltip(editor, ternServer);
     };
     document.getElementById("button_rename").onclick = function() {
         showRename();
+    };
+    document.getElementById("button_autostart").onclick = function() {
+        Content.macrosArray[Content.current].autostart = Content.macrosArray[Content.current].autostart ? false : true;
+        onItemClick(Content.current);
+        updateMenu();
     };
     document.getElementById("button_run").onclick = function() {
         if (Content.current != -1)
@@ -263,6 +278,7 @@ editor.ternTooltip = new TernTooltip(editor, ternServer);
             }
             
             updateMenu();
+            window.CustomContextMenu.init();
         });
 	};
 	
@@ -293,10 +309,66 @@ editor.ternTooltip = new TernTooltip(editor, ternServer);
 	{
 		document.getElementById("button_new").innerHTML = window.Asc.plugin.tr("New");
 		document.getElementById("button_delete").innerHTML = window.Asc.plugin.tr("Delete");
-		document.getElementById("button_rename").innerHTML = window.Asc.plugin.tr("Rename");
+        document.getElementById("button_rename").innerHTML = window.Asc.plugin.tr("Rename");
+        document.getElementById("button_autostart").innerHTML = window.Asc.plugin.tr("Autostart");
         document.getElementById("button_run").innerHTML = window.Asc.plugin.tr("Run");
         document.getElementById("rename_ok").innerHTML = window.Asc.plugin.tr("Ok");
         document.getElementById("rename_cancel").innerHTML = window.Asc.plugin.tr("Cancel");
-	};
+    };
+    
+    // context menu
+    window.CustomContextMenu = {
+        element: null,
+        visible: false,
+        macrosIndex: 0,
+        position: function(x, y) {
+            if (!this.element)
+                return;
+            this.element.style.left = x + "px";
+            this.element.style.top = y + "px";
+            this.visible = true;
+            this.element.style.display = "block";
+        },
+        hide: function(){
+            this.visible = false;
+            this.element.style.display = "none";
+        },
+        init: function(){
+            if (this.element)
+                return;
+            this.element = document.getElementById("context-menu-id");
+            window.addEventListener("click", function(e) {
+                window.CustomContextMenu.visible && window.CustomContextMenu.hide();
+            });
+            window.addEventListener("contextmenu", function(e) {
+                var className = e.srcElement.getAttribute("class");
+                if (className && -1 != className.indexOf("macros"))
+                {
+                    e.preventDefault();
+                    window.CustomContextMenu.macrosIndex = parseInt(e.srcElement.id.substr(4));
+                    document.getElementById("menu_autostart_id").innerHTML = window.Asc.plugin.tr(
+                        Content.macrosArray[window.CustomContextMenu.macrosIndex].autostart ? "Unmake autostart" : "Make autostart");
+                    window.CustomContextMenu.position(e.pageX, e.pageY);
+                    return;
+                }
+                if (e.srcElement.id && (0 == e.srcElement.id.indexOf("menu_") || 0 == e.srcElement.id.indexOf("button")))
+                {
+                    e.preventDefault();
+                }
+                if (window.CustomContextMenu.visible)
+                    window.CustomContextMenu.hide();
+            });
+        },
+        onAutostartClick: function()
+        {
+            if (!Content.macrosArray[window.CustomContextMenu.macrosIndex])
+                return;
+            
+            Content.macrosArray[window.CustomContextMenu.macrosIndex].autostart = 
+                Content.macrosArray[window.CustomContextMenu.macrosIndex].autostart ? false : true;
+
+            updateMenu();
+        }
+    };
 
 })(window, undefined);
