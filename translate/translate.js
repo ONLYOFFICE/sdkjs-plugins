@@ -287,8 +287,6 @@
 
 	window.Asc.plugin.init = function(text)
 	{
-		// lang1_id
-		// lang2_id
 		document.getElementById("translateresult_id").innerHTML = "";
 		
 		text = text.replace(/;/g, "%3B");
