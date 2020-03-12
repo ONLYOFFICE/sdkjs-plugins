@@ -85,8 +85,12 @@
 
 					document.getElementById("lang2_id").selectedIndex = _defaultDest;
 
-					document.getElementById("lang1_id").onchange = function(e) { translate(); };
-					document.getElementById("lang2_id").onchange = function(e) { translate(); };
+					$('#lang1_id').select2({
+						// minimumResultsForSearch: Infinity
+					}).on('select2:select', function (e) { translate(); });
+					$('#lang2_id').select2({
+						// minimumResultsForSearch: Infinity
+					}).on('change', function (e) { translate(); });
 
 					translate();
 				}
@@ -283,6 +287,8 @@
 
 	window.Asc.plugin.init = function(text)
 	{
+		// lang1_id
+		// lang2_id
 		document.getElementById("translateresult_id").innerHTML = "";
 		
 		text = text.replace(/;/g, "%3B");
