@@ -4,5 +4,8 @@
     "Rename" : "Переименовать",
     "Run" : "Выполнить",
 	"Cancel" : "Отмена",
-	"Macros" : "Макрос"
+	"Macros" : "Макрос",
+	"Autostart" : "Автозапуск",
+	"Don't start automatically" : "Не запускать автоматически",
+	"Start automatically" : "Запускать автоматически"
 }

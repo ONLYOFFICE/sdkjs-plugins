@@ -4,5 +4,8 @@
     "Rename" : "Renommer",
     "Run" : "Executer",
 	"Cancel" : "Annuler",
-	"Macros" : "Macros"
+	"Macros" : "Macros",
+	"Autostart" : "Auto-démarrage",
+	"Don't start automatically" : "Ne pas lancer automatiquement",
+	"Start automatically" : "Lancer automatiquement"
 }
