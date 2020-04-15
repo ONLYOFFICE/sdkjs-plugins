@@ -347,7 +347,7 @@ editor.ternTooltip = new TernTooltip(editor, ternServer);
                     e.preventDefault();
                     window.CustomContextMenu.macrosIndex = parseInt(e.srcElement.id.substr(4));
                     document.getElementById("menu_autostart_id").innerHTML = window.Asc.plugin.tr(
-                        Content.macrosArray[window.CustomContextMenu.macrosIndex].autostart ? "Unmake autostart" : "Make autostart");
+                        Content.macrosArray[window.CustomContextMenu.macrosIndex].autostart ? "Don't start automatically" : "Start automatically");
                     window.CustomContextMenu.position(e.pageX, e.pageY);
                     return;
                 }
