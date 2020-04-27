@@ -36,9 +36,6 @@
 				}
 			});
 		});
-		$('#tab_replace_id').select2({
-			minimumResultsForSearch: Infinity
-		});
 		$('#language_id').select2({
 			data : createLangForSelect(),
 			minimumResultsForSearch: Infinity
@@ -585,6 +582,10 @@
 		var btn_sp_choose = document.getElementById("btn_sp_choose");
 		if (btn_sp_choose)
 			btn_sp_choose.innerHTML = window.Asc.plugin.tr("Choose");
+			
+		$('#tab_replace_id').select2({
+			minimumResultsForSearch: Infinity
+		});
 	};
 
 })(window, undefined);
