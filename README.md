@@ -17,7 +17,7 @@ Currently the following plugins are available:
 * [Macros](https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/macros) for creating JavaScript macros to run in your documents.
 * [Highlight code](https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/code) for highlighting syntax of the code selecting the necessary language, style, and background color.
 
-If you want to create your own plugin, check out the [examples folder](https://github.com/ONLYOFFICE/sdkjs-plugins/tree/release/v5.5.0/examples).
+If you want to create your own plugin, check out the [examples folder](https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/examples).
 
 All the plugins are released under an [MIT license](https://opensource.org/licenses/MIT). See the LICENSE file for more information.
 
