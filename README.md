@@ -1,64 +1,49 @@
-[![License](https://img.shields.io/badge/License-MIT-green.svg?style=flat)](https://opensource.org/licenses/MIT)    ![Release](https://img.shields.io/badge/Release-v4.1.2-blue.svg?style=flat)
-
 ## Overview
 
-The plugins for [ONLYOFFICE Document Server](https://github.com/ONLYOFFICE/DocumentServer) and [ONLYOFFICE Desktop Editors](https://github.com/ONLYOFFICE/DesktopEditors) to enhance their functionality.
+In this folder, you will find the simplest plugins to be used as an examples while creating your own ones.
 
-## Available plugins
+## List of available examples
 
-Currently the following plugins are available:
+### Inserting content 
 
-* [OCR](https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/ocr) for recognizing text from pictures and screenshots and inserting it into your documents.
-* [Photo Editor](https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/photoeditor) for editing images right in your documents, including cropping, resizing, applying effects, and more. 
-* [Speech](https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/speech) for converting selected text into speech.
-* [Thesaurus](https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/synonim) for finding synonyms of a word and replacing it with the selected one.
-* [Translator](https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/translate) for translating the selected text using Yandex Translator.
-* [YouTube](https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/youtube) for embedding YouTube videos into your documents. 
-* [Macros](https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/macros) for creating JavaScript macros to run in your documents.
-* [Highlight code](https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/code) for highlighting syntax of the code selecting the necessary language, style, and background color.
+* [helloworld](./helloworld) shows how to insert text into the document.
+* [templates](./templates) - shows how to insert content generated using DocBuilder script into your doc.
+* [CBR](./cbr) shows how to get data from third party service and insert it into your spreadsheet. 
+* [example_autocomplete](./example_autocomplete) - an example of an input assistant/non-standard keyboard. It has its own window that appears and disappears when you type the text. Its location is tied to the cursor.
 
-If you want to create your own plugin, check out the [examples folder](https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/examples).
+### Search and replace
 
-All the plugins are released under an [MIT license](https://opensource.org/licenses/MIT). See the LICENSE file for more information.
+* [example_search_replace](./example_autocomplete) - an example of search & replace feature with settings. 
+* [searchAndReplaceOnStart](./searchAndReplaceOnStart) shows how to automatically replace content when you start the editor. In this case, text “ONLYOFFICE” will be replaced with the text "ONLYOFFICE is cool". 
 
-## How to add plugins to ONLYOFFICE solutions
+### Work with comments
 
-**For server solutions**
+* [example_add_comment](./example_add_comment) shows how to add comments to your doc using plugins.
+* [example_add_comment_in_cell](./example_add_comment_in_cell) shows how to add comment to the active cell of your spreadsheet.
 
-Put the folder with the plugin code to ONLYOFFICE Document Server folder:
+### Work with content controls
 
-* For Linux - /var/www/onlyoffice/documentserver/sdkjs-plugins/.
-* For Windows - %ProgramFiles%\ONLYOFFICE\DocumentServer\sdkjs-plugins\.
+* [example_work_with_content_controls](./example_work_with_content_controls) shows how to add, edit, and delete content controls using plugins. 
+* [example_work_with_content_controls_content](./example_work_with_content_controls_content) shows how to get the list of content controls, selects content with id determined in the plugin and creates a variable with the selected content which later can be inserted anywhere you want. 
+* [example_work_with_content_controls_navigation](./example_work_with_content_controls_navigation) shows how to get the list of content controls, selects content, move cursor to the beginning of the specific content control. 
 
-**For desktop editors**
+### Third-party services integration
 
-* Archive the plugin files (config.json, index.html, and pluginCode.js).
-* Change the file extension to .plugin. 
-* Go to the Plugins tab, click Manage Plugins >> Add plugin, browse for the .plugin file.
+* [chrome_extension_example](./chrome_extension_example) shows how to turn your plugin into a Chrome extension to add its functionality to the cloud version of ONLYOFFICE.
+* [glavred](./glavred) -  an example of integration with a 3rd party service Glavred that is used to find cliches, poor syntax, etc in text written in Russian. The plugin opens a new window where possible flaws are underlined in your text. 
+* [externallistener](./externallistener) shows how to manipulate the editor from an external panel of a 3rd party service. 
 
-**For the cloud version**
+### Other 
 
-Turn your plugin into a browser extension. Currently, it works for Chrome users only.
-
-Use [chrome_extension_example](https://github.com/ONLYOFFICE/sdkjs-plugins/tree/master/examples/chrome_extension_example) to learn how to transform an ONLYOFFICE plugin into a Chrome extension.
-
-Detailed installation instructions for all versions can be found in the [API documentation](https://api.onlyoffice.com/plugin/installation).
-
-## Project information
-
-Official website: [https://www.onlyoffice.com/](https://www.onlyoffice.com/?utm_source=github&utm_medium=cpc&utm_campaign=GitHubPlugins)
-
-App Directory: [https://www.onlyoffice.com/app-directory](https://www.onlyoffice.com/app-directory?utm_source=github&utm_medium=cpc&utm_campaign=GitHubPlugins)
-
-SaaS version: [https://www.onlyoffice.com/cloud-office.aspx](https://www.onlyoffice.com/cloud-office.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubPlugins)
+* [settings](./settings) shows how to protect a document using a watermark.
+* [chess](./chess) shows how to work with OLE-objects and save data to your document.
 
 ## Documentation
 
-Plugins structure and installation https://api.onlyoffice.com/plugin/basic.
-
-Plugins code and methods https://api.onlyoffice.com/docbuilder/basic.
+ONLYOFFICE API - https://api.onlyoffice.com/plugin/basic
 
 ## User feedback and support
 
-If you have any problems or question about ONLYOFFICE plugins, use the issues section here, in this repository.  
+If you have any problems or question about ONLYOFFICE plugins, use the issues section here, in this repository. 
+
 
