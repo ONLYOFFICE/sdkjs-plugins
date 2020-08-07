@@ -65,6 +65,7 @@
 					command += 'var col = active.GetCol();';
 					for (var i = 0; i < keys.length; ++i) {
 						command += 'oSheet.GetRangeByNumber(row, col).SetValue("' + keys[i] + '");';
+						command += 'oSheet.GetRangeByNumber(row, col + 1).SetNumberFormat("@");';
 						command += 'oSheet.GetRangeByNumber(row, col + 1).SetValue("' + rates[keys[i]] + '");';
 						command += '++row;';
 					}
