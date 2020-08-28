@@ -35,10 +35,10 @@
 				accepted : {id: $('#select_Accept').find(':selected').val(), text:$('#select_Accept').find(':selected').text()},
 				submitted : {id: $('#select_Submit').find(':selected').val(), text:$('#select_Submit').find(':selected').text()}
 			};
-			comment.Data.Text = $('#textarea_Comment').val();
+			comment.Data.Text = $('#textarea_Comment').val().trim();;
 			comment.Data.UserData = userData;
-			// let reply = [{Text: "Reply1", UserName: "Author1"}];
-			comment.Data.Replies.unshift({Text: "Reply1", UserName: "Author1"});
+			let reply = {Text: $('#textarea_Reolies').val().trim(), UserName: "Author1"};
+			comment.Data.Replies.unshift(reply);
 			let commentData = JSON.parse(JSON.stringify(comment.Data));
 			commentData.UserData = JSON.stringify(userData); 
 			$('#text'+comment.Id).text(comment.Data.Text);
