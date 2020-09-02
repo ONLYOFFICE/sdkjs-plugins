@@ -258,7 +258,7 @@
 					}
 				}
 
-			}).attr('data-type', id)
+			}).attr('data-id', id)
 		);
 
 		$('#TextComments').append(
