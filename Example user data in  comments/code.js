@@ -35,10 +35,11 @@
 				accepted : {id: $('#select_Accept').find(':selected').val(), text:$('#select_Accept').find(':selected').text()},
 				submitted : {id: $('#select_Submit').find(':selected').val(), text:$('#select_Submit').find(':selected').text()}
 			};
-			comment.Data.Text = $('#textarea_Comment').val().trim();;
+			comment.Data.Text = ($('#textarea_Comment').val()) ? $('#textarea_Comment').val().trim() : 0;
 			comment.Data.UserData = userData;
-			let reply = {Text: $('#textarea_Reolies').val().trim(), UserName: "Author1"};
-			comment.Data.Replies.unshift(reply);
+			let reply = {Text: ($('#textarea_Replies').val()) ? $('#textarea_Replies').val().trim() : "", UserName: "Author1"};
+			if (reply.Text)
+				comment.Data.Replies.unshift(reply);
 			let commentData = JSON.parse(JSON.stringify(comment.Data));
 			commentData.UserData = JSON.stringify(userData); 
 			$('#text'+comment.Id).text(comment.Data.Text);
@@ -192,13 +193,15 @@
 				append : $('<input>', {type : 'checkbox'}).attr('data-id', id),
 				on : {
 					click: function(){
-						$('.div-selected').removeClass('div-selected');
-						$(this).toggleClass('div-selected');
-						let id = $(this).attr('data-id');
-						$('#'+id).toggleClass('div-selected');
-						$('#text'+id).toggleClass('div-selected');
-						$('#sub'+id).toggleClass('div-selected');
-						showCommentData(id);
+						if (($('.div-selected').attr('data-id') !== $(this).attr('data-id'))){
+							$('.div-selected').removeClass('div-selected');
+							$(this).toggleClass('div-selected');
+							let id = $(this).attr('data-id');
+							$('#'+id).toggleClass('div-selected');
+							$('#text'+id).toggleClass('div-selected');
+							$('#sub'+id).toggleClass('div-selected');
+							showCommentData(id);
+						}
 					},
 					mouseover: function(){
 						$(this).addClass('div-hovered');
@@ -228,13 +231,15 @@
 				text : id,
 				on : {
 					click: function(){
-						$('.div-selected').removeClass('div-selected');
-						$(this).toggleClass('div-selected');
-						let id = $(this).attr('id');
-						$('#check'+id).toggleClass('div-selected');
-						$('#text'+id).toggleClass('div-selected');
-						$('#sub'+id).toggleClass('div-selected');
-						showCommentData(id);
+						if (($('.div-selected').attr('data-id') !== $(this).attr('data-id'))){
+							$('.div-selected').removeClass('div-selected');
+							$(this).toggleClass('div-selected');
+							let id = $(this).attr('id');
+							$('#check'+id).toggleClass('div-selected');
+							$('#text'+id).toggleClass('div-selected');
+							$('#sub'+id).toggleClass('div-selected');
+							showCommentData(id);
+						}
 					},
 					mouseover: function(){
 						$(this).addClass('div-hovered');
@@ -264,13 +269,15 @@
 				text : text,
 				on : {
 					click: function(){
-						$('.div-selected').removeClass('div-selected');
-						$(this).toggleClass('div-selected');
-						let id = $(this).attr('data-id');
-						$('#check'+id).toggleClass('div-selected');
-						$('#'+id).toggleClass('div-selected');
-						$('#sub'+id).toggleClass('div-selected');
-						showCommentData(id);
+						if (($('.div-selected').attr('data-id') !== $(this).attr('data-id'))){
+							$('.div-selected').removeClass('div-selected');
+							$(this).toggleClass('div-selected');
+							let id = $(this).attr('data-id');
+							$('#check'+id).toggleClass('div-selected');
+							$('#'+id).toggleClass('div-selected');
+							$('#sub'+id).toggleClass('div-selected');
+							showCommentData(id);
+						}
 					},
 					mouseover: function(){
 						$(this).addClass('div-hovered');
@@ -299,12 +306,14 @@
 				text : (userData && userData.text) ? userData.text : "None",
 				on : {
 					click: function(){
-						$('.div-selected').removeClass('div-selected');
-						$(this).toggleClass('div-selected');
-						let id = $(this).attr('data-id');
-						$('#'+id).toggleClass('div-selected');
-						$('#text'+id).toggleClass('div-selected');
-						showCommentData(id);
+						if (($('.div-selected').attr('data-id') !== $(this).attr('data-id'))){
+							$('.div-selected').removeClass('div-selected');
+							$(this).toggleClass('div-selected');
+							let id = $(this).attr('data-id');
+							$('#'+id).toggleClass('div-selected');
+							$('#text'+id).toggleClass('div-selected');
+							showCommentData(id);
+						}
 					},
 					mouseover: function(){
 						$(this).addClass('div-hovered');
