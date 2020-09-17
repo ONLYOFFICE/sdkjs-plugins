@@ -3,15 +3,15 @@
     window.Asc.plugin.init = function()
     {
 
-		$('#btn_prev').on('click', function() {
-			var text = $('#inp_search').val();
-			window.Asc.plugin.executeMethod("SearchText",[text, false]);
-		});
+		// $('#btn_prev').on('click', function() {
+		// 	var text = $('#inp_search').val();
+		// 	window.Asc.plugin.executeMethod("SearchText",[text, false]);
+		// });
 
-		$('#btn_next').on('click', function() {
-			var text = $('#inp_search').val();
-			window.Asc.plugin.executeMethod("SearchText",[text, true]);
-		});
+		// $('#btn_next').on('click', function() {
+		// 	var text = $('#inp_search').val();
+		// 	window.Asc.plugin.executeMethod("SearchText",[text, true]);
+		// });
 
 		$('#btn_bg').on('click', function() {
 			var strcolor = $("#inp_color").val();
@@ -59,11 +59,11 @@
 				range.SetHighlight(null, null, null, true);
 			}, false, true);
 		});
-		$( "#inp_search" ).keydown(function( event ) {
-			if ( event.which == 13 ) {
-				$( "#btn_next" ).click();
-			}
-		});
+		// $( "#inp_search" ).keydown(function( event ) {
+		// 	if ( event.which == 13 ) {
+		// 		$( "#btn_next" ).click();
+		// 	}
+		// });
 	};
 
     window.Asc.plugin.button = function()
