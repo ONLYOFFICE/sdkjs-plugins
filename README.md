@@ -13,7 +13,7 @@ In this folder, you will find the simplest plugins to be used as an examples whi
 
 ### Search and replace
 
-* [example_search_replace](./example_autocomplete) - an example of search & replace feature with settings. 
+* [example_search_replace](./example_search_replace) - an example of search & replace feature with settings. 
 * [searchAndReplaceOnStart](./searchAndReplaceOnStart) shows how to automatically replace content when you start the editor. In this case, text “ONLYOFFICE” will be replaced with the text "ONLYOFFICE is cool". 
 
 ### Work with comments
