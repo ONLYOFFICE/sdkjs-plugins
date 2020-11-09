@@ -28,6 +28,10 @@
 			window.Asc.plugin.executeMethod("RemoveComments",[arrRem]);
 		});
 		$('#btn_Submit').on('click', function() {
+			if (!$('.div-selected').length) {
+				alert("Please select a comment before clicking Submit.")
+				return;
+			}
 			let comment = findComment($('.div-selected').attr('data-id'));
 			let userData = {
 				probCat : {id: $('#select_Category').find(':selected').val(), text:$('#select_Category').find(':selected').text()},
@@ -35,6 +39,10 @@
 				accepted : {id: $('#select_Accept').find(':selected').val(), text:$('#select_Accept').find(':selected').text()},
 				submitted : {id: $('#select_Submit').find(':selected').val(), text:$('#select_Submit').find(':selected').text()}
 			};
+			if (!$('#textarea_Comment').val()) {
+				alert("Error! The comment text can't be empty.")
+				return;
+			}
 			comment.Data.Text = ($('#textarea_Comment').val()) ? $('#textarea_Comment').val().trim() : 0;
 			comment.Data.UserData = userData;
 			let reply = {Text: ($('#textarea_Replies').val()) ? $('#textarea_Replies').val().trim() : "", UserName: "Author1"};
@@ -136,7 +144,7 @@
 		arrId.forEach((element) => {
 			let index = Comments.findIndex((comment, id) => {
 				if (comment.Id == element)
-					return id
+					return true;
 			});
 			Comments.splice(index, 1);
 
@@ -180,7 +188,7 @@
 	findComment = (id) => {
 		return Comments.find((element) => {
 			if (element.Id == id)
-				return element;
+				return true;
 		  });
 	};
 
