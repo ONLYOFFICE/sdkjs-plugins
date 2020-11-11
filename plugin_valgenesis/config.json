@@ -6,7 +6,7 @@
     "variations" : [
         {
             "description" : "interface review",
-            "url"         : "code.js",
+            "url"         : "scripts/code.js",
 
             "isViewer"        : false,
             "EditorsSupport"  : ["word"],

@@ -6,7 +6,7 @@
         {
             "description"         : "hello world",
             "url"                 : "index.html",
-            "icons"               : ["icon.png", "icon@2x.png"],
+            "icons"               : ["resources/img/icon.png", "resources/img/icon@2x.png"],
             "isViewer"            : false,
             "EditorsSupport"      : ["word"],
             "isVisual"            : false,
@@ -20,7 +20,7 @@
         {
             "description"         : "About",
             "url"                 : "index_about.html",
-            "icons"               : ["icon.png", "icon@2x.png"],
+            "icons"               : ["resources/img/icon.png", "resources/img/icon@2x.png"],
             "isViewer"            : false,
             "EditorsSupport"      : ["word"],
             "isVisual"            : true,

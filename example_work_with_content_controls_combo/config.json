@@ -7,7 +7,7 @@
             "description" : "example_work_with_content_controls_combo",
             "url"         : "index.html",
 
-            "icons"           : ["icon.png", "icon@2x.png"],
+            "icons"           : ["resources/img/icon.png", "resources/img/icon@2x.png"],
             "isViewer"        : false,
             "EditorsSupport"  : ["word"],
 
