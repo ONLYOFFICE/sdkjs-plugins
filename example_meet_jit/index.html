@@ -1,0 +1,35 @@
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Meet Jit</title>		
+		<script type="text/javascript" src="https://onlyoffice.github.io/sdkjs-plugins/v1/plugins.js"></script>
+		<script type="text/javascript" src="https://onlyoffice.github.io/sdkjs-plugins/v1/plugins-ui.js"></script>
+		<link rel="stylesheet" href="https://onlyoffice.github.io/sdkjs-plugins/v1/plugins.css">
+		<script src="code.js"></script>
+		<script src='https://meet.jit.si/external_api.js'></script>
+
+		<style>
+			html,body {
+				width: 100%;
+				height: 100%;
+			}
+			.meet {
+				width: 90%;
+				height: 90%;
+			}
+			button {
+				margin: 5px;
+			}
+		</style>
+
+	</head>
+	<body id="body" class='body'>
+		<div class="meet" id="meet"></div>
+		<div style="display:flex; justify-content: center;">
+			<button id="start">Start</button>
+			<button id="stop">Stop</button>
+		</div>
+	</body>
+</html>
