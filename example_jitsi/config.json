@@ -1,10 +1,10 @@
 {
-    "name" : "Meet Jit",
+    "name" : "Jitsi",
     "guid" : "asc.{7645D461-84BC-4FB0-A42C-98118C14A1CD}",
 
     "variations" : [
         {
-            "description" : "Meet Jit",
+            "description" : "Jitsi",
             "url"         : "index.html",
 
             "icons"           : ["resources/img/icon.png", "resources/img/icon@2x.png", "resources/img/icon2.png", "resources/img/icon2@2x.png"],
