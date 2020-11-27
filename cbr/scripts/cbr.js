@@ -48,6 +48,8 @@
 	}
 
 	window.Asc.plugin.init = function () {
+		//event initional plugin
+		//close the plugin (simulate button click)
 		this.button(-1);
 	};
 
@@ -74,6 +76,7 @@
 				} catch (e) {
 				}
 			}
+			//if you need more information check this page https://api.onlyoffice.com/plugin/executecommand
 			t.executeCommand('close', command);
 		});
 	};

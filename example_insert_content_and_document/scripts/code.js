@@ -2,6 +2,7 @@
     
 	function insertContentCommandFunction()
 	{
+		//create script for paste content into document
 		var sScript = 'var oDocument = Api.GetDocument();';
         sScript += 'var oParagraph = Api.CreateParagraph();';
         sScript += 'oParagraph.AddText(\'Hello world!\');';
@@ -10,6 +11,7 @@
 	}
 	var insertContentCommand = insertContentCommandFunction();
 	
+	//for example we use this documents
 	var arrayCommands = [
 		{ 
 			Props : {
@@ -75,19 +77,25 @@
 		
 	window.Asc.plugin.onMethodReturn = function(returnValue)
 	{
+		//event for method "InsertAndReplaceContentControls".
+		//works after inserting
 		var plugin = window.Asc.plugin;
+		//need for update document
 		plugin.info.recalculate = true;
 		plugin.executeCommand("command", insertContentCommand);
 	};
 	
 	window.Asc.plugin.onCommandCallback = function()
 	{
+		//event call back for plugin.executeCommand("command", insertContentCommand);
 		var plugin = window.Asc.plugin;
+		//close plugin
 		plugin.executeCommand("close", "");
 	};
 
     window.Asc.plugin.init = function()
 	{
+		//command for paste content controls into document
 		this.executeMethod("InsertAndReplaceContentControls", [arrayCommands]);
     };
 

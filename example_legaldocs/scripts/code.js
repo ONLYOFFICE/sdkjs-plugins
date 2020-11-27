@@ -252,6 +252,7 @@
 
 	function privateCreateScriptForInsertOption(Tag, Label, InternalId)
 	{
+		//script for past field into document
 		var _script = "\r\n\
 			var oDocument = Api.GetDocument();\r\n\
 			var oParagraph = Api.CreateParagraph();\r\n\
@@ -292,6 +293,7 @@
 
     window.Asc.plugin.init = function()
     {
+		//event "init" for plugin
     	function privateAddField(sHeader, sText, oProps)
 		{
 			var oPaneDiv = document.getElementById("divQuestionPane");
@@ -771,6 +773,7 @@
 
 	window.Asc.plugin.onMethodReturn = function(returnValue)
 	{
+		//event returt for called methods
 		var _plugin = window.Asc.plugin;
 		if (_plugin.info.methodName == "AddContentControl" && returnValue)
 		{

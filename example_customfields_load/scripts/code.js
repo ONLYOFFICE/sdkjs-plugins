@@ -1,5 +1,6 @@
 (function(window, undefined)
 {
+	//custom class for creating interview
 	function CInterview(arrQuestions, fOnEnd)
 	{
 		this.m_arrQuestions = [];
@@ -195,11 +196,14 @@
 
 	window.Asc.plugin.init = function()
 	{
+		//event "init" for plugin
+		//execute method for getting all content controls
 		window.Asc.plugin.executeMethod("GetAllContentControls");
 	};
 
 	window.Asc.plugin.onMethodReturn = function(returnValue)
 	{
+		//callback events for the methods "GetAllContentControls" and "InsertAndReplaceContentControls"
 		var _plugin = window.Asc.plugin;
 		if (_plugin.info.methodName == "GetAllContentControls")
 		{

@@ -6,7 +6,8 @@
 	}
 
 	function privateCreateScript(Tag, Label, isTextField, InternalId)
-	{		
+	{
+		//creating script for inserting custom fields
 		var _script = "\r\n\
 			var oDocument = Api.GetDocument();\r\n\
 			var oParagraph = Api.CreateParagraph();\r\n\
@@ -56,7 +57,8 @@
 	var _Control = null;
 
     window.Asc.plugin.init = function()
-    {	
+    {
+		//event "init" for plugin
 		document.getElementById("buttonAddTextField").onclick = function()
 		{
 			if (_Control)
@@ -143,6 +145,7 @@
 
 	window.Asc.plugin.onMethodReturn = function(returnValue)
 	{
+		//callback events for the method "AddContentControl"
 		var _plugin = window.Asc.plugin;
 		if (_plugin.info.methodName == "AddContentControl")
 		{

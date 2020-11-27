@@ -13,8 +13,8 @@
 		// 	window.Asc.plugin.executeMethod("SearchText",[text, true]);
 		// });
 
-		$('#btn_bg').on('click', function() {
-			var strcolor = $("#inp_color").val();
+		document.getElementById("btn_bg").onclick = () => {
+			var strcolor = document.getElementById("inp_color").value;
 			var r = parseInt(strcolor[1] + strcolor[2], 16),
                 g = parseInt(strcolor[3] + strcolor[4], 16),
 				b = parseInt(strcolor[5] + strcolor[6], 16);
@@ -29,15 +29,15 @@
 				var range = oDocument.GetRangeBySelect();
 				range.SetHighlight(Asc.scope.color.r, Asc.scope.color.g, Asc.scope.color.b, Asc.scope.color.isNone);
 			}, false, true);
-		});
+		}
 
-		$('#btn_bgAll').on('click', function() {
-			var strcolor = $("#inp_color").val();
+		document.getElementById('btn_bgAll').onclick = () => {
+			var strcolor = document.getElementById("inp_color").value;
 			var r = parseInt(strcolor[1] + strcolor[2], 16),
                 g = parseInt(strcolor[3] + strcolor[4], 16),
 				b = parseInt(strcolor[5] + strcolor[6], 16);
 			Asc.scope.color = {
-				text : $('#inp_search').val(),
+				text : document.getElementById("inp_search").value,
 				r : r,
 				g : g,
 				b : b,
@@ -50,15 +50,16 @@
 					arrRanges[i].SetHighlight(Asc.scope.color.r, Asc.scope.color.g, Asc.scope.color.b, Asc.scope.color.isNone);
 				}
 			}, false, true);
-		});
+		}
 
-		$('#btn_resetColor').on('click', function() {
+		document.getElementById("btn_resetColor").onclick = () => {
 			window.Asc.plugin.callCommand(function() {
 				var oDocument = Api.GetDocument();
 				var range = oDocument.GetRangeBySelect();
 				range.SetHighlight(null, null, null, true);
 			}, false, true);
-		});
+		}
+
 		// $( "#inp_search" ).keydown(function( event ) {
 		// 	if ( event.which == 13 ) {
 		// 		$( "#btn_next" ).click();
