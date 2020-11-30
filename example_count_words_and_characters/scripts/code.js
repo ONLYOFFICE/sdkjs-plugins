@@ -3,11 +3,14 @@
 	
 	window.Asc.plugin.init = function(text)
 	{
+		var chars = text.replace(/\r*\n/g, '').length;
 		var words = (text.match(/\S+/g)) ? text.match(/\S+/g).length : 0;
-		document.getElementById("charsNoSpaces").innerHTML = "Сharacters without spaces: " + text.replace(/\s+/g, '').length;
-		document.getElementById("chars").innerHTML         = "Total characters: " + text.replace(/\r*\n/g, '').length;
+		var lines = text.split(/\r\n/);
+		if (lines[lines.length-1] == "") lines.length--;
+		document.getElementById("charsNoSpaces").innerHTML = "Characters without spaces: " + text.replace(/\s+/g, '').length;
+		document.getElementById("chars").innerHTML         = "Total characters: " + chars;
 		document.getElementById("words").innerHTML         = "Words count: " + words;
-		document.getElementById("lines").innerHTML         = "Lines count: " + text.split(/\r*\n/).length;
+		document.getElementById("lines").innerHTML         = "Lines count: " + lines.length;
 		
 	};
 
