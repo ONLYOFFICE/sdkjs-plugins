@@ -1,10 +1,10 @@
 {
-    "name" : "Example count word and charackters",
+    "name" : "Example count word and characters",
     "guid" : "asc.{584EEEE8-DBF5-45C3-A4CA-F52177C82754}",
 
     "variations" : [
         {
-            "description" : "Example count word and charackters",
+            "description" : "Example count word and characters",
             "url"         : "index.html",
 
             "icons"           : ["resources/img/icon.png", "resources/img/icon@2x.png"],
