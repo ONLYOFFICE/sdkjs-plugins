@@ -1,5 +1,6 @@
 (function(window, undefined){
 
+	//properties for content controls
 	var _placeholderInsert_Replace = "[\r\n\
 {\r\n\
 	\"Props\" : \r\n\
@@ -99,9 +100,11 @@
 				}
 			}
 			if (_obj.length) {
+				//paste content control
 				window.Asc.plugin.executeMethod("InsertAndReplaceContentControls", [_obj]);
 			}
 			if (_Control.length) {
+				//paste inline content control
 				PasteInlineContentControl();
 			}
 		};
@@ -111,11 +114,12 @@
 			_val = _val.replaceAll("\r\n", "");
 			_val = _val.replaceAll("\n", "");
 			var _obj = JSON.parse(_val);
+			//remove content control by id 
 			window.Asc.plugin.executeMethod("RemoveContentControls", [_obj]);
 
 		};
 		document.getElementById("buttonIDGetAll").onclick = function() {
-
+			// get all content control
 			window.Asc.plugin.executeMethod("GetAllContentControls");
 
 		};
@@ -123,11 +127,13 @@
 
 			_Control = [];
 			window.buttonIDChangeState_click = true;
+			//get current content control (where is the cursor located)
 			window.Asc.plugin.executeMethod("GetCurrentContentControl");
 
 		};
 		document.getElementById("buttonIDCurrent").onclick = function() {
 
+			//get current content control (where is the cursor located)
 			window.Asc.plugin.executeMethod("GetCurrentContentControl");
 
 		};
@@ -135,6 +141,7 @@
 	
 	function PasteInlineContentControl () {
 		for (var key in _Control) {
+			//add inline content control
 			window.Asc.plugin.executeMethod("AddContentControl", [2, {"Lock" : 3}]);
 		}
 	}
@@ -146,6 +153,7 @@
 
 	window.Asc.plugin.onMethodReturn = function(returnValue)
 	{
+		//event return for completed methods
 		var _plugin = window.Asc.plugin;
 		if (_plugin.info.methodName == "AddContentControl" && returnValue)
 		{

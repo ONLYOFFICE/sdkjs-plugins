@@ -26,6 +26,7 @@
 
 		if (window.Asc.plugin.currentContentControl != null)
 		{
+			//select current content control
 			window.Asc.plugin.executeMethod("SelectContentControl", [window.Asc.plugin.currentContentControl.InternalId], function() {
 				window.Asc.plugin.executeMethod("InputText", [item.text]);
 				window.Asc.plugin.getInputHelper().unShow();	
@@ -39,6 +40,7 @@
 	
 	window.Asc.plugin.event_onClick = function(isSelectionUse)
 	{
+		//get get current content control properties
 		window.Asc.plugin.executeMethod("GetCurrentContentControlPr", [], function(obj) {
 			
 			window.Asc.plugin.currentContentControl = obj;
