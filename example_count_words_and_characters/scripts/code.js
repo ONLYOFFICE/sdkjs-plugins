@@ -10,7 +10,7 @@
 		document.getElementById("charsNoSpaces").innerHTML = "Characters without spaces: " + text.replace(/\s+/g, '').length;
 		document.getElementById("chars").innerHTML         = "Total characters: " + chars;
 		document.getElementById("words").innerHTML         = "Words count: " + words;
-		document.getElementById("lines").innerHTML         = "Lines count: " + lines.length;
+		document.getElementById("lines").innerHTML         = "Paragraphs count: " + lines.length;
 		
 	};
 
