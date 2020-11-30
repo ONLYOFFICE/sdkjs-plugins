@@ -1,0 +1,28 @@
+{
+    "name" : "Count word and charackters",
+    "guid" : "asc.{584EEEE8-DBF5-45C3-A4CA-F52177C82754}",
+
+    "variations" : [
+        {
+            "description" : "Count word and charackters",
+            "url"         : "index.html",
+
+            "icons"           : ["resources/img/icon.png", "resources/img/icon@2x.png"],
+            "isViewer"        : true,
+            "EditorsSupport"  : ["word"],
+
+            "isVisual"        : true,
+            "isModal"         : false,
+            "isInsideMode"    : true,
+
+            "initDataType"    : "text",
+            "initData"        : "",
+
+            "isUpdateOleOnResize" : true,
+
+            "buttons"         : [],
+
+            "initOnSelectionChanged": true
+        }
+    ]
+}
