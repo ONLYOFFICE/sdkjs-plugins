@@ -3,7 +3,7 @@
 	
 	window.Asc.plugin.init = function(text)
 	{
-		var chars = text.replace(/\r*\n/g, '').length;
+		var chars = text.replace(/\r*\n/g, '').replace(/\t/g,"").length;
 		var words = (text.match(/\S+/g)) ? text.match(/\S+/g).length : 0;
 		var lines = text.split(/\r\n/);
 		if (lines[lines.length-1] == "") lines.length--;
