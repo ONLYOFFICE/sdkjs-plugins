@@ -6,6 +6,7 @@
 		if (!isInit)
 			return;
 		
+		// serialize command as text
 		var sScript = "var oDocument = Api.GetDocument();";
         sScript += "var oParagraph = Api.CreateParagraph();";
         sScript += "oParagraph.AddText(\'" + field_type + "\');";

@@ -6,11 +6,11 @@
 
     window.Asc.plugin.init = function(text)
     {
-
+		//event "init" for plugin
 		document.getElementById("divS").innerHTML = text.replace(/\n/g,"<br>");
 
 		document.getElementById("buttonIDPaste").onclick = function() {
-
+			//method for paste text into document
 			window.Asc.plugin.executeMethod("PasteText", ["Test paste for document"]);	
 
 		};
@@ -18,7 +18,7 @@
 		
 
 		document.getElementById("buttonIDGetAll").onclick = function() {
-
+			//method for get all content controls
 			window.Asc.plugin.executeMethod("GetAllContentControls");
 			fBtnGetAll = true;					
 
@@ -27,12 +27,14 @@
 		document.getElementById("buttonIDShowCurrent").onclick = function() {
 			
 			fClickBtnCur = true;
+			//menthod for get current content control (where is the cursor located)
 			window.Asc.plugin.executeMethod("GetCurrentContentControl");
 
 		};
 
 		if (!flagInit) {
 			flagInit = true;
+			//method for get all content controls
 			window.Asc.plugin.executeMethod("GetAllContentControls");
 			// document.getElementById("buttonIDGetAll").click();
 		}
@@ -51,8 +53,10 @@
 						$('.label-selected').removeClass('label-selected');
 						$(this).addClass('label-selected');
 						if (element === "#divG") {
+							//method for select content control by id
 							window.Asc.plugin.executeMethod("SelectContentControl",[this.id]);
 						} else {
+							//method for move cursor to content control with specified id
 							window.Asc.plugin.executeMethod("MoveCursorToContentControl",[this.id, true]);
 						}
 					},
@@ -74,6 +78,7 @@
 
 	window.Asc.plugin.onMethodReturn = function(returnValue)
 	{
+		//evend return for completed methods
 		var _plugin = window.Asc.plugin;
 		if (_plugin.info.methodName == "GetAllContentControls")
 		{
@@ -93,6 +98,7 @@
 
 		} else if (_plugin.info.methodName == "GetCurrentContentControl") {
 			if (fClickBtnCur) {
+				//method for select content control by id
 				window.Asc.plugin.executeMethod("SelectContentControl",[returnValue]);
 				fClickBtnCur = false;
 			} else if (!($('.label-selected').length && $('.label-selected')[0].id === returnValue) && returnValue) {
@@ -116,7 +122,10 @@
 	
 	window.Asc.plugin.event_onTargetPositionChanged = function()
 	{
+		//event change cursor position
+		//all events are specified in the config file in the "events" field
 		if (!fClickLabel) {
+			//menthod for get current content control (where is the cursor located)
 			window.Asc.plugin.executeMethod("GetCurrentContentControl");
 		}
 		fClickLabel = false;

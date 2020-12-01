@@ -1398,7 +1398,7 @@
 	{
 		getFontBySymbol : function(_char)
 		{
-			// ищем среди уже найденных
+			// search among already found
 			var _range = getRangeBySymbol(_char, this.UsedRanges);
 			if (_range != null)
 				return this.FontsByRange[_range.Name];

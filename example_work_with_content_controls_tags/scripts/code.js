@@ -5,18 +5,20 @@
 
     window.Asc.plugin.init = function()
     {
-
+		//event "init" from plugin
 		document.getElementById("buttonIDPaste").onclick = function() {
 			var tmpArr = ArrContentControls[$('.label-selected')[0].id].id;
 			for (var i = 0; i < tmpArr.length; i++) {
+				//method for select content control by id
 				window.Asc.plugin.executeMethod("SelectContentControl",[tmpArr[i]]);
+				//method for paste text into document
 				window.Asc.plugin.executeMethod("PasteText", ["Test paste for document"]);
 			}
 
 		};
 
 		document.getElementById("buttonIDGetAll").onclick = function() {
-
+			//method for get all content controls
 			window.Asc.plugin.executeMethod("GetAllContentControls");
 			fBtnGetAll = true;					
 
@@ -24,6 +26,7 @@
 
 		if (!flagInit) {
 			flagInit = true;
+			//method for get all content controls
 			window.Asc.plugin.executeMethod("GetAllContentControls");
 		}
 	};
@@ -76,6 +79,7 @@
 
 	window.Asc.plugin.onMethodReturn = function(returnValue)
 	{
+		//evend return for completed methods
 		var _plugin = window.Asc.plugin;
 		if (_plugin.info.methodName == "GetAllContentControls")
 		{

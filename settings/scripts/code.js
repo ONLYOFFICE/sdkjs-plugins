@@ -6,6 +6,7 @@
 		var initSettings = {
 			copyoutenabled : false,
 			watermark_on_draw : JSON.stringify({
+				//watermark settings
 				"transparent" : 0.3,
 				"type" : "rect",
 				"width" : 100,
@@ -24,6 +25,7 @@
 					
 					"runs" : [
 							{
+								//text settings
 								"text" : "Do not steal, %user_name%!",
 								"fill" : [0, 0, 0],
 								"font-family" : "Arial",
@@ -41,7 +43,7 @@
 				]
 			})
 		};
-		
+		//method for set properties to document
         this.executeMethod("SetProperties", [initSettings], function() {
             window.Asc.plugin.executeCommand("close", "");
         });

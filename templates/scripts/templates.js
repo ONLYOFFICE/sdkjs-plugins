@@ -63,7 +63,7 @@
 				var _w = _cur[1];
 				var _h = _cur[2];
 
-				_html += ("<img id='template" + _index + "' src=\"../templates/" + _cur[0] + "/icon.png\" />");
+				_html += ("<img id='template" + _index + "' src=\"./templates/" + _cur[0] + "/icon.png\" />");
 				_html += ("<div class=\"noselect celllabel\">" + _cur[0] + "</div>");
 
 				_html += "</td>";
@@ -115,7 +115,7 @@
 			return;
 		}
 
-		window.Asc.plugin.callModule("../templates/" + _templates[_index][0] + "/script.txt", function(content){
+		window.Asc.plugin.callModule("./templates/" + _templates[_index][0] + "/script.txt", function(content){
 			_templates_code[_index] = content;
 		});
 	};

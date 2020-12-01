@@ -2,7 +2,7 @@
 	var number = '';
 
 	function sum_propis(num, w) {
-// Все варианты написания разрядов прописью скомпануем в один небольшой массив
+// All variants of writing digits in words will be compiled into one small array
 		var m = [['ноль'], ['-', 'один', 'два', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять'],
 			['десять', 'одиннадцать', 'двенадцать', 'тринадцать', 'четырнадцать', 'пятнадцать', 'шестнадцать', 'семнадцать',
 				'восемнадцать', 'девятнадцать'],
@@ -10,26 +10,26 @@
 			['-', 'сто', 'двести', 'триста', 'четыреста', 'пятьсот', 'шестьсот', 'семьсот', 'восемьсот', 'девятьсот'],
 			['-', 'одна', 'две']]
 
-// Все варианты написания разрядов прописью скомпануем в один небольшой массив
-		var r = [['...ллион', 'ов', '', 'а'], // используется для всех неизвестно больших разрядов
+// All variants of writing digits in words will be compiled into one small array
+		var r = [['...ллион', 'ов', '', 'а'], // used for all unknown large digits
 			['тысяч', '', 'а', 'и'], ['миллион', 'ов', '', 'а'], ['миллиард', 'ов', '', 'а'], ['триллион', 'ов', '', 'а'],
 			['квадриллион', 'ов', '', 'а'], ['квинтиллион', 'ов', '', 'а'], ['секстилион', 'ов', '', 'а'],
 			['септилион', 'ов', '', 'а'], ['окталион', 'ов', '', 'а'], ['ноналион', 'ов', '', 'а'],
 			['декалион', 'ов', '', 'а'], ['эндекалион', 'ов', '', 'а'], ['додекалион', 'ов', '', 'а']
-			// ,[... список можно продолжить
+			// ,[... the list goes on
 		]
 
 		if (num == 0) {
 			return m[0][0]
-		} // Если число ноль, сразу сообщить об этом и выйти
-		var o = [] // Сюда записываем все получаемые результаты преобразования
+		} // If the number is zero, report it immediately and exit
+		var o = [] // Here we write all the results of the conversion
 
-		// Разложим исходное число на несколько трехзначных чисел и каждое полученное такое число обработаем отдельно
+		// Decompose the initial number of several three-digit numbers, and each number received is processed separately
 		num = ['', '00', '0'][num.split(/\d{3}/).join('').length] + num
 		var numlength = num.length
 		var k = 0, n = -1
 
-// Алгоритм, преобразующий трехзначное число в строку прописью
+// Algorithm that converts a three-digit number to a string in words
 		while (k * 3 < numlength) {
 			pp = num.substr(-3 * (k + 1), 3)
 			if (pp != '000') {
@@ -66,7 +66,7 @@
 				}
 			}
 
-// Окончание для числительных
+// Endings for numerals
 			if (pp > 0 && k > 0) {
 				o[n][o[n].length] = ci(pp, r[k])
 			}
@@ -76,7 +76,7 @@
 		return o.reverse().join(" ")
 	}
 
-// Окончание для числительных
+// Endings for numerals
 	function ci(n, c) {
 		n = n.toString().substr(-2)
 		return c[0] + ((/^[0,2-9]?[1]$/.test(n)) ? c[2] : ((/^[0,2-9]?[2-4]$/.test(n)) ? c[3] : c[1]))
@@ -88,6 +88,7 @@
 	};
 
 	window.Asc.plugin.button = function (id) {
+		// serialize command as text
 		var command = '';
 		command += 'var oSheet = Api.GetActiveSheet();';
 		command += 'var active = oSheet.GetActiveCell();';
