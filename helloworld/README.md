@@ -2,7 +2,7 @@
 
 This simple plugin is designed to show the basic functionality of ONLYOFFICE Document Editor plugins. It inserts the 'Hello World!' phrase when you press the button.
 
-It is called "hello world" in the interface and isn't installed by default in cloud, [self-hosted](https://github.com/ONLYOFFICE/DocumentServer) and [desktop version](https://github.com/ONLYOFFICE/DesktopEditors) of ONLYOFFICE editors. 
+It is without interface plugin and isn't installed by default in cloud, [self-hosted](https://github.com/ONLYOFFICE/DocumentServer) and [desktop version](https://github.com/ONLYOFFICE/DesktopEditors) of ONLYOFFICE editors. 
 
 ## How to use
 
