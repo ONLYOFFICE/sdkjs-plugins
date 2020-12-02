@@ -1,20 +1,20 @@
 {
     "name" : "Interface (test)",
     "guid" : "asc.{B62BC2E0-858A-444F-B288-9190DE68B3FE}",
-    "isUICustomizer" : true,
 
     "variations" : [
         {
             "description" : "interface",
-            "url"         : "code.js",
+            "url"         : "index.html",
 
-            "icons"           : ["resources/img/icon.png", "resources/img/icon@2x.png"],
-            "isViewer"        : true,
+            "icons"           : ["resources/img/icon.png", "resources/img/icon@2x.png", "resources/img/icon2.png", "resources/img/icon2@2x.png"],
+            "isViewer"        : false,
             "EditorsSupport"  : ["word", "cell", "slide"],
 
             "isVisual"        : false,
             "isModal"         : false,
             "isInsideMode"    : false,
+            "isSystem"        : true,
 
             "initDataType"    : "none",
             "initData"        : "",

@@ -1,10 +1,10 @@
 (function() {
 
-    $('#header').hide();
+    $('#box-document-title').hide();
     $('#left-menu').hide();
     $('#right-menu').hide();
     $('#toolbar .toolbar').css('background-color','red');
-    $('#toolbar #id-toolbar-full-placeholder-btn-settings').hide();
+    $('#toolbar #asc-gen9').hide();
 
     var viewportController;
     try { viewportController = DE.getController('Viewport'); } catch(e) {
@@ -19,10 +19,10 @@
         viewportController.onLayoutChanged();
     }
 
-    var afterDocReady = function(){
-        $('#toolbar #id-toolbar-btn-hidebars > ul > li:nth-child(2)').hide();
-        $('#toolbar #id-toolbar-btn-showmode > ul > li:nth-child(2)').hide();
-    };
+    // var afterDocReady = function(){
+        // $('#toolbar #id-toolbar-btn-hidebars > ul > li:nth-child(2)').hide();
+        // $('#toolbar #id-toolbar-btn-showmode > ul > li:nth-child(2)').hide();
+    // };
 
     Common.NotificationCenter.on('document:ready', afterDocReady);
 })();

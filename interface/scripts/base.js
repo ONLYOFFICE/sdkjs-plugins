@@ -3,7 +3,7 @@
 	window.Asc.plugin.init = function(text)
 	{
 		var client = new XMLHttpRequest();
-		var _url = "./code.js";
+		var _url = "./scripts/code.js";
 		client.open("GET", _url);
 
 		client.onreadystatechange = function() {
