@@ -9,7 +9,7 @@
 
             "icons"           : ["resources/img/icon.png", "resources/img/icon@2x.png", "resources/img/icon2.png", "resources/img/icon2@2x.png"],
             "isViewer"        : false,
-            "EditorsSupport"  : ["word", "cell", "slide"],
+            "EditorsSupport"  : ["word"],
 
             "isVisual"        : false,
             "isModal"         : false,
