@@ -1,20 +1,20 @@
 {
     "name" : "trackchanges",
     "guid" : "asc.{F46F9895-3D7C-4FD3-A008-29BCC929C641}",
+    "isUICustomizer" : true,
 
     "variations" : [
         {
             "description" : "trackchanges",
-            "url"         : "index.html",
+            "url"         : "scripts/code.js",
 
-            "icons"           : ["resources/img/icon.png", "resources/img/icon@2x.png", "resources/img/icon2.png", "resources/img/icon2@2x.png"],
             "isViewer"        : false,
             "EditorsSupport"  : ["word"],
 
             "isVisual"        : false,
             "isModal"         : false,
             "isInsideMode"    : false,
-            "isSystem"        : true,
+            "isSystem"        : false,
 
             "initDataType"    : "none",
             "initData"        : "",
