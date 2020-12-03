@@ -1,10 +1,10 @@
 {
-    "name" : "LegalDocs plugin",
+    "name" : "Example add custom fields 2",
     "guid" : "asc.{C05D81BC-92C7-4C48-BA49-E8B9AAFCD776}",
 
     "variations" : [
         {
-            "description" : "LegalDocs plugin",
+            "description" : "Example add custom fields 2",
             "url"         : "index.html",
 
             "icons"           : ["resources/img/icon.png", "resources/img/icon@2x.png", "resources/img/icon2.png", "resources/img/icon2@2x.png"],
