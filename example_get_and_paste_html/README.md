@@ -2,7 +2,7 @@
 
 Getting html from document and pasting it back.
 
-This plugin uses [CodeMirror] is a versatile text editor implemented in JavaScript for the browser. (https://codemirror.net/#)
+This plugin uses [CodeMirror](https://codemirror.net) is a versatile text editor implemented in JavaScript for the browser.
 
 It is called "Get and past html" in the interface and isn't installed by default in cloud, [self-hosted](https://github.com/ONLYOFFICE/DocumentServer) and [desktop version](https://github.com/ONLYOFFICE/DesktopEditors) of ONLYOFFICE editors. 
 
