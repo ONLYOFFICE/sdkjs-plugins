@@ -19,10 +19,10 @@
         viewportController.onLayoutChanged();
     }
 
-    // var afterDocReady = function(){
-        // $('#toolbar #id-toolbar-btn-hidebars > ul > li:nth-child(2)').hide();
-        // $('#toolbar #id-toolbar-btn-showmode > ul > li:nth-child(2)').hide();
-    // };
+    var afterDocReady = function(){
+        $('#toolbar #id-toolbar-btn-hidebars > ul > li:nth-child(2)').hide();
+        $('#toolbar #id-toolbar-btn-showmode > ul > li:nth-child(2)').hide();
+    };
 
     Common.NotificationCenter.on('document:ready', afterDocReady);
 })();
