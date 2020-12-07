@@ -12,6 +12,7 @@
             "isVisual"            : false,
             "isModal"             : true,
             "isInsideMode"        : false,
+            "isSystem"            : true,
             "initDataType"        : "none",
             "initData"            : "",
             "isUpdateOleOnResize" : true,
