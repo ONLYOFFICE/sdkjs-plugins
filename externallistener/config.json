@@ -8,7 +8,7 @@
             "url"                 : "index.html",
             "icons"               : ["resources/img/icon.png", "resources/img/icon@2x.png"],
             "isViewer"            : false,
-            "EditorsSupport"      : ["word"],
+            "EditorsSupport"      : ["word", "cell", "slide"],
             "isVisual"            : false,
             "isModal"             : true,
             "isInsideMode"        : false,

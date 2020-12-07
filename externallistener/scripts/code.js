@@ -21,18 +21,19 @@
 			case "insertText":
 			{
 				Asc.scope.text = data.text; // export variable to plugin scope
-                this.callCommand(function() {
-                    var oDocument = Api.GetDocument();
-                    var oParagraph = Api.CreateParagraph();
-                    oParagraph.AddText(Asc.scope.text);
-                    oDocument.InsertContent([oParagraph]);
-                }, false);
+				this.callCommand(function() {
+					var oDocument = Api.GetDocument();
+					var oParagraph = Api.CreateParagraph();
+					oParagraph.AddText(Asc.scope.text);
+					oDocument.InsertContent([oParagraph]);
+				}, false);
 				
 				break;
 			}
 			case "executeCommand": {
 				this.info.recalculate = true;
 				this.executeCommand("command", data.text);
+				break;
 			}
 		}
 	};
