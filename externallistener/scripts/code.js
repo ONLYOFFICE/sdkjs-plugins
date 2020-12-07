@@ -30,6 +30,10 @@
 				
 				break;
 			}
+			case "executeCommand": {
+				this.info.recalculate = true;
+				this.executeCommand("command", data.text);
+			}
 		}
 	};
 
