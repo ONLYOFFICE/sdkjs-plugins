@@ -1,15 +1,21 @@
 ## Overview
 
-Getting html from document and pasting it back.
+Get your document content as HTML code, modify it, and paste back to the document. 
 
-This plugin uses [CodeMirror](https://codemirror.net) is a versatile text editor implemented in JavaScript for the browser.
+This plugin uses [CodeMirror](https://codemirror.net), a versatile text editor implemented in JavaScript for the browser.
 
-It is called "Get and past html" in the interface and isn't installed by default in cloud, [self-hosted](https://github.com/ONLYOFFICE/DocumentServer) and [desktop version](https://github.com/ONLYOFFICE/DesktopEditors) of ONLYOFFICE editors. 
+The plugin is compatible with [self-hosted](https://github.com/ONLYOFFICE/DocumentServer) and [desktop](https://github.com/ONLYOFFICE/DesktopEditors) versions of ONLYOFFICE editors. It can be added to ONLYOFFICE instances manually. 
 
 ## How to use
 
-1. Open the Plugins tab and press "Get and past html" (you can select necessary content before or after that).
-2. In the field in plugin you can see html of selected content. If you need you can select another one and see its code and modify it. Also you can choose not select anything and write or paste your own html.
-3. If you need paste modified or your html into document, then press the button "Paste into document"..
+1. Open the Plugins tab and press "Get and past html".
+2. Select the necessary content.
+3. In the plugin field on the left panel, you'll see the HTML code of the selected abstract.
+4. Modify the HTML code if necessary.
+5. Click "Paste into document" to insert the HTML code to the current cursor position in your document. 
 
-If you need more information about how to use or write your own plugin, please see this https://api.onlyoffice.com/plugin/basic
+You can also write your own HTML code (without selecting any document content) and then paste it to your document. 
+
+## How to install
+
+Detailed instructions can be found in [ONLYOFFICE API documentation](https://api.onlyoffice.com/plugin/installation).
