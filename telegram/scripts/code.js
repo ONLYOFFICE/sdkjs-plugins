@@ -2,20 +2,20 @@
 
     window.Asc.plugin.init = function()
     {
-        if (window.AscDesktopEditor) {
-            //check desctop
-            document.getElementById("iframe").style.display = "block";
+        if ((navigator.userAgent.indexOf("Chrome") !== -1) && (navigator.vendor.indexOf("Google Inc") !== -1) && !window.AscDesktopEditor) {
+             //check incognito mode only in chrome
+             var fs = window.RequestFileSystem || window.webkitRequestFileSystem;
+             if (fs) {
+                 fs(window.TEMPORARY, 100, function(fs) {
+                     document.getElementById("iframe").style.display = "block";
+                 }, function(err) {
+                     document.getElementById("result").style.display = "block";
+                     document.getElementById("iframe").style.display = "none";
+                 });
+             } 
+            
         } else {
-            //check incognito mode
-            var fs = window.RequestFileSystem || window.webkitRequestFileSystem;
-            if (fs) {
-                fs(window.TEMPORARY, 100, function(fs) {
-                    document.getElementById("iframe").style.display = "block";
-                }, function(err) {
-                    document.getElementById("result").style.display = "block";
-                    document.getElementById("iframe").style.display = "none";
-                });
-            } 
+           document.getElementById("iframe").style.display = "block";
         }
     };
 
