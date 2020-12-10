@@ -25,6 +25,10 @@
 			font-size: 13px;
 			font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 		}
+		.result {
+			display: flex;
+			justify-content: space-between;
+		}
 	</style>
 
 </head>
@@ -32,11 +36,14 @@
 	<div style="margin: 10px;">
 		<label>Select part of the text or the whole text to count words and characters.</label>
 	</div>
-	<div id="result" style="display: flex; flex-flow: column;">
-		<span id="chars"></span>
-		<span id="charsNoSpaces"></span>
-		<span id="words"></span>
-		<span id="lines"></span>
+	<div id="result" style="display: flex; flex-flow: column; padding-top: 15px;">
+		<div class="result"><span>Сharacters</span><span id="chars"></span></div>
+		<hr style="width: calc(100% - 15px)">
+		<div class="result"><span>Characters without spaces</span><span id="charsNoSpaces"></span></div>
+		<hr style="width: calc(100% - 15px)">
+		<div class="result"><span>Words</span><span id="words"></span></div>
+		<hr style="width: calc(100% - 15px)">
+		<div class="result"><span>Paragraphs</span><span id="lines"></span></div>
 	</div>		
 </body>
 </html>

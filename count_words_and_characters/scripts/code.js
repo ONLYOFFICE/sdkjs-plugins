@@ -20,10 +20,10 @@
 		var lines = text.split(/\r\n/);
 		// // lines.length--; //will be like ms
 		if (lines[lines.length-1] == "") lines.length--;
-		document.getElementById("charsNoSpaces").innerHTML = "Characters without spaces: " + text.replace(/\s+/g, '').length;
-		document.getElementById("chars").innerHTML         = "Total characters: " + chars;
-		document.getElementById("words").innerHTML         = "Words count: " + words;
-		document.getElementById("lines").innerHTML         = "Paragraphs count: " + lines.length;
+		document.getElementById("charsNoSpaces").innerHTML = text.replace(/\s+/g, '').length;
+		document.getElementById("chars").innerHTML         = chars;
+		document.getElementById("words").innerHTML         = words;
+		document.getElementById("lines").innerHTML         = lines.length;
 		
 	};
 
