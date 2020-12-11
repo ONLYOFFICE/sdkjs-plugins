@@ -32,5 +32,23 @@
 	{
 		this.executeCommand("close", "");
 	};
+	window.Asc.plugin.onTranslate = function()
+	{
+		var spanN = document.getElementById("spanN");
+		if (spanN)
+			spanN.innerHTML = window.Asc.plugin.tr("Characters without spaces");
+		
+		var spanC = document.getElementById("spanC");
+		if (spanC)
+			spanC.innerHTML = window.Asc.plugin.tr("Characters");
+
+		var spanW = document.getElementById("spanW");
+		if (spanW)
+			spanW.innerHTML = window.Asc.plugin.tr("Words");
+
+		var spanL = document.getElementById("spanL");
+		if (spanL)
+			spanL.innerHTML = window.Asc.plugin.tr("Paragraphs");
+	};
 
 })(window, undefined);
