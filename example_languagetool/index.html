@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>synonim</title>		
+		<script type="text/javascript" src="https://onlyoffice.github.io/sdkjs-plugins/v1/plugins.js"></script>
+		<script type="text/javascript" src="https://onlyoffice.github.io/sdkjs-plugins/v1/plugins-ui.js"></script>
+		<link rel="stylesheet" href="https://onlyoffice.github.io/sdkjs-plugins/v1/plugins.css">
+		<script src="vendor/jQuery-2.2.2-min/jquery-v2.2.2-min.js"></script>
+		<script src="scripts/code.js"></script>
+		<link rel="stylesheet" href="resources/css/plugin_style.css">
+		<link rel="stylesheet" href="vendor/select2-4.0.6-rc.1/dist/css/select2.css"/>
+		<script src="vendor/select2-4.0.6-rc.1/dist/js/select2.js"></script>
+	</head>
+	<body class='body'>
+		<div id="div_language" style="padding-right: 5px; display: flex;">
+			<select id="language_id" style="width: 100%;" class="combo"></select>
+			<button class="button" style="margin-left: 3px;" id="check">Check</button>
+		</div>
+		<div style="padding-top: 10px; display: flex; justify-content: center;">
+			<textarea id="textarea" spellcheck="false" style="width: 100%; resize: none; height: 100px; margin: 5px; margin-right: 15px;"></textarea>
+		</div>
+		<div id="scrollable-container-id" style="position: relative; width: 100%; height: calc(100% - 140px); overflow: hidden ">
+			<div id="result" style="margin:5px; word-break: break-word; display: flex; flex-flow: column;"></div>
+		</div>
+	</body>
+</html>
