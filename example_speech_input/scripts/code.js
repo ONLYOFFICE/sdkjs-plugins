@@ -106,7 +106,14 @@
 		['हिन्दी',             [['hi-IN']]],
 		['ภาษาไทย',         [['th-TH']]]];
 
+	var is_chrome = ((navigator.userAgent.indexOf("Chrome") !== -1) && (navigator.vendor.indexOf("Google Inc") !== -1)) ? true : false;
+
 	window.Asc.plugin.init = function() {
+		if (!is_chrome) {
+			showInfo("info_use_chrome");
+			document.getElementById("div_main").style.display = "none";
+			return;
+		}
 		var languages = langs.map(function(el, ind) {
 			return {
 				id : ind,
@@ -133,7 +140,7 @@
 			data : languages
 		}).on('select2:select', function (e) {
 			updateSecondMenu(e.params.data);
-			console.log(e.params.data);
+			// console.log(e.params.data);
 		});
 		
 		$.fn.select2.amd.define('select2/data/customAdapter', ['select2/data/array', 'select2/utils'],
