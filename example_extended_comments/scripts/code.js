@@ -169,7 +169,7 @@
 		var el = $('<div class="comment-edit">' +
 					'<textarea class="msg-edit form-control"></textarea>' +
 					(accept ? '<div class="reply-accept">' +
-									'<input type="checkbox" class="user-check"><label class="for-combo">Accept</label>' +
+									'<input type="checkbox" class="user-check form-control"><label class="for-combo">Accept</label>' +
 								'</div>' : '') +
 					'<button class="btn-text-default submit primary" style="width:90px;">' + (accept ? 'Reply' : 'OK') + '</button>' +
 					'<button class="btn-text-default submit" style="margin-left:5px; width:90px;">Cancel</button>' +
@@ -197,7 +197,7 @@
 		var UserName = reply.UserName;
 		var text = reply.Text;
 		var replyEl = $('<div class="main-actions">' +
-							'<input type="checkbox" data-type="reply"  class="user-check">' +
+							'<input type="checkbox" data-type="reply"  class="user-check form-control">' +
 							'<div class="user-name">' + UserName + '</div>' +
 							'<div>:</div>' +
 							'<div class="user-message">' + (text || '') + '</div>' +
@@ -222,7 +222,7 @@
 		var text = comment.Data.Text;
 		var commentitem = $('<div class="user-comment-item" id="' + id + '">' +
 								'<div class="main-actions">' +
-									'<input type="checkbox" class="user-check">' +
+									'<input type="checkbox" class="user-check form-control">' +
 									'<div class="user-name">' + UserName + '</div>' +
 									'<div>:</div>' +
 									'<div class="user-message">' + (text || '') + '</div>' +
