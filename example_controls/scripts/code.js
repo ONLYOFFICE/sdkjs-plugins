@@ -12,7 +12,7 @@
 
 		$('#show-loader').on('click', function(){
 			loader && loader.remove();
-			loader = showLoader($('#loader-container'), 'Loading...');
+			loader = showLoader($('#loader-container')[0], 'Loading...');
 		});
 
 		$('#hide-loader').on('click', function(){
