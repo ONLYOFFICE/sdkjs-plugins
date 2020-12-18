@@ -211,6 +211,8 @@
 				$(e.target).removeClass('hidden');
 			});
 			$(e.target).parent().after(edt);
+			$(e.target.parentElement.nextSibling).find('.msg-edit').text($(replyEl[0]).find('.user-message').text());
+
 		});
 		return replyEl;
 	};
@@ -265,6 +267,7 @@
 				$(e.target).removeClass('hidden');
 			});
 			$(e.target).parent().after(edt);
+			$(commentitem[0]).find('.msg-edit')[0].value = $(commentitem[0]).find('.user-message')[0].innerText;
 		});
 
 		var replypnl = commentitem.find('.reply-view');
