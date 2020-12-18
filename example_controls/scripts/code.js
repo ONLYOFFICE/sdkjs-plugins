@@ -11,12 +11,12 @@
 		});
 
 		$('#show-loader').on('click', function(){
-			loader && loader.remove();
+			loader && (loader.remove ? loader.remove() : $('#loader-container')[0].removeChild(loader));
 			loader = showLoader($('#loader-container')[0], 'Loading...');
 		});
 
 		$('#hide-loader').on('click', function(){
-			loader && loader.remove();
+			loader && (loader.remove ? loader.remove() : $('#loader-container')[0].removeChild(loader));
 			loader = undefined;
 		});
 	};
