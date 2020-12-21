@@ -166,7 +166,7 @@
 
 			label.checkboxXMarkLabel {
 				position  : relative;
-				top       : -4px;
+				top       : -2px;
 				font-size : 14px;
 			}
 
@@ -255,7 +255,7 @@
 	<body>
 
 	<div>
-		<button id="buttonAddTextQ" class="buttonDefault buttonAddTextQ">Add Text Q.</button>
+		<button id="buttonAddTextQ" class="buttonDefault buttonAddTextQ btn-text-default">Add Text Q.</button>
 		<div id="divAddTextQ" style="display:none;" class="propertiesContainer">
 
 			<div class="propertyTitle" style="width:100%;float:left;">
@@ -283,8 +283,8 @@
 			<div style="margin-top: 5px;width:100%;float:left;">
 
 				<div style="float:left; padding-right: 5px;height:25px;">
-					<form>
-						<input id="checkboxAddTextQAnother" class="checkboxXMark" type="checkbox"/>
+					<form style="margin-top: 5px;">
+						<input id="checkboxAddTextQAnother" class="form-control" type="checkbox"/>
 						<label for="checkboxAddTextQAnother" class="checkboxXMarkLabel">Add another</label>
 					</form>
 				</div>
@@ -307,7 +307,7 @@
 			<div style="margin-top: 5px;width:100%;float:left;">
 				<div style="float:left; padding-right: 5px;">
 					<form>
-						<input id="checkboxAddTextQNotEditable" class="checkboxXMark" type="checkbox"/>
+						<input id="checkboxAddTextQNotEditable" class="form-control" type="checkbox"/>
 						<label for="checkboxAddTextQNotEditable" class="checkboxXMarkLabel">Not Editable</label>
 					</form>
 				</div>
@@ -316,19 +316,19 @@
 			<div style="margin-top: 5px;width:100%;float:left;">
 				<div style="float:left; padding-right: 5px;">
 					<form>
-						<input id="checkboxAddTextQLogic" class="checkboxXMark" type="checkbox"/>
+						<input id="checkboxAddTextQLogic" class="form-control" type="checkbox"/>
 						<label for="checkboxAddTextQLogic" class="checkboxXMarkLabel">Use with Logic <span>(if checked this field shows in the "Insert option" tool)</span></label>
 					</form>
 				</div>
 			</div>
 
 			<div style="width:100%;float:left; border-bottom : 1px solid silver;">
-				<button id="buttonAddTextQSave" class="buttonDefault buttonSave">Save</button>
+				<button id="buttonAddTextQSave" class="buttonDefault buttonSave btn-text-default">Save</button>
 			</div>
 
 		</div>
 
-		<button id="buttonAddListQ" class="buttonDefault buttonAddListQ">Add List Q.</button>
+		<button id="buttonAddListQ" class="buttonDefault buttonAddListQ btn-text-default">Add List Q.</button>
 		<div id="divAddListQ" style="display:none;" class="propertiesContainer">
 
 			<div class="propertyTitle" style="width:100%;float:left;">
@@ -356,7 +356,7 @@
 			<div style="margin-top: 5px;width:100%;float:left;">
 				<div style="float:left; padding-right: 5px;">
 					<form>
-						<input id="checkboxAddListQAllowMultiple" class="checkboxXMark" type="checkbox"/>
+						<input id="checkboxAddListQAllowMultiple" class="form-control" type="checkbox"/>
 						<label for="checkboxAddListQAllowMultiple" class="checkboxXMarkLabel">Allow Multiple
 							Selections <span>(if not checked, only one selection allowed; if checked, more than one selection is allowed)</span></label>
 					</form>
@@ -366,18 +366,18 @@
 			<div style="margin-top: 5px;width:100%;float:left;">
 				<div style="float:left; padding-right: 5px;">
 					<form>
-						<input id="checkboxAddListQLogic" class="checkboxXMark" type="checkbox"/>
+						<input id="checkboxAddListQLogic" class="form-control" type="checkbox"/>
 						<label for="checkboxAddListQLogic" class="checkboxXMarkLabel">Use with Logic <span>(if checked this field shows in the "Insert option" tool)</span></label>
 					</form>
 				</div>
 			</div>
 
 			<div style="width:100%;float:left; border-bottom : 1px solid silver;">
-				<button id="buttonAddListQSave" class="buttonDefault buttonSave">Save</button>
+				<button id="buttonAddListQSave" class="buttonDefault btn-text-default buttonSave">Save</button>
 			</div>
 		</div>
 
-		<button id="buttonInsertOption" class="buttonDefault buttonInsertOption">Insert Option</button>
+		<button id="buttonInsertOption" class="buttonDefault btn-text-default buttonInsertOption">Insert Option</button>
 		<div id="divInsertOption" style="display:none;" class="propertiesContainer">
 			<div class="propertyTitle" style="width:100%;float:left;">
 				This option shows if:
@@ -414,22 +414,22 @@
 			<div style="margin-top: 5px;width:100%;float:left;">
 				<div style="float:left; padding-right: 5px;">
 					<form>
-						<input id="checkboxInsertOptionAdditional" class="checkboxXMark" type="checkbox"/>
+						<input id="checkboxInsertOptionAdditional" class="form-control" type="checkbox"/>
 						<label for="checkboxInsertOptionAdditional" class="checkboxXMarkLabel">Add an additional requirement to make the condition true.</label>
 					</form>
 				</div>
 			</div>
 
 			<div style="width:100%;float:left; border-bottom : 1px solid silver;">
-				<button id="buttonInsertOptionInsert" class="buttonDefault buttonSave">Insert</button>
+				<button id="buttonInsertOptionInsert" class="buttonDefault btn-text-default buttonSave">Insert</button>
 			</div>
 		</div>
 
-		<button id="buttonCopyField" class="buttonDefault buttonCopyField">Copy Field</button>
+		<button id="buttonCopyField" class="buttonDefault btn-text-default buttonCopyField">Copy Field</button>
 		<div id="divCopyField" style="display:none;padding-top: 5px;" class="propertiesContainer">
 
 			<div style="width:100%; border-bottom : 1px solid silver;">
-				<button id="buttonCopyFieldInsert" class="buttonDefault buttonSave">Insert Field</button>
+				<button id="buttonCopyFieldInsert" class="buttonDefault btn-text-default buttonSave">Insert Field</button>
 			</div>
 		</div>
 

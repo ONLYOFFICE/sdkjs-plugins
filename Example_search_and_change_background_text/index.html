@@ -14,10 +14,10 @@
 				height:100%;
 			}
 			.search {
-				outline-color: #7d858c;
+				/* outline-color: #7d858c; */
 				width: calc(100% - 20px);
 				margin : 5px;
-				border: 1px solid #cfcfcf;
+				/* border: 1px solid #cfcfcf; */
 
 			}
 			.search::selection {
@@ -45,7 +45,7 @@
 				outline: none;
 				font-size: 13px;
 				font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-				height: 27px;
+				height: 27px !important;
 				cursor: pointer;
 				margin-left : 3px;
 			}
@@ -69,7 +69,7 @@
     </head>
     <body>
 		<div>
-			<input placeholder="Enter your text here" id="inp_search" class="search">
+			<input placeholder="Enter your text here" id="inp_search" class="search form-control">
 		</div>
 		<div class="buttons">
 			<!-- <div class="navigation">
@@ -78,12 +78,12 @@
 			</div> -->
 			
 			<div class="color">
-				<label>Color block</label>
+				<label class="header">Color block</label>
 				<div style="display: flex; justify-content: center;">
 					<input type="color" title="Choose background color" name="background" id="inp_color">
-					<button id="btn_resetColor" title="Reset background for setected text to default">Reset</button>
-					<button id="btn_bg" title="Set background for selected text">Color</button>
-					<button id="btn_bgAll" title="Set backgound for all searched results">Color all</button>
+					<button id="btn_resetColor" class="btn-text-default" title="Reset background for setected text to default">Reset</button>
+					<button id="btn_bg" class="btn-text-default" title="Set background for selected text">Color</button>
+					<button id="btn_bgAll" class="btn-text-default" title="Set backgound for all searched results">Color all</button>
 				</div>
 			</div>
 		</div>
