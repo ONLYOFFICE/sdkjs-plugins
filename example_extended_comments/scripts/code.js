@@ -32,7 +32,10 @@
 		});
 
 		$('#btn_Submit').on('click', function() {
-			var comment = $('#textarea_Comment').val();
+			var comment = $('#textarea_Comment').val().trim();
+			var author = $('#inp_author').val().trim();
+			if (!author)
+				author = window.Asc.plugin.info.userName;
 			if (!comment) {
 				alert("Error! The comment text can't be empty.")
 				return;
@@ -43,7 +46,7 @@
 				submitted : {id: $('#select_Submit').find(':selected').val(), text:$('#select_Submit').find(':selected').text()}
 			};
 			clearFields();
-			window.Asc.plugin.executeMethod("AddComment",[{Text: comment, UserName: "My Author", UserData : JSON.stringify(userData)}], function(comment) {
+			window.Asc.plugin.executeMethod("AddComment",[{Text: comment, UserName: author, UserData : JSON.stringify(userData)}], function(comment) {
 				console.log(comment)
 			});
 		});
@@ -76,6 +79,7 @@
 	};
 
 	clearFields = () => {
+		$('#inp_author').val('');
 		$('#textarea_Comment').val('');
 		$('#select_Category').val(0).trigger("change");
 		$('#select_Severity').val(0).trigger("change");
@@ -193,6 +197,10 @@
 		return el;
 	};
 
+	moveToComment = (e) => {
+		window.Asc.plugin.executeMethod("MoveToComment",[$(e.target).parent().parent()[0].id]);
+	}
+
 	makeReply = (id, reply, index) => {
 		var UserName = reply.UserName;
 		var text = reply.Text;
@@ -225,7 +233,7 @@
 									'<input type="checkbox" class="user-check form-control">' +
 									'<div class="user-name">' + UserName + '</div>' +
 									'<div>:</div>' +
-									'<div class="user-message">' + (text || '') + '</div>' +
+									'<div class="user-message ' + ((comment.Data.QuoteText) ? "comments-text\" onclick=\"moveToComment(event)\"" : "\"") + '>' + (text || '') + '</div>' +
 									'<div class="btn-edit"></div>' +
 								'</div>' +
 								'<div class="reply-view">' +
