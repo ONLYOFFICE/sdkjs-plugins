@@ -72,6 +72,11 @@
 				margin: 0px 0px 10px 0px;
 				box-sizing: border-box;
 			}
+			.div-user-data {
+				display: flex;
+				flex-flow: column; margin-top: 10px;
+				justify-content: space-between;
+			}
 		</style>
 
 		<script type="text/javascript" src="https://onlyoffice.github.io/sdkjs-plugins/v1/plugins.js"></script>
@@ -87,7 +92,7 @@
 		<div style="margin:10px; display: flex; flex-flow: column; height: 200px; justify-content: space-between;">
 			<textarea id="textarea_Comment" style="height:72px;" class="form-control" placeholder="Select the text and enter your comment here"></textarea>
 			<div id = "div_Edit" style=" display: flex; flex-flow: column; justify-content: space-between;">
-				<div style="display: flex; flex-flow: column; margin-top: 10px; justify-content: space-between;">
+				<div class="div-user-data">
 					<div style="display: flex; margin-bottom: 5px;">
 						<label class="for-combo" style="flex-grow: 1;">Problem Category</label>
 						<div><select id="select_Category" class="noselect combo" ></select></div>

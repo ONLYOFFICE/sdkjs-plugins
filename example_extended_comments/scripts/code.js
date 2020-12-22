@@ -1,16 +1,16 @@
 (function(window, undefined){
 	
 	var Comments = null;
+	var ExampleUserData = {
+		probCat : [{id:0, text:'None'},{id:1, text:'Defect'},{id:2, text:'Bug'}],
+		severity : [{id:0, text:'None'},{id:1, text:'General'},{id:2, text:'Normal'}],
+		submitted : [{id:0, text:'None'}, {id:1, text:'User_1'},{id:2, text:'User_2'}]
+		// ,accepted : [{id:0, text:'None'}, {id:1, text:'Accepted'}, {id:2, text:'Not'}]
+	};
 
     window.Asc.plugin.init = function()
     {
-		var ExampleUserData = {
-			probCat : [{id:0, text:'None'},{id:1, text:'Defect'},{id:2, text:'Bug'}],
-			severity : [{id:0, text:'None'},{id:1, text:'General'},{id:2, text:'Normal'}],
-			submitted : [{id:0, text:'None'}, {id:1, text:'User_1'},{id:2, text:'User_2'}]
-			// ,accepted : [{id:0, text:'None'}, {id:1, text:'Accepted'}, {id:2, text:'Not'}]
-		};
-
+		
 		$('#select_Category').select2({
 			data : ExampleUserData.probCat,
 			minimumResultsForSearch: Infinity,
@@ -134,9 +134,11 @@
 		})
 	};
 
-	editComment = (id, text) => {
+	editComment = (id, text, data) => {
 		let comment = findComment(id);
 		comment.Data.Text = text;
+		comment.Data.UserName = data.author;
+		comment.Data.UserData = JSON.stringify(data.userData);
 		window.Asc.plugin.executeMethod("ChangeComment",[comment.Id, comment.Data]);
 		console.log('Edit comment ' + id);
 	};
@@ -169,28 +171,64 @@
 		$('#' + comment.Id).find('.user-message')[0].innerText = comment.Data.Text;
 	};
 
-	showEditContainer = (accept, callback) => {
-		var el = $('<div class="comment-edit">' +
+	showEditContainer = (accept, userData, callback, comment_id) => {
+		var blockUserData = '<div class="div-user-data">' +
+								'<div style="display: flex; margin-bottom: 5px;">' +
+									'<label class="for-combo" style="flex-grow: 1;">Problem Category</label>' +
+									'<div><select id="select_Category_Edit' + comment_id + '" class="noselect combo" ></select></div>' +
+								'</div>' +
+								'<div style="display: flex; margin-bottom: 5px;">' +
+									'<label class="for-combo" style="flex-grow: 1;">Severity</label>' +
+									'<div><select id="select_Severity_Edit' + comment_id + '" class="noselect combo"></select></div>' +
+								'</div>' +
+								'<div style="display: flex; margin-bottom: 5px;">' +
+									'<label class="for-combo" style="flex-grow: 1;">Submitted by</label>' +
+									'<div><select id="select_Submit_Edit' + comment_id + '" class="noselect combo"></select></div>' +
+								'</div>' +
+								'<div style="display: flex; margin-bottom: 5px;">' +
+									'<label class="for-combo" style="flex-grow: 1;">Author</label>' +
+									'<div><input id="inp_author_edit' + comment_id + '" class="form-control" placeholder="Author Name" style="width: 120px;" type="text"></div>' +
+								'</div>' +
+							'</div>'
+		
+		var el = $('<div' + (userData ? " data-id=" + comment_id : '') + ' class="comment-edit">' +
 					'<textarea class="msg-edit form-control"></textarea>' +
 					(accept ? '<div class="reply-accept">' +
 									'<input type="checkbox" class="user-check form-control"><label class="for-combo">Accept</label>' +
 								'</div>' : '') +
+					(userData ? blockUserData : '') +
 					'<button class="btn-text-default submit primary" style="width:90px;">' + (accept ? 'Reply' : 'OK') + '</button>' +
 					'<button class="btn-text-default submit" style="margin-left:5px; width:90px;">Cancel</button>' +
 			'</div>'
 		);
 
 		$(el.find('.submit')[0]).on('click', function() {
-			//reply add button
+			//add button
 			var val = el.find('textarea').val();
 			var check = el.find('input').is("checked");
+			var data = {
+				author: "",
+				userData: {}
+			};
+			if ($(el.find('.div-user-data')).length) {
+				var id = el.attr('data-id');
+				data.author = el.find('#inp_author_edit' + id).val().trim() || window.Asc.plugin.info.UserName;
+				var cat = el.find('#select_Category_Edit' + id).select2('data')[0];
+				var sev = el.find('#select_Severity_Edit' + id).select2('data')[0];
+				var sub = el.find('#select_Submit_Edit' + id).select2('data')[0];
+				data.userData = {
+					probCat: {id: cat.id, text: cat.text},
+					severity: {id: sev.id, text: sev.text},
+					submitted: {id: sub.id, text: sub.text}
+				};
+			}	
 			if (val) {
-				callback(val, check);
+				callback(val, check, data);
 				el.remove();
 			}
 		});
 		$(el.find('.submit')[1]).on('click', function() {
-			//cancel reply button
+			//cancel button
 			callback();
 			el.remove();
 		});
@@ -214,7 +252,7 @@
 		);
 		replyEl.find('.btn-edit').on('click', function(e){
 			$(e.target).addClass('hidden');
-			var edt = showEditContainer(false, function(text, accept) {
+			var edt = showEditContainer(false, false, function(text, accept) {
 				text && editReply(id, index, text, accept);
 				$(e.target).removeClass('hidden');
 			});
@@ -249,7 +287,7 @@
 
 		commentitem.find('.link.add-reply').on('click', function(e){
 			$(e.target).parent().addClass('hidden');
-			var edt = showEditContainer(true, function(text, accept) {
+			var edt = showEditContainer(true, false, function(text, accept) {
 				text && addReply(id, text, accept);
 				$(e.target).parent().removeClass('hidden');
 			});
@@ -269,12 +307,40 @@
 
 		commentitem.find('.btn-edit').on('click', function(e){
 			$(e.target).addClass('hidden');
-			var edt = showEditContainer(false, function(text, check) {
+			var edt = showEditContainer(false, true, function(text, check, data) {
 				//ok and cancel edit comments
-				text && editComment(id, text);
+				text && editComment(id, text, data);
 				$(e.target).removeClass('hidden');
-			});
+			}, commentitem[0].id);
 			$(e.target).parent().after(edt);
+
+			
+			var comment = findComment(commentitem[0].id);
+			var data = (comment.Data.UserData) ? JSON.parse(comment.Data.UserData) : undefined;
+			$($(commentitem[0]).find('#select_Category_Edit' + comment.Id)).select2({
+				data : ExampleUserData.probCat,
+				minimumResultsForSearch: Infinity,
+				width : '120px'
+			});
+			if (data && data.probCat)
+				$(commentitem[0]).find('#select_Category_Edit' + comment.Id).val(data.probCat.id).trigger("change");
+			
+			$($(commentitem[0]).find('#select_Severity_Edit' + comment.Id)).select2({
+				data : ExampleUserData.severity,
+				minimumResultsForSearch: Infinity,
+				width : '120px'
+			});
+			if (data && data.severity)
+				$(commentitem[0]).find('#select_Severity_Edit' + comment.Id).val(data.severity.id).trigger("change");
+			
+			$($(commentitem[0]).find('#select_Submit_Edit' + comment.Id)).select2({
+				data : ExampleUserData.submitted,
+				width : '120px'
+			});
+			if (data && data.submitted)
+				$(commentitem[0]).find('#select_Submit_Edit' + comment.Id).val(data.submitted.id).trigger("change");
+
+			$(commentitem[0]).find('#inp_author_edit' + comment.Id).val(comment.Data.UserName);
 			$(commentitem[0]).find('.msg-edit')[0].value = $(commentitem[0]).find('.user-message')[0].innerText;
 		});
 
