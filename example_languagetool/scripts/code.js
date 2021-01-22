@@ -78,7 +78,7 @@
 			$('<div>', {
 				"class": 'header',
 				id: "div_header_" + ind,
-				text: el.shortMessage
+				text: el.shortMessage || " "
 			}).appendTo($('<div>', {
 				id : "div_" + ind,
 				"class": 'result_div',
@@ -162,7 +162,7 @@
 					longcode : el.longCode
 				};
 			});
-			languages.unshift({id : 0, text:"Auto", code : "auto"});
+			languages.unshift({id : 0, text:"Auto", code : "auto", longcode : "auto"});
 			$('#language_id').select2({
 				data : languages
 			}).on('select2:select', function (e) {
