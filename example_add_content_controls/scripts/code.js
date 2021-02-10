@@ -10,8 +10,7 @@
 		\"Appearance\" : 1,\r\n\
 		\"Color\" : { \"R\" : 0, \"G\" : 255, \"B\" : 0 }\r\n\
 	},\r\n\
-	\"type\":1,\r\n\
-	\"Script\" : \"var oDocument = Api.GetDocument();var oParagraph = Api.CreateParagraph();oParagraph.AddText(\'Hello world!\');oDocument.InsertContent([oParagraph], true);\"\r\n\
+	\"type\":1\r\n\
 }";
 
 	var _placeholderCheckBox = "{\r\n\
