@@ -8,7 +8,8 @@
 		\"Tag\" : \"{Document1}\",\r\n\
 		\"Lock\" : 1,\r\n\
 		\"Appearance\" : 1,\r\n\
-		\"Color\" : { \"R\" : 0, \"G\" : 255, \"B\" : 0 }\r\n\
+		\"Color\" : { \"R\" : 0, \"G\" : 255, \"B\" : 0 },\r\n\
+		\"PlaceHolderText\":\"Place holder example\"\r\n\
 	},\r\n\
 	\"type\":1\r\n\
 }";
@@ -42,7 +43,8 @@
 	{\r\n\
 		\"Id\":4,\r\n\
 		\"Tag\":\"{Document4}\",\r\n\
-		\"Lock\":3\r\n\
+		\"Lock\":3,\r\n\
+		\"PlaceHolderText\":\"Place holder example\"\r\n\
 	},\r\n\
 	\"List\" :\r\n\
 	[{\r\n\
@@ -134,7 +136,5 @@
     {
 		this.executeCommand("close", "");
     }; 
-
-
 
 })(window, undefined);
