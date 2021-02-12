@@ -9,6 +9,6 @@ It isn't installed by default in cloud, [self-hosted](https://github.com/ONLYOFF
 For example:
 
 1. Add folder chess
-2. Add file pluginBase.js
+2. Wrap folder to extension
 
 If you need more information about how to use or write your own plugin, please see this https://api.onlyoffice.com/plugin/basic

@@ -7,7 +7,7 @@
             "description" : "chess",
             "url"         : "index.html",
 
-            "icons"           : ["resources/img/icon.png", "resources/img/icon@2x.png"],
+            "icons"           : ["resources/icon.png", "resources/icon@2x.png"],
             "isViewer"        : true,
             "EditorsSupport"  : ["word", "cell", "slide"],
 
@@ -27,7 +27,7 @@
             "description" : "About",
             "url"         : "index_about.html",
 
-            "icons"           : ["resources/img/icon.png", "resources/img/icon@2x.png"],
+            "icons"           : ["resources/icon.png", "resources/icon@2x.png"],
             "isViewer"        : true,
             "EditorsSupport"  : ["word", "cell", "slide"],
 
