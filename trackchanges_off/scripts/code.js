@@ -27,8 +27,14 @@
             if (reviewController && reviewController.view && reviewController.view.btnsTurnReview) {
                 reviewController.view.btnsTurnReview.forEach(function(button) {
                     button.on('toggle', onReviewToggle);
+                    if (button.menu && button.menu.items.length>0) {
+                        button.menu.items[0] && button.menu.items[0].setDisabled(true);
+                        button.menu.items[2] && button.menu.items[2].setDisabled(true);
+                        button.menu.items[3] && button.menu.items[3].setDisabled(true);
+                    }
                 }, this);
             }
+            Common.NotificationCenter.trigger('reviewchanges:turn', 'off');
         }
     };
 

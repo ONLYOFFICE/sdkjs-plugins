@@ -17,16 +17,24 @@
  */
 (function() {
 
-    // var afterDocReady = function(){
-    var reviewController;
-    try { reviewController = DE.getController('Common.Controllers.ReviewChanges'); } catch(e) {}
-    if (reviewController && reviewController.view && reviewController.view.btnsTurnReview) {
-        reviewController.view.btnsTurnReview.forEach(function(button) {
-            button.allowDepress = false;
-        }, this);
-        Common.NotificationCenter.trigger('reviewchanges:turn', 'on');
-    }
-    // };
+    var afterDocReady = function(){
+        var reviewController;
+        try { reviewController = DE.getController('Common.Controllers.ReviewChanges'); } catch(e) {}
+        if (reviewController && reviewController.view && reviewController.view.btnsTurnReview) {
+            var onReviewToggle = function(btn, state) {
+                Common.NotificationCenter.trigger('reviewchanges:turn', 'on');
+            };
+            reviewController.view.btnsTurnReview.forEach(function(button) {
+                button.on('toggle', onReviewToggle);
+                if (button.menu && button.menu.items.length>0) {
+                    button.menu.items[1] && button.menu.items[1].setDisabled(true);
+                    button.menu.items[2] && button.menu.items[2].setDisabled(true);
+                    button.menu.items[3] && button.menu.items[3].setDisabled(true);
+                }
+            }, this);
+            Common.NotificationCenter.trigger('reviewchanges:turn', 'on');
+        }
+    };
 
-    // Common.NotificationCenter.on('document:ready', afterDocReady);
+    Common.NotificationCenter.on('document:ready', afterDocReady);
 })();
