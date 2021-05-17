@@ -1,10 +1,10 @@
 {
-    "name" : "Controls expample",
+    "name" : "Controls example",
     "guid" : "asc.{111735E0-69A7-4D4A-9ABE-F58FD70F488D}",
 
     "variations" : [
         {
-            "description" : "Controls expample",
+            "description" : "Controls example",
             "url"         : "index.html",
 
             "icons"           : ["resources/img/icon.png", "resources/img/icon@2x.png", "resources/img/icon2.png", "resources/img/icon2@2x.png"],
