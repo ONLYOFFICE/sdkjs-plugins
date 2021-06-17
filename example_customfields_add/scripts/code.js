@@ -166,7 +166,11 @@
 		var _plugin = window.Asc.plugin;
 		if (_plugin.info.methodName == "AddContentControl")
 		{
-			if (_Control)
+			if (!returnValue)
+			{
+				console.warn("Content control not inserted");
+			}
+			else if (_Control)
 			{
 				if (1 === _Control.Type)
 				{
