@@ -24,13 +24,18 @@
     {
 		//event "init" from plugin
 		document.getElementById("buttonIDPaste").onclick = function() {
-			var tmpArr = ArrContentControls[$('.label-selected')[0].id].id;
-			for (var i = 0; i < tmpArr.length; i++) {
-				//method for select content control by id
-				window.Asc.plugin.executeMethod("SelectContentControl",[tmpArr[i]]);
-				//method for paste text into document
+			if (!$.isEmptyObject(ArrContentControls) && $('.label-selected').length) {
+				var tmpArr = ArrContentControls[$('.label-selected')[0].id].id;
+				for (var i = 0; i < tmpArr.length; i++) {
+					//method for select content control by id
+					window.Asc.plugin.executeMethod("SelectContentControl",[tmpArr[i]]);
+					//method for paste text into document
+					window.Asc.plugin.executeMethod("PasteText", ["Test paste for document"]);
+				}
+			} else {
 				window.Asc.plugin.executeMethod("PasteText", ["Test paste for document"]);
 			}
+			
 
 		};
 
