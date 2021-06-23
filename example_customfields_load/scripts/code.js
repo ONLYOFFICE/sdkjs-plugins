@@ -153,8 +153,12 @@
 	CInterview.prototype.Show = function()
 	{
 		if (!this.m_arrQuestions[this.m_nIndex])
+		{
+			console.log("No questions found");
+			window.Asc.plugin.executeCommand("close", "")
 			return;
-
+		}
+			
 		var oQuestion = this.m_arrQuestions[this.m_nIndex];
 		if (0 === oQuestion.Type)
 		{
@@ -226,6 +230,7 @@
 		{
 			if (undefined === returnValue.length || returnValue.length <= 0)
 			{
+				console.log("No questions found");
 				this.executeCommand("close", "");
 			}
 			else
