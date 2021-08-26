@@ -51,8 +51,11 @@
 		$('#btn_Submit').on('click', function() {
 			var comment = $('#textarea_Comment').val().trim();
 			var author = $('#inp_author').val().trim();
-			if (!author)
+			var userId = author === window.Asc.plugin.info.userName ? window.Asc.plugin.info.userId : "";
+			if (!author) {
+				userId = window.Asc.plugin.info.userId;
 				author = window.Asc.plugin.info.userName;
+			}
 			if (!comment) {
 				alert("Error! The comment text can't be empty.")
 				return;
@@ -63,7 +66,7 @@
 				submitted : {id: $('#select_Submit').find(':selected').val(), text:$('#select_Submit').find(':selected').text()}
 			};
 			clearFields();
-			window.Asc.plugin.executeMethod("AddComment",[{Text: comment, UserName: author, UserData : JSON.stringify(userData)}], function(comment) {
+			window.Asc.plugin.executeMethod("AddComment",[{Text: comment, UserName: author, UserId: userId, UserData : JSON.stringify(userData)}], function(comment) {
 				console.log(comment)
 			});
 		});
