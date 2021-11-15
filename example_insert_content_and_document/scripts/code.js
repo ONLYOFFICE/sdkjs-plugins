@@ -37,7 +37,7 @@
 				Lock : 0
 			},
 			
-			Url : 'https://personal.onlyoffice.com/products/files/httphandlers/filehandler.ashx?action=view&fileid=1617658&version=0&doc=aEE1OEk0THZWakI4bC9Ydm1CaFdQaGRpOFdLMURzaUFkV3cvRFlXS1dUND0_IjE2MTc2NTgi0',
+			Url : 'https://personal.onlyoffice.com/products/files/httphandlers/filehandler.ashx?action=view&fileid=4356181&version=0&doc=SUp1RjRQbFVOeExxTE9PZ1RwRUxMcWhpajZJL0MyblB6dU9lbEFaZmNCND0_NDM1NjE4MQ',
 			
 			Format : 'docx'
 		},
@@ -48,7 +48,7 @@
 				Lock : 1
 			},
 			
-			Url : 'https://personal.onlyoffice.com/products/files/httphandlers/filehandler.ashx?action=view&fileid=1617658&version=0&doc=aEE1OEk0THZWakI4bC9Ydm1CaFdQaGRpOFdLMURzaUFkV3cvRFlXS1dUND0_IjE2MTc2NTgi0',
+			Url : 'https://personal.onlyoffice.com/products/files/httphandlers/filehandler.ashx?action=view&fileid=4356181&version=0&doc=SUp1RjRQbFVOeExxTE9PZ1RwRUxMcWhpajZJL0MyblB6dU9lbEFaZmNCND0_NDM1NjE4MQ',
 			
 			Format : 'docx'
 		},
@@ -68,7 +68,7 @@
 				Lock : 0
 			},
 			
-			Url : 'https://personal.onlyoffice.com/products/files/httphandlers/filehandler.ashx?action=view&fileid=1617658&version=0&doc=aEE1OEk0THZWakI4bC9Ydm1CaFdQaGRpOFdLMURzaUFkV3cvRFlXS1dUND0_IjE2MTc2NTgi0',
+			Url : 'https://personal.onlyoffice.com/products/files/httphandlers/filehandler.ashx?action=view&fileid=4356181&version=0&doc=SUp1RjRQbFVOeExxTE9PZ1RwRUxMcWhpajZJL0MyblB6dU9lbEFaZmNCND0_NDM1NjE4MQ',
 			
 			Format : 'docx'
 		},
