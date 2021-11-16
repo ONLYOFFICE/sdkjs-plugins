@@ -24,24 +24,26 @@
 	window.Asc.plugin.init = function () {
 		//event "init" for plugin
 		document.getElementById("start").onclick = function() {
-			//create iframe jitsi
-			const domain = 'meet.jit.si';
-			const options = {
-				roomName: 'Test meet',
-				width: document.getElementById("body").clientWidth- 10 +"px",
-				height: '550px',
-				parentNode: document.querySelector('#meet'),
-				onload : function () {
-					if (isInit) {
-						api.dispose();
-						isInit = false;
-					} else {
-						isInit = true;
+			if (!isInit) {
+				//create iframe jitsi
+				const domain = 'meet.jit.si';
+				const options = {
+					roomName: 'Test meet',
+					width: document.getElementById("body").clientWidth- 10 +"px",
+					height: '550px',
+					parentNode: document.querySelector('#meet'),
+					onload : function () {
+						if (isInit) {
+							api.dispose();
+							isInit = false;
+						} else {
+							isInit = true;
+						}
 					}
-				}
-			};
-			api = new JitsiMeetExternalAPI(domain, options);
-			iframe = api.getIFrame();
+				};
+				api = new JitsiMeetExternalAPI(domain, options);
+				iframe = api.getIFrame();
+			}
 		};
 
 		document.getElementById("stop").onclick = function() {
