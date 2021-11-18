@@ -32,6 +32,7 @@
 					width: document.getElementById("body").clientWidth- 10 +"px",
 					height: '550px',
 					parentNode: document.querySelector('#meet'),
+					interfaceConfigOverwrite: { SHOW_CHROME_EXTENSION_BANNER: false },
 					onload : function () {
 						if (isInit) {
 							api.dispose();
