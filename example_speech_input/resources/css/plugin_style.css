@@ -1,0 +1,62 @@
+html, body {
+  height: 100%;
+  flex-flow: column;
+  width: 100%;
+  margin: 0;				
+  padding: 10px 3px 0px;
+  overflow:hidden;
+  box-sizing:border-box;
+}
+p {
+	font-size: 1em;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+select::selection {
+  background: #D8DADC; /* WebKit/Blink Browsers */
+}
+select::-moz-selection {
+  background: #D8DADC; /* Gecko Browsers */
+}
+select:focus > option:checked { 
+  background: #D8DADC !important;
+}
+.final {
+	font-size: 1em;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.interim {
+	font-size: 1em;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.noselect {
+  -khtml-user-select: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+.img_btn {
+  background-color: #fff;
+  border: 1px solid #7d858c;
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+.start_img {
+  max-width: 45px;
+  max-height: 45px;
+}
+.div_start {
+  padding-top: 10px;
+  display: flex;
+  /* padding-left: calc(50% - 127px); */
+}
+.div_language {
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  padding-left: 10px;
+}
+.hidden {
+  display: none;
+}

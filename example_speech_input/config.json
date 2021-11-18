@@ -1,0 +1,29 @@
+{
+    "name" : "Speech input",
+    "guid" : "asc.{F30BDD79-23A0-4B05-8DE3-2AB77D03A1B4}",
+    "version" : "1.0",
+
+    "variations" : [
+        {
+            "description" : "Speech input",
+            "url"         : "index.html",
+
+            "icons"           : ["resources/img/icon.png", "resources/img/icon@2x.png"],
+            "isViewer"        : true,
+            "EditorsSupport"  : ["word","cell"],
+
+            "isVisual"        : true,
+            "isModal"         : false,
+            "isInsideMode"    : true,
+
+            "initDataType"    : "",
+            "initData"        : "",
+
+            "isUpdateOleOnResize" : false,
+
+            "buttons"        : [ ],
+
+            "initOnSelectionChanged" : false
+        }
+    ]
+}

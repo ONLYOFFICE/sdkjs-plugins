@@ -1,0 +1,89 @@
+<!--
+ (c) Copyright Ascensio System SIA 2020
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ -->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+		<title>Example add content controls</title>
+        
+		<style type="text/css">
+			html, body {
+				margin: 0px;
+				padding: 0px;
+				overflow: hidden;
+				width:100%;
+				height:100%;
+				display: flex;
+				flex-flow: column;
+			}
+			.div_text {
+				width: calc(100% - 10px);
+				height: 20%;
+				margin: 5px;
+				border: 1px solid black;
+			}
+			.div_main {
+				display: flex;
+				flex-flow: column;
+				width: 100%;
+				height: 100%;
+			}
+		</style>
+
+		<script type="text/javascript" src="https://onlyoffice.github.io/sdkjs-plugins/v1/plugins.js"></script>
+		<script type="text/javascript" src="https://onlyoffice.github.io/sdkjs-plugins/v1/plugins-ui.js"></script>
+		<link rel="stylesheet" href="https://onlyoffice.github.io/sdkjs-plugins/v1/plugins.css">
+    	<script type="text/javascript" src="scripts/code.js"></script>
+    </head>
+    <body>
+		<div class="div_text">
+			<div class="div_main">
+				<label>Plain text/Rich Text</label>
+				<textarea id="textareaS" class="form-control" style="tab-size: 2; margin: 0px; padding: 0px; width:100%; height:100%; resize: none;"></textarea>
+				<button class="btn-text-default primary" div_text id="buttonIDInsertS">Insert</button>
+			</div>
+		</div>
+		<div class="div_text">
+			<div class="div_main">
+				<label>Check Box</label>
+				<textarea id="textareaCB" class="form-control" style="tab-size: 2; margin: 0px; padding: 0px; width:100%; height:100%; resize: none;"></textarea>
+				<button class="btn-text-default primary" div_text id="buttonIDInsertCB">Insert</button>
+			</div>
+		</div>
+		<div class="div_text">
+			<div class="div_main">
+				<label>Picture</label>
+				<textarea id="textareaP" class="form-control" style="tab-size: 2; margin: 0px; padding: 0px; width:100%; height:100%; resize: none;"></textarea>
+				<button class="btn-text-default primary" div_text id="buttonIDInsertP">Insert</button>
+			</div>
+		</div>
+		<div class="div_text">
+			<div class="div_main">
+				<label>ComboBox/Drop-down list</label>
+				<textarea id="textareaL" class="form-control" style="tab-size: 2; margin: 0px; padding: 0px; width:100%; height:100%; resize: none;"></textarea>
+				<button class="btn-text-default primary" div_text id="buttonIDInsertL">Insert</button>
+			</div>
+		</div>
+		<div class="div_text">
+			<div class="div_main">
+				<label>Date</label>
+				<textarea id="textareaDP" class="form-control" style="tab-size: 2; margin: 0px; padding: 0px; width:100%; height:100%; resize: none;"></textarea>
+				<button class="btn-text-default primary" div_text id="buttonIDInsertDP">Insert</button>
+			</div>
+		</div>
+    </body>
+</html>

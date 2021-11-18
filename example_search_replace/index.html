@@ -1,3 +1,18 @@
+<!--
+ (c) Copyright Ascensio System SIA 2020
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +21,7 @@
 	<script type="text/javascript" src="https://onlyoffice.github.io/sdkjs-plugins/v1/plugins.js"></script>
     <script type="text/javascript" src="https://onlyoffice.github.io/sdkjs-plugins/v1/plugins-ui.js"></script>
     <link rel="stylesheet" href="https://onlyoffice.github.io/sdkjs-plugins/v1/plugins.css">
-    <script type="text/javascript" src="code.js"></script>
+    <script type="text/javascript" src="scripts/code.js"></script>
 
 	<style type="text/css">
 		html, body {
@@ -23,19 +38,19 @@
     <div id="divMain" style="margin: 0px auto; padding: 0; width:600px;">
 		<div>
 			<div align="center" style="margin: 20px 0px;">
-				<input id="inputFirstName" placeholder="First name">
+				<input id="inputFirstName" class="form-control" placeholder="First name">
 			</div>
 			<div align="center" style="margin: 20px 0px;">
-				<input id="inputLastName" placeholder="Last name">
+				<input id="inputLastName" class="form-control" placeholder="Last name">
 			</div>
 			<div align="center" style="margin: 20px 0px;">
-				<input id="inputAddress" placeholder="Address">
+				<input id="inputAddress" class="form-control" placeholder="Address">
 			</div>
 		</div>
 
 		<div style="position: relative;width:200px; margin: 0px auto;">
-			<input id="buttonCancel" type="button" value="Cancel" style="width:75px;position:absolute;left:0px"/>
-			<input id="buttonOK" type="button" value="OK" style="width:75px;position:absolute;right:0px"/>
+			<input id="buttonCancel" type="button" class="btn-text-default" value="Cancel" style="width:75px;position:absolute;left:0px"/>
+			<input id="buttonOK" type="button" class="btn-text-default" value="OK" style="width:75px;position:absolute;right:0px"/>
 		</div>
 	</div>
 	

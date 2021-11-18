@@ -1,0 +1,27 @@
+{
+    "name" : "trackchanges off",
+    "guid" : "asc.{613BBDC4-5E44-4E65-87E0-F5A4A4E2786F}",
+    "isUICustomizer" : true,
+
+    "variations" : [
+        {
+            "description" : "trackchanges off",
+            "url"         : "scripts/code.js",
+
+            "isViewer"        : false,
+            "EditorsSupport"  : ["word"],
+
+            "isVisual"        : false,
+            "isModal"         : false,
+            "isInsideMode"    : false,
+            "isSystem"        : false,
+
+            "initDataType"    : "none",
+            "initData"        : "",
+
+            "isUpdateOleOnResize" : false,
+
+            "buttons"        : [ ]
+        }
+    ]
+}

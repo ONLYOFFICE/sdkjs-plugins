@@ -1,0 +1,91 @@
+<!--
+ (c) Copyright Ascensio System SIA 2020
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ -->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Speech input</title>
+		<script type="text/javascript" src="https://onlyoffice.github.io/sdkjs-plugins/v1/plugins.js"></script>
+		<script type="text/javascript" src="https://onlyoffice.github.io/sdkjs-plugins/v1/plugins-ui.js"></script>
+		<link rel="stylesheet" href="https://onlyoffice.github.io/sdkjs-plugins/v1/plugins.css">
+		<link rel="stylesheet" href="resources/css/plugin_style.css">
+		<script src="vendor/jQuery-2.2.2-min/jquery-v2.2.2-min.js"></script>
+		<link rel="stylesheet" href="vendor/select2-4.0.6-rc.1/dist/css/select2.css"/>
+		<script src="vendor/select2-4.0.6-rc.1/dist/js/select2.js"></script>
+		<script src="scripts/code.js"></script>
+	</head>
+	<body spellcheck="false" class="noselect">	
+		<div id="info">
+			<p id="info_start" class="hidden">
+				Click on the microphone icon and begin speaking for as long as you like.
+			</p>
+			<p id="info_speak_now" class="hidden">
+				Speak now.
+			</p>
+			<p id="info_no_speech" class="hidden">
+				No speech was detected. You may need to adjust your microphone settings.
+			</p>
+			<p id="info_no_microphone" class="hidden">
+				No microphone was found. Ensure that a microphone is installed and that	microphone settings are configured correctly.
+			</p>
+			<p id="info_allow" class="hidden">
+				Click the "Allow" button above to enable your microphone.
+			</p>
+			<p id="info_denied" class="hidden">
+				Permission to use microphone was denied.
+			</p>
+			<p id="info_blocked" class="hidden">
+				Permission to use microphone is blocked. To change, go to chrome://settings/contentExceptions#media-stream
+			</p>
+			<p id="info_upgrade" class="hidden">
+				Web Speech API is not supported by this browser. Upgrade to Chrome version 25 or later.
+			</p>
+			<p id="info_use_chrome" class="hidden">
+				Web Speech API is not supported by this browser. Please open it in Google Chrome browser.
+			</p>
+		</div>
+		<div id="div_main" style="display:flex;flex-flow:column;">
+			<div class="div_start">
+				<button id="start_button" class='img_btn'>
+					<img alt="Start" id="start_img" src="./resources/img/mic_src/mic.png" class="start_img">
+				</button>
+				<div class="div_language">
+						<div>
+								<!-- <div class="div_input">
+									<input id="custom_input" type="text" class="inputtt">
+									<button id="m_button" type="button" class="btnnn">
+										<span class="control_down"></span>
+									</button>
+								</div> -->
+								<select id="custom_menu" style="width: 100%;"></select>
+						</div>
+						<div id='dialect'>
+								<!-- <div class="div_input">
+									<input id="custom_input2" type="text" class="inputtt">
+									<button id="m_button2" type="button" class="btnnn">
+										<span class="control_down"></span>
+									</button>
+								</div> -->
+								<select id="custom_menu2" style="width: 100%;"></select>
+						</div>
+				</div>
+			</div>
+			<div id="results" style="margin-top:10px;">
+				<span class="interim" id="interim_span"></span> 
+			</div>
+		</div>
+	</body>
+</html>	

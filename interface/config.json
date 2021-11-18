@@ -6,15 +6,44 @@
     "variations" : [
         {
             "description" : "interface",
-            "url"         : "code.js",
+            "url"         : "scripts/code.js",
+			"icons": [ "resources/light/icon.png", "resources/light/icon@2x.png" ],
+			"icons2": [
+			{
+				"style" : "light",
 
-            "icons"           : ["icon.png", "icon@2x.png"],
-            "isViewer"        : true,
+				"100%": {
+					"normal": "resources/light/icon.png"
+				},
+				"150%": {
+					"normal": "resources/light/icon@1.5x.png"
+				},
+				"200%": {
+					"normal": "resources/light/icon@2x.png"
+				}
+			},
+			{
+				"style" : "dark",
+
+				"100%": {
+					"normal": "resources/dark/icon.png"
+				},
+				"150%": {
+					"normal": "resources/dark/icon@1.5x.png"
+				},
+				"200%": {
+					"normal": "resources/dark/icon@2x.png"
+				}
+			}
+			],
+
+            "isViewer"        : false,
             "EditorsSupport"  : ["word", "cell", "slide"],
 
             "isVisual"        : false,
             "isModal"         : false,
             "isInsideMode"    : false,
+            "isSystem"        : false,
 
             "initDataType"    : "none",
             "initData"        : "",

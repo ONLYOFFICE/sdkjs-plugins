@@ -1,3 +1,18 @@
+<!--
+ (c) Copyright Ascensio System SIA 2020
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ -->
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -18,24 +33,24 @@
 		<script type="text/javascript" src="https://onlyoffice.github.io/sdkjs-plugins/v1/plugins.js"></script>
 		<script type="text/javascript" src="https://onlyoffice.github.io/sdkjs-plugins/v1/plugins-ui.js"></script>
 		<link rel="stylesheet" href="https://onlyoffice.github.io/sdkjs-plugins/v1/plugins.css">
-    	<script type="text/javascript" src="code.js"></script>
+    	<script type="text/javascript" src="scripts/code.js"></script>
     </head>
     <body>
 		<div style="position: absolute; margin: 0px; padding: 0px; width: 100%; height: 60%; box-sizing: border-box;">
 			<div style="position: absolute; margin: 0px; padding: 0px; left: 5px; top: 5px; right: 5px; bottom: 30px;">
-				<textarea id="textareaIR" style="tab-size: 2; margin: 0px; padding: 0px; width:100%; height:100%; resize: none;"></textarea>
+				<textarea id="textareaIR" class="form-control" style="tab-size: 2; margin: 0px; padding: 0px; width:100%; height:100%; resize: none;"></textarea>
 			</div>
 			<button class="btn-text-default primary" style="margin-left: 50%; left: -100px; width:200px; position:absolute; bottom: 4px;" id="buttonIDInsertAndContext">Insert/Replace</button>
 		</div>
 		<div style="position: absolute; margin: 0px; padding: 0px; width: 100%; height: 15%; top: 60%; box-sizing: border-box;">
 			<div style="position: absolute; margin: 0px; padding: 0px; left: 5px; top: 5px; right: 5px; bottom: 30px;">
-				<textarea id="textareaR" style="tab-size: 2; margin: 0px; padding: 0px; width:100%; height:100%; resize: none;"></textarea>
+				<textarea id="textareaR" class="form-control" style="tab-size: 2; margin: 0px; padding: 0px; width:100%; height:100%; resize: none;"></textarea>
 			</div>
 			<button class="btn-text-default primary" style="margin-left: 50%; left: -100px; width:200px; position:absolute; bottom: 4px;" id="buttonIDRemove">Remove</button>
 		</div>
 		<div style="position: absolute; margin: 0px; padding: 0px; width: 100%; height: 25%; top: 75%; box-sizing: border-box;">
 			<div style="position: absolute; margin: 0px; padding: 0px; left: 5px; top: 5px; right: 5px; bottom: 90px;">
-				<textarea id="textareaG" style="tab-size: 2; margin: 0px; padding: 0px; width:100%; height:100%; resize: none;"></textarea>
+				<textarea id="textareaG" class="form-control" style="tab-size: 2; margin: 0px; padding: 0px; width:100%; height:100%; resize: none;"></textarea>
 			</div>
 			<button class="btn-text-default primary" style="margin-left: 50%; left: -100px; width:200px; position:absolute; bottom: 64px;" id="buttonIDGetAll">Get All Content Controls</button>
 			<button class="btn-text-default primary" style="margin-left: 50%; left: -100px; width:200px; position:absolute; bottom: 34px;" id="buttonIDChangeState">Change Field State</button>

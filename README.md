@@ -18,7 +18,7 @@ In this folder, you will find the simplest plugins to be used as an examples whi
 
 ### Work with comments
 
-* [example_add_comment](./example_add_comment) shows how to add comments to your doc using plugins.
+* [example_extended_comments](./example_extended_comments) shows how to add, edit, remove comments and replies (with user data) to your doc using plugins.
 * [example_add_comment_in_cell](./example_add_comment_in_cell) shows how to add comment to the active cell of your spreadsheet.
 
 ### Work with content controls
@@ -30,7 +30,6 @@ In this folder, you will find the simplest plugins to be used as an examples whi
 ### Third-party services integration
 
 * [chrome_extension_example](./chrome_extension_example) shows how to turn your plugin into a Chrome extension to add its functionality to the cloud version of ONLYOFFICE.
-* [glavred](./glavred) -  an example of integration with a 3rd party service Glavred that is used to find cliches, poor syntax, etc in text written in Russian. The plugin opens a new window where possible flaws are underlined in your text. 
 * [externallistener](./externallistener) shows how to manipulate the editor from an external panel of a 3rd party service. 
 
 ### Other 

@@ -1,27 +1,52 @@
 {
     "name"       : "Clippy",
-    "guid"       : "asc.{DD97A73A-D8C9-11E6-BF26-CEC0C932CE01}",
-    "isUICustomizer" : true,
+    "guid"       : "asc.{5C521CB8-FD20-4CA3-83D7-1EEB8F4DC759}",
 
-    "variations" : [
+    "variations": [
         {
-            "description"         : "Clippy",
-            "url"                 : "code.js",
+            "description": "Clippy",
+            "url": "index.html",
 
-            "icons"               : ["icon.png", "icon@2x.png"],
-            "isViewer"            : true,
-            "EditorsSupport"      : ["word", "slide", "cell"],
+            "icons": [ "resources/img/icon.png", "resources/img/icon@2x.png", "resources/img/icon.png", "resources/img/icon@2x.png" ],
+            "isViewer": true,
+            "EditorsSupport": [ "word", "slide", "cell" ],
 
-            "isVisual"            : false,
-            "isModal"             : false,
-            "isInsideMode"        : false,
+            "isVisual": true,
+            "isModal": false,
+            "isInsideMode": true,
 
-            "initDataType"        : "none",
-            "initData"            : "",
+            "initDataType": "text",
+            "initData": "",
 
-            "isUpdateOleOnResize" : false,
+            "isUpdateOleOnResize": false,
 
-            "buttons"             : []
+            "buttons": []
+        },
+        {
+            "description": "About",
+            "url": "index_about.html",
+
+            "icons": [ "resources/img/icon.png", "resources/img/icon@2x.png", "resources/img/icon.png", "resources/img/icon@2x.png" ],
+            "isViewer": false,
+            "EditorsSupport": [ "word", "slide", "cell" ],
+
+            "isVisual": true,
+            "isModal": true,
+            "isInsideMode": false,
+
+            "initDataType": "none",
+            "initData": "",
+
+            "isUpdateOleOnResize": false,
+
+            "buttons": [
+                {
+                    "text": "Ok",
+                    "primary": true
+                }
+            ],
+
+            "size": [ 400, 50 ]
         }
     ]
 }

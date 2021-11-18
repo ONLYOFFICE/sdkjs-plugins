@@ -1,0 +1,27 @@
+{
+    "name" : "trackchanges",
+    "guid" : "asc.{F46F9895-3D7C-4FD3-A008-29BCC929C641}",
+    "isUICustomizer" : true,
+
+    "variations" : [
+        {
+            "description" : "trackchanges",
+            "url"         : "scripts/code.js",
+
+            "isViewer"        : false,
+            "EditorsSupport"  : ["word"],
+
+            "isVisual"        : false,
+            "isModal"         : false,
+            "isInsideMode"    : false,
+            "isSystem"        : false,
+
+            "initDataType"    : "none",
+            "initData"        : "",
+
+            "isUpdateOleOnResize" : false,
+
+            "buttons"        : [ ]
+        }
+    ]
+}
