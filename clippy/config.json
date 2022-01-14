@@ -15,7 +15,7 @@
             "isModal": false,
             "isInsideMode": true,
 
-            "initDataType": "text",
+            "initDataType": "none",
             "initData": "",
 
             "isUpdateOleOnResize": false,

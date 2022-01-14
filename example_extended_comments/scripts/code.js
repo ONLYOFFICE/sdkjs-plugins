@@ -27,7 +27,6 @@
 
     window.Asc.plugin.init = function()
     {
-		
 		$('#select_Category').select2({
 			data : ExampleUserData.probCat,
 			minimumResultsForSearch: Infinity,

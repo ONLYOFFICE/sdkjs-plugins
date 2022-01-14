@@ -97,7 +97,7 @@
 
 	var _Control = [];
 
-    window.Asc.plugin.init = function(text)
+    window.Asc.plugin.init = function()
     {
 		document.getElementById("textareaIR").value = _placeholderInsert_Replace;
 		document.getElementById("textareaR").value = _placeholderRemove;

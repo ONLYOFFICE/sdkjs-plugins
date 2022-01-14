@@ -19,7 +19,7 @@
 
 	window.isInit = false;
 
-	window.Asc.plugin.init = function(text)
+	window.Asc.plugin.init = function()
 	{
 		if (!window.isInit)
 		{

@@ -17,7 +17,7 @@
  */
 (function(window, undefined){
 
-	window.Asc.plugin.init = function(text)
+	window.Asc.plugin.init = function()
 	{
 		var client = new XMLHttpRequest();
 		var _url = "./scripts/code.js";

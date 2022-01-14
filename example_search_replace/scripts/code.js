@@ -40,7 +40,6 @@
 
 	window.Asc.plugin.init = function()
 	{
-		var oThis = this;
 		document.getElementById("buttonCancel").onclick = function()
 		{
 			this.executeCommand("close", "");

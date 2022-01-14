@@ -109,7 +109,7 @@
 		fill_templates();
 	};
 
-	window.Asc.plugin.init = function(text)
+	window.Asc.plugin.init = function()
 	{
 		var container = document.getElementById('scrollable-container-id');
 		
