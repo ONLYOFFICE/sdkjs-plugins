@@ -1,0 +1,22 @@
+{
+    "name"       : "Download file",
+    "guid"       : "asc.{E7518265-19FE-4766-AECE-51813014D582}",
+    "baseUrl"    : "",
+    "variations" : [
+        {
+            "description"         : "Download file",
+            "url"                 : "index.html",
+            "icons"               : ["resources/img/icon.png", "resources/img/icon@2x.png"],
+            "isViewer"            : false,
+            "EditorsSupport"      : ["word", "cell", "slide"],
+            "isVisual"            : true,
+            "isModal"             : false,
+            "isInsideMode"        : true,
+            "initDataType"        : "none",
+            "initData"            : "",
+            "isUpdateOleOnResize" : false,
+            "buttons"             : [],
+            "events" : ["onFileReadyToDownload"]
+        }
+    ]
+}
