@@ -24,25 +24,35 @@
 
 	function privateReplaceNext()
 	{
+		if (nStage >= arrCodes.length){
+			window.Asc.plugin.executeCommand("close", "");
+			return;
+		}
+
 		//properties structure for search and replace
-		var oProperties = {
+		Asc.scope.searchProps = {
 			"searchString"  : arrCodes[nStage],
 			"replaceString" : document.getElementById(arrIds[nStage]).value,
 			"matchCase"     : true
 		};
+		
 		//execute method for search and replace
-		window.Asc.plugin.executeMethod("SearchAndReplace", [oProperties]);
-
-		nStage++;
-		if (nStage >= arrCodes.length)
-			window.Asc.plugin.executeCommand("close", "");
+		window.Asc.plugin.callCommand(function() {
+			var oDocument = Api.GetDocument();
+			oDocument.SearchAndReplace(Asc.scope.searchProps);
+		});
 	}
 
+	window.Asc.plugin.onCommandCallback = function() {
+		nStage++;
+		privateReplaceNext();
+	};
+	
 	window.Asc.plugin.init = function()
 	{
 		document.getElementById("buttonCancel").onclick = function()
 		{
-			this.executeCommand("close", "");
+			window.Asc.plugin.executeCommand("close", "");
 		};
 
 		document.getElementById("buttonOK").onclick = function()
@@ -51,22 +61,9 @@
 		};
 	};
 
-	window.Asc.plugin.onMethodReturn = function(returnValue)
+	window.Asc.plugin.button = function()
 	{
-		//event return for completed method
-		var _plugin = window.Asc.plugin;
-		if (_plugin.info.methodName == "SearchAndReplace")
-		{
-			privateReplaceNext();
-		}
-	};
-
-	window.Asc.plugin.button = function(id)
-	{
-		if (-1 === id)
-		{
-			this.executeCommand("close", "");
-		}
+		this.executeCommand("close", "");
 	};
 
 })(window, undefined);

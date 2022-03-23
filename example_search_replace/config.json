@@ -58,8 +58,6 @@
             "initDataType"    : "none",
             "initData"        : "",
 
-            "isUpdateOleOnResize" : true,
-
             "buttons"         : []
         }
     ]

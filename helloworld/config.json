@@ -10,11 +10,8 @@
             "isViewer"            : false,
             "EditorsSupport"      : ["word"],
             "isVisual"            : false,
-            "isModal"             : true,
-            "isInsideMode"        : false,
             "initDataType"        : "none",
             "initData"            : "",
-            "isUpdateOleOnResize" : true,
             "buttons"             : []
         },
         {
@@ -28,7 +25,6 @@
             "isInsideMode"        : false,
             "initDataType"        : "none",
             "initData"            : "",
-            "isUpdateOleOnResize" : true,
             "buttons"         : [
                 {
                     "text": "Ok",
