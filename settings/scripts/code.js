@@ -59,6 +59,25 @@
 						]
 					}
 				]
+			}),
+			
+			fillForms : JSON.stringify({
+				"tags" : {
+					"111" : {
+						"text" : "Text in form with tag 111", 
+						"checkBox" : "true", 
+						"picture" : "https://www.muylinux.com/wp-content/uploads/2020/03/OnlyOffice.png",
+						"comboBox" : "item1"
+						},
+					"222" : {
+						"text" : "Text in form with tag 222", 
+						"checkBox" : "false",
+						"comboBox" : "item2"
+						},
+					"333" : {
+						"text" : "OnlyOffice"
+					}
+				}
 			})
 		};
 		//method for set properties to document
