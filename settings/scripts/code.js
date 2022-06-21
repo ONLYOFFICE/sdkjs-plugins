@@ -66,7 +66,7 @@
 					"111" : {
 						"text" : "Text in form with tag 111", 
 						"checkBox" : "true", 
-						"picture" : "https://www.muylinux.com/wp-content/uploads/2020/03/OnlyOffice.png",
+						"picture" : "https://upload.wikimedia.org/wikipedia/commons/9/91/ONLYOFFICE_logo.png",
 						"comboBox" : "item1"
 						},
 					"222" : {
