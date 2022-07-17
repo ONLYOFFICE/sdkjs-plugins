@@ -55,35 +55,33 @@
 			// get format (must be in upper case)
 			let format = select.selectedOptions[0].value;
 			// ececute method for getting file
-			window.Asc.plugin.executeMethod("GetFileToDownload", [format]);
+			window.Asc.plugin.executeMethod("GetFileToDownload", [format], function(data){
+				if (data == "error") {
+					console.error(new Error('error with download'));
+				} else if (window["AscDesktopEditor"]) {
+					// if it's desctop, then will oped dialog window for save (we musn't create link for download)
+					// do nothing
+				} else {
+					console.log(data);
+					// create link for download
+					let a = document.createElement('a');
+					// add url to link
+					a.href = data;
+					// add link to document
+					document.body.appendChild(a);
+					// hide link
+					a.style = 'display: none';
+					// click link to download
+					a.click();
+					// remove link from document
+					(a.remove ? a.remove() : $(document).removeChild(a));
+				}
+				// hide loader
+				loader && (loader.remove ? loader.remove() : $('#loader-container')[0].removeChild(loader));
+				loader = undefined;
+			});
 		};
     };
-
-	window.Asc.plugin.event_onFileReadyToDownload = function(data) {
-		// when we receive url for donwload file or error
-		if (data == "error") {
-			console.error(new Error('error with download'));
-		} else if (window["AscDesktopEditor"]) {
-			// if it's desctop, then will oped dialog window for save (we musn't create link for download)
-			// do nothing
-		} else {
-			// create link for download
-			let a = document.createElement('a');
-			// add url to link
-			a.href = data;
-			// add link to document
-			document.body.appendChild(a);
-			// hide link
-			a.style = 'display: none';
-			// click link to download
-			a.click();
-			// remove link from document
-			(a.remove ? a.remove() : $(document).removeChild(a));
-		}
-		// hide loader
-		loader && (loader.remove ? loader.remove() : $('#loader-container')[0].removeChild(loader));
-		loader = undefined;
-	};
 
     window.Asc.plugin.button = function() {
 		this.executeCommand("close", "");
