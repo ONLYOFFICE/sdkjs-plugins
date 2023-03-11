@@ -5,7 +5,7 @@
 
     "variations": [
         {
-            "description": "Use the AI model to generate image from description.",
+            "description": "Use the DALL-E AI model to generate image from description.",
             "url": "index.html",
 
             "icons": [ "resources/light/icon.png", "resources/light/icon@2x.png" ],

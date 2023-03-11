@@ -22,9 +22,9 @@
 	let elements = {};
 	let apiKey = null;
 	let errTimeout = null;
-	let tokenTimeot = null;
 	let modalTimeout = null;
 	let maxChars = 1000;
+	let startQuery;
 	const isIE = checkInternetExplorer();
 
 	const arrAllowedSize = [{id: 'idx256', text: '256x256', width: 256},
@@ -43,6 +43,7 @@
 		addTitlelisteners();
 		initElements();
 		initScrolls();
+		queryDocumentSelectedText();
 
 		if (apiKey) {
 			elements.divContent.classList.remove('hidden');
@@ -50,7 +51,7 @@
 			elements.divConfig.classList.remove('hidden');
 		}
 
-		elements.textArea.value = "green cloud";
+		// elements.textArea.value = startQuery;
 		elements.inpTopSl.oninput = onSlInput;
 
 		elements.btnSaveConfig.onclick = function() {
@@ -200,6 +201,34 @@
 				destroyLoader();
 			});
 		}
+	};
+
+	function queryDocumentSelectedText () {
+		const _setStartQueryText = function(text) {
+			document.getElementById('textarea').value = text;
+			document.getElementById('lb_tokens').innerText = text.trim().length;
+
+			checkLen();
+		}
+
+		switch (window.Asc.plugin.info.editorType) {
+            case 'word':
+            case 'slide': {
+                window.Asc.plugin.executeMethod("GetSelectedText", [{Numbering:false, Math: false, TableCellSeparator: '\n', ParaSeparator: '\n'}], function(data) {
+                    _setStartQueryText(data.replace(/\r/g, ' '));
+                });
+                break;
+            }
+            case 'cell':
+                window.Asc.plugin.executeMethod("GetSelectedText", [{Numbering:false, Math: false, TableCellSeparator: '\n', ParaSeparator: '\n'}], function(data) {
+                    // if (data == '')
+						// startQuery = startQuery.replace(/\r/g, ' ').replace(/\t/g, '\n');
+                    // else 
+						_setStartQueryText(startQuery = data.replace(/\r/g, ' '));
+                });
+                break;
+        }
+
 	};
 
 	function initElements() {
