@@ -48,34 +48,49 @@
 		</div>
 	</div>
 	<div id="div_content" class="div_main div_content hidden">
+		<div class="div_main" id="idx-box-plugin-action">
+			<label class="header i18n" style="margin-bottom: 2px;">I need to</label>
+			<select id="idx-cmb-action" class="form-control"></select>
+		</div>
 		<div class="div_form">
-			<div>
-				<textarea id="textarea" class="form-control" style="width: 100%;"></textarea>
-			</div>
-			<div >
-				<div id="div_modal" class="div_modal hidden form-control">
-					<div class="div_row">
-						<label class="i18n">Up to</label>
-						<label id="lb_modal_length">1000</label>
-						<label class="i18n">characters in response.</label>
+			<section id="idx-box-sendinput" class="var--from-text">
+				<div>
+					<textarea id="textarea" class="form-control" style="width: 100%;"></textarea>
+				</div>
+				<div>
+					<div id="div_modal" class="div_modal hidden form-control">
+						<div class="div_row">
+							<label class="i18n">Up to</label>
+							<label id="lb_modal_length">1000</label>
+							<label class="i18n">characters in response.</label>
+						</div>
+						<div id="modal_error" class="div_row hidden lb_err">
+							<label class="i18n">This model can only process maximum of</label>
+							<label id="modal_err_len">1000</label>
+							<label class="i18n">characters in a single request, please reduce your prompt.</label>
+						</div>
+						<div id="modal_link" class="div_row hidden">
+							<label id="lb_more" class="link i18n">Learn More</label>
+							<a id="link_more" href="https://openai.com/api/pricing/" target="_blank" class="hidden"></a>
+						</div>
 					</div>
-					<div id="modal_error" class="div_row hidden lb_err">
-						<label class="i18n">This model can only process maximum of</label>
-						<label id="modal_err_len">1000</label>
-						<label class="i18n">characters in a single request, please reduce your prompt.</label>
-					</div>
-					<div id="modal_link" class="div_row hidden">
-						<label id="lb_more" class="link i18n">Learn More</label>
-						<a id="link_more" href="https://openai.com/api/pricing/" target="_blank" class="hidden"></a>
+					<div class="div_tokens">
+						<div id="div_tokens">
+							<label class="i18n">Characters: </label>
+							<label id="lb_tokens">0</label>
+						</div>
 					</div>
 				</div>
-				<div class="div_tokens">
-					<div id="div_tokens">
-						<label class="i18n">Characters: </label>
-						<label id="lb_tokens">0</label>
-					</div>
-				</div>
-			</div>
+			</section>
+			<section id="idx-box-imgsrc" class="box-for-image">
+				<label>Select image in document and click Submit</label>
+				<img id="idx-img-src" class="form-control" src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA=">
+			</section>
+			<section id="idx-box-imgmask" class="box-for-image">
+				<input type="file" id="idx-input-mask" accept="image/*" class="mask-image-file"></input>
+				<label>Select image in document, add mask and prompt and click Submit</label>
+				<img id="idx-img-mask" class="form-control" src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA=">
+			</section>
 		</div>
 		<div class="div_settings">
 			<div id="div_show_settings" class="div_show_settings">
@@ -98,11 +113,10 @@
 					</div>
 					<label class="header">Images count</label>
 					<div class="div_param_val">
-						<input id="inp_top_sl" type="range" min="1" max="4" step="1" value="1" style="width: 100%; background-size: 100% 100%;">
+						<input id="inp_top_sl" type="range" min="1" max="10" step="1" value="1" style="width: 100%; background-size: 100% 100%;">
 						<label id="lb_top" class="lbl_param_val">1</label>
 					</div>
-				</div>
-			</div>
+				</div>			</div>
 			<div class="div_req_btn">
 				<button id="btn_submit" class="btn-text-default btn_submit i18n">Submit</button>
 				<button id="btn_clear" class="btn-text-default btn_clear i18n">Clear</button>
