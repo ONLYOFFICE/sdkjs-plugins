@@ -4,5 +4,16 @@
 	"Go to" : "Перейти к",
 	"Loading..." : "Загрузка...",
 	"Api key saved successfully." : "Api ключ успешно сохранён.",
-	"Save" : "Сохранить"
+	"Save" : "Сохранить",
+	"Text analysis": "Анализ текста",
+	"Summarize": "Резюмировать",
+	"Keywords": "Ключевые слова",
+	"Word analysis": "Анализ слова",
+	"Explain text in comment": "Значение слова в комментарий",
+	"Explain text in hyperlink": "Ссылка на значение",
+	"Translate": "Перевести",
+	"Translate to French": "Перевести на Французкий",
+	"Translate to German": "Перевести на Немецкий",
+	"Generate image from text": "Создать картинку по тексту",
+	"ChatGPT Settings": "ChatGPT Настройки"
 }

@@ -4,5 +4,16 @@
 	"Go to" : "Přejít na",
 	"Loading..." : "Načítání...",
 	"Api key saved successfully." : "Klíč Api byl úspěšně uložen.",
-	"Save" : "Uložit"
+	"Save" : "Uložit",
+	"Text analysis": "Analýza textu",
+	"Summarize": "Shrnout",
+	"Keywords": "Slovo",
+	"Word analysis": "Slovní analýza",
+	"Explain text in comment": "Vysvětlení v komentáři",
+	"Explain text in hyperlink": "Vysvětlení v hypertextovém odkazu",
+	"Translate": "Přeložit",
+	"Translate to French": "Přeložit do francouzštiny",
+	"Translate to German": "Přeložit do němčiny",
+	"Generate image from text": "Generovat obrázek z textu",
+	"ChatGPT Settings": "ChatGPT Nastavení"
 }

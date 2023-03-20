@@ -19,8 +19,23 @@
 	let loader = null;
 	let errMessage = 'Invalid Api key.';
 	let loadMessage = 'Loading...';
+	let isInited = false;
 
-	window.Asc.plugin.init = function() {
+	/* todo: we have some promlems: 
+		1) window.Asc.plugin.init not work
+		2) we don't have access to translate manages
+		3) we don't receave "theme change" event
+		4) "window.Asc.plugin.button" doesn't work there and it work only inside plugin, whick chreated this window (and id don't have any prefix or postfix)
+	*/ 
+	window.addEventListener("DOMContentLoaded", init);
+
+	window.Asc.plugin.init = init;
+
+	function init() {
+		if (isInited)
+			return;
+		
+		isInited = true;
 		document.getElementById('inp_key').value = localStorage.getItem('OpenAIApiKey') || '';
 		document.getElementById('btn_save').onclick = function() {
 			document.getElementById('err_message').innerText = '';
@@ -62,6 +77,8 @@
 	};
 
 	function createLoader() {
+		if (!window.Asc.plugin.theme)
+			window.Asc.plugin.theme = {type: 'light'};
 		$('#loader-container').removeClass( "hidden" );
 		loader && (loader.remove ? loader.remove() : $('#loader-container')[0].removeChild(loader));
 		loader = showLoader($('#loader-container')[0], loadMessage);

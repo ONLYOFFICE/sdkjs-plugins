@@ -4,5 +4,16 @@
 	"Go to" : "Naviguer vers",
 	"Loading..." : "Chargement...",
 	"Api key saved successfully." : "Clé API enregistrée avec succès.",
-	"Save" : "Enregistrer"
+	"Save" : "Enregistrer",
+	"Text analysis": "Analyse de texte",
+	"Summarize": "Résumer",
+	"Keywords": "Mot",
+	"Word analysis": "Analyse des mots",
+	"Explain text in comment": "Explication en commentaire",
+	"Explain text in hyperlink": "Expliquer le texte en hyperlien",
+	"Translate": "Traduire",
+	"Translate to French": "Traduire en Français",
+	"Translate to German": "Traduire en Allemand",
+	"Generate image from text": "Générer une image à partir de texte",
+	"ChatGPT Settings": "ChatGPT Réglages"
 }
