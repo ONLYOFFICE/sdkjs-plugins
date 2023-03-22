@@ -32,13 +32,9 @@
 		}
 	};
 
-	window.Asc.plugin.attachEvent('onContextMenuShow', function(options) {
-		// todo: change key validation
-		if (!bHasKey || !options)
-			return;
-
+	function getContextMenuItems(options) {
 		let settings = {
-			guid: this.guid,
+			guid: window.Asc.plugin.guid,
 			items: [
 				{
 					id : 'ChatGPT',
@@ -46,87 +42,105 @@
 					items : []
 				}
 			]
-		}
-		
-		switch (options.type)
-		{
-			case 'Target':
-			{
-				settings.items[0].items.push({
-					id : 'onMeaningT',
-					text : generatText('Explain text in comment')
-				});
-				break;
-			}
-			case 'Selection':
-			{
-				settings.items[0].items.push(
-					{
-						id : 'TextAnalysis',
-						text : generatText('Text analysis'),
-						items : [
-							{
-								id : 'onSummarize',
-								text : generatText('Summarize')
-							},
-							{
-								id : 'onKeyWords',
-								text : generatText('Keywords')
-							},
-						]
-					},
-					{
-						id : 'Tex Meaning',
-						text : generatText('Word analysis'),
-						items : [
-							{
-								id : 'onMeaningS',
-								text : generatText('Explain text in comment')
-							},
-							{
-								id : 'onMeaningLinkS',
-								text : generatText('Explain text in hyperlink')
-							}
-						]
-					},
-					{
-						id : 'TranslateText',
-						text : generatText('Translate'),
-						items : [
-							{
-								id : 'onFrenchTr',
-								text : generatText('Translate to French')
-							},
-							{
-								id : 'onGermanTr',
-								text : generatText('Translate to German')
-							}
-						]
-					},
-					{
-						id : 'OnGenerateImage',
-						text : generatText('Generate image from text')
-					}
-				);
-				break;
-			}
-			case 'Image':
-				// TODO
-				break;
+		};
 
-			default:
-				break;
+		if (bHasKey)
+		{
+			switch (options.type)
+			{
+				case 'Target':
+				{
+					settings.items[0].items.push({
+						id : 'onMeaningT',
+						text : generatText('Explain text in comment')
+					});
+
+					break;
+				}
+				case 'Selection':
+				{
+					settings.items[0].items.push(
+						{
+							id : 'TextAnalysis',
+							text : generatText('Text analysis'),
+							items : [
+								{
+									id : 'onSummarize',
+									text : generatText('Summarize')
+								},
+								{
+									id : 'onKeyWords',
+									text : generatText('Keywords')
+								},
+							]
+						},
+						{
+							id : 'Tex Meaning',
+							text : generatText('Word analysis'),
+							items : [
+								{
+									id : 'onMeaningS',
+									text : generatText('Explain text in comment')
+								},
+								{
+									id : 'onMeaningLinkS',
+									text : generatText('Explain text in hyperlink')
+								}
+							]
+						},
+						{
+							id : 'TranslateText',
+							text : generatText('Translate'),
+							items : [
+								{
+									id : 'onFrenchTr',
+									text : generatText('Translate to French')
+								},
+								{
+									id : 'onGermanTr',
+									text : generatText('Translate to German')
+								}
+							]
+						},
+						{
+							id : 'OnGenerateImage',
+							text : generatText('Generate image from text')
+						}
+					);
+					break;
+				}
+				case 'Image':
+					// TODO
+					break;
+
+				default:
+					break;
+			}
 		}
 		
 		settings.items[0].items.push({
 			id : 'onSettings',
-			text : generatText('ChatGPT Settings'),
+			text : generatText('Settings'),
 			separator: true
 		});
-		console.log(settings);
 
-		this.executeMethod('AddContextMenuItem', [settings]);
+		return settings;
+	}
 
+	window.Asc.plugin.attachEvent('onContextMenuShow', function(options) {
+		// todo: change key validation
+		if (!options)
+			return;
+
+		this.executeMethod('AddContextMenuItem', [getContextMenuItems(options)]);
+
+		if (options.type === "Target")
+		{
+			window.Asc.plugin.executeMethod('GetCurrentWord', null, function(text) {
+				let tokens = window.Asc.OpenAIEncode(text);
+				createSettings(text, tokens, 10, true);
+			});
+		}
 	});
 
 	function generatText(text) {
@@ -146,48 +160,16 @@
 		// default settings for modal window (I created separate settings, because we have many unnecessary field in plugin variations)
 		let variation = {
 			// todo: how will we create a new window? it's important for url
-			url: location.href.replace(file, 'settings.html'),
-			isVisual: true,
-			isViewer: false,
-			isDisplayedInViewer: false,
-			description: '',
-			buttons: [],
-			isModal: false
-		}
-
-		if (plVar.isViewer) {
-			variation.isViewer = plVar.isViewer;
-		}
-		if (plVar.isDisplayedInViewer) {
-			variation.isDisplayedInViewer = plVar.isDisplayedInViewer;
-		}
-		// I think we don't need this fields (because we cheked it when start this plugin)
-		if (plVar.EditorsSupport) {
-			variation.EditorsSupport = plVar.EditorsSupport;
-		}
-		// if (plVar.isSystem) {
-		// 	variation.isSystem = plVar.isSystem;
-		// }
-		if (plVar.isCustomWindow) {
-			variation.isCustomWindow = plVar.isCustomWindow;
-		}
-		if (plVar.size) {
-			variation.size = plVar.size;
-		}
-		if (plVar.isModal) {
-			variation.isModal = plVar.isModal;
-		}
-		if ( typeof plVar.descriptionLocale === 'object' ) {
-			variation.descriptionLocale = plVar.descriptionLocale;
-		}
-		if (plVar.help) {
-			variation.help = plVar.help;
-		}
-		for (const ind in plVar.buttons) {
-			if (Object.hasOwnProperty.call(plVar.buttons, ind)) {
-				variation.buttons.push(plVar.buttons[ind]);
-			}
-		}
+			url : location.href.replace(file, 'settings.html'),
+			description : window.Asc.plugin.tr('Settings'),
+			isVisual : true,
+			buttons : [],
+			isModal : true,
+			EditorsSupport : ["word"],
+			buttons : [],
+            size : [ 592, 100 ]
+		};
+		
 		window.Asc.plugin.executeMethod('ShowWindow', [modalId, variation]);
 	});
 
@@ -257,7 +239,11 @@
 		});
 	});
 
-	function createSettings(text, tokens, type) {
+	window.Asc.plugin.attachContextMenuClickEvent('onThesaurus', function(value) {
+		console.log(value);
+	});
+
+	function createSettings(text, tokens, type, isNoBlockedAction) {
 		let url;
 		let settings = {
 			model : model,
@@ -268,8 +254,8 @@
 			console.error(new Error('This request is too big!'));
 			return;
 		}
-		
-		window.Asc.plugin.executeMethod('StartAction', ['Block', 'ChatGPT: ' + loadingPhrase]);
+
+		window.Asc.plugin.executeMethod('StartAction', [isNoBlockedAction ? 'Information' : 'Block', 'ChatGPT: ' + loadingPhrase]);
 
 		switch (type) {
 			case 1:
@@ -320,11 +306,16 @@
 				settings.prompt = `What does it mean '${text}' ?`;
 				url = 'https://api.openai.com/v1/completions';
 				break;
+
+			case 10:
+				settings.prompt = `Give synonyms for the word '${text}' as javascript array`;
+				url = 'https://api.openai.com/v1/completions';
+				break;
 		}
-		fetchData(settings, url, type);
+		fetchData(settings, url, type, isNoBlockedAction);
 	};
 
-	function fetchData(settings, url, type) {
+	function fetchData(settings, url, type, isNoBlockedAction) {
 		fetch(url, {
 				method: 'POST',
 				headers: {
@@ -340,17 +331,17 @@
 				if (data.error)
 					throw data.error
 
-				processResult(data, type);
+				processResult(data, type, isNoBlockedAction);
 			})
 			.catch(function(error) {
 				console.error(error);
-				window.Asc.plugin.executeMethod('EndAction', ['Block', 'ChatGPT: ' + loadingPhrase]);
+				window.Asc.plugin.executeMethod('EndAction', [isNoBlockedAction ? 'Information' : 'Block', 'ChatGPT: ' + loadingPhrase]);
 			});
 	};
 
-	function processResult(data, type) {
+	function processResult(data, type, isNoBlockedAction) {
 		let text, start, end;
-		window.Asc.plugin.executeMethod('EndAction', ['Block', 'ChatGPT: ' + loadingPhrase]);
+		window.Asc.plugin.executeMethod('EndAction', [isNoBlockedAction ? 'Information' : 'Block', 'ChatGPT: ' + loadingPhrase]);
 		switch (type) {
 			case 1:
 				Asc.scope.data = data.choices[0].text.split('\n\n');
@@ -466,15 +457,57 @@
 					Api.AddComment(oDocument, Asc.scope.comment, 'OpenAI');
 				}, false);
 				break;
+
+			case 10:
+				text = data.choices[0].text;
+				let startPos = text.indexOf("[");
+				let endPos = text.indexOf("]");
+
+				if (-1 === startPos || -1 === endPos || startPos > endPos)
+					return;
+
+				text = text.substring(startPos, endPos + 1);
+				let arrayWords = eval(text);
+
+				let items = getContextMenuItems({ type : "Target" });
+
+				let itemNew = {
+					id : "onThesaurusList",
+					text : generatText("Thesaurus"),
+					items : []
+				};
+
+				for (let i = 0; i < arrayWords.length; i++)
+				{
+					itemNew.items.push({
+							id : 'onThesaurus',
+							text : arrayWords[i]
+						}
+					);
+				}
+
+				items.items[0].items.unshift(itemNew);
+				window.Asc.plugin.executeMethod('UpdateContextMenuItem', [items]);
+
+				console.log(text);
+				break;
 		}
 	};
 
-	window.Asc.plugin.button = function(id) {
-		console.log(id);
-		if (id === -1) {
-			window.Asc.plugin.executeMethod('CloseWindow', [modalId])
-			// this.executeCommand('close', '');
+	window.Asc.plugin.button = function(id, windowId) {
+
+		if (modalId === windowId) {
+
+			switch (id)
+			{
+			case -1:
+			default:
+				window.Asc.plugin.init();
+				window.Asc.plugin.executeMethod('CloseWindow', [modalId]);
+			}
+
 		}
+
 	};
 
 	window.Asc.plugin.onTranslate = function() {
