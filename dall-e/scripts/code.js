@@ -26,13 +26,13 @@
     let modalTimeout = null;
     let maxChars = 1000;
     let startQuery;
-    let editImage;
+    const editImage = {};
     let currentAction = "create";
     const isIE = checkInternetExplorer();
 
-    const arrAllowedSize = [{id: 'idx256', text: '256x256', width: 256, height: 256},
-                            {id: 'idx512', text: '512x512', width: 512, height: 256},
-                            {id: 'idx1024', text: '1024x1024', width: 1024, height: 256}];
+    const arrAllowedSize = [{id: '256x256', text: '256x256', width: 256, height: 256},
+                            {id: '512x512', text: '512x512', width: 512, height: 512},
+                            {id: '1024x1024', text: '1024x1024', width: 1024, height: 1024}];
 
     const arrActions = [{id: 'create', text: 'Generate image from text'},
                         {id: 'edit', text: 'Change image'},
@@ -42,7 +42,7 @@
         if (isIE) {
             document.getElementById('div_ie_error').classList.remove('hidden');
             return;
-        } 
+        }
 
         apiKey = localStorage.getItem('OpenAiApiKey') || null;
 
@@ -135,115 +135,15 @@
             elements.arrow.classList.toggle('arrow_up');
         };
 
-        const _insert_image = info => {
-            const _size_val = $('#idx_imgsize').val();
-            const _model = arrAllowedSize.find(m => m.id == _size_val);
-
-            let sImageSrc = /^data\:image\/png\;base64/.test(info.base64img) ? info.base64img : `data:image/png;base64,${info.base64img}`;
-            let oImageData = {
-                "src": sImageSrc,
-                "width": _model.width,
-                "height": _model.width
-            };
-            window.Asc.plugin.executeMethod ("PutImageDataToSelection", [oImageData]);
-        }
-
-        const _parse_img = info => {
-            if ( info.data && typeof info.data == 'object' ) {
-                let cnt = document.getElementById("idx-preview");
-                cnt.addEventListener('dblclick', e => {
-                    if ( !!e.target.dataset && !!info.data[e.target.dataset.index] ) {
-                        _insert_image({base64img: info.data[e.target.dataset.index].b64_json});
-                    }
-                });
-
-                let box = document.getElementById("idx-boxpreview");
-                box.innerHTML = "";
-                for (let i in info.data) {
-                    const img = document.createElement('img');
-                    img.src = `data:image/png;base64, ${info.data[i].b64_json}`;
-                    img.classList.add('gen-img-preview');
-                    img.setAttribute('data-index', i);
-                    box.appendChild(img);
-                }
-            }
-        }
-
-        function getRequestImageSize() {
-            const _size_val = $('#idx_imgsize').val();
-            return arrAllowedSize.find(m => m.id == _size_val);
-        }
-
-        function imageToBlob(srcimage) {
-            const s = getRequestImageSize();
-            let canvas = document.createElement('canvas');
-            canvas.width = s.width;
-            canvas.height = s.height;
-
-            return new Promise(resolve => {
-                var image = new Image();
-                image.onload = () => {
-                    const draw_size = s.width > image.width ? {width: image.width, height: image.height} : s;
-
-                    canvas.getContext('2d').drawImage(image, 0, 0, draw_size.width, draw_size.height*image.height/image.width);
-                    canvas.toBlob(resolve, 'image/png');
-                };
-                image.src = srcimage.src;
-            });
-        }
-
-        function makeRequest(action, config) {
-            let url_, headers_ = {
-                'Authorization': 'Bearer ' + apiKey,
-            };
-
-            switch (action) {
-            case 'create':
-                url_ = 'https://api.openai.com/v1/images/generations';
-                headers_['Content-Type'] = 'application/json';
-                break;
-            case 'edit': url_ = 'https://api.openai.com/v1/images/edits'; break;
-            case 'vars': url_ = 'https://api.openai.com/v1/images/variations'; break;
-            default: return;
-            }
-
-            fetch(url_, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + apiKey,
-                },
-                body: config,
-            }).then(function(response) {
-                return response.json()
-            }).then(function(obj) {
-                if ( obj.data && typeof obj.data == 'object' &&
-                        /*settings.response_format == 'b64_json' &&*/ obj.data["0"].b64_json )
-                {
-                    _parse_img(obj);
-                }
-            }).catch(function(error) {
-                elements.mainError.classList.remove('hidden');
-                elements.mainErrorLb.innerHTML = error.message;
-                if (errTimeout) {
-                    clearTimeout(errTimeout);
-                    errTimeout = null;
-                }
-                errTimeout = setTimeout(clearMainError, 10000);
-            }).finally(function(){
-                destroyLoader();
-            });
-        }
-
         async function requestVariations() {
-            if ( !editImage )
+            if ( !editImage.src )
                 return;
 
-            const s = getRequestImageSize();
+            const s = utils.getSettingsImageSize();
 
-            const blob = await imageToBlob(editImage);
+            const res = await utils.imageToBlob(editImage.src);
             const formdata = new FormData();
-            formdata.append('image', blob);
+            formdata.append('image', res.blob);
             formdata.append('size', `${s.width}x${s.height}`);
             formdata.append('n', Number.parseInt(elements.inpTopSl.value));
             formdata.append('response_format', "b64_json");
@@ -255,7 +155,7 @@
             if ( !elements.textArea.value.length )
                 return;
 
-            const size = getRequestImageSize();
+            const size = utils.getSettingsImageSize();
             const settings = {
                 prompt: elements.textArea.value,
                 size: `${size.width}x${size.height}`,
@@ -267,18 +167,17 @@
         }
 
         async function requestImageMerge() {
-            if ( !editImage )
+            if ( !editImage.src )
                 return;
 
-            const s = getRequestImageSize();
+            const s = utils.getSettingsImageSize();
 
-            const srcblob = await imageToBlob(editImage);
-            const maskblob = await imageToBlob(document.getElementById('idx-img-mask'));
-            // console.log('maskblob', maskblob);
-            // return;
+            const ressrc = await utils.imageToBlob(editImage.src);
+            const resmask = await utils.imageToBlob(document.getElementById('idx-img-mask'));
+
             const formdata = new FormData();
-            formdata.append('image', srcblob);
-            formdata.append('mask', maskblob);
+            formdata.append('image', ressrc.blob);
+            formdata.append('mask', resmask.blob);
             formdata.append('size', `${s.width}x${s.height}`);
             formdata.append('n', Number.parseInt(elements.inpTopSl.value));
             formdata.append('response_format', "b64_json");
@@ -318,7 +217,7 @@
                 window.Asc.plugin.executeMethod("GetSelectedText", [{Numbering:false, Math: false, TableCellSeparator: '\n', ParaSeparator: '\n'}], function(data) {
                     // if (data == '')
                         // startQuery = startQuery.replace(/\r/g, ' ').replace(/\t/g, '\n');
-                    // else 
+                    // else
                         _setStartQueryText(startQuery = data.replace(/\r/g, ' '));
                 });
                 break;
@@ -392,13 +291,8 @@
         document.body.classList.add(`plugin-action__${currentAction}`);
 
         if ( currentAction == "vars" || currentAction == "edit" ) {
-            if ( !editImage ) {
-                window.Asc.plugin.executeMethod("GetImageDataFromSelection", [], function(oResult) {
-                    if ( oResult ) {
-                        editImage = oResult;
-                        setSourceImage('idx-img-src', oResult.src);
-                    }
-                });
+            if ( !editImage.src ) {
+                updateSourceImage();
             }
         }
     };
@@ -503,6 +397,31 @@
         }
     };
 
+    function updateSourceImage() {
+        window.Asc.plugin.executeMethod("GetImageDataFromSelection", [], function(oResult) {
+            if ( oResult ) {
+                const img = document.getElementById('idx-img-src');
+                if ( img ) {
+                    if ( !editImage.src ) {
+                        const image = new Image();
+                        image.onload = () => {
+                            editImage.size = {width: image.width, height: image.height};
+                            $('#idx_imgsize').val(utils.normalizeImageSize(editImage.size).str).trigger('change');
+                        };
+                        image.src = oResult.src;
+                    }
+
+                    editImage.src = oResult.src;
+
+                    img.src = oResult.src;
+                    const label = img.previousElementSibling;
+                    if ( !label.classList.contains('src-full') )
+                        label.classList.add('src-full');
+                }
+            }
+        });
+    }
+
     function setSourceImage(id, imgdata) {
         const img = document.getElementById(id);
         if ( img ) {
@@ -511,8 +430,138 @@
             if ( !label.classList.contains('src-full') )
                 label.classList.add('src-full');
         }
-
     }
+
+    const insert_image_to_doc = info => {
+        let sImageSrc = /^data\:image\/png\;base64/.test(info.base64img) ? info.base64img : `data:image/png;base64,${info.base64img}`;
+        let oImageData = {
+            "src": sImageSrc,
+            "width": info.size.width,
+            "height": info.size.height
+        };
+
+        window.Asc.plugin.executeMethod ("PutImageDataToSelection", [oImageData]);
+    }
+
+    function makeRequest(action, config, callback) {
+        let url_, headers_ = {
+            'Authorization': 'Bearer ' + apiKey,
+        };
+
+        switch (action) {
+        case 'create':
+            url_ = 'https://api.openai.com/v1/images/generations';
+            headers_['Content-Type'] = 'application/json';
+            break;
+        case 'edit':
+            url_ = 'https://api.openai.com/v1/images/edits';
+            break;
+        case 'vars':
+            url_ = 'https://api.openai.com/v1/images/variations';
+            break;
+        default: return;
+        }
+
+        fetch(url_, {
+            method: 'POST',
+            headers: headers_,
+            body: config,
+        }).then(function(response) {
+            return response.json()
+        }).then(function(obj) {
+            console.log('answer data', obj.data);
+            if ( obj.data && typeof obj.data == 'object' &&
+                    /*settings.response_format == 'b64_json' &&*/ obj.data["0"].b64_json )
+            {
+                if ( callback ) callback(obj);
+                else parse_reply_images(obj);
+            }
+        }).catch(function(error) {
+            if ( callback )
+                callback('error');
+            else {
+                elements.mainError.classList.remove('hidden');
+                elements.mainErrorLb.innerHTML = error.message;
+                if (errTimeout) {
+                    clearTimeout(errTimeout);
+                    errTimeout = null;
+                }
+                errTimeout = setTimeout(clearMainError, 10000);
+            }
+        }).finally(function(){
+            destroyLoader();
+        });
+    }
+
+    const parse_reply_images = info => {
+        if ( info.data && typeof info.data == 'object' ) {
+            let cnt = document.getElementById("idx-preview");
+            cnt.addEventListener('dblclick', e => {
+                if ( !!e.target.dataset && !!info.data[e.target.dataset.index] ) {
+                    insert_image_to_doc({
+                        base64img: info.data[e.target.dataset.index].b64_json,
+                        size: editImage.size
+                    });
+                }
+            });
+
+            let box = document.getElementById("idx-boxpreview");
+            box.innerHTML = "";
+            for (let i in info.data) {
+                const img = document.createElement('img');
+                img.src = `data:image/png;base64, ${utils.imageDataFromRequest(info.data[i])}`;
+                img.classList.add('gen-img-preview');
+                img.setAttribute('data-index', i);
+                box.appendChild(img);
+            }
+        }
+    }
+
+
+
+    const utils = new (function() {
+        return {
+            imageDataFromRequest: function(data) {
+                return data.b64_json ? data.b64_json : data
+            },
+
+            getSettingsImageSize: function() {
+                const _size_val = $('#idx_imgsize').val();
+                return arrAllowedSize.find(m => m.id == _size_val);
+            },
+
+            normalizeImageSize: function(size) {
+                let width = 0, height = 0;
+                if ( size.width > 750 || size.height > 750 )
+                    width = height = 1024;
+                else if ( size.width > 375 || size.height > 350 )
+                    width = height = 512;
+                else width = height = 256;
+
+                return {width: width, height: height, str: `${width}x${height}`}
+            },
+
+            imageToBlob: function(srcimage, size) {
+                return new Promise(resolve => {
+                    const image = new Image();
+                    image.onload = () => {
+                        const img_size = {width: image.width, height: image.height};
+                        const canvas_size = size ? size : utils.normalizeImageSize(img_size);
+                        const draw_size = canvas_size.width > image.width ? img_size : canvas_size;
+
+                        let canvas = document.createElement('canvas');
+                        canvas.width = canvas_size.width;
+                        canvas.height = canvas_size.height;
+
+                        canvas.getContext('2d').drawImage(image, 0, 0, draw_size.width, draw_size.height*image.height/image.width);
+                        canvas.toBlob(blob => resolve({blob: blob, size: img_size}), 'image/png');
+                    };
+                    image.src = srcimage;
+                });
+            }
+        }
+
+    });
 
     window.Asc.plugin.onTranslate = function() {
         let elements = document.querySelectorAll('.i18n');
@@ -563,43 +612,67 @@
 
     window.Asc.plugin.event_onClick = function(isSelection) {
         if ( /*!editImage &&*/ isSelection && (currentAction == "edit" || currentAction == "vars") )
-            window.Asc.plugin.executeMethod("GetImageDataFromSelection", [], function(oResult) {
-                if ( oResult ) {
-                    editImage = oResult;
-                    setSourceImage('idx-img-src', oResult.src);
-                    // document.getElementById('idx-img-src').src = oResult.src;
-                }
-            });
+            updateSourceImage();
     }
 
     window.Asc.plugin.event_onContextMenuShow = function(options) {
-        // if (options.isSelection)
-        console.log('on context menu', options);
+        let items_ = [];
+        if ( options.type == 'Image' ) {
+            items_.push({
+                id: 'genone',
+                text: "Generate another one",
+            }, {
+                id: 'gensome',
+                text: 'Generate variations',
+            });
+        }
 
-        this.executeMethod("AddContextMenuItem", [{
-            guid : this.guid,
-            items : [
-                {
-                    id : "onClickItem1",
-                    text : "DALL-E",
-                    items : [
-                        {
-                            id : "onClickItem1Sub1",
-                            text : { en : "Subitem1", ru : "Подменю1" },
-                            disabled : true
-                        },
-                        {
-                            id : "onClickItem1Sub2",
-                            text : { en : "Subitem2", ru : "Подменю2" }
-                        }
-                    ]
-                },
-                {
-                    id : "onClickItem2",
-                    text : { en : "Item2", ru : "Меню2" }
-                }
-            ]
-        }]);
+        if ( items_.length )
+            this.executeMethod("AddContextMenuItem", [{
+                guid : this.guid,
+                items : [
+                    {
+                        id: "onClickItem1",
+                        text: "DALL-E",
+                        items: items_
+                    }
+                ]
+            }]);
     };
+
+    window.Asc.plugin.attachContextMenuClickEvent("genone", function(){
+        console.log('generate image now');
+
+        window.Asc.plugin.executeMethod("GetImageDataFromSelection", [], function(oResult) {
+            if ( oResult ) {
+                utils.imageToBlob(oResult.src).then(
+                    result => {
+                        const request_image_size = utils.normalizeImageSize(result.size);
+                        const formdata = new FormData();
+                        formdata.append('image', result.blob);
+                        formdata.append('size', request_image_size.str);
+                        formdata.append('n', 1);
+                        formdata.append('response_format', "b64_json");
+
+                        makeRequest('vars', formdata, a => {
+                            if ( result != 'error' ) {
+                                insert_image_to_doc({
+                                    base64img: utils.imageDataFromRequest(a.data[0]),
+                                    size: result.size
+                                });
+                            }
+                        });
+                    }
+                );
+            }
+        });
+
+        // window.Asc.plugin.executeMethod("InputText", ["clicked: onClickItem1Sub1"]);
+    }.bind(this));
+
+    window.Asc.plugin.attachContextMenuClickEvent("gensome", function(){
+        console.log('generate image variations');
+        // window.Asc.plugin.executeMethod("InputText", ["clicked: onClickItem1Sub1"]);
+    });
 
 })(window, undefined);
