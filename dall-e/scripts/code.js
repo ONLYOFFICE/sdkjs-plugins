@@ -197,6 +197,29 @@
         }
     };
 
+    function getDocumentSeletedText () {
+        return new Promise(resolve => {
+            switch (window.Asc.plugin.info.editorType) {
+                case 'word':
+                case 'slide': {
+                    window.Asc.plugin.executeMethod("GetSelectedText", [{Numbering:false, Math: false, TableCellSeparator: '\n', ParaSeparator: '\n'}], function(data) {
+                        resolve(data.replace(/\r/g, ' '));
+                    });
+                    break;
+                }
+                case 'cell':
+                    window.Asc.plugin.executeMethod("GetSelectedText", [{Numbering:false, Math: false, TableCellSeparator: '\n', ParaSeparator: '\n'}], function(data) {
+                        // if (data == '')
+                            // startQuery = startQuery.replace(/\r/g, ' ').replace(/\t/g, '\n');
+                        // else
+                            resolve(startQuery = data.replace(/\r/g, ' '));
+                    });
+                    break;
+                default: resolve(undefined);
+            }
+        });
+    }
+
     function queryDocumentSelectedText () {
         const _setStartQueryText = function(text) {
             document.getElementById('textarea').value = text;
@@ -625,6 +648,15 @@
                 id: 'gensome',
                 text: 'Generate variations',
             });
+        } else
+        if ( options.type == 'Selection' ) {
+            items_.push({
+                id: 'createone',
+                text: "Generate from text",
+            }, {
+                id: 'createsome',
+                text: 'Generate variations',
+            });
         }
 
         if ( items_.length )
@@ -673,6 +705,30 @@
     window.Asc.plugin.attachContextMenuClickEvent("gensome", function(){
         console.log('generate image variations');
         // window.Asc.plugin.executeMethod("InputText", ["clicked: onClickItem1Sub1"]);
+    });
+
+    window.Asc.plugin.attachContextMenuClickEvent("createone", async function(){
+        console.log('generate image variations');
+
+        const text = await getDocumentSeletedText();
+        if ( text !== undefined && text.length < 1000 ) {
+            const size = {width: 512, height: 512};
+            const settings = {
+                prompt: text,
+                size: `${size.width}x${size.height}`,
+                n: 1,
+                response_format: "b64_json",
+            };
+
+            makeRequest('create', JSON.stringify(settings), a => {
+                if ( a != 'error' ) {
+                    insert_image_to_doc({
+                        base64img: utils.imageDataFromRequest(a.data[0]),
+                        size: size
+                    });
+                }
+            });
+        }
     });
 
 })(window, undefined);
