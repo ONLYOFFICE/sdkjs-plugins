@@ -23,6 +23,7 @@
 	let loadingPhrase = 'Loading...';
 	let thesaurusCounter = 0;
 	let settingsWindow = null;
+	let imgsize = null;
 
 	window.Asc.plugin.init = function() {
 		ApiKey = localStorage.getItem('OpenAIApiKey') || '';
@@ -111,7 +112,14 @@
 					break;
 				}
 				case 'Image':
-					// TODO
+					{
+						settings.items[0].items.push({
+							id : 'onImgVar',
+							text : generatText('Generate image varion')
+						});
+	
+						break;
+					}
 					break;
 
 				default:
@@ -138,7 +146,7 @@
 		if (options.type === "Target")
 		{
 			window.Asc.plugin.executeMethod('GetCurrentWord', null, function(text) {
-				if (text) {
+				if (text && text.length > 1) {
 					thesaurusCounter++;
 					let tokens = window.Asc.OpenAIEncode(text);
 					createSettings(text, tokens, 10, true);
@@ -156,7 +164,6 @@
 	};
 
 	window.Asc.plugin.attachContextMenuClickEvent('onSettings', function() {
-		let plVar = window.Asc.plugin.variations[1];
 		let location  = window.location;
 		let start = location.pathname.lastIndexOf('/') + 1;
 		let file = location.pathname.substring(start);
@@ -255,6 +262,13 @@
 		window.Asc.plugin.executeMethod('ReplaceCurrentWord', [data]);
 	});
 
+	window.Asc.plugin.attachContextMenuClickEvent('onImgVar', function() {
+		window.Asc.plugin.executeMethod('GetImageDataFromSelection', null, function(data) {
+			// todo разобраться с размера картинки
+			createSettings(data, 0, 11);
+		});
+	});
+
 	function createSettings(text, tokens, type, isNoBlockedAction) {
 		let url;
 		let settings = {
@@ -310,7 +324,9 @@
 				delete settings.max_tokens;
 				settings.prompt = `Generate image: '${text}'`;
 				settings.n = 1;
-				settings.size = '1024x1024';
+				settings.size = '256x256';
+				settings.response_format = 'b64_json';
+				imgsize = {width: 256, height: 256};
 				url = 'https://api.openai.com/v1/images/generations';
 				break;
 			
@@ -323,18 +339,35 @@
 				settings.prompt = `Give synonyms for the word '${text}' as javascript array`;
 				url = 'https://api.openai.com/v1/completions';
 				break;
+			case 11:
+				imageToBlob(text)
+				.then(function(obj) {
+					url = 'https://api.openai.com/v1/images/variations';
+					console.log(obj);
+					const formdata = new FormData();
+					formdata.append('image', obj.blob);
+					formdata.append('size', obj.size.str);
+					formdata.append('n', 1);// Number.parseInt(elements.inpTopSl.value));
+					formdata.append('response_format', "b64_json");
+					fetchData(formdata, url, type, isNoBlockedAction);
+				});
+				break;
 		}
-		fetchData(settings, url, type, isNoBlockedAction);
+		if (type !== 11)
+			fetchData(settings, url, type, isNoBlockedAction);
 	};
 
 	function fetchData(settings, url, type, isNoBlockedAction) {
+		let header = {
+			'Authorization': 'Bearer ' + ApiKey
+		};
+		if (type < 11) {
+			header['Content-Type'] = 'application/json';
+		}
 		fetch(url, {
 				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'Authorization': 'Bearer ' + ApiKey,
-				},
-				body: JSON.stringify(settings),
+				headers: header,
+				body: (type < 11 ? JSON.stringify(settings) : settings),
 			})
 			.then(function(response) {
 				return response.json()
@@ -352,8 +385,8 @@
 	};
 
 	function processResult(data, type, isNoBlockedAction) {
-		let text, start, end;
-		window.Asc.plugin.executeMethod('EndAction', [isNoBlockedAction ? 'Information' : 'Block', 'ChatGPT: ' + loadingPhrase]);
+		let text, start, end, img;
+		Asc.scope = {};
 		switch (type) {
 			case 1:
 				Asc.scope.data = data.choices[0].text.split('\n\n');
@@ -399,7 +432,6 @@
 				break;
 
 			case 4:
-				Asc.scope.link = null;
 				text = data.choices[0].text;
 				start = text.indexOf('htt');
 				end = text.indexOf(' ', start);
@@ -417,7 +449,6 @@
 				break;
 
 			case 5:
-				Asc.scope.link = null;
 				text = data.choices[0].text;
 				start = text.indexOf('<img');
 				end = text.indexOf('/>', start);
@@ -447,14 +478,13 @@
 				break;
 
 			case 8:
-				Asc.scope.url = null;
-				let url = (data.data && data.data[0]) ? data.data[0].url : null;
+				let url = (data.data && data.data[0]) ? data.data[0].b64_json : null;
 				if (url) {
-					Asc.scope.url = url;
+					Asc.scope.url = /^data\:image\/png\;base64/.test(url) ? url : `data:image/png;base64,${url}`;
 					window.Asc.plugin.callCommand(function() {
 						let oDocument = Api.GetDocument();
 						let oParagraph = Api.CreateParagraph();
-						let oDrawing = Api.CreateImage(Asc.scope.url, 102 * 36000, 102 * 36000);
+						let oDrawing = Api.CreateImage(Asc.scope.url, 25.5 * 36000, 25.5 * 36000);
 						oParagraph.AddDrawing(oDrawing);
 						oDocument.Push(oParagraph);
 					}, false);
@@ -506,7 +536,21 @@
 				items.items[0].items.unshift(itemNew);
 				window.Asc.plugin.executeMethod('UpdateContextMenuItem', [items]);
 				break;
+			case 11:
+				img = (data.data && data.data[0]) ? data.data[0].b64_json : null;
+				if (img) {
+					let sImageSrc = /^data\:image\/png\;base64/.test(img) ? img : `data:image/png;base64,${img}`;
+					let oImageData = {
+						"src": sImageSrc,
+						"width": imgsize.width,
+						"height": imgsize.height
+					};
+					imgsize = null;
+					window.Asc.plugin.executeMethod ("PutImageDataToSelection", [oImageData]);
+				}
+				break;
 		}
+		window.Asc.plugin.executeMethod('EndAction', [isNoBlockedAction ? 'Information' : 'Block', 'ChatGPT: ' + loadingPhrase]);
 	};
 
 	window.Asc.plugin.button = function(id, windowId) {
@@ -531,6 +575,35 @@
 
 	window.Asc.plugin.onTranslate = function() {
 		loadingPhrase = window.Asc.plugin.tr(loadingPhrase);
+	};
+
+	function imageToBlob(img) {
+		return new Promise(function(resolve) {
+			const image = new Image();
+			image.onload = function() {
+				const img_size = {width: image.width, height: image.height};
+				const canvas_size = normalizeImageSize(img_size);
+				const draw_size = canvas_size.width > image.width ? img_size : canvas_size;
+				let canvas = document.createElement('canvas');
+				canvas.width = canvas_size.width;
+				canvas.height = canvas_size.height;
+				canvas.getContext('2d').drawImage(image, 0, 0, draw_size.width, draw_size.height*image.height/image.width);
+				imgsize = img_size;
+				canvas.toBlob(function(blob) {resolve({blob, size: canvas_size})}, 'image/png');
+			};
+			image.src = img.src;
+		});
+	};
+
+	function normalizeImageSize (size) {
+		let width = 0, height = 0;
+		if ( size.width > 750 || size.height > 750 )
+			width = height = 1024;
+		else if ( size.width > 375 || size.height > 350 )
+			width = height = 512;
+		else width = height = 256;
+
+		return {width: width, height: height, str: `${width}x${height}`}
 	};
 
 })(window, undefined);
