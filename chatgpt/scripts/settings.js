@@ -21,14 +21,7 @@
 	let loadMessage = 'Loading...';
 	let isInited = false;
 
-	/* todo: we have some promlems: 
-		1) window.Asc.plugin.init not work
-		2) we don't have access to translate manages
-		3) we don't receave "theme change" event
-		4) "window.Asc.plugin.button" doesn't work there and it work only inside plugin, whick chreated this window (and id don't have any prefix or postfix)
-	*/ 
 	window.addEventListener("DOMContentLoaded", init);
-
 	window.Asc.plugin.init = init;
 
 	function init() {
@@ -102,5 +95,12 @@
 			element.innerText = window.Asc.plugin.tr(element.innerText);
 		})
 	};
+
+	/* EXAMPLE:
+	window.Asc.plugin.attachEvent("onPluginMessage", function(data) {
+		console.log(data);
+	});
+	window.Asc.plugin.sendToPlugin("onWindowMessage", {});
+	*/
 
 })(window, undefined);

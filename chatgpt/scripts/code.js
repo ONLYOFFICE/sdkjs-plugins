@@ -21,7 +21,8 @@
 	const model = 'text-davinci-003';
 	const maxLen = 4000;
 	let loadingPhrase = 'Loading...';
-	const modalId = 'ChatGPT_Settings';
+	let thesaurusCounter = 0;
+	let settingsWindow = null;
 
 	window.Asc.plugin.init = function() {
 		ApiKey = localStorage.getItem('OpenAIApiKey') || '';
@@ -137,8 +138,11 @@
 		if (options.type === "Target")
 		{
 			window.Asc.plugin.executeMethod('GetCurrentWord', null, function(text) {
-				let tokens = window.Asc.OpenAIEncode(text);
-				createSettings(text, tokens, 10, true);
+				if (text) {
+					thesaurusCounter++;
+					let tokens = window.Asc.OpenAIEncode(text);
+					createSettings(text, tokens, 10, true);
+				}
 			});
 		}
 	});
@@ -170,7 +174,15 @@
             size : [ 592, 100 ]
 		};
 		
-		window.Asc.plugin.executeMethod('ShowWindow', [modalId, variation]);
+		settingsWindow = new window.Asc.PluginWindow();
+		settingsWindow.show(variation);
+
+		/* EXAMPLE:
+		settingsWindow.attachEvent("onWindowMessage", function(data){
+			console.log(data);
+		});
+		settingsWindow.command("onPluginMessage", {});
+		*/
 	});
 
 	window.Asc.plugin.attachContextMenuClickEvent('onMeaningT', function() {
@@ -239,8 +251,8 @@
 		});
 	});
 
-	window.Asc.plugin.attachContextMenuClickEvent('onThesaurus', function(value) {
-		console.log(value);
+	window.Asc.plugin.attachContextMenuClickEvent('onThesaurus', function(data) {
+		window.Asc.plugin.executeMethod('ReplaceCurrentWord', [data]);
 	});
 
 	function createSettings(text, tokens, type, isNoBlockedAction) {
@@ -459,6 +471,10 @@
 				break;
 
 			case 10:
+				thesaurusCounter--;
+				if (0 < thesaurusCounter)
+					return;
+
 				text = data.choices[0].text;
 				let startPos = text.indexOf("[");
 				let endPos = text.indexOf("]");
@@ -481,6 +497,7 @@
 				{
 					itemNew.items.push({
 							id : 'onThesaurus',
+							data : arrayWords[i],
 							text : arrayWords[i]
 						}
 					);
@@ -488,22 +505,24 @@
 
 				items.items[0].items.unshift(itemNew);
 				window.Asc.plugin.executeMethod('UpdateContextMenuItem', [items]);
-
-				console.log(text);
 				break;
 		}
 	};
 
 	window.Asc.plugin.button = function(id, windowId) {
 
-		if (modalId === windowId) {
+		if (!settingsWindow)
+			return;
+
+		if (windowId === settingsWindow.id) {
 
 			switch (id)
 			{
 			case -1:
 			default:
 				window.Asc.plugin.init();
-				window.Asc.plugin.executeMethod('CloseWindow', [modalId]);
+				settingsWindow.close();
+				settingsWindow = null;
 			}
 
 		}
