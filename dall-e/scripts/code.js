@@ -91,6 +91,8 @@
         elements.btnClear.onclick = function() {
             elements.textArea.value = '';
             elements.textArea.focus();
+
+            $("#idx-preview").empty();
         };
 
         elements.textArea.oninput = function(event) {
@@ -673,8 +675,6 @@
     };
 
     window.Asc.plugin.attachContextMenuClickEvent("genone", function(){
-        console.log('generate image now');
-
         window.Asc.plugin.executeMethod("GetImageDataFromSelection", [], function(oResult) {
             if ( oResult ) {
                 utils.imageToBlob(oResult.src).then(
@@ -687,7 +687,7 @@
                         formdata.append('response_format', "b64_json");
 
                         makeRequest('vars', formdata, a => {
-                            if ( result != 'error' ) {
+                            if ( a != 'error' ) {
                                 insert_image_to_doc({
                                     base64img: utils.imageDataFromRequest(a.data[0]),
                                     size: result.size
@@ -703,13 +703,50 @@
     }.bind(this));
 
     window.Asc.plugin.attachContextMenuClickEvent("gensome", function(){
-        console.log('generate image variations');
-        // window.Asc.plugin.executeMethod("InputText", ["clicked: onClickItem1Sub1"]);
+        window.Asc.plugin.executeMethod("GetImageDataFromSelection", [], function(oResult) {
+            if ( oResult ) {
+                createLoader();
+
+                $('#idx-cmb-action').val('vars').trigger('change');
+
+                const img_count = 5;
+                const size = '512x512';
+                $('#inp_top_sl').val(img_count).trigger('input');
+
+                const image = new Image();
+                image.onload = () => {
+                    editImage.src = oResult.src;
+                    editImage.size = {width: image.width, height: image.height};
+                    $('#idx_imgsize').val(utils.normalizeImageSize(editImage.size).str).trigger('change');
+
+                    const img = document.getElementById('idx-img-src');
+                    img.src = oResult.src;
+                    const label = img.previousElementSibling;
+                    if ( !label.classList.contains('src-full') )
+                        label.classList.add('src-full');
+
+                    utils.imageToBlob(oResult.src).then(
+                        result => {
+                            const request_image_size = utils.normalizeImageSize(result.size);
+                            const formdata = new FormData();
+                            formdata.append('image', result.blob);
+                            formdata.append('size', request_image_size.str);
+                            formdata.append('n', img_count);
+                            formdata.append('response_format', "b64_json");
+
+                            makeRequest('vars', formdata, a => {
+                                if ( a != 'error' ) {
+                                    parse_reply_images(a);
+                                }
+                            });
+                        });
+                };
+                image.src = oResult.src;
+            }
+        })
     });
 
     window.Asc.plugin.attachContextMenuClickEvent("createone", async function(){
-        console.log('generate image variations');
-
         const text = await getDocumentSeletedText();
         if ( text !== undefined && text.length < 1000 ) {
             const size = {width: 512, height: 512};
@@ -727,6 +764,36 @@
                         size: size
                     });
                 }
+            });
+        }
+    });
+
+    window.Asc.plugin.attachContextMenuClickEvent("createsome", async function(){
+        const text = await getDocumentSeletedText();
+        if ( text !== undefined && text.length < 1000 ) {
+            createLoader();
+
+            $('#idx-cmb-action').val('create').trigger('change');
+            $('#textarea').val(text);
+
+            const img_count = 5;
+            const size = '512x512';
+            $('#inp_top_sl').val(img_count).trigger('input');
+            $('#idx_imgsize').val(size).trigger('change');
+
+            const settings = {
+                prompt: text,
+                size: size,
+                n: img_count,
+                response_format: "b64_json",
+            };
+
+            makeRequest('create', JSON.stringify(settings), a => {
+                if ( a != 'error' ) {
+                    parse_reply_images(a);
+                }
+
+                destroyLoader();
             });
         }
     });
