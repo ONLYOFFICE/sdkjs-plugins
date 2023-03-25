@@ -112,6 +112,7 @@
 					break;
 				}
 				case 'Image':
+				case 'Shape':
 					{
 						settings.items[0].items.push({
 							id : 'onImgVar',
@@ -143,7 +144,7 @@
 
 		this.executeMethod('AddContextMenuItem', [getContextMenuItems(options)]);
 
-		if (options.type === "Target")
+		if (bHasKey && options.type === "Target")
 		{
 			window.Asc.plugin.executeMethod('GetCurrentWord', null, function(text) {
 				if (text && text.length > 1) {
@@ -224,7 +225,7 @@
 		});
 	});
 
-	window.Asc.plugin.attachContextMenuClickEvent('onMeaningLink', function() {
+	window.Asc.plugin.attachContextMenuClickEvent('onMeaningLinkS', function() {
 		window.Asc.plugin.executeMethod('GetSelectedText', null, function(text) {
 			let tokens = window.Asc.OpenAIEncode(text);
 			createSettings(text, tokens, 4);
@@ -385,6 +386,7 @@
 	};
 
 	function processResult(data, type, isNoBlockedAction) {
+		window.Asc.plugin.executeMethod('EndAction', [isNoBlockedAction ? 'Information' : 'Block', 'ChatGPT: ' + loadingPhrase]);
 		let text, start, end, img;
 		Asc.scope = {};
 		switch (type) {
@@ -549,8 +551,7 @@
 					window.Asc.plugin.executeMethod ("PutImageDataToSelection", [oImageData]);
 				}
 				break;
-		}
-		window.Asc.plugin.executeMethod('EndAction', [isNoBlockedAction ? 'Information' : 'Block', 'ChatGPT: ' + loadingPhrase]);
+		}		
 	};
 
 	window.Asc.plugin.button = function(id, windowId) {
