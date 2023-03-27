@@ -746,7 +746,7 @@
                 const formdata = new FormData();
                 formdata.append('image_file', file);
 
-                makeRequest('rembkg', formdata, a => {
+                makeRequest('remtext', formdata, a => {
                     if ( a != 'error' ) {
                         const fn_ = async (info) => {
                             const blob_ = info.data.blob;
