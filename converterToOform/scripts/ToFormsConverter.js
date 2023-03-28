@@ -54,9 +54,6 @@
             if (CheckStartAndEndTokens(strOpenToken, strCloseToken))
                 return;
 
-            if (strOpenToken === "" || strCloseToken === "")
-                return;
-
             Asc.scope.strOpenToken  = strOpenToken;
             Asc.scope.strCloseToken = strCloseToken;
 
