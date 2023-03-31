@@ -33,3 +33,51 @@ input {
 .err-message {
 	color: red;
 }
+
+.chat_window {
+	display: flex;
+	flex-direction: column;
+	margin: 5px;
+	flex: 1;
+}
+
+.messages {
+	flex: 1;
+	margin-bottom: 10px;
+	display: flex;
+	flex-direction: column;
+	overflow: auto;
+}
+
+.span_message {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 5px 10px;
+	width: fit-content;
+	height: fit-content;
+}
+
+.user_message {
+	display: flex;
+	justify-content: end;
+}
+
+.tokens_info {
+	margin: 5px 0;
+}
+
+.div_tokens_info {
+	text-align: end;
+}
+
+.div_title_chat {
+	position: absolute;
+    z-index: 1;
+    height: fit-content;
+    padding: 8px 5px;
+    right: 5px;
+	left: 5px;
+	top: 250px;
+	overflow-wrap: anywhere;
+}

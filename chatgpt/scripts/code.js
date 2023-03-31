@@ -23,18 +23,23 @@
 	let loadingPhrase = 'Loading...';
 	let thesaurusCounter = 0;
 	let settingsWindow = null;
+	let chatWindow = null;
 	let imgsize = null;
 
-	window.Asc.plugin.init = function() {
+	window.Asc.plugin.init = function() {};
+
+	function checkApiKey() {
 		ApiKey = localStorage.getItem('OpenAIApiKey') || '';
 		if (!ApiKey.length) {
 			console.error(new Error('Please enter Api key!'));
+			bHasKey = false;
 		} else {
 			bHasKey = true;
 		}
 	};
 
 	function getContextMenuItems(options) {
+		checkApiKey();
 		let settings = {
 			guid: window.Asc.plugin.guid,
 			items: [
@@ -121,17 +126,22 @@
 	
 						break;
 					}
-					break;
 
 				default:
 					break;
 			}
+
+			settings.items[0].items.push({
+				id : 'onChat',
+				text : generatText('Chat'),
+				separator: true
+			});
 		}
 		
 		settings.items[0].items.push({
-			id : 'onSettings',
-			text : generatText('Settings'),
-			separator: true
+				id : 'onSettings',
+				text : generatText('Settings'),
+				separator: true
 		});
 
 		return settings;
@@ -168,10 +178,9 @@
 		let location  = window.location;
 		let start = location.pathname.lastIndexOf('/') + 1;
 		let file = location.pathname.substring(start);
-		
+
 		// default settings for modal window (I created separate settings, because we have many unnecessary field in plugin variations)
 		let variation = {
-			// todo: how will we create a new window? it's important for url
 			url : location.href.replace(file, 'settings.html'),
 			description : window.Asc.plugin.tr('Settings'),
 			isVisual : true,
@@ -182,15 +191,36 @@
             size : [ 592, 100 ]
 		};
 		
-		settingsWindow = new window.Asc.PluginWindow();
+		if (!settingsWindow) {
+			settingsWindow = new window.Asc.PluginWindow();
+		}
 		settingsWindow.show(variation);
+	});
 
-		/* EXAMPLE:
-		settingsWindow.attachEvent("onWindowMessage", function(data){
-			console.log(data);
-		});
-		settingsWindow.command("onPluginMessage", {});
-		*/
+	window.Asc.plugin.attachContextMenuClickEvent('onChat', function() {
+		let location  = window.location;
+		let start = location.pathname.lastIndexOf('/') + 1;
+		let file = location.pathname.substring(start);
+		
+		// default settings for modal window (I created separate settings, because we have many unnecessary field in plugin variations)
+		let variation = {
+			url : location.href.replace(file, 'chat.html'),
+			description : window.Asc.plugin.tr('ChatGPT'),
+			isVisual : true,
+			buttons : [],
+			isModal : true,
+			EditorsSupport : ["word"],
+			buttons : [],
+			size : [ 400, 400 ]
+		};
+		
+		if (!chatWindow) {
+			chatWindow = new window.Asc.PluginWindow();
+			chatWindow.attachEvent("onWindowMessage", function(data){
+				console.log(data);
+			});
+		}
+		chatWindow.show(variation);
 	});
 
 	window.Asc.plugin.attachContextMenuClickEvent('onMeaningT', function() {
@@ -556,18 +586,20 @@
 
 	window.Asc.plugin.button = function(id, windowId) {
 
-		if (!settingsWindow)
+		if (!settingsWindow && !chatWindow)
 			return;
 
-		if (windowId === settingsWindow.id) {
+		if (windowId) {
 
 			switch (id)
 			{
 			case -1:
 			default:
-				window.Asc.plugin.init();
-				settingsWindow.close();
-				settingsWindow = null;
+				// if we use close, it is unregister this window and we won't be able to receive messages from this window
+				// window.Asc.plugin.init();
+				// settingsWindow.close();
+				// settingsWindow = null;
+				window.Asc.plugin.executeMethod('CloseWindow', [windowId]);
 			}
 
 		}

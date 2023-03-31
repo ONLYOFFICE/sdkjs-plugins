@@ -15,5 +15,13 @@
 	"Translate to French": "Traducir al Francés",
 	"Translate to German": "Traducir al Alemán",
 	"Generate image from text": "Generar imagen a partir de texto",
-	"Settings": "Ajustes"
+	"Settings": "Ajustes",
+	"Maximum 4000 tokens are available." : "Hay un máximo de 4000 fichas disponibles.",
+	"For work with this model we should save chat history and sent it into a request." : "Para trabajar con este modelo, debemos guardar el historial de chat y enviarlo a una solicitud.",
+	"But we have a limit on the number of tokens in the request." : "Pero tenemos un límite en el número de tokens en la solicitud.",
+	"That's why sometimes you should clear your chat history." : "Es por eso que a veces debes borrar tu historial de chat.",
+	"Clear history" : "Borrar historial",
+	"Tokens in the request about: " : "Tokens en la solicitud acerca de: ",
+	"Total tokens are used in last request: " : "Total de tokens utilizados en la última solicitud: ",
+	"Chat" : "Chat"
 }
