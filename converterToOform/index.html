@@ -1,0 +1,56 @@
+<!--
+ (c) Copyright Ascensio System SIA 2020
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Convert to OForms</title>
+    <script type="text/javascript"  src="https://onlyoffice.github.io/sdkjs-plugins/v1/plugins.js"></script>
+    <script type="text/javascript"  src="https://onlyoffice.github.io/sdkjs-plugins/v1/plugins-ui.js"></script>
+    <link   rel="stylesheet"        href="https://onlyoffice.github.io/sdkjs-plugins/v1/plugins.css">
+
+    <script type="text/javascript"  src="scripts/ToFormsConverter.js"></script>
+</head>
+
+<body>
+
+    <div>
+        <label class="header i18n">Convert regular document to oforms</label>
+        <div class="mrtop label">
+            <table style="margin-top: 16px;">
+                <tbody>
+                <tr>
+                    <td><label class="header">Start token</label></td>
+                    <td><label class="header">End token</label></td>
+                </tr>
+                <tr>
+                    <td> <input id="openToken" class="form-control" style="width: 100%" type="text" placeholder="Open Token" autocomplete="on"/></td>
+                    <td> <input id="closeToken" class="form-control" style="width: 100%" type="text" placeholder="Close Token" autocomplete="on"/></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <button id="btn_Convert" class="btn-text-default i18n" style="margin-top: 16px; width: 100%;">Convert</button>
+
+        <div id="KeyError" style="padding-top: 15px;">
+            <label id="lb_key_err_mes" style="overflow-wrap: anywhere; color: red"></label>
+        </div>
+
+    </div>
+</body>
+</html>

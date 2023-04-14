@@ -1,0 +1,22 @@
+{
+    "name"       : "Convert to OForms",
+    "guid"       : "asc.{42A80466-90D5-42D6-AC81-B00170E4B04C}",
+    "baseUrl"    : "",
+    "variations" : [
+        {
+            "description": "Convert regular documents to oforms",
+            "url"                 : "index.html",
+            "icons"               : ["resources/img/icon.png", "resources/img/icon@2x.png"],
+            "isViewer"            : false,
+            "EditorsSupport"      : ["word"],
+            "isVisual"            : true,
+            "isModal"             : false,
+            "isInsideMode"        : true,
+            "initDataType"        : "",
+            "initData"            : "",
+            "isUpdateOleOnResize" : false,
+            "initOnSelectionChanged": false,
+            "buttons": []
+        }
+    ]
+}
