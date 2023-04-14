@@ -48,7 +48,7 @@
                     $labelInnerText.innerText = "";
                 }
 
-               return false;
+                return false;
             }
 
             if (CheckStartAndEndTokens(strOpenToken, strCloseToken))
@@ -59,25 +59,39 @@
 
             context.callCommand(function()
             {
+                let strOpenToken            = Asc.scope.strOpenToken,
+                    strCloseToken           = Asc.scope.strCloseToken,
+                    oOpenCheck              = new CheckToken(strOpenToken),
+                    oCloseCheck             = new CheckToken(strCloseToken),
+                    oSaver                  = new RunsSaver(),
+                    oFuncForParagraphSave   = function (nStart, nEnd, context)
+                    {
+                        let range = context.Paragraph.GetRange(nStart, nEnd);
+                        oSaver.Put(range);
+                    },
+                    oFuncForRangeSave       = function (nStart, nEnd, context)
+                    {
+                        let range = context.iterator.GetRange(nStart, nEnd);
+                        oSaver.Put(range);
+                    };
+
                 function ParagraphIterator(oParagraph)
                 {
                     this.Paragraph              = oParagraph;
-                    this.strTextOfParagraph     = this.Paragraph.GetText();
                     this.nCountOfRun            = this.Paragraph.GetElementsCount() - 1;
 
                     this.nCounter               = 0;
                     this.nRunCounter            = 0;
+                    this.nCurrentLength         = 0;
 
-                    this.CurrentRun             = null;
-                    this.oCurrentStyle          = null;
+                    this.oCurrentRun             = null;
                     this.strCurrentRun          = "";
                     this.nCurrentRunLength      = 0;
 
                     this.InitNewRun = function ()
                     {
-                        this.CurrentRun         = this.Paragraph.GetElement(this.nCounter);
-                        this.strCurrentRun      = this.CurrentRun.GetRange().GetText();
-                        this.oCurrentStyle      = this.CurrentRun.GetTextPr();
+                        this.oCurrentRun         = this.Paragraph.GetElement(this.nCounter);
+                        this.strCurrentRun      = this.oCurrentRun.GetRange().GetText();
                         this.nCurrentRunLength  = this.strCurrentRun.length;
 
                         this.ResetRunProperties();
@@ -91,30 +105,23 @@
                     };
                     this.IsHasContentInRun = function ()
                     {
-                        return this.CurrentRun && this.nRunCounter < this.nCurrentRunLength;
+                        return this.oCurrentRun && this.nRunCounter < this.nCurrentRunLength;
                     };
                     this.IsHasContent = function ()
                     {
-                        return this.nCounter + 1 <= this.nCountOfRun;
+                        return this.nCounter <= this.nCountOfRun;
                     };
                     this.AddNCounter = function ()
                     {
                         this.nCounter++;
                     };
-                    this.GetNCounter = function ()
-                    {
-                        return this.nCounter - 1;
-                    }
                     this.AddNRunCounter = function ()
                     {
                         this.nRunCounter++;
                     };
                     this.GetLetterFromRun = function ()
                     {
-                        let oCurrentLetter = {
-                            str: this.strCurrentRun[this.nRunCounter],
-                            style: this.oCurrentStyle
-                        };
+                        let oCurrentLetter = this.strCurrentRun[this.nRunCounter];
 
                         this.AddNRunCounter();
                         return oCurrentLetter;
@@ -123,11 +130,13 @@
                     {
                         if (this.IsHasContentInRun())
                         {
+                            this.nCurrentLength++;
                             return this.GetLetterFromRun();
                         }
                         else
                         {
                             this.InitNewRun();
+                            this.nCurrentLength++;
                             return this.GetLetterFromRun();
                         }
                     };
@@ -138,296 +147,129 @@
 
                     this.InitNewRun();
                 }
-                function Word(nPos, oStyle)
+                function RangeIterator (oIterator)
                 {
-                    this.nPos = nPos;
-                    this.data = [];
-                    this.type = 0;
-                    this.style = oStyle;
+                    this.iterator = oIterator;
+                    this.str = oIterator.GetText();
+                    this.nLength = this.str.length;
+                    this.nCurrentLength = 0;
 
-                    this.Put = function (str)
+                    this.IsContinue = function ()
                     {
-                        this.data.push(str);
-                    };
-
-                    this.SetStyle = function (oStyle)
+                        return this.nCurrentLength < this.nLength;
+                    }
+                    this.Next = function ()
                     {
-                        if (this.style === undefined)
-                            this.style = oStyle;
-                    };
-
-                    this.DeleteStartAndEndTokens = function (strStart, strEnd)
-                    {
-                        for (let i = 0; i < strStart.length; i++)
-                        {
-                            this.data[i] = '';
-                        }
-
-                        let nLength = this.data.length - 1;
-                        for (let i = 0; i < strEnd.length; i++)
-                        {
-                            this.data[nLength - i] = '';
-                        }
-                    };
+                        this.nCurrentLength++;
+                        return this.str[this.nCurrentLength - 1];
+                    }
                 }
                 function RunsSaver()
                 {
-                    this.runs = [];
+                    this.arrFields = [];
 
-                    this.Put = function (oWord, nCount, isNewWord)
+                    this.Put = function (oRange)
                     {
-                        let strWord     = oWord.str;
-                        let oStyleWord  = oWord.style;
-
-                        if (this.runs.length === 0)
-                        {
-                            this.runs.push(new Word(nCount, oStyleWord));
-                            this.Put(oWord, nCount);
-                        }
-                        else
-                        {
-                            if (isNewWord)
-                            {
-                                this.runs.push(new RunsSaver());
-                                let oLast = this.GetLast();
-                                oLast.Put(oWord, nCount);
-                            }
-                            else if (this.runs.length > 0 && this.GetLast().type !== 1)
-                            {
-                                let oLast = this.GetLast();
-                                oLast.Put(strWord);
-                                oLast.SetStyle(oStyleWord);
-                            }
-                            else
-                            {
-                                this.runs.push(new Word(nCount, oStyleWord));
-                                this.Put(oWord, nCount);
-                            }
-                        }
+                        this.arrFields.push(oRange)
                     };
-                    this.GetLast = function ()
+                    this.Get = function ()
                     {
-                        let nRunArrLength   = this.runs.length;
-                        let oLastWord       = this.runs[nRunArrLength - 1];
-
-                        if (oLastWord instanceof RunsSaver && oLastWord.runs.length > 0)
-                            return oLastWord.GetLast();
-
-                        return oLastWord;
-                    };
-                    this.SetStyle = function (oStyle)
+                        return this.arrFields;
+                    }
+                    this.Reset = function ()
                     {
-                        let oLast = this.GetLast();
-                        oLast.SetStyle(oStyle)
-                    };
+                        this.arrFields = [];
+                    }
                 }
                 function CheckToken (strToken)
                 {
                     this.token = strToken;
                     this.nPos = 0;
+                    this.nStartPos = null;
+                    this.nEndPos = null;
+                    this.isParagraph = undefined;
 
+                    this.SetIsParagraph = function (isParagraph)
+                    {
+                        this.isParagraph = isParagraph;
+                        return this;
+                    }
                     this.Reset = function (isBoll)
                     {
                         this.nPos = 0;
+                        this.nStartPos = null;
+                        this.nEndPos = null;
                         return isBoll;
                     };
-                    this.Put = function (oSaver, oWord, oElement, oClose)
+                    this.Put = function (oWord, oElement, oClose)
                     {
-                        let strWord     = oWord.str;
-
-                        if (this.token[this.nPos] === strWord)
+                        if (this.token[this.nPos] === oWord)
                         {
-                            this.nPos++;
-                            oSaver.Put(oWord, oElement.GetNCounter(), oClose !== undefined);
+                            if (this.nStartPos === null && oClose)
+                                this.nStartPos = oElement.nCurrentLength - 1;
 
-                            // if token is length === 1 for example: { or /
+                            this.nPos++;
+
+                            // for tokens with length === 1
                             if (this.nPos === this.token.length)
                             {
-                                if (oClose)
-                                {
-                                   let isFind = this.find(oSaver, oElement, oClose);
-                                   if (isFind)
-                                    {
-                                        return this.Reset(true);
-                                    }
-                                }
-                                else
-                                    return this.Reset(true);
+                                if (!oClose)
+                                    return true;
+                                else if (this.Find(oElement, oClose))
+                                    return true;
                             }
 
+                            // for other length tokens
                             while (oElement.IsContinue())
                             {
                                 let oCurrentLetter = oElement.Next();
-                                oSaver.Put(oCurrentLetter, oElement.GetNCounter());
 
-                                if (this.token[this.nPos] === oCurrentLetter.str)
+                                if (this.token[this.nPos] === oCurrentLetter)
                                 {
                                     this.nPos++;
 
-                                    if (this.nPos === this.token.length)
+                                    if (this.nPos === this.token.length && oClose)
                                     {
-                                        if (oClose)
-                                        {
-                                            let isFind = this.find(oSaver, oElement, oClose);
-                                            if (isFind)
-                                                return  this.Reset(true);
-                                        }
-                                        else if (oClose === undefined)
-                                        {
-                                            return this.Reset(true);
-                                        }
+                                        if (this.Find(oElement, oClose))
+                                            return true;
+                                    }
+                                    else if (this.nPos === this.token.length)
+                                    {
+                                        return true;
                                     }
                                 }
                             }
                         }
                     };
-                    this.find = function (oSaver, oElement, oClose)
+                    this.Find = function (oElement, oClose)
                     {
                         while (oElement.IsContinue())
                         {
                             let oCurrentLetter = oElement.Next();
 
-                            if (oClose.Put(oSaver, oCurrentLetter, oElement))
+                            if (oClose.Put(oCurrentLetter, oElement))
                             {
-                                let oLast = oSaver.GetLast();
-                                oLast.type = 1;
+                                if (this.nEndPos === null)
+                                    this.nEndPos = oElement.nCurrentLength - 1;
+
+                                if (this.isParagraph)
+                                {
+                                    oFuncForParagraphSave(this.nStartPos, this.nEndPos, oElement);
+                                }
+                                else
+                                {
+                                    oFuncForRangeSave(this.nStartPos, this.nEndPos, oElement);
+                                }
                                 return true;
                             }
-
-                            oSaver.Put(oCurrentLetter, oElement.GetNCounter());
                         }
                         return false;
                     };
                 }
-                function ProceedContent (oContent, strOpen, strClose)
-                {
-                    if (undefined === oContent)
-                        oContent = Api.GetDocument();
-
-                    let oSelected = oContent.GetRangeBySelect();
-
-                    let arrDocContent = oSelected !== null
-                        ? oSelected.GetAllParagraphs()
-                        : oContent.GetAllParagraphs();
-
-                    for (let nCounter = 0; nCounter < arrDocContent.length; nCounter++)
-                    {
-                        let oCurrentElement = arrDocContent[nCounter];
-
-                        ProceedParagraph(
-                            oCurrentElement,
-                            strOpen,
-                            strClose
-                        );
-                    }
-                }
-                function ProceedParagraph(oCurrentParagraph, strOpen, strClose)
-                {
-                    let arrOpenStr      = oCurrentParagraph.Search(strOpen);
-                    let arrCloseStr     = oCurrentParagraph.Search(strClose);
-                    let isOpen          = arrOpenStr.length > 0;
-                    let isClose         = arrCloseStr.length > 0;
-                    let isConvert       = isClose && isOpen && arrCloseStr.length === arrOpenStr.length;
-
-                    if (!isConvert)
-                        return;
-
-                    let oElement    = new ParagraphIterator(oCurrentParagraph);
-                    let oSaver      = new RunsSaver();
-
-                    let oOpenCheck  = new CheckToken(strOpen);
-                    let oCloseCheck = new CheckToken(strClose);
-
-                    while(oElement.IsContinue())
-                    {
-                        let oCurrentLetter = oElement.Next();
-
-                        let op = oOpenCheck.Put(
-                            oSaver,
-                            oCurrentLetter,
-                            oElement,
-                            oCloseCheck
-                        );
-
-                        if (!op)
-                            oSaver.Put(oCurrentLetter, oElement.GetNCounter());
-                    }
-
-                    CreateNewContentForParagraph(
-                        oCurrentParagraph,
-                        oSaver.runs,
-                        strOpen,
-                        strClose
-                    );
-                }
-                function CreateNewContentForParagraph (oCurrentElement, arrContent, strOpen, strClose)
-                {
-                    oCurrentElement.RemoveAllElements();
-
-                    for (let i = 0; i < arrContent.length; i++)
-                    {
-                        let oWord = arrContent[i];
-
-                        if (oWord instanceof Word)
-                        {
-                            if (oWord.type === 1)
-                            {
-                                CreateFormField(oCurrentElement, oWord, strOpen, strClose);
-                            }
-                            else
-                            {
-                                CreateRun(oCurrentElement, oWord)
-                            }
-                        }
-                        else if (oWord instanceof RunsSaver)
-                        {
-                            let runs = oWord.runs;
-                            for (let i = 0; i < runs.length; i++)
-                            {
-                                let oRun = runs[i];
-
-                                if (oRun.type === 1)
-                                {
-                                    CreateFormField(oCurrentElement, oRun, strOpen, strClose);
-                                }
-                                else
-                                {
-                                    CreateRun(oCurrentElement, oRun);
-                                }
-                            }
-                        }
-                    }
-                }
-                function CreateFormField (oCurrentElement, oData, strStart, strEnd)
-                {
-                    let oStyle              = oData.style;
-                    let oTextForm           = Api.CreateTextForm();
-
-                    oData.DeleteStartAndEndTokens(strStart, strEnd);
-
-                    let strContent          = oData.data.join('');
-                    let strWithoutSpaces    = strContent.split(' ').join('');
-                    let strTranslated       = TransliterateStr(strWithoutSpaces);
-
-                    oTextForm.SetPlaceholderText(strContent);
-                    oTextForm.SetFormKey(strTranslated);
-                    oTextForm.OnChangeTextPr(oStyle);
-                    oCurrentElement.AddElement(oTextForm);
-                }
-                function CreateRun (oCurrentElement, oWord)
-                {
-                    let oCurrentStr = oWord.data.join('');
-                    let oStyle = oWord.style;
-
-                    let oRun = Api.CreateRun();
-                    oRun.AddText(oCurrentStr);
-                    oRun.SetTextPr(oStyle);
-
-                    oCurrentElement.AddElement(oRun);
-                }
                 function TransliterateStr(word)
                 {
                     let strOutput = "";
+
                     let oConvert = {
                         'а': 'a',    'б': 'b',    'в': 'v',    'г': 'g',    'д': 'd',
                         'е': 'e',    'ё': 'e',    'ж': 'zh',   'з': 'z',    'и': 'i',
@@ -448,7 +290,7 @@
 
                     for (let nCount = 0; nCount < word.length; ++nCount)
                     {
-                        if (oConvert[word[nCount]] == undefined)
+                        if (oConvert[word[nCount]] === undefined)
                             strOutput += word[nCount];
                         else
                             strOutput += oConvert[word[nCount]];
@@ -456,16 +298,129 @@
 
                     return strOutput;
                 }
+                function DelFromStrStartAndEndTokens (strToProceed)
+                {
+                    let nLengthOfStartToken = strOpenToken.length;
+                    let nLengthOfCloseToken = strCloseToken.length;
 
-                ProceedContent(
-                    undefined,
-                    Asc.scope.strOpenToken,
-                    Asc.scope.strCloseToken
-                );
+                    return strToProceed.slice(nLengthOfStartToken, nLengthOfCloseToken * -1);
+                }
+
+                function ProceedContent (oContent)
+                {
+                    if (undefined === oContent)
+                        oContent = Api.GetDocument();
+
+                    let oSelected = oContent.GetRangeBySelect();
+
+                    if (oSelected)
+                    {
+                        ProceedRange(oSelected);
+                    }
+                    else
+                    {
+                        let arrDocContent = oContent.GetAllParagraphs();
+                        for (let nCounter = 0; nCounter < arrDocContent.length; nCounter++)
+                        {
+                            let oCurrentElement = arrDocContent[nCounter];
+                            ProceedParagraph(oCurrentElement);
+                        }
+                    }
+                }
+                function ProceedParagraph(oCurrentParagraph)
+                {
+                    let arrOpenStr      = oCurrentParagraph.Search(strOpenToken);
+                    let arrCloseStr     = oCurrentParagraph.Search(strCloseToken);
+                    let isOpen          = arrOpenStr.length > 0;
+                    let isClose         = arrCloseStr.length > 0;
+                    let isConvert       = isClose && isOpen && arrCloseStr.length === arrOpenStr.length;
+
+                    if (!isConvert)
+                        return;
+
+                    let oElement = new ParagraphIterator(oCurrentParagraph);
+
+                    oOpenCheck.SetIsParagraph(true);
+
+                    while(oElement.IsContinue())
+                    {
+                        let oCurrentLetter = oElement.Next();
+                        let isConvert = oOpenCheck.Put(
+                            oCurrentLetter,
+                            oElement,
+                            oCloseCheck
+                        );
+
+                        if (isConvert)
+                        {
+                            oOpenCheck.Reset();
+                            oCloseCheck.Reset();
+                        }
+                    }
+
+                    let arrRanges = oSaver.Get().reverse();
+
+                    if (arrRanges.length > 0)
+                    {
+                        CreateFields(arrRanges);
+                        oSaver.Reset();
+                    }
+                }
+                function ProceedRange(oSelected)
+                {
+                    let oRangeIterator = new RangeIterator(oSelected);
+
+                    while (oRangeIterator.IsContinue())
+                    {
+                        let oCurrentLetter = oRangeIterator.Next();
+
+                        let isConvert = oOpenCheck.Put(
+                            oCurrentLetter,
+                            oRangeIterator,
+                            oCloseCheck
+                        );
+
+                        if (isConvert)
+                        {
+                            oOpenCheck.Reset();
+                            oCloseCheck.Reset();
+                        }
+                    }
+
+                    let oTemp = oSaver.Get().reverse();
+                    if (oTemp.length > 0)
+                    {
+                        CreateFields(oTemp);
+                        oSaver.Reset();
+                    }
+                }
+                function CreateFields(arrContent)
+                {
+                    for (let i = arrContent.length - 1; i >= 0; i--)
+                    {
+                        let oRange = arrContent[i];
+                        let oContent = Api.GetDocument();
+
+                        oRange.Select();
+
+                        let strTempText         = oRange.GetText();
+                        let strText             = DelFromStrStartAndEndTokens(strTempText)
+                        let strWithoutSpaces    = strText.split(' ').join('');
+                        let strTranslated       = TransliterateStr(strWithoutSpaces);
+
+                        let oForm = oContent.InsertTextForm({placeholderFromSelection: false, keepSelectedTextInForm: false});
+
+                        oForm.SetPlaceholderText(strText);
+                        oForm.SetFormKey(strTranslated);
+                    }
+                }
+
+                return ProceedContent();
 
             }, false);
         };
     };
+
     window.Asc.plugin.button = function (id)
     {
         if (-1 === id)
