@@ -35,7 +35,7 @@
 	}
 
 	function loadCurrency(date, base, callback) {
-		base = base ? base : 'RUB';
+		base = base ? base : 'USD';
 		//if you need use base then create an account on fixer.io, select  subscription plan BASIC or expensive and paste your access_key
 		//default base = EUR
 		date = date ? formatDate(date) : 'latest';
