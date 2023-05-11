@@ -19,22 +19,28 @@
 	var number = '';
 
 	function sum_propis(num, w) {
-// All variants of writing digits in words will be compiled into one small array
-		var m = [['ноль'], ['-', 'один', 'два', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять'],
-			['десять', 'одиннадцать', 'двенадцать', 'тринадцать', 'четырнадцать', 'пятнадцать', 'шестнадцать', 'семнадцать',
-				'восемнадцать', 'девятнадцать'],
-			['-', '-', 'двадцать', 'тридцать', 'сорок', 'пятьдесят', 'шестьдесят', 'семьдесят', 'восемьдесят', 'девяносто'],
-			['-', 'сто', 'двести', 'триста', 'четыреста', 'пятьсот', 'шестьсот', 'семьсот', 'восемьсот', 'девятьсот'],
-			['-', 'одна', 'две']]
+		// All variants of writing digits in words will be compiled into one small array
+		var m = [['zero'], ['-', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'],
+			['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fiveteen', 'sixteen', 'seventeen',
+				'eighteen', 'nineteen'],
+			['-', '-', 'twenty', 'thirty', 'fourty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'],
+			['-', 'one hundred', 'two hundred', 'three hundred', 'four hundred', 'five hundred', 'six hundred', 'seven hundred', 'eight hundred', 'nine hundred'],
+			['-', 'one', 'two']]
 
-// All variants of writing digits in words will be compiled into one small array
-		var r = [['...ллион', 'ов', '', 'а'], // used for all unknown large digits
-			['тысяч', '', 'а', 'и'], ['миллион', 'ов', '', 'а'], ['миллиард', 'ов', '', 'а'], ['триллион', 'ов', '', 'а'],
-			['квадриллион', 'ов', '', 'а'], ['квинтиллион', 'ов', '', 'а'], ['секстилион', 'ов', '', 'а'],
-			['септилион', 'ов', '', 'а'], ['окталион', 'ов', '', 'а'], ['ноналион', 'ов', '', 'а'],
-			['декалион', 'ов', '', 'а'], ['эндекалион', 'ов', '', 'а'], ['додекалион', 'ов', '', 'а']
-			// ,[... the list goes on
-		]
+
+		// information from https://simple.wikipedia.org/wiki/Names_of_large_numbers
+		// All variants of writing digits in words will be compiled into one small array
+		var r = 
+		[	'infinity', // used for all unknown large digits
+			'thousand', 'million', 'billion', 'trillion', 'quadrillion', 'quintillion', 'sextilion', 'septilion', 'octalion', 'nonillion',
+			'decillion', 'undecillion', 'duodecillion', 'tredecillion', 'quattuordecillion', 'quindecillion', 'sexdecillion', 'septendecillion',
+			'octodecillion', 'novemdecillion', 'vigintillion', 'unvigintillion', 'duovigintillion', 'trevigintillion', 'quattuorvigintillion',
+			'quinvigintillion', 'sexvigintillion', 'septenvigintillion', 'octovigintillion', 'novemvigintillion', 'trigintillion', 'untrigintillion',
+			'duotrigintillion', 'googol', 'tretrigintillion', 'quarttourtrigintillion', 'quintrigintillion', 'sextrigintillion', 'septemtrigintillion',
+			'octotrigintillion', 'novemtrigintillion', 'quardragintillion', 'quinquagintillion', 'centillion', 'millionillion', 'micrillion', 'nanillion',
+			'picillion', 'mecillion', 'googolplex', 'hectillion', 'killionillion', 'scewe\'s number', 'googolplexian', 'hotillion'
+		];
+		// ,[... the list goes on
 
 		if (num == 0) {
 			return m[0][0]
@@ -57,6 +63,9 @@
 			}
 			for (var i = 0; i <= 2; i++) {
 				if (pp[i] == 0) {
+					if (i ==2) {
+						o[n][o[n].length-1] = o[n][o[n].length-1].replace('-','')
+					}
 					continue;
 				} else {
 					switch (i) {
@@ -69,7 +78,7 @@
 								i = 3;
 								continue
 							} else {
-								o[n][o[n].length] = m[3][pp[i]]
+								o[n][o[n].length] = m[3][pp[i]] + m[3][0]
 							}
 							break
 						case 2:
@@ -83,9 +92,13 @@
 				}
 			}
 
-// Endings for numerals
+	// Endings for numerals
 			if (pp > 0 && k > 0) {
-				o[n][o[n].length] = ci(pp, r[k])
+				var tmp = ci(pp, r[k]);
+				if (tmp !== -1)
+					o[n][o[n].length] = ci(pp, r[k])
+				else
+					return[r[0]];
 			}
 			o[n] = o[n].join(' ');
 			k++
@@ -93,10 +106,10 @@
 		return o.reverse().join(" ")
 	}
 
-// Endings for numerals
+	// Endings for numerals
 	function ci(n, c) {
 		n = n.toString().substr(-2)
-		return c[0] + ((/^[0,2-9]?[1]$/.test(n)) ? c[2] : ((/^[0,2-9]?[2-4]$/.test(n)) ? c[3] : c[1]))
+		return c === undefined ? -1 : c + ((/^[0,2-9]?[1]$/.test(n) ? '' : 's'));
 	}
 
 	window.Asc.plugin.init = function (text) {
