@@ -44,7 +44,7 @@
 			window.Asc.plugin.callCommand(function() {
 				var oDocument = Api.GetDocument();
 				var range = oDocument.GetRangeBySelect();
-				range.SetHighlight(Asc.scope.color.r, Asc.scope.color.g, Asc.scope.color.b, Asc.scope.color.isNone);
+				range.SetColor(Asc.scope.color.r, Asc.scope.color.g, Asc.scope.color.b, Asc.scope.color.isNone);
 			}, false, true);
 		}
 
@@ -64,7 +64,7 @@
 				var oDocument = Api.GetDocument();
 				var arrRanges = oDocument.Search(Asc.scope.color.text, false);
 				for (var i = 0; i < arrRanges.length; i++) {
-					arrRanges[i].SetHighlight(Asc.scope.color.r, Asc.scope.color.g, Asc.scope.color.b, Asc.scope.color.isNone);
+					arrRanges[i].SetColor(Asc.scope.color.r, Asc.scope.color.g, Asc.scope.color.b, Asc.scope.color.isNone);
 				}
 			}, false, true);
 		}
@@ -73,7 +73,7 @@
 			window.Asc.plugin.callCommand(function() {
 				var oDocument = Api.GetDocument();
 				var range = oDocument.GetRangeBySelect();
-				range.SetHighlight(null, null, null, true);
+				range.SetColor(null, null, null, true);
 			}, false, true);
 		}
 
