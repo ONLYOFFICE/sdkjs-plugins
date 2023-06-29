@@ -59,7 +59,7 @@
 				if (data == "error") {
 					console.error(new Error('error with download'));
 				} else if (window["AscDesktopEditor"]) {
-					// if it's desctop, then will oped dialog window for save (we musn't create link for download)
+					// if it's desktop, then will oped dialog window for save (we musn't create link for download)
 					// do nothing
 				} else {
 					console.log(data);
