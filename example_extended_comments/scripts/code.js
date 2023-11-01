@@ -97,7 +97,7 @@
 		});
 	};
 
-	clearFields = () => {
+	clearFields = function() {
 		$('#inp_author').val('');
 		$('#textarea_Comment').val('');
 		$('#select_Category').val(0).trigger("change");
@@ -105,20 +105,23 @@
 		$('#select_Submit').val(0).trigger("change");
 	};
 
-	addComments = (comments) => {
-		comments.forEach((element, index) => {
+	addComments = function(comments) {
+		comments.forEach(function(element, index) {
 			// let UserData = (element.Data.UserData) ? JSON.parse(element.Data.UserData) : "";
 			// Comments[index].Data.UserData = UserData;
 			$('#scrollable-container-id').append(makeComment(element.Id, element));
 		})
 	};
 
-	removeComments = (arrId) => {
-		arrId.forEach((element) => {
-			let index = Comments.findIndex((comment) => {
-				if (comment.Id == element)
-					return true;
-			});
+	removeComments = function(arrId) {
+		arrId.forEach(function(element) {
+			let index = -1;
+			for (let i = 0; i < Comments.length; i++) {
+				if (Comments[i].Id == element) {
+					index = i;
+					break;
+				}
+			}
 			if (index !== -1) {
 				Comments.splice(index, 1);
 				$('#' + element).remove();
@@ -126,14 +129,18 @@
 		});
 	};
 
-	findComment = (id) => {
-		return Comments.find((element) => {
-			if (element.Id == id)
-				return true;
-		  });
+	findComment = function(id) {
+		let comment;
+		for (let i = 0; i < Comments.length; i++) {
+			if (Comments[i].Id == id) {
+				comment = Comments[i];
+				break;
+			}
+		}
+		return comment;
 	};
 
-	addReply = (id, text, accept) => {
+	addReply = function(id, text, accept) {
 		let comment = findComment(id);
 		let reply = {Text: text, UserName: comment.Data.UserName};
 		comment.Data.Replies.push(reply);
@@ -141,19 +148,23 @@
 		console.log('Add reply to comment ' + id);
 	};
 
-	removeReply = (arr) => {
+	removeReply = function(arr) {
 		arr.forEach(function(el) {
 			let comment = findComment(el.id);
-			let reply_id = comment.Data.Replies.findIndex(function(rep) {
-				if (el.text == rep.Text && el.author == rep.UserName)
-					return true;
-			});
+			let reply_id = -1;
+			for (let i = 0; i < comment.Data.Replies.length; i++) {
+				let rep = comment.Data.Replies[i];
+				if (el.text == rep.Text && el.author == rep.UserName) {
+					reply_id = i;
+					break;
+				}
+			}
 			comment.Data.Replies.splice(reply_id, 1);
 			window.Asc.plugin.executeMethod("ChangeComment",[comment.Id, comment.Data]);
 		})
 	};
 
-	editComment = (id, text, data) => {
+	editComment = function(id, text, data) {
 		let comment = findComment(id);
 		comment.Data.Text = text;
 		comment.Data.UserName = data.author;
@@ -162,14 +173,14 @@
 		console.log('Edit comment ' + id);
 	};
 
-	editReply = (id, index, text, accept) => {
+	editReply = function(id, index, text, accept) {
 		let comment = findComment(id);
 		comment.Data.Replies[index].Text = text;
 		window.Asc.plugin.executeMethod("ChangeComment",[comment.Id, comment.Data]);
 		console.log('Edit reply ' + index + ' in comment ' + id);
 	};
 
-	changeComment = (updated) => {
+	changeComment = function(updated) {
 		let comment = findComment(updated.Id);
 		// updated.Data.UserData = (updated.Data.UserData) ? JSON.parse(updated.Data.UserData) : "";
 		comment.Data = updated.Data;
@@ -179,7 +190,7 @@
 		$('#' + updated.Id).find('.link.hide-reply').trigger('click');
 		$('#' + updated.Id).find('.reply-view').empty();
 		if (replies.length) {
-			replies && replies.forEach((element, index) => {
+			replies && replies.forEach(function(element, index) {
 				replypnl.append(makeReply(updated.Id, element, index));
 			})
 			$('#' + comment.Id).find('.link.show-reply').removeClass('hidden');
@@ -190,7 +201,7 @@
 		$('#' + comment.Id).find('.user-message')[0].innerText = comment.Data.Text;
 	};
 
-	showEditContainer = (accept, userData, callback, comment_id) => {
+	showEditContainer = function(accept, userData, callback, comment_id) {
 		var blockUserData = '<div class="div-user-data">' +
 								'<div style="display: flex; margin-bottom: 5px;">' +
 									'<label class="for-combo" style="flex-grow: 1;">Problem Category</label>' +
@@ -254,11 +265,11 @@
 		return el;
 	};
 
-	moveToComment = (e) => {
+	moveToComment = function(e) {
 		window.Asc.plugin.executeMethod("MoveToComment",[$(e.target).parent().parent()[0].id]);
 	}
 
-	makeReply = (id, reply, index) => {
+	makeReply = function(id, reply, index) {
 		var UserName = reply.UserName;
 		var text = reply.Text;
 		var replyEl = $('<div class="main-actions">' +
@@ -282,7 +293,7 @@
 		return replyEl;
 	};
 
-	makeComment = (id, comment) => {
+	makeComment = function(id, comment) {
 		var UserName = comment.Data.UserName;
 		var text = comment.Data.Text;
 		var commentitem = $('<div class="user-comment-item" id="' + id + '">' +
@@ -365,7 +376,7 @@
 
 		var replypnl = commentitem.find('.reply-view');
 		replypnl.addClass('hidden');
-		replies && replies.forEach((element, index) => {
+		replies && replies.forEach(function(element, index) {
 			replypnl.append(makeReply(id, element, index));
 		})
 
