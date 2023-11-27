@@ -48,7 +48,7 @@
 					}
 				}
 			],
-            "isViewer"        : true,
+            "isViewer"        : false,
             "EditorsSupport"  : ["word"],
 
             "isVisual"        : true,

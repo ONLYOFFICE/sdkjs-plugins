@@ -47,8 +47,8 @@
                     }
                 }
             ],
-            "isViewer"            : false,
-            "EditorsSupport"      : ["word", "cell", "slide"],
+            "isViewer"            : true,
+            "EditorsSupport"      : ["word", "cell", "slide", "pdf"],
             "isVisual"            : true,
             "isModal"             : false,
             "isInsideMode"        : true,

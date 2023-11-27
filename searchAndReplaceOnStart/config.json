@@ -7,7 +7,7 @@
             "description"         : "searchAndReplaceOnStart",
             "url"                 : "index.html",
             "icons"               : ["resources/img/icon.png", "resources/img/icon@2x.png"],
-			"isViewer"            : true,
+			"isViewer"            : false,
             "EditorsSupport"	  : [ "word" ],
 			"isSystem"			  : true,
             "isVisual"            : false,
