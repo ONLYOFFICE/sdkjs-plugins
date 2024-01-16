@@ -1,0 +1,12 @@
+{
+	"Hello World!" : "¡Hola Mundo!",
+	"Async Text!" : "¡Texto Asíncrono!",
+	"Custom menu" : "Menú personalizado",
+	"Async data" : "Datos asíncronos",
+	"Selection action" : "Acción de selección",
+	"Add Content Control" : "Agregar Control de Contenido",
+	"Add comment" : "Añadir comentario",
+	"Replace text" :  "Reemplazar texto",
+	"Replace image" : "Reemplazar imagen",
+	"Comment from context menu" : "Comentario desde el menú contextual"
+}

@@ -1,0 +1,12 @@
+{
+	"Hello World!" : "Привет Мир!",
+	"Async Text!" : "Асинхронный текст!",
+	"Custom menu" : "Кастомное меню",
+	"Async data" : "Асинхронные данные",
+	"Selection action" : "Действие с выделением",
+	"Add Content Control" : "Добавить элемент управления содержимым",
+	"Add comment" : "Добавить комментарий",
+	"Replace text" :  "Заменить текст",
+	"Replace image" : "Заменить картинку",
+	"Comment from context menu" : "Комментарий из контекстного меню"
+}

@@ -1,0 +1,12 @@
+{
+	"Hello World!" : "Ahoj Všichni!",
+	"Async Text!" : "Asynchronní Text!",
+	"Custom menu" : "Vlastní menu",
+	"Async data" : "Asynchronní data",
+	"Selection action" : "Akce výběru",
+	"Add Content Control" : "Přidat Kontrolu Obsahu",
+	"Add comment" : "Přidat komentář",
+	"Replace text" :  "Nahradit text",
+	"Replace image" : "Nahradit obrázek",
+	"Comment from context menu" : "Komentář z kontextového menu"
+}
