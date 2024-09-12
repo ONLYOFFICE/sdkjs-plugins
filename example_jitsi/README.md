@@ -9,9 +9,13 @@ It is called Jitsi in the interface and isn't installed by default in cloud, [se
 ## How to use
 
 1. Open the Plugins tab and press Jitsi.
-2. Press the "Start" button (for creating jitsi iframe).
-3. Type your nickname and allow the browser to use the camera and microphone.
-3. If you need to destroy jitsi iframe press the "Stop" button.
+2. Fill in the fields at the bottom of the left sidebar before you start a call:
+* Domain - enter the domain name if you want to connect your domain.
+* Room name - enter the name of the meeting room. This field is mandatory and you cannot start a call if you leave it out.
+3. Press the "Start" button (for creating jitsi iframe).
+4. Type your nickname and allow the browser to use the camera and microphone.
+5. If you need to destroy jitsi iframe press the "Stop" button.
+6. Click the "Join the meeting" button to start a call with audio or click the arrow to join without audio.
 
 ## Known issues
 
