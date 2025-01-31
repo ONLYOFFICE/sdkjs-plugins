@@ -6,7 +6,7 @@
         {
             "description"         : "settings",
             "isViewer"            : true,
-            "EditorsSupport"	  : [ "word", "cell", "slide" ],
+            "EditorsSupport"	  : [ "word", "cell", "slide", "diagram" ],
 			"isSystem"			  : true,
             "isVisual"            : false,
             "isModal"             : false,
