@@ -120,17 +120,35 @@
 		let result = await Asc.Editor.callCommand(function() {
 			let doc					= Api.GetDocument();
 			let customXMLManager	= doc.Document.getCustomXmlManager();
-			let oCCPr				= Api.asc_AddContentControl(Asc.scope.type, {"AI": true});
-			let defaultContent		= customXMLManager.GetTextContentToWrite(oCCPr.CC);
+			let oCC;
+			let id;
+
+			if (Asc.scope.type === 'Picture')
+			{
+				let oPicture = doc.Document.AddContentControlPicture();
+				oPicture.SetContentControlPr({"AI": true});
+
+				oCC	= oPicture;
+				id	= oPicture.Id;
+			}
+			else
+			{
+				let oCCPr	= Api.asc_AddContentControl(Asc.scope.type, {"AI": true});
+				oCC		= oCCPr.CC;
+				id		= oCCPr.InternalId;
+			}
+					
+			let defaultContent		= customXMLManager.GetTextContentToWrite(oCC);
+
 			let db					= new AscWord.DataBinding(
 				Asc.scope.prefix,
 				Asc.scope.storeItemID,
-				Asc.scope.xpath + "/id" + oCCPr.InternalId
+				Asc.scope.xpath + "/id" + id
 			);
 
-			oCCPr.CC.setDataBinding(db);
-			oCCPr.CC.SelectContentControl();
-			return [oCCPr.InternalId, defaultContent];
+			oCC.setDataBinding(db);
+			oCC.SelectContentControl();
+			return [id, defaultContent];
 		});
 
 		let id				= result[0];

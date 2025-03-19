@@ -2,7 +2,8 @@
 {
 	const ContentControlType = {
 		Block: 1,
-		Inline: 2
+		Inline: 2,
+		Picture: 'Picture'
 	};
 
 	function trimResult(data, posStart) {
@@ -29,23 +30,20 @@
 		button1.type	= "RegenerateAi";
 		button1.attachOnClick(async function() {
 			let stringifyData = await Asc.Editor.callCommand(function () {
+				let oLogicDocument		= Api.getLogicDocument();
+				let oCustomXmlManager	= oLogicDocument.getCustomXmlManager();
 				let oCCPr				= Api.asc_GetContentControlProperties();
 				let id					= oCCPr.InternalId;
 				let dataBinding			= oCCPr.DataBinding;
 
-				let oLogicDocument		= Api.getLogicDocument();
-				let oCustomXmlManager	= oLogicDocument.getCustomXmlManager();
 				let xml					= oCustomXmlManager.getExactXml(dataBinding.storeItemID, dataBinding.prefixMappings);
+				let oElement			= xml.findElementByXPath(dataBinding.xpath + "/prompt");
 
-				let cusXMLData			= oCustomXmlManager.findElementByXPath(xml.content, dataBinding.xpath + "/prompt");
-				let customXMLPrompt	= "";
-				if (cusXMLData)
-				{
-					xml = cusXMLData.content;
-					customXMLPrompt = xml.textContent;
-				}
-
-				let isPicture = oCCPr.CC.IsPicture();
+				if (!oElement)
+					return;
+				
+				let customXMLPrompt		= oElement.textContent;
+				let isPicture			= oCCPr.CC.IsPicture();
 				
 				if (customXMLPrompt === undefined || customXMLPrompt === "")
 					return;
@@ -57,6 +55,9 @@
 					customXMLPrompt
 				});
 			});
+
+			if (!stringifyData)
+				return;
 			
 			let data			= JSON.parse(stringifyData);
 			let id				= data.id;
@@ -117,8 +118,8 @@
 
 				// delete form customXML data about this content control
 				let xml							= oCustomXmlManager.getExactXml(dataBinding.storeItemID, dataBinding.prefixMappings);
-				let customXMLData				= oCustomXmlManager.findElementByXPath(xml.content, dataBinding.xpath + "/defaultContent");
-				let XMLForThisContentControl	= customXMLData.content.getParent();
+				let customXMLData				= xml.findElementByXPath(dataBinding.xpath + "/defaultContent");
+				let XMLForThisContentControl	= customXMLData.getParent();
 				let XMLPromptData				= XMLForThisContentControl.getParent();
 				XMLPromptData.content			= XMLPromptData.content.filter(item => item !== XMLForThisContentControl);
 				
@@ -142,8 +143,8 @@
 				let dataBinding			= oCCPr.DataBinding;
 
 				let xml					= oCustomXmlManager.getExactXml(dataBinding.storeItemID, dataBinding.prefixMappings);
-				let customXMLData		= oCustomXmlManager.findElementByXPath(xml.content, dataBinding.xpath + "/defaultContent");
-				let defaultContent		= customXMLData.content.textContent;
+				let customXMLData		= xml.findElementByXPath(dataBinding.xpath + "/defaultContent");
+				let defaultContent		= customXMLData.textContent;
 
 				if (oCCPr.CC instanceof CInlineLevelSdt)
 				{
@@ -159,7 +160,7 @@
 				Api.asc_RemoveContentControlWrapper(id);
 
 				// delete form customXML data about this content control
-				let XMLForThisContentControl	= customXMLData.content.getParent();
+				let XMLForThisContentControl	= customXMLData.getParent();
 				let XMLPromptData				= XMLForThisContentControl.getParent();
 				XMLPromptData.content			= XMLPromptData.content.filter(item => item !== XMLForThisContentControl);
 				
