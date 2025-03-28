@@ -52,44 +52,7 @@
 	Library.prototype.SelectContentControl = async function (id)
 	{
 		return await Editor.callMethod("SelectContentControl", [id]);
-	}
-
-	Library.prototype.GetCustomXMLContentByDataBinding = async function (dataBinding)
-	{
-		return await Editor.callMethod("GetCustomXMLContentByDataBinding", [dataBinding]);
-	}
-
-	Library.prototype.AddContentToCustomXML = async function (uIdXML, prefix, xpath, content)
-	{
-		return await Editor.callMethod("AddContentToCustomXml", [uIdXML, prefix, xpath, content]);
-	}
-
-	function CreateDataToFillCustomXML(result, ascScope, defaultContent)
-	{
-		return [
-			{
-				type: "block",
-				name: "id" + result,
-				value: [
-					{
-						type: 'block',
-						name: "prompt",
-						value: ascScope.text
-					},
-					{
-						type: 'block',
-						name: "buttons",
-						value: ascScope.arrIdButtons.toString()
-					},
-					{
-						type: 'block',
-						name: 'defaultContent',
-						value: defaultContent
-					}
-				]
-			}
-		];
-	}
+	};
 
 	Library.prototype.AddContentControl = async function(txt, buttons, type)
 	{
@@ -101,65 +64,96 @@
 		Asc.scope.arrIdButtons	= buttons.map(button => {return button.id});
 		Asc.scope.content		= Asc.CustomXML.content;
 
-		let isExist = await Asc.Editor.callMethod("IsCustomXmlExist", [Asc.CustomXML.prefix, Asc.CustomXML.uid]);
-		if (!isExist)
+		if (!await Asc.Editor.callMethod("IsCustomXmlExist", [Asc.CustomXML.uid]))
 		{
 			Asc.scope.storeItemID = Asc.CustomXML.uid = await Asc.Editor.callCommand(function () {
-				return Api.asc_AddCustomXml(Asc.scope.content, Asc.scope.prefix);
+				let Doc				= Api.GetDocument();
+				let CustomXmlParts 	= Doc.GetCustomXmlParts();
+				let xml 			= CustomXmlParts.Add(Asc.scope.content, Asc.scope.prefix);
+				return xml.itemId;
 			});
-			
-			Library.prototype.CreateAiContentControl();
+		}
+		
+		let ContentControlType;
+		if (type === "Picture")
+		{
+			let CC = await Asc.Editor.callCommand(function() {
+				let Doc	= Api.GetDocument();
+				return Doc.GetContentControlById(Asc.scope.InternalId);
+			});
+
+			// select text
+			if (CC === null || CC === undefined)
+			{
+				let CC = await Editor.callMethod("AddContentControl", [2]);
+				Asc.scope.InternalId = CC.InternalId;
+				Asc.scope.DefaultContent = await Asc.Editor.callCommand(function() {
+					let Doc			= Api.GetDocument();
+					let CC			= Doc.GetContentControlById(Asc.scope.InternalId);
+					CC.Delete();
+					return CC.GetCustomXMLText();
+				});		
+				ContentControlType = await Editor.callMethod("AddContentControlPicture", [{"AI": true}])
+			}
+			else // select existed content control
+			{
+				Asc.scope.InternalId = CC.InternalId;
+				Asc.scope.DefaultContent = await Asc.Editor.callCommand(function() {
+					let Doc			= Api.GetDocument();
+					let CC			= Doc.GetContentControlById(Asc.scope.InternalId);
+					return CC.GetCustomXMLText();
+				});
+				ContentControlType = await Editor.callMethod("AddContentControlPicture", [{"AI": true}])	
+			}
 		}
 		else
 		{
-			Library.prototype.CreateAiContentControl();
+			ContentControlType = await Editor.callMethod("AddContentControl", [Asc.scope.type, {"AI": true}]);
 		}
+
+		Asc.scope.InternalId = ContentControlType.InternalId;
+		Library.prototype.SelectContentControl(ContentControlType.InternalId);
+		await Library.prototype.ConfigureContentControl();
+
+		if (type === "Picture")
+			Asc.CustomXML.ContentControlButtonsEvents['33fb8c66-e900-58ad-5133-0e693c0fba01']();
 	};
+	
+	Library.prototype.ConfigureContentControl = async function()
+	{
+		await Asc.Editor.callCommand(function() {
+			let Doc			= Api.GetDocument();
+			let CC			= Doc.GetContentControlById(Asc.scope.InternalId);
 
-	Library.prototype.CreateAiContentControl = async function(){
-		let result = await Asc.Editor.callCommand(function() {
-			let doc					= Api.GetDocument();
-			let customXMLManager	= doc.Document.getCustomXmlManager();
-			let oCC;
-			let id;
+			let DefaultStr	= Asc.scope.DefaultContent
+				? Asc.scope.DefaultContent
+				: CC.GetCustomXMLText();
 
-			if (Asc.scope.type === 'Picture')
-			{
-				let oPicture = doc.Document.AddContentControlPicture();
-				oPicture.SetContentControlPr({"AI": true});
-
-				oCC	= oPicture;
-				id	= oPicture.Id;
-			}
-			else
-			{
-				let oCCPr	= Api.asc_AddContentControl(Asc.scope.type, {"AI": true});
-				oCC		= oCCPr.CC;
-				id		= oCCPr.InternalId;
-			}
-					
-			let defaultContent		= customXMLManager.GetTextContentToWrite(oCC);
-
-			let db					= new AscWord.DataBinding(
+			let DataBinding = Api.CreateDataBinding(
 				Asc.scope.prefix,
 				Asc.scope.storeItemID,
-				Asc.scope.xpath + "/id" + id
+				Asc.scope.xpath + "/id" + Asc.scope.InternalId
 			);
 
-			oCC.setDataBinding(db);
-			oCC.SelectContentControl();
-			return [id, defaultContent];
-		});
+			CC.SetDataBinding(DataBinding);
 
-		let id				= result[0];
-		let defaultContent	= result[1];
-		
-		await Asc.Library.AddContentToCustomXML(
-			Asc.CustomXML.uid,
-			Asc.CustomXML.prefix,
-			Asc.CustomXML.xPath,
-			CreateDataToFillCustomXML(id, Asc.scope, defaultContent)
-		);
+			let CustomXmlParts 	= Doc.GetCustomXmlParts();
+			let CustomXmlPart	= CustomXmlParts.GetById(Asc.scope.storeItemID);
+			
+			CustomXmlPart.Change(function (){
+				let CustomXMLNode		= CustomXmlPart.GetNodes("/promptData");
+				let CCNode				= CustomXMLNode.Add('id' + Asc.scope.InternalId);
+
+				let CustomXMLCCPrompt	= CCNode.Add('prompt');
+				CustomXMLCCPrompt.SetText(Asc.scope.text);
+				
+				let CustomXMLCCButtons	= CCNode.Add('buttons');
+				CustomXMLCCButtons.SetText(Asc.scope.arrIdButtons.toString())
+				
+				let CustomXMLCCDefault	= CCNode.Add('defaultContent')
+				CustomXMLCCDefault.SetText(DefaultStr);
+			});
+		});
 	};
 	
 	Library.prototype.InsertAsText = async function(text)

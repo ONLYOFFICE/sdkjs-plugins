@@ -30,49 +30,51 @@
 		button1.type	= "RegenerateAi";
 		button1.attachOnClick(async function() {
 			let stringifyData = await Asc.Editor.callCommand(function () {
-				let oLogicDocument		= Api.getLogicDocument();
-				let oCustomXmlManager	= oLogicDocument.getCustomXmlManager();
-				let oCCPr				= Api.asc_GetContentControlProperties();
-				let id					= oCCPr.InternalId;
-				let dataBinding			= oCCPr.DataBinding;
+				debugger
+				let Doc				= Api.GetDocument();
+				let CustomXmlParts 	= Doc.GetCustomXmlParts();
+				let CC				= Doc.GetSelectedContentControl();
 
-				let xml					= oCustomXmlManager.getExactXml(dataBinding.storeItemID, dataBinding.prefixMappings);
-				let oElement			= xml.findElementByXPath(dataBinding.xpath + "/prompt");
+				let IdCC			= CC.GetInternalId();
+				let oDataBinding	= CC.GetDataBinding();
 
-				if (!oElement)
-					return;
+				let ItemId			= oDataBinding.GetItemId();
+				let xPath			= oDataBinding.GetXPath();
+
+				let CustomXmlPart	= CustomXmlParts.GetById(ItemId);
+				let CustomXmlNode	= CustomXmlPart.GetNodes(xPath + "/prompt");
+				let CustomXMLPrompt	= CustomXmlNode.GetText();
+				let isPicture		= CC.IsPicture();
 				
-				let customXMLPrompt		= oElement.textContent;
-				let isPicture			= oCCPr.CC.IsPicture();
-				
-				if (customXMLPrompt === undefined || customXMLPrompt === "")
+				if (CustomXMLPrompt === undefined || CustomXMLPrompt === "")
 					return;
 
 				return JSON.stringify({
 					isPicture,
-					id,
-					dataBinding,
-					customXMLPrompt
+					id: IdCC,
+					customXMLPrompt: CustomXMLPrompt
 				});
 			});
 
 			if (!stringifyData)
 				return;
 			
+			debugger
+
 			let data			= JSON.parse(stringifyData);
-			let id				= data.id;
-			let isPicture		= data.isPicture;
-			let customXMLPrompt = data.customXMLPrompt;
+			let Id				= data.id;
+			let IsPicture		= data.isPicture;
+			let CustomXMLPrompt = data.customXMLPrompt;
 			
-			await Asc.Library.SelectContentControl(id);
+			await Asc.Library.SelectContentControl(Id);
 
 			let requestEngine = AI.Request.create(AI.ActionType.TextAnalyze);
 			if (!requestEngine)
 				return;
 
-			let prompt = isPicture
-				? Asc.Prompts.getImagePrompt(customXMLPrompt)
-				: customXMLPrompt;
+			let prompt = IsPicture
+				? Asc.Prompts.getImagePrompt(CustomXMLPrompt)
+				: CustomXMLPrompt;
 
 			let result = await requestEngine.chatRequest(prompt);
 			if (!result)
@@ -80,7 +82,7 @@
 
 			result = result.replace(/\n\n/g, '\n');
 
-			if (isPicture)
+			if (IsPicture)
 			{
 				let urls = [
 					"https://hips.hearstapps.com/hmg-prod/images/cha-teau-de-chenonceau-1603148808.jpg",
@@ -97,10 +99,12 @@
 			}
 			else
 			{
+				//temp for groq
 				let index = result.indexOf('</think>');
-				const res = index !== -1 ? result.slice(index + "</think>".length) : result; 
+				const res = index !== -1 ? result.slice(index + "</think>".length) : result;
+				//---
 
-				await Asc.Library.ClearContentControl(id);
+				await Asc.Library.ClearContentControl(Id);
 				await Asc.Library.PasteText(res.trim());
 			}
 		});
@@ -110,24 +114,29 @@
 		button2.type = "AcceptAi";
 		button2.attachOnClick(async function() {
 			Asc.plugin.callCommand(function () {
-				let oLogicDocument				= Api.getLogicDocument();
-				let oCustomXmlManager			= oLogicDocument.getCustomXmlManager();
-				let oCCPr						= Api.asc_GetContentControlProperties();
-				let id							= oCCPr.InternalId;
-				let dataBinding					= oCCPr.DataBinding;
+				debugger
+				let Doc				= Api.GetDocument();
+				let CustomXmlParts 	= Doc.GetCustomXmlParts();
 
-				// delete form customXML data about this content control
-				let xml							= oCustomXmlManager.getExactXml(dataBinding.storeItemID, dataBinding.prefixMappings);
-				let customXMLData				= xml.findElementByXPath(dataBinding.xpath + "/defaultContent");
-				let XMLForThisContentControl	= customXMLData.getParent();
-				let XMLPromptData				= XMLForThisContentControl.getParent();
-				XMLPromptData.content			= XMLPromptData.content.filter(item => item !== XMLForThisContentControl);
+				let CC				= Doc.GetSelectedContentControl();
+				let oDataBinding	= CC.GetDataBinding();
+
+				let ItemId			= oDataBinding.GetItemId();
+				let xPath			= oDataBinding.GetXPath();
+
+				let CustomXmlPart	= CustomXmlParts.GetById(ItemId);
+				// delete data about this content control
+				let Node			= CustomXmlPart.GetNodes(xPath);
+				if (Node)
+					Node.Delete();
 				
 				//if promptdata empty - delete customXML 
-				if (XMLPromptData.content.length === 0)
-					oCustomXmlManager.deleteExactXml(dataBinding.storeItemID, dataBinding.prefixMappings);
+				let PromptData		= CustomXmlPart.GetNodes("/promptData");
+				
+				if (PromptData.GetChildrenNodesCount() === 0)
+					CustomXmlParts.Delete(ItemId);
 
-				Api.asc_RemoveContentControlWrapper(id);
+				CC.Delete(true);
 			});
 
 		});
@@ -137,38 +146,32 @@
 		button3.type = "DiscardAi";
 		button3.attachOnClick(async function() {
 			Asc.plugin.callCommand(function () {
-				let oLogicDocument		= Api.getLogicDocument();
-				let oCustomXmlManager	= oLogicDocument.getCustomXmlManager();
-				let oCCPr				= Api.asc_GetContentControlProperties();
-				let dataBinding			= oCCPr.DataBinding;
+				debugger
+				let Doc				= Api.GetDocument();
+				let CC				= Doc.GetSelectedContentControl();
+				let CustomXmlParts 	= Doc.GetCustomXmlParts();
 
-				let xml					= oCustomXmlManager.getExactXml(dataBinding.storeItemID, dataBinding.prefixMappings);
-				let customXMLData		= xml.findElementByXPath(dataBinding.xpath + "/defaultContent");
-				let defaultContent		= customXMLData.textContent;
-
-				if (oCCPr.CC instanceof CInlineLevelSdt)
-				{
-					oCCPr.CC.SetInnerText(defaultContent);
-				}
-				else
-				{
-					let arrContent      	= oCustomXmlManager.proceedLinearXMl(defaultContent);
-					oCCPr.CC.fillContentWithDataBinding(arrContent);
-				}
+				let oDataBinding	= CC.GetDataBinding();
+				let ItemId			= oDataBinding.GetItemId();
+				let xPath			= oDataBinding.GetXPath();
 				
-				let id		= oCCPr.InternalId;
-				Api.asc_RemoveContentControlWrapper(id);
-
-				// delete form customXML data about this content control
-				let XMLForThisContentControl	= customXMLData.getParent();
-				let XMLPromptData				= XMLForThisContentControl.getParent();
-				XMLPromptData.content			= XMLPromptData.content.filter(item => item !== XMLForThisContentControl);
+				let CustomXmlPart	= CustomXmlParts.GetById(ItemId);
+				let CustomXMLNode	= CustomXmlPart.GetNodes(xPath + "/defaultContent");
 				
-				//if promptdata empty - delete customXML 
-				if (XMLPromptData.content.length === 0)
-					oCustomXmlManager.deleteExactXml(dataBinding.storeItemID, dataBinding.prefixMappings);
+				if (CustomXMLNode)
+				{
+					let DefaultContent	= CustomXMLNode.GetText();
+					
+					CC.FillWithCustomXMLContent(DefaultContent)
+					CC.Delete(true);
+	
+					CustomXMLNode.GetParent().Delete();
+					
+					let PromptData = CustomXmlPart.GetNodes("/promptData");
+					if (PromptData.GetChildrenNodesCount() === 0)
+						CustomXmlParts.Delete(ItemId);
+				}
 			});
-
 		});
 		Asc.CustomXML.Buttons.discard = button3;
 	}
@@ -558,7 +561,7 @@
 		button10.data = "Italian";
 	}
 
-	if (false)
+	if (true)
 	{
 		// TODO:
 		let button1 = new Asc.ButtonContextMenu(buttonMain);
@@ -571,8 +574,20 @@
 		button2.editors = ["word"];
 		button2.addCheckers("Selection");
 		button2.data = "256";
-		button2.attachOnClick(function(data){
-			console.log(data);
+		button2.attachOnClick(async function(data) {
+			debugger
+			let content = await Asc.Library.GetSelectedText();
+			let prompt = Asc.Prompts.getImagePrompt(content);
+
+			await Asc.Library.AddContentControl(
+				prompt.replace(/\r?\n|\r/g, ''),
+				[	
+					Asc.CustomXML.Buttons.regenerate,
+					Asc.CustomXML.Buttons.accept,
+					Asc.CustomXML.Buttons.discard
+				],
+				ContentControlType.Picture,
+			);
 		});
 
 		let button3 = button2.copy();
