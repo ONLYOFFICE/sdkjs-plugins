@@ -1,0 +1,18 @@
+{
+    "name" : "Accept/Reject content control buttons",
+    "guid" : "asc.{304B82A7-CE74-4A2D-811D-4943DB39C284}",
+
+    "variations" : [
+        {
+            "description" : "Example add buttons to content controls",
+            "url"         : "index.html",
+            "icons"       : "resources/%theme-type%(light|dark)/icon%scale%(default).%extension%(png)",
+			"events"      : [],
+			"isViewer"            : false,
+			"EditorsSupport"      : ["word"],
+			"type"                : "background",
+			"initDataType"        : "none",
+			"buttons"             : []
+        }
+    ]
+}
