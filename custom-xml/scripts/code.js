@@ -35,10 +35,85 @@
 		})());
 	};
 
+	let codeEditor	= null;
+	let xmlData		= [];
 
-	let codeEditor = null;
-	let xmlData = [];
-	let currentXMLText = "";
+	function getCurrentXmlId()
+	{
+		let select			= document.getElementById("xmlList");
+		let index			= select.selectedIndex;
+		
+		if (index === -1)
+			return "";
+
+		let selectedItem	= select.options[index];
+
+		return selectedItem.innerText
+	}
+
+	async function updateXmlText(id, str)
+	{
+		Asc.scope.id = id;
+		Asc.scope.str = str;
+		await Editor.callCommand(() => {
+
+			function getFirstTagName(xmlText) {
+				const parser = new DOMParser();
+				const xmlDoc = parser.parseFromString(xmlText, "application/xml");
+				const parseError = xmlDoc.getElementsByTagName("parsererror");
+		
+				if (parseError.length > 0) {
+				  return false;
+				}
+			  
+				return xmlDoc.documentElement.nodeName;
+			}
+
+			let Doc			= Api.GetDocument();
+			let XmlManager	= Doc.GetCustomXmlParts();
+			let xml			= XmlManager.GetById(Asc.scope.id);
+			let xmlText		= xml.GetXml();
+
+			let rootNodeName= getFirstTagName(xmlText);
+			let rootNodes	= xml.GetNodes('/' + rootNodeName);
+			if (rootNodes.length)
+			{
+				let rootNode	= rootNodes[0];
+				rootNode.SetXml(Asc.scope.str);
+			}
+		});
+
+		await updateAllContentControlsFromBinding();
+	}
+
+	async function getTextOfXml(id)
+	{
+		Asc.scope.id = id;
+
+		return await Editor.callCommand(() => {
+			let Doc			= Api.GetDocument();
+			let XmlManager	= Doc.GetCustomXmlParts();
+			let xml			= XmlManager.GetById(Asc.scope.id);
+
+			return xml.GetXml();
+		});	
+	}
+
+	async function deleteXml(){
+		let id = getCurrentXmlId();
+		if (!id)
+			return;
+
+		Asc.scope.id = id;
+		await Editor.callCommand(() => {
+			let Doc			= Api.GetDocument();
+			let XmlManager	= Doc.GetCustomXmlParts();
+			let xml = XmlManager.GetById(Asc.scope.id);
+			xml.Delete();
+		});
+
+		document.getElementById('xmlList').value = '';
+	}
 
 	async function getXmls() {
 		xmlData = await Editor.callCommand(() => {
@@ -49,29 +124,48 @@
 			return xmls.map(xml => {
 				return {
 					text: xml.GetXml(),
-					id	: xml.itemId
+					id	: xml.id
 				}
 			});
 		});
 
-		createListOfXmls(xmlData);
-	};
+		if (xmlData.length)
+			createListOfXmls(xmlData);
+	}
+	
+	function createListOfXmls(xmlData)
+	{	
+		let listWrapper			= document.getElementById("xmlList");
+		listWrapper.innerHTML	= '';
 
-	async function getTextOfXmlById(id)
+		xmlData.forEach(xml => {
+			let oButton			= document.createElement("option");
+			oButton.innerHTML	= xml.id;
+
+			listWrapper.appendChild(oButton);
+		});
+
+		// select default loaded xml
+		loadXmlTextAndStructure();
+	}
+
+	async function loadXmlTextAndStructure()
 	{
-		Asc.scope.id = id;
-		return await Editor.callCommand(() => {
-			let Doc			= Api.GetDocument();
-			let XmlManager	= Doc.GetCustomXmlParts();
-			let xml			= XmlManager.GetById(Asc.scope.id);
+		let id				= getCurrentXmlId();
+		if (!id)
+			return;
 
-			return xml.GetXml();
-		});	
-	};
+		let xmlText			= await getTextOfXml(id);
+		let prettyXmlText	= prettifyXml(xmlText);
+
+		codeEditor.setValue(prettyXmlText);
+		await createStrucOfXml(id);
+	}
 
 	async function createStrucOfXml(id)
 	{
-		document.getElementById("structureOfXML").innerHTML = '';
+		let oStructure = document.getElementById("structureOfXML");
+		oStructure.innerHTML = '';
 
 		Asc.scope.id = id;
 		let data = await Editor.callCommand(() => {
@@ -88,43 +182,53 @@
 
 					let attributes = node.GetAttributes();
 					attributes.forEach(attribute => {
-						attribute.xPath = nodeData.xPath + "/@" + attribute.key;
+						attribute.xPath = nodeData.xPath + "/@" + attribute.name;
 						nodeData.attributes.push(attribute);
 					})
 
-					let childnodes = node.GetChildrenNodes();
-					if (childnodes)
-					{	
+
+					let childnodes = node.GetNodes("/*");
+					if (childnodes)	
 						childnodes.forEach((cnode => {GenerateDataFromNode(cnode, nodeData.child)}))
-					}
 
 					data.push(nodeData)
 				}
 				else
 				{
-					let childnodes = node.GetChildrenNodes();
-					if (childnodes)
-					{	
+					let childnodes = node.GetNodes("/*");
+					if (childnodes)	
 						childnodes.forEach((cnode => {GenerateDataFromNode(cnode, data)}))
-					}
 				}
+			}
+			function GetFirstTagName(xmlText) {
+				const parser = new DOMParser();
+				const xmlDoc = parser.parseFromString(xmlText, "application/xml");
+				const parseError = xmlDoc.getElementsByTagName("parsererror");
+		
+				if (parseError.length > 0) {
+				  return false;
+				}
+			  
+				return xmlDoc.documentElement.nodeName;
 			}
 
 			let Doc			= Api.GetDocument();
 			let XmlManager	= Doc.GetCustomXmlParts();
 			let xml			= XmlManager.GetById(Asc.scope.id);
+			let xmlText		= xml.GetXml();
+			let rootNodeName= GetFirstTagName(xmlText);
+			let rootNodes	= xml.GetNodes('/' + rootNodeName);
 
-			let node		= xml.GetMainNode();
-			let data		= [];
+			if (rootNodes.length)
+			{
+				let node	= rootNodes[0];
+				let data	= [];
+				GenerateDataFromNode(node, data);
+				return data;
+			}
+		});
 
-			GenerateDataFromNode(node, data);
-
-			return data;
-		})
-
-		let oStructure = document.getElementById("structureOfXML");
-
-		function createTooltip(el)
+		function selectLi(el)
 		{
 			el.stopPropagation();
 			Array.prototype.slice.call(document.querySelectorAll('li')).forEach(function(element){
@@ -133,70 +237,66 @@
 			el.currentTarget.classList.add('selected');
 		}
 
-		function proceedAttributes(data, oStructure)
+		function isContainAttributes(node)
 		{
-			for (let i = 0; i < data.length; i++)
-			{
-				let attribute = data[i];
-
-				if (attribute.key === 'xmlns')
-					continue;
-
-				let li = document.createElement("li");
-				oStructure.appendChild(li);
-
-				let summury			= document.createElement("summary");
-				summury.innerText	= "@" + attribute.key;
-				
-
-				li.appendChild(summury);
-				li.onclick = createTooltip;
-				li.xPath = attribute.xPath;
-				//createTooltip(summury);
-			}
+			let arr = node.attributes.filter(att => !(att.name.startsWith('xmlns:')) && att.name !== 'xmlns');
+			return arr.length > 0;
 		}
 
 		function proceedData(data, oStructure)
 		{
-			debugger
 			for (let i = 0; i < data.length; i++)
 			{
 				let oCurrentData = data[i];
-				if (oCurrentData.child.length || oCurrentData.attributes.length)
+
+				if (oCurrentData.child.length || isContainAttributes(oCurrentData))
 				{
-					let li = document.createElement("li");
+					let li		= document.createElement("li");
 					let details = document.createElement("details");
-						
 					let summury = document.createElement("summary");
+					let ul		= document.createElement("ul");
+					
 					summury.innerText = oCurrentData.name;
 	
-					let ul = document.createElement("ul");
-	
+					oStructure.appendChild(li);
 					li.appendChild(details);
 					details.appendChild(summury);
 					details.appendChild(ul);
 
-					oStructure.appendChild(li);
-
-					li.onclick = createTooltip;
-					li.xPath = oCurrentData.xPath;
+					li.onclick	= selectLi;
+					li.xPath	= oCurrentData.xPath;
 
 					proceedData(oCurrentData.child, ul);
-					proceedAttributes(oCurrentData.attributes, ul);
+					
+					oCurrentData.attributes.forEach(attribute => {
+						if (attribute.name === 'xmlns' || attribute.name.startsWith('xmlns:'))
+							return;
+
+						let li			= document.createElement("li");
+						let summury		= document.createElement("summary");
+		
+						ul.appendChild(li);
+						li.appendChild(summury);
+						
+						li.onclick		= selectLi;
+						li.xPath		= attribute.xPath;
+		
+						summury.innerText = "@" + attribute.name;
+					})
 				}
 				else
 				{
-					let li = document.createElement("li");
-					//li.innerText = oCurrentData.name;
-					oStructure.appendChild(li);
-
 					let summury			= document.createElement("summary");
+					let li				= document.createElement("li");
+					
 					summury.innerText	= oCurrentData.name;
 
 					li.appendChild(summury);
-					li.onclick = createTooltip;
-					li.xPath = oCurrentData.xPath;
 
+					li.onclick			= selectLi;
+					li.xPath			= oCurrentData.xPath;
+
+					oStructure.appendChild(li);
 				}
 			}
 		}
@@ -204,32 +304,9 @@
 		proceedData(data, oStructure);
 		
 		return data;
-	};
-
-	async function updateXml(id, str)
-	{
-		Asc.scope.id = id;
-		Asc.scope.str = str;
-		return await Editor.callCommand(() => {
-			let Doc			= Api.GetDocument();
-			let XmlManager	= Doc.GetCustomXmlParts();
-			let xml			= XmlManager.GetById(Asc.scope.id);
-			return xml.ReFill(Asc.scope.str);
-		})	
-	};
-
-	async function deleteXml(){
-		let id = getCurrentXmlId();
-
-		Asc.scope.id = id;
-		await Editor.callCommand(() => {
-			let Doc			= Api.GetDocument();
-			let XmlManager	= Doc.GetCustomXmlParts();
-			XmlManager.Delete(Asc.scope.id);
-		});
 	}
 
-	var prettifyXml = function(sourceXml)
+	function prettifyXml(sourceXml)
 	{
 		// Save declaration
 		var xmlDeclaration = '';
@@ -240,11 +317,11 @@
 			}
 		}
 
-		var xmlDoc = new DOMParser().parseFromString(sourceXml, 'application/xml');
-		var xsltDoc = new DOMParser().parseFromString([
+		var xmlDoc	= new DOMParser().parseFromString(sourceXml, 'application/xml');
+		var xsltDoc	= new DOMParser().parseFromString([
 			'<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform">',
 			'  <xsl:strip-space elements="*"/>',
-			'  <xsl:template match="para[content-style][not(text())]">', // change to just text() to strip space in text nodes
+			'  <xsl:template match="para[content-style][not(text())]">',
 			'    <xsl:value-of select="normalize-space(.)"/>',
 			'  </xsl:template>',
 			'  <xsl:template match="node()|@*">',
@@ -260,16 +337,6 @@
 		var resultXml = new XMLSerializer().serializeToString(resultDoc);
 
 		return xmlDeclaration + resultXml;
-	};
-
-	function getCurrentXmlId()
-	{
-		let select = document.getElementById("xmlList");
-		let index			= select.selectedIndex;
-		let selectedItem	= select.options[index];
-
-		let id				= selectedItem.innerText
-		return id;
 	}
 
 	function getSelectedItemXPath()
@@ -280,35 +347,23 @@
 			return li[0].xPath;
 	}
 
-	async function selectCurrentXml()
+	async function updateAllContentControlsFromBinding()
 	{
-		let id		= getCurrentXmlId();
-		let xmlText	= await getTextOfXmlById(id);
-		let prettyXmlText = prettifyXml(xmlText);
+		Asc.scope.controls = await Editor.callMethod('GetAllContentControls');
 		
-		currentXMLText = prettyXmlText;
+		await Editor.callCommand(() => {
+			let Doc			= Api.GetDocument();
 
-		codeEditor.setValue(prettyXmlText);
-
-		document.getElementById("updateContentOfXml").setAttribute('xml_id', id);
-
-		await createStrucOfXml(id);
-	}
-
-	function createListOfXmls(xmlData)
-	{	
-		let listWrapper = document.getElementById("xmlList");
-		listWrapper.innerHTML = '';
-		listWrapper.addEventListener("change", selectCurrentXml);
-
-		xmlData.forEach(xml => {
-			let oButton			= document.createElement("option");
-			oButton.innerHTML	= xml.id;
-			listWrapper.appendChild(oButton);
+			for (let i = 0; i < Asc.scope.controls.length; i++)
+			{
+				let ccId	= Asc.scope.controls[i];
+				let cc		= Doc.GetContentControl(ccId.InternalId);
+				if (cc)
+					cc.LoadFromDataBinding();
+			}
 		});
-
-		selectCurrentXml();
 	}
+
     window.Asc.plugin.init = async function()
     {
 		if (!codeEditor) {
@@ -329,13 +384,19 @@
 			});
 		}
 
+		document.getElementById("xmlList").addEventListener("change", loadXmlTextAndStructure);
+
 		getXmls();
+		
+		document.getElementById("reloadContentOfXml").onclick = getXmls;
 
 		document.getElementById("updateContentOfXml").onclick = async function(e) {
-			let id		= e.currentTarget.getAttribute('xml_id');
+			let id		= getCurrentXmlId()
+			if (!id)
+				return;
 			let text	= codeEditor.getValue();
 			
-			await updateXml(id, text);
+			await updateXmlText(id, text);
 			await createStrucOfXml(id);
 		};
 
@@ -343,9 +404,9 @@
 			let id = await Editor.callCommand(() => {
 				let Doc				= Api.GetDocument();
 				let XmlManager		= Doc.GetCustomXmlParts();
-				let xmlDefaultText	= '<?xml version="1.0" encoding="UTF-8"?><defaultContent></defaultContent>';
+				let xmlDefaultText	= '<?xml version="1.0" encoding="UTF-8"?><defaultContent xmlns="http://example.com/picture">1</defaultContent>';
 
-				return XmlManager.Add(xmlDefaultText).itemId;
+				return XmlManager.Add(xmlDefaultText).id;
 			});
 
 			let listWrapper		= document.getElementById("xmlList");
@@ -353,12 +414,12 @@
 			option.innerHTML	= id;
 
 			listWrapper.appendChild(option);
-			document.getElementById('xmlList').value=id;
-			selectCurrentXml();
+			document.getElementById('xmlList').value = id;
+			loadXmlTextAndStructure();
 		};
 		
 		document.getElementById("deleteContentOfXml").onclick = async function(e) {
-			await deleteXml()
+			await deleteXml();
 			codeEditor.setValue("");
 			document.getElementById("structureOfXML").innerHTML = '';
 			await getXmls();
@@ -377,12 +438,91 @@
 				await Editor.callCommand(() => {
 					let Doc			= Api.GetDocument();
 					let DataBinding = Api.CreateDataBinding("", Asc.scope.xmlId, Asc.scope.xPath)
-					let cc			= Doc.GetContentControlById(Asc.scope.id);
-
+					let cc			= Doc.GetContentControl(Asc.scope.id);
 					cc.SetDataBinding(DataBinding);
 				});
 			}
 		}
+
+		document.getElementById("insert_cc").onclick = async function(e) {
+			
+			let select			= document.getElementById("ccType");
+			let index			= select.selectedIndex;
+			let selectedItem	= select.options[index];
+			let value			= selectedItem.value
+
+			let id				= getCurrentXmlId();
+			if (!id)
+				return;
+
+			Asc.scope.xmlId = id;
+			Asc.scope.xPath = getSelectedItemXPath();
+
+			if (value === 'block')
+			{
+				await Editor.callCommand(() => {
+					let doc = Api.GetDocument();
+					let sdt			= Api.CreateBlockLvlSdt();
+					doc.InsertContent([sdt]);
+					let DataBinding = Api.CreateDataBinding("", Asc.scope.xmlId, Asc.scope.xPath)
+					sdt.SetDataBinding(DataBinding);
+
+				});
+			}
+			else if (value === 'inline')
+			{
+				await Editor.callCommand(() => {
+					let doc			= Api.GetDocument();
+					let sdt			= Api.CreateInlineLvlSdt();
+					let oParagraph  = Api.CreateParagraph();
+					oParagraph.AddElement(sdt, 0);
+					let DataBinding = Api.CreateDataBinding("", Asc.scope.xmlId, Asc.scope.xPath);
+
+					sdt.SetDataBinding(DataBinding);
+					doc.InsertContent([oParagraph]);
+				});
+			}
+			else if (value === 'checkbox')
+			{
+				await Editor.callCommand(() => {
+					let doc			= Api.GetDocument();
+					let sdt			= doc.AddCheckBoxContentControl();
+					let DataBinding = Api.CreateDataBinding("", Asc.scope.xmlId, Asc.scope.xPath);
+					sdt.SetDataBinding(DataBinding);
+				});
+			}
+			else if (value === 'picture')
+			{
+				await Editor.callCommand(() => {
+					let doc			= Api.GetDocument();
+					let sdt			= doc.AddPictureContentControl();
+					let DataBinding = Api.CreateDataBinding("", Asc.scope.xmlId, Asc.scope.xPath);
+					sdt.SetDataBinding(DataBinding);
+				});
+			}
+			else if (value === 'combobox' || value === 'dropdownlist')
+			{
+				Asc.scope.name = value;
+				await Editor.callCommand(() => {
+					let doc			= Api.GetDocument();
+					let sdt			= (Asc.scope.name === 'combobox')
+						? doc.AddComboBoxContentControl()
+						: doc.AddDropDownListContentControl();
+					let DataBinding = Api.CreateDataBinding("", Asc.scope.xmlId, Asc.scope.xPath);
+					sdt.SetDataBinding(DataBinding);
+				});
+			}
+			else if (value === 'date')
+			{
+				await Editor.callCommand(() => {
+					let doc			= Api.GetDocument();
+					let sdt			= doc.AddDatePickerContentControl();
+					let DataBinding = Api.CreateDataBinding("", Asc.scope.xmlId, Asc.scope.xPath);
+					sdt.SetDataBinding(DataBinding);
+				});
+			}
+		}
+
 	}
 
 	window.Asc.plugin.onThemeChanged = function(theme)
@@ -394,14 +534,8 @@
 			setTimeout(function(){codeEditor && codeEditor.setOption("theme", "default")});
 	};
 
-	Asc.plugin.button = (id, windowId) => {
-		if (!windowId) {
-		  return
-		}
-	  
-		if (windowId === newWindow.id) {
-		  console.log("Plugin button")
-		}
-	}
+	window.Asc.plugin.button = function() {
+		this.executeCommand("close", "");
+	};
 
 })(window, undefined);

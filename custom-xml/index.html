@@ -53,8 +53,6 @@
 			ul {
 				padding-left: 0.5em;
 				margin-left: 0.3em;
-				/* border-left: 3px solid #c0d1d1; */
-				color: #212b2b;
 			}
 
 			li {
@@ -63,27 +61,18 @@
   				width: 100%;
 			}
 
-			/* .toggle-icon {
-				width: 1em;
-				height: 1em;
-				margin-right: 0.5em;
-				cursor: pointer;
-				user-select: none;
-				display: inline-block;
-				transform: rotate(0deg);
-				transition: transform 0.2s ease;
-  			} */
-		
-
 			details summary {
 				cursor: pointer;
-				display: flex;
-				align-items: center;
 			}
 
-			.selected{
+			li.selected > details > summary {
 				color: #4C74B9;
 			}
+
+			li.selected > summary {
+				color: #4C74B9;
+			}
+			
 		</style>
 		<script type="text/javascript" src="https://onlyoffice.github.io/sdkjs-plugins/v1/plugins.js"></script>
 		<script type="text/javascript" src="https://onlyoffice.github.io/sdkjs-plugins/v1/plugins-ui.js"></script>
@@ -107,36 +96,37 @@
 		<script type="text/javascript" src="scripts/code.js"></script>
     </head>
     <body>
-			<label class="header">List of xml</label>
-			<select id="xmlList" class="form-control select2-dropdown"></select>
+		<label class="header" style="margin-top: 5px;">List of xml</label>
+		<select id="xmlList" class="form-control select2-dropdown"></select>
 
-			<button class="btn-text-default" id="updateContentOfXml">Save</button>
-			<button class="btn-text-default" id="createContentOfXml">Add</button>
-			<button class="btn-text-default" id="deleteContentOfXml">Delete</button>
+		<button class="btn-text-default" id="reloadContentOfXml">Reload</button>
+		<button class="btn-text-default" id="updateContentOfXml">Save</button>
+		<button class="btn-text-default" id="createContentOfXml">Add</button>
+		<button class="btn-text-default" id="deleteContentOfXml">Delete</button>
 
-			<label class="header">Content of xml</label>
-			<div id="main" class="div_main" style="height:50%; margin-top: 5px; margin-bottom: 5px;"></div>
+		<label class="header" style="margin-top: 5px;">Content of xml</label>
+		<div id="main" class="div_main" style="height:50%; margin-top: 5px; margin-bottom: 5px;"></div>
 
-			<label class="header" style="margin-top: 5px;">Structure of selected XML</label>
-			
-			<div class="div_main" style="overflow:auto;">
-				<ul id="structureOfXML" style="user-select:none"></ul>
-			</div>
-
-			<button class="btn-text-default" id="match_with_selected_сс">Сопоставить с выбранным элементом управления содержимым</button>
-			<button class="btn-text-default" id="insert_cc">Вставить элемент управления содержимым</button>
-			<select id="cc" class="form-control select2-dropdown">
-				<option value="value1" selected>Форматированный текст</option>
-				<option value="value2">Обычный текст</option>
-				<option value="value3">Рисунок</option>
-				<option value="value3">Флажок</option>
-				<option value="value3">Поле со списком</option>
-				<option value="value3">Раскрвающийся список</option>
-				<option value="value3">Выбор даты</option>
-			</select>
-			
+		<label class="header" style="margin-top: 5px; margin-bottom: 5px;">Structure of selected XML <button class="btn-text-default" id="match_with_selected_сс" style="width: auto;">Сопоставить с выбранным контролом</button></label>
 		
+		<div class="div_main" style="overflow:auto;">
+			<ul id="structureOfXML" style="user-select:none"></ul>
+		</div>
 
-		  
+		
+		
+		<div style="margin: 15px;">
+			<select id="ccType" class="form-control select2-dropdown">
+				<option value="block" selected>Форматированный текст</option>
+				<option value="inline">Обычный текст</option>
+				<option value="picture">Рисунок</option>
+				<option value="checkbox">Флажок</option>
+				<option value="combobox">Поле со списком</option>
+				<option value="dropdownlist">Раскрвающийся список</option>
+				<option value="date">Выбор даты</option>
+			</select>
+			<button class="btn-text-default" id="insert_cc">Вставить элемент управления содержимым</button>
+		</div>
+		
 	</body>
 </html>
