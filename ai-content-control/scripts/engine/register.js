@@ -1,15 +1,16 @@
 (function(window, undefined)
 {
-	const ContentControlType = {
-		Block: 1,
-		Inline: 2,
-		Picture: 'Picture'
+	const SdtType = {
+		BlockLevel: 1,
+		InlineLevel: 2
 	};
 
-	function trimResult(data, posStart) {
+	function trimResult(data, posStart, isSpaces) {
 		let pos = posStart || 0;
 		if (-1 != pos) {
 			let trimC = ["\"", "'", "\n", "\r"];
+			if (true === isSpaces)
+				trimC.push(" ");
 			while (pos < data.length && trimC.includes(data[pos]))
 				pos++;
 
@@ -23,157 +24,16 @@
 		return data;
 	}
 
-	//register contentcontrols buttons
-	if (true)
-	{
-		let button1		= new Asc.ContentControlButtons(undefined, '33fb8c66-e900-58ad-5133-0e693c0fba01');
-		button1.type	= "RegenerateAi";
-		button1.attachOnClick(async function() {
-			let stringifyData = await Asc.Editor.callCommand(function () {
-				debugger
-				let Doc				= Api.GetDocument();
-				let CustomXmlParts 	= Doc.GetCustomXmlParts();
-				let CC				= Doc.GetSelectedContentControl();
-
-				let IdCC			= CC.GetInternalId();
-				let oDataBinding	= CC.GetDataBinding();
-
-				let ItemId			= oDataBinding.GetItemId();
-				let xPath			= oDataBinding.GetXPath();
-
-				let CustomXmlPart	= CustomXmlParts.GetById(ItemId);
-				let CustomXmlNode	= CustomXmlPart.GetNodes(xPath + "/prompt");
-				let CustomXMLPrompt	= CustomXmlNode.GetText();
-				let isPicture		= CC.IsPicture();
-				
-				if (CustomXMLPrompt === undefined || CustomXMLPrompt === "")
-					return;
-
-				return JSON.stringify({
-					isPicture,
-					id: IdCC,
-					customXMLPrompt: CustomXMLPrompt
-				});
-			});
-
-			if (!stringifyData)
-				return;
-			
-			debugger
-
-			let data			= JSON.parse(stringifyData);
-			let Id				= data.id;
-			let IsPicture		= data.isPicture;
-			let CustomXMLPrompt = data.customXMLPrompt;
-			
-			await Asc.Library.SelectContentControl(Id);
-
-			let requestEngine = AI.Request.create(AI.ActionType.TextAnalyze);
-			if (!requestEngine)
-				return;
-
-			let prompt = IsPicture
-				? Asc.Prompts.getImagePrompt(CustomXMLPrompt)
-				: CustomXMLPrompt;
-
-			let result = await requestEngine.chatRequest(prompt);
-			if (!result)
-				return;
-
-			result = result.replace(/\n\n/g, '\n');
-
-			if (IsPicture)
-			{
-				let urls = [
-					"https://hips.hearstapps.com/hmg-prod/images/cha-teau-de-chenonceau-1603148808.jpg",
-					"https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Panor%C3%A1mica_Oto%C3%B1o_Alc%C3%A1zar_de_Segovia.jpg/1024px-Panor%C3%A1mica_Oto%C3%B1o_Alc%C3%A1zar_de_Segovia.jpg",
-					"https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Bodiam-castle-10My8-1197.jpg/1280px-Bodiam-castle-10My8-1197.jpg",
-					"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Windsor_Castle_at_Sunset_-_Nov_2006.jpg/1280px-Windsor_Castle_at_Sunset_-_Nov_2006.jpg",
-					"https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Baba_Vida_Klearchos_1.jpg/1920px-Baba_Vida_Klearchos_1.jpg",
-					"https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Raseborg_06042008_Innenhof_01.JPG/1024px-Raseborg_06042008_Innenhof_01.JPG",
-					"https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Hunyad_Castle_TB1.jpg/1280px-Hunyad_Castle_TB1.jpg"
-				];
-				let i = Math.floor(Math.random() * urls.length);
-				let r = urls[i];
-				await Asc.Library.PasteImage(r);
-			}
-			else
-			{
-				//temp for groq
-				let index = result.indexOf('</think>');
-				const res = index !== -1 ? result.slice(index + "</think>".length) : result;
-				//---
-
-				await Asc.Library.ClearContentControl(Id);
-				await Asc.Library.PasteText(res.trim());
-			}
-		});
-		Asc.CustomXML.Buttons.regenerate = button1;
-
-		let button2 = new Asc.ContentControlButtons(undefined, 'ea5aa8f1-f25d-b2ae-105d-074c25b415bc');
-		button2.type = "AcceptAi";
-		button2.attachOnClick(async function() {
-			Asc.plugin.callCommand(function () {
-				debugger
-				let Doc				= Api.GetDocument();
-				let CustomXmlParts 	= Doc.GetCustomXmlParts();
-
-				let CC				= Doc.GetSelectedContentControl();
-				let oDataBinding	= CC.GetDataBinding();
-
-				let ItemId			= oDataBinding.GetItemId();
-				let xPath			= oDataBinding.GetXPath();
-
-				let CustomXmlPart	= CustomXmlParts.GetById(ItemId);
-				// delete data about this content control
-				let Node			= CustomXmlPart.GetNodes(xPath);
-				if (Node)
-					Node.Delete();
-				
-				//if promptdata empty - delete customXML 
-				let PromptData		= CustomXmlPart.GetNodes("/promptData");
-				
-				if (PromptData.GetChildrenNodesCount() === 0)
-					CustomXmlParts.Delete(ItemId);
-
-				CC.Delete(true);
-			});
-
-		});
-		Asc.CustomXML.Buttons.accept = button2;
-
-		let button3 = new Asc.ContentControlButtons(undefined, 'ea8d21ac-ac6a-3da1-dd20-6ef66e1997dc');
-		button3.type = "DiscardAi";
-		button3.attachOnClick(async function() {
-			Asc.plugin.callCommand(function () {
-				debugger
-				let Doc				= Api.GetDocument();
-				let CC				= Doc.GetSelectedContentControl();
-				let CustomXmlParts 	= Doc.GetCustomXmlParts();
-
-				let oDataBinding	= CC.GetDataBinding();
-				let ItemId			= oDataBinding.GetItemId();
-				let xPath			= oDataBinding.GetXPath();
-				
-				let CustomXmlPart	= CustomXmlParts.GetById(ItemId);
-				let CustomXMLNode	= CustomXmlPart.GetNodes(xPath + "/defaultContent");
-				
-				if (CustomXMLNode)
-				{
-					let DefaultContent	= CustomXMLNode.GetText();
-					
-					CC.FillWithCustomXMLContent(DefaultContent)
-					CC.Delete(true);
-	
-					CustomXMLNode.GetParent().Delete();
-					
-					let PromptData = CustomXmlPart.GetNodes("/promptData");
-					if (PromptData.GetChildrenNodesCount() === 0)
-						CustomXmlParts.Delete(ItemId);
-				}
-			});
-		});
-		Asc.CustomXML.Buttons.discard = button3;
+	function getTranslateResult(data, dataSrc) {
+		data = trimResult(data, 0, true);
+		let trimC = ["\"", "'", "\n", "\r", " "];
+		if (dataSrc.length > 0 && trimC.includes(dataSrc[0])) {
+			data = dataSrc[0] + data;
+		}
+		if (dataSrc.length > 1 && trimC.includes(dataSrc[dataSrc.length - 1])) {
+			data = data + dataSrc[dataSrc.length - 1];
+		}
+		return data;
 	}
 
 	// register contextmenu buttons
@@ -181,8 +41,13 @@
 	buttonMain.text = "AI";
 	buttonMain.addCheckers("All");
 
-	function chatWindowShow()
+	function chatWindowShow(attachedText)
 	{
+		if (window.chatWindow) {
+			window.chatWindow.activate();
+			return;
+		}
+
 		let requestEngine = AI.Request.create(AI.ActionType.Chat);
 		if (!requestEngine)
 			return;
@@ -192,14 +57,23 @@
 			description : window.Asc.plugin.tr("Chatbot"),
 			isVisual : true,
 			buttons : [],
+			icons: "resources/icons/%theme-name%(theme-default|theme-system|theme-classic-light)/%theme-type%(light|dark)/ask-ai%state%(normal|active)%scale%(default).png",
 			isModal : false,
+			isCanDocked: true,
+			type: window.localStorage.getItem("onlyoffice_ai_chat_placement") || "window",
 			EditorsSupport : ["word", "cell", "slide"],
 			size : [ 400, 400 ]
 		};
 
+		let hasOpenedOnce = false;
+
 		var chatWindow = new window.Asc.PluginWindow();
 		chatWindow.attachEvent("onWindowReady", function() {
-			Asc.Editor.callMethod("ResizeWindow", [chatWindow.id, [400, 400], [400, 400], [0, 0]])
+			Asc.Editor.callMethod("ResizeWindow", [chatWindow.id, [400, 400], [400, 400], [0, 0]]);
+			if(!hasOpenedOnce && attachedText && attachedText.trim()) {
+				chatWindow.command("onAttachedText", attachedText);
+			}
+			hasOpenedOnce = true;
 		});
 		chatWindow.attachEvent("onChatMessage", async function(message) {
 			let requestEngine = AI.Request.create(AI.ActionType.Chat);
@@ -212,7 +86,48 @@
 			//result = result.replace(/\n\n/g, '\n');
 			chatWindow.command("onChatReply", result);
 		});
+		chatWindow.attachEvent("onChatReplace", async function(data) {
+			switch (data.type) {
+				case "review": {
+					if (Asc.plugin.info.editorType === "word")
+						await Asc.Library.InsertAsReview(data.data, true);
+					else
+						await Asc.Library.InsertAsComment(data.data);
+					break;
+				}
+				case "comment": {
+					await Asc.Library.InsertAsComment(data.data);
+					break;
+				}
+				case "insert": {
+					await Asc.Library.InsertAsHTML(data.data);
+					break;
+				}
+				case "replace": {
+					await Asc.Library.ReplaceTextSmart([data.data]);
+					break;
+				}
+			}
+		});	
+		chatWindow.attachEvent("onDockedChanged", async function(type) {
+			window.localStorage.setItem("onlyoffice_ai_chat_placement", type);
+
+			async function waitSaveSettings()
+			{
+				return new Promise(resolve => (function(){
+					chatWindow.attachEvent("onUpdateState", function(type) {
+						resolve();
+					});
+					chatWindow.command("onUpdateState");
+				})());
+			};
+			
+			await waitSaveSettings();
+			Asc.Editor.callMethod("OnWindowDockChangedCallback", [chatWindow.id]);
+		});
 		chatWindow.show(variation);
+
+		window.chatWindow = chatWindow;
 	}
 	
 	if (true)
@@ -226,6 +141,8 @@
 				return;
 
 			let content = await Asc.Library.GetCurrentWord();
+			if (!content)
+				return;
 			let prompt = Asc.Prompts.getExplainPrompt(content);
 			let result = await requestEngine.chatRequest(prompt);
 			if (!result) return;
@@ -245,32 +162,14 @@
 			let requestEngine = AI.Request.create(AI.ActionType.TextAnalyze);
 			if (!requestEngine)
 				return;
-
+			
 			let content = await Asc.Library.GetSelectedText();
 			let prompt = Asc.Prompts.getFixAndSpellPrompt(content);
-			
-			await Asc.Library.AddContentControl(
-				prompt.replace(/\r?\n|\r/g, ''),
-				[	
-					Asc.CustomXML.Buttons.accept,
-					Asc.CustomXML.Buttons.discard
-				],
-				ContentControlType.Inline
-			);
-
 			let result = await requestEngine.chatRequest(prompt);
-			
-			// temp groq
-			let index = result.indexOf('</think>\n\n');
-			result = index !== -1 ? result.slice(index + "</think>\n\n".length) : result;
-			result = result.replace('\n', '');
-			//==
-
 			if (!result) return;
 
 			if (result !== 'The text is correct, there are no errors in it.')
-				await Asc.Library.ReplaceTextSmart([result]);
-
+				await Asc.Library.AddContentControl(SdtType.InlineLevel, prompt, true, result);
 			else
 				console.log('The text is correct, there are no errors in it.');
 		});
@@ -286,29 +185,10 @@
 
 			let content = await Asc.Library.GetSelectedText();
 			let prompt = Asc.Prompts.getTextRewritePrompt(content);
-
-			await Asc.Library.AddContentControl(
-				prompt.replace(/\r?\n|\r/g, ''),
-				[
-					Asc.CustomXML.Buttons.regenerate,
-					Asc.CustomXML.Buttons.accept,
-					Asc.CustomXML.Buttons.discard
-				],
-				ContentControlType.Block
-			);
-
 			let result = await requestEngine.chatRequest(prompt);
 			if (!result) return;
 
-			// temp groq
-			let index = result.indexOf('</think>\n\n');
-			result = index !== -1 ? result.slice(index + "</think>\n\n".length) : result;
-			result = result.replace('\n', '');
-			//==
-
-			result = result.replace(/\n\n/g, '\n');
-
-			await Asc.Library.PasteText(result);
+			await Asc.Library.AddContentControl(SdtType.BlockLevel, prompt, true, result);
 		});
 
 		let button3 = new Asc.ButtonContextMenu(buttonMain);
@@ -322,22 +202,11 @@
 
 			let content = await Asc.Library.GetSelectedText();
 			let prompt = Asc.Prompts.getTextLongerPrompt(content);
-
-			await Asc.Library.AddContentControl(
-				prompt.replace(/\r?\n|\r/g, ''),
-				[
-					Asc.CustomXML.Buttons.regenerate,
-					Asc.CustomXML.Buttons.accept,
-					Asc.CustomXML.Buttons.discard
-				],
-				ContentControlType.Block
-			);
-
 			let result = await requestEngine.chatRequest(prompt);
 			if (!result) return;
 
 			result = result.replace(/\n\n/g, '\n');
-			await Asc.Library.PasteText(result);
+			await Asc.Library.AddContentControl(SdtType.InlineLevel, prompt, true, result);
 		});
 
 		let button4 = new Asc.ButtonContextMenu(buttonMain);
@@ -351,22 +220,11 @@
 
 			let content = await Asc.Library.GetSelectedText();
 			let prompt = Asc.Prompts.getTextShorterPrompt(content);
-
-			await Asc.Library.AddContentControl(
-				prompt.replace(/\r?\n|\r/g, ''),
-				[
-					Asc.CustomXML.Buttons.regenerate,
-					Asc.CustomXML.Buttons.accept,
-					Asc.CustomXML.Buttons.discard
-				],
-				ContentControlType.Block
-			);
-		
 			let result = await requestEngine.chatRequest(prompt);
 			if (!result) return;
 
 			result = result.replace(/\n\n/g, '\n');
-			await Asc.Library.PasteText(result);
+			await Asc.Library.AddContentControl(SdtType.InlineLevel, prompt, true, result);
 		});
 	}
 
@@ -388,17 +246,6 @@
 
 			let content = await Asc.Library.GetSelectedText();
 			let prompt = Asc.Prompts.getSummarizationPrompt(content);
-
-			await Asc.Library.AddContentControl(
-				prompt.replace(/\r?\n|\r/g, ''),
-				[
-					Asc.CustomXML.Buttons.regenerate,
-					Asc.CustomXML.Buttons.accept,
-					Asc.CustomXML.Buttons.discard
-				],
-				ContentControlType.Block
-			);
-
 			let result = await requestEngine.chatRequest(prompt);
 			if (!result) return;
 
@@ -417,17 +264,6 @@
 
 			let content = await Asc.Library.GetSelectedText();
 			let prompt = Asc.Prompts.getTextKeywordsPrompt(content);
-
-			await Asc.Library.AddContentControl(
-				prompt.replace(/\r?\n|\r/g, ''),
-				[
-					Asc.CustomXML.Buttons.regenerate,
-					Asc.CustomXML.Buttons.accept,
-					Asc.CustomXML.Buttons.discard
-				],
-				ContentControlType.Inline
-			);
-
 			let result = await requestEngine.chatRequest(prompt);
 			if (!result) return;
 
@@ -472,17 +308,6 @@
 
 			let content = await Asc.Library.GetSelectedText();
 			let prompt = Asc.Prompts.getExplainAsLinkPrompt(content);
-
-			await Asc.Library.AddContentControl(
-				prompt.replace(/\r?\n|\r/g, ''),
-				[
-					Asc.CustomXML.Buttons.regenerate,
-					Asc.CustomXML.Buttons.accept,
-					Asc.CustomXML.Buttons.discard
-				],
-				ContentControlType.Block
-			);
-
 			let result = await requestEngine.chatRequest(prompt);
 			if (!result) return;
 
@@ -499,7 +324,7 @@
 		button1.addCheckers("Selection");
 
 		let button2 = new Asc.ButtonContextMenu(button1);
-		button2.text = "Translate to English";
+		button2.text = "English";
 		button2.editors = ["word"];
 		button2.addCheckers("Selection");
 		button2.data = "English";
@@ -510,58 +335,52 @@
 
 			let lang = data;
 			let content = await Asc.Library.GetSelectedText();
-			let prompt = Asc.Prompts.getTranslatePrompt(content, lang);
-			
-			await Asc.Library.AddContentControl(
-				prompt.replace(/\r?\n|\r/g, ''),
-				[
-					Asc.CustomXML.Buttons.regenerate,
-					Asc.CustomXML.Buttons.accept,
-					Asc.CustomXML.Buttons.discard
-				],
-				ContentControlType.Block
-			);
+			if (!content)
+				return;
 
+			let prompt = Asc.Prompts.getTranslatePrompt(content, lang);
 			let result = await requestEngine.chatRequest(prompt);
 			if (!result) return;
+
+			result = getTranslateResult(result, content);
 
 			await Asc.Library.PasteText(result);
 		});
 
 		let button3 = button2.copy();
-		button3.text = "Translate to French";
+		button3.text = "French";
 		button3.data = "French";
 
 		let button4 = button2.copy();
-		button4.text = "Translate to German";
+		button4.text = "German";
 		button4.data = "German";
 
 		let button5 = button2.copy();
-		button5.text = "Translate to Chinese";
+		button5.text = "Chinese";
 		button5.data = "Chinese";
 
 		let button6 = button2.copy();
-		button6.text = "Translate to Japanese";
+		button6.text = "Japanese";
 		button6.data = "Japanese";
 
 		let button7 = button2.copy();
-		button7.text = "Translate to Russian";
+		button7.text = "Russian";
 		button7.data = "Russian";
 
 		let button8 = button2.copy();
-		button8.text = "Translate to Korean";
+		button8.text = "Korean";
 		button8.data = "Korean";
 
 		let button9 = button2.copy();
-		button9.text = "Translate to Spanish";
+		button9.text = "Spanish";
 		button9.data = "Spanish";
 
 		let button10 = button2.copy();
-		button10.text = "Translate to Italian";
+		button10.text = "Italian";
 		button10.data = "Italian";
 	}
 
-	if (true)
+	if (false)
 	{
 		// TODO:
 		let button1 = new Asc.ButtonContextMenu(buttonMain);
@@ -574,20 +393,8 @@
 		button2.editors = ["word"];
 		button2.addCheckers("Selection");
 		button2.data = "256";
-		button2.attachOnClick(async function(data) {
-			debugger
-			let content = await Asc.Library.GetSelectedText();
-			let prompt = Asc.Prompts.getImagePrompt(content);
-
-			await Asc.Library.AddContentControl(
-				prompt.replace(/\r?\n|\r/g, ''),
-				[	
-					Asc.CustomXML.Buttons.regenerate,
-					Asc.CustomXML.Buttons.accept,
-					Asc.CustomXML.Buttons.discard
-				],
-				ContentControlType.Picture,
-			);
+		button2.attachOnClick(function(data){
+			console.log(data);
 		});
 
 		let button3 = button2.copy();
@@ -648,11 +455,12 @@
 	if (true)
 	{
 		let button1 = new Asc.ButtonContextMenu(buttonMain);
-		button1.text = "Chat";
+		button1.text = "Chatbot";
 		button1.separator = true;
 		button1.addCheckers("All");
-		button1.attachOnClick(function(){
-			chatWindowShow();
+		button1.attachOnClick(async function(){
+			let selectedText = await Asc.Library.GetSelectedText();
+			chatWindowShow(selectedText);
 		});
 	}
 
@@ -689,7 +497,7 @@
 	{
 		let button1 = new Asc.ButtonToolbar(buttonMainToolbar);
 		button1.separator = true;
-		button1.text = "Ask AI";
+		button1.text = "Chatbot";
 		button1.icons = getToolBarButtonIcons("ask-ai");
 		button1.attachOnClick(function(data){
 			chatWindowShow();
@@ -719,27 +527,31 @@
 		let button4 = new Asc.ButtonToolbar(buttonMainToolbar);
 		button4.text = "Translation";
 		button4.icons = getToolBarButtonIcons("translation");
+		button4.menu = [{
+				text:'Settings',
+				id:'t10n-settings',
+				onclick: () => {
+					onTranslateSettingsModal();
+				}}];
+		button4.split = true;
 		button4.attachOnClick(async function(){
 			let requestEngine = AI.Request.create(AI.ActionType.Translation);
 			if (!requestEngine)
 				return;
 
-			let lang = "english";
-			let content = await Asc.Library.GetSelectedText();
-			let prompt = Asc.Prompts.getTranslatePrompt(content, lang);
+			const ls_lang_key = "onlyoffice_ai_plugin_translate_lang";
+			const currLang = window.localStorage.getItem(ls_lang_key);
 
-			await Asc.Library.AddContentControl(
-				prompt.replace(/\r?\n|\r/g, ''),
-				[
-					Asc.CustomXML.Buttons.regenerate,
-					Asc.CustomXML.Buttons.accept,
-					Asc.CustomXML.Buttons.discard
-				],
-				ContentControlType.Block
-			);
-			
+			let lang = !!currLang ? currLang : "english";
+			let content = await Asc.Library.GetSelectedText();
+			if (!content)
+				return;
+
+			let prompt = Asc.Prompts.getTranslatePrompt(content, lang);
 			let result = await requestEngine.chatRequest(prompt);
 			if (!result) return;
+
+			result = getTranslateResult(result, content);
 			await Asc.Library.PasteText(result);
 		});
 	}

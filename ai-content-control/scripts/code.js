@@ -1,21 +1,138 @@
 let settingsWindow = null;
 let aiModelsListWindow = null; 
 let aiModelEditWindow = null;
+let customProvidersWindow = null;
 let summarizationWindow = null;
+let translateSettingsWindow = null;
+let promptChangeWindow = null;
 
 let initCounter = 0;
 function initWithTranslate() {
 	initCounter++;
 	if (2 === initCounter) {
 		Asc.Buttons.registerContextMenu();
-		Asc.Buttons.registerToolbarMenu();
-		Asc.CustomXML.registerContentControlButtons();
-		Asc.CustomXML.registerContentControlButtonClick();
+		Asc.Buttons.registerToolbarMenu();   
+		Asc.Buttons.registerContentControlButtons();   
 	}
 }
 
-window.Asc.plugin.init = function() {
+function clearChatState() {
+	let key = 'onlyoffice_ai_chat_state';
+	if (window.localStorage.getItem(key))
+		window.localStorage.removeItem(key);
+}
+
+async function GetOldCustomFunctions() {
+	let data = await Asc.Editor.callMethod("GetCustomFunctions");
+	let obj = {
+		macrosArray : [],
+		current : -1
+	};
+	if (data) {
+		try {
+			obj = JSON.parse(data);
+		} catch (err) {
+			obj = {
+				macrosArray : [],
+				current : -1
+			};
+		}
+	}
+	return obj;
+}
+
+window.Asc.plugin.init = async function() {
 	initWithTranslate();
+	clearChatState();
+
+	let editorVersion = await Asc.Library.GetEditorVersion();
+	if (editorVersion >= 9000000) {
+		window.Asc.plugin.attachEditorEvent("onAIRequest", async function(params){
+			let data = {};
+			switch (params.type) {
+				case "text":
+				{
+					let requestEngine = AI.Request.create(AI.ActionType.Chat);
+					if (requestEngine)
+					{
+						let result = await requestEngine.chatRequest(params.data);
+						if (!result) result = "";
+
+						data.type = "text";
+						data.text = result;
+					}
+				}
+				default:
+					break;
+			}
+
+			await Asc.Editor.callMethod("onAIRequest", [data]);
+		});
+
+		if ("cell" === window.Asc.plugin.info.editorType) {
+			let AIFunc = {
+				guid : "e8ea2fb288054deaa6b82158c04dee37",
+				name : "AI",
+				value : "\
+(function()\n\
+{\n\
+    /**\n\
+     * Function that returns the AI answer.\n\
+     * @customfunction\n\
+     * @param {string} value Prompt.\n\
+     * @returns {string} Answer value.\n\
+     */\n\
+    async function AI(value) {\n\
+        let systemMessage = \"As an Excel formula expert, your job is to provide advanced Excel formulas that perform complex calculations or data manipulations as described by the user. Keep your answers as brief as possible. If the user asks for formulas, return only the formula. If the user asks for something, answer briefly and only the result, without descriptions or reflections. If you received a request that is not based on Excel formulas, then simply answer the text request as briefly as possible, without descriptions or reflections\";\n\
+        return new Promise(resolve => (function(){\n\
+            Api.AI({ type : \"text\", data : [{role: \"system\", content: systemMessage}, {role:\"user\", content: value}] }, function(data){\n\
+                if (data.error)\n\
+                    return resolve(data.error);\n\
+                switch (data.type) {\n\
+                    case \"text\":\n\
+                    {\n\
+                        resolve(data.text);\n\
+                        break;\n\
+                    }\n\
+                    default:\n\
+                    {\n\
+                        resolve(\"#ERROR\");\n\
+                    }\n\
+                }\n\
+                resolve(data)\n\
+            });\n\
+        })());\n\
+    }\n\
+    Api.AddCustomFunction(AI);\n\
+})();"
+			};
+
+			let oldCF = await GetOldCustomFunctions();
+			let isFound = false;
+			let isUpdate = false;
+
+			for (let i = 0, len = oldCF.macrosArray.length; i < len; i++) {
+				let item = oldCF.macrosArray[i];
+				if (item.name === AIFunc.name) {
+					isFound = true;
+
+					if (item.guid === AIFunc.guid) {
+						if (item.value !== AIFunc.value) {
+							isUpdate = true;
+							item.value = AIFunc.value;
+						}
+					}
+				}
+			}
+			if (!isFound) {
+				oldCF.macrosArray.push(AIFunc);
+				isUpdate = true;
+			}
+
+			if (isUpdate)
+				await Asc.Editor.callMethod("SetCustomFunctions", [JSON.stringify(oldCF)]);
+		}
+	}
 };
 
 window.Asc.plugin.onTranslate = function() {
@@ -27,6 +144,12 @@ window.Asc.plugin.button = function(id, windowId) {
 		return
 	}
 
+	if (window.chatWindow && window.chatWindow.id === windowId)
+	{
+		clearChatState();
+		delete window.chatWindow;
+	}
+
 	if (settingsWindow && windowId === settingsWindow.id) {
 		settingsWindow.close();
 		settingsWindow = null;
@@ -34,6 +157,13 @@ window.Asc.plugin.button = function(id, windowId) {
 		aiModelsListWindow.close();
 		aiModelsListWindow = null;
 		onOpenSettingsModal();
+	} else if (translateSettingsWindow && windowId === translateSettingsWindow.id) {
+		if (id == 0) {
+			translateSettingsWindow.command('onKeepLang');
+		}
+
+		translateSettingsWindow.close();
+		delete translateSettingsWindow;
 	} else if (aiModelEditWindow && windowId === aiModelEditWindow.id) {
 		if (id == 0) {
 			aiModelEditWindow.command('onSubmit');
@@ -41,7 +171,11 @@ window.Asc.plugin.button = function(id, windowId) {
 			aiModelEditWindow.close();
 			aiModelEditWindow = null;
 		}
-	} else {
+	} else if (customProvidersWindow && windowId === customProvidersWindow.id) {
+		customProvidersWindow.close();
+		customProvidersWindow = null;
+	}
+	else {
 		window.Asc.plugin.executeMethod("CloseWindow", [windowId]);
 	}
 };
@@ -53,6 +187,9 @@ window.Asc.plugin.onThemeChanged = function(theme) {
 	aiModelsListWindow && aiModelsListWindow.command('onThemeChanged', theme);
 	aiModelEditWindow && aiModelEditWindow.command('onThemeChanged', theme);
 	summarizationWindow && summarizationWindow.command('onThemeChanged', theme);
+	translateSettingsWindow && translateSettingsWindow.command('onThemeChanged', theme);
+	customProvidersWindow && customProvidersWindow.command('onThemeChanged', theme);
+	window.chatWindow && window.chatWindow.command('onThemeChanged', theme);
 };
 
 /**
@@ -76,12 +213,58 @@ function updateActions() {
 		settingsWindow.command('onUpdateActions', AI.ActionsGetSorted());
 }
 
+function onOpenPromptChangeModal() {
+	let variation = {
+		url : 'promptChange.html',
+		description : window.Asc.plugin.tr('Edit prompt'),
+		isVisual : true,
+		buttons : [
+			//{ text: window.Asc.plugin.tr('OK'), primary: true }
+		],
+		isModal : true,
+		EditorsSupport : ["word", "slide", "cell"],
+		size : [720, 310]
+	};
+	promptChangeWindow = new window.Asc.PluginWindow();
+	promptChangeWindow.attachEvent("onInit", async function() {
+		let prompt = await Asc.Editor.callCommand(function () {
+			let doc	= Api.GetDocument();
+			let xmlManager = doc.GetCustomXmlParts();
+			let contentControl = doc.GetContentControl();
+			let dataBinding = contentControl.GetDataBinding();
+			let id = dataBinding.GetItemId();
+			let xml = xmlManager.GetById(id);
+			let currentNode = xml.GetNodes('/ooAI/prompt')[0];
+			return currentNode.GetText();
+		});
+		promptChangeWindow && promptChangeWindow.command("onGetPrompt", prompt);
+	});
+
+	promptChangeWindow.attachEvent("onChangePrompt", async function(data) {
+		Asc.scope.prompt = data;
+		await Asc.Editor.callCommand(function () {
+			let doc	= Api.GetDocument();
+			let xmlManager = doc.GetCustomXmlParts();
+			let contentControl = doc.GetContentControl();
+			let dataBinding = contentControl.GetDataBinding();
+			let id = dataBinding.GetItemId();
+			let xml = xmlManager.GetById(id);
+			let currentNode = xml.GetNodes('/ooAI/prompt')[0];
+			currentNode.SetText(Asc.scope.prompt);
+		});
+		promptChangeWindow.close();
+	});
+	promptChangeWindow.show(variation);
+}
+
 function onOpenSettingsModal() {
 	let variation = {
 		url : 'settings.html',
 		description : window.Asc.plugin.tr('AI configuration'),
 		isVisual : true,
-		buttons : [],
+		buttons : [
+			{ text: window.Asc.plugin.tr('OK'), primary: true }
+		],
 		isModal : true,
 		EditorsSupport : ["word", "slide", "cell"],
 		size : [320, 350]
@@ -101,6 +284,24 @@ function onOpenSettingsModal() {
 	settingsWindow.show(variation);
 }
 
+function onTranslateSettingsModal() {
+	let variation = {
+		url : 'translationsettings.html',
+		description : window.Asc.plugin.tr('Translation settings'),
+		isVisual : true,
+		buttons : [
+			{ text: window.Asc.plugin.tr('OK'), primary: true },
+			{ text: window.Asc.plugin.tr('Cancel'), primary: false },
+		],
+		isModal : true,
+		EditorsSupport : ["word", "slide", "cell"],
+		size : [320, 200]
+	};
+
+	translateSettingsWindow = new window.Asc.PluginWindow();
+	translateSettingsWindow.show(variation);
+}
+
 /**
  * MODELS WINDOW
  */
@@ -114,6 +315,9 @@ function onOpenAiModelsModal() {
 		url : 'aiModelsList.html',
 		description : window.Asc.plugin.tr('AI Models list'),
 		isVisual : true,
+		buttons : [ 
+			{ text: window.Asc.plugin.tr('Back'), primary: false },
+		],
 		isModal : true,
 		EditorsSupport : ["word", "slide", "cell"],
 		size : [320, 230]
@@ -146,27 +350,72 @@ function onOpenEditModal(data) {
 		],
 		isModal : true,
 		EditorsSupport : ["word", "slide", "cell"],
-		size : [320, 330]
+		size : [320, 375]
 	};
 
-	aiModelEditWindow = new window.Asc.PluginWindow();
-	aiModelEditWindow.attachEvent("onChangeModel", function(model){
-		AI.Storage.addModel(model);
-		aiModelEditWindow.close();
-		aiModelEditWindow = null;
-	});
-	aiModelEditWindow.attachEvent("onGetModels", async function(provider){
-		let models = await AI.getModels(provider);
-		aiModelEditWindow && aiModelEditWindow.command("onGetModels", models);
-	});
-
-	aiModelEditWindow.attachEvent("onInit", function() {
-		aiModelEditWindow.command('onModelInfo', {
-			model : data.model ? AI.Storage.getModelByName(data.model.name) : null,
-			providers : AI.serializeProviders()
+	if (!aiModelEditWindow) {
+		aiModelEditWindow = new window.Asc.PluginWindow();
+		aiModelEditWindow.attachEvent("onChangeModel", function(model){
+			AI.Storage.addModel(model);
+			aiModelEditWindow.close();
+			aiModelEditWindow = null;
 		});
-	});
+		aiModelEditWindow.attachEvent("onGetModels", async function(provider){
+			let models = await AI.getModels(provider);
+			aiModelEditWindow && aiModelEditWindow.command("onGetModels", models);
+		});
+
+		aiModelEditWindow.attachEvent("onInit", function() {
+			aiModelEditWindow.command('onModelInfo', {
+				model : data.model ? AI.Storage.getModelByName(data.model.name) : null,
+				providers : AI.serializeProviders()
+			});
+		});
+		aiModelEditWindow.attachEvent('onOpenCustomProvidersModal', onOpenCustomProvidersModal);
+	}
 	aiModelEditWindow.show(variation);
+}
+
+/**
+ * CUSTOM PROVIDERS WINDOW
+ */
+function onOpenCustomProvidersModal() {
+	let variation = {
+		url : 'customProviders.html',
+		description : window.Asc.plugin.tr('Custom providers'),
+		isVisual : true,
+		buttons : [ 
+			{ text: window.Asc.plugin.tr('Back'), primary: false },
+		],
+		isModal : true,
+		EditorsSupport : ["word", "slide", "cell"],
+		size : [350, 222]
+	};
+
+	if (!customProvidersWindow) {
+		customProvidersWindow = new window.Asc.PluginWindow();
+		customProvidersWindow.attachEvent("onInit", function() {
+			customProvidersWindow.command('onSetCustomProvider', AI.getCustomProviders());
+		});
+		customProvidersWindow.attachEvent("onAddCustomProvider", function(item) {
+			let isError = !AI.addCustomProvider(item.content);
+			if (isError) {
+				customProvidersWindow.command('onErrorCustomProvider');
+			} else {
+				customProvidersWindow.command('onSetCustomProvider', AI.getCustomProviders());
+
+				if (aiModelEditWindow)
+					aiModelEditWindow.command('onProvidersUpdate', { providers : AI.serializeProviders() });
+			}
+		});
+		customProvidersWindow.attachEvent("onDeleteCustomProvider", function(item) {
+			AI.removeCustomProvider(item.name);
+
+			if (aiModelEditWindow)
+				aiModelEditWindow.command('onProvidersUpdate', { providers : AI.serializeProviders() });
+		});
+	}
+	customProvidersWindow.show(variation);
 }
 
 /**

@@ -1,6 +1,5 @@
 (function(window, undefined)
 {
-	
 	function generateGuid()
 	{
 		if (!window.crypto || !window.crypto.getRandomValues)
@@ -25,57 +24,285 @@
 		return window.Asc.plugin.tr(text);
 	};
 
-	function translateItem2(text) {
-		let lang = window.Asc.plugin.info.lang.substring(0,2);
-		let result = { en: text	};
-		if (lang !== "en")
-			result[lang] = window.Asc.plugin.tr(text);
-		return result;
-	};
-
 	window.Asc = window.Asc || {};
 	var Asc = window.Asc;
 	
-	Asc.Buttons = {};
+	//Asc.Buttons = {};
 	Asc.Buttons.ButtonsContextMenu = [];
 	Asc.Buttons.ButtonsToolbar = [];
-	
-	Asc.CustomXML = {};
-	Asc.CustomXML.uid = null;
-	Asc.CustomXML.content = '<?xml version="1.0" encoding="UTF-8"?><promptData/>';
-	Asc.CustomXML.xPath = '/promptData';
-	Asc.CustomXML.prefix = 'http://onlyoffice.com/storage/prompts';
-	Asc.CustomXML.ContentControlButtons = [];
-	Asc.CustomXML.ContentControlButtonsEvents = {};
-	Asc.CustomXML.Buttons = {};
-	Asc.CustomXML.registerContentControlButtons = function ()
+
+	Asc.Buttons.registerContentControlButtons = function()
 	{
-		for (let i = 0; i < Asc.CustomXML.ContentControlButtons.length; i++)
-		{
-			let oCurrentButton = Asc.CustomXML.ContentControlButtons[i];
+		let button = new Asc.ButtonContentControl();
+		button.icons = '/resources/icons/light/btn-update.png';
+		button.attachOnClick(async function(){
+			let stringifyData = await Asc.Editor.callCommand(function() {
+				let doc	= Api.GetDocument();
+				let contentControl = doc.GetContentControl();
+				let contentControlId = contentControl.GetInternalId();
+				let dataBinding = contentControl.GetDataBinding();
+				let xmlId = dataBinding.GetItemId();
 
-			window.Asc.plugin.executeMethod("RegisterCCButtonType", [oCurrentButton.type, oCurrentButton.id]); 
+				let xmlManager = doc.GetCustomXmlParts();
+				let xml = xmlManager.GetById(xmlId);
+				let promptNode = xml.GetNodes('/ooAI/prompt')[0];
+				let prompt = promptNode.GetText();
+				let isPicture = contentControl.IsPicture();
 
-			// temp register icons
-			let url = '';
-			if (oCurrentButton.type === "RegenerateAi")
-				url = "toc";
-			else if (oCurrentButton.type === "AcceptAi")
-				url = "acceptai";
-			else if (oCurrentButton.type === "DiscardAi")
-				url = "discardai";
+				return JSON.stringify({
+					isPicture: isPicture,
+					id: contentControlId,
+					xmlId: xmlId,
+					prompt: prompt,
+					ccType: contentControl.GetClassType()
+				});
+			});
 
-			window.Asc.plugin.executeMethod("RegisterContentControlsIcon", [oCurrentButton.id, url]);
-		}
-	};
-	Asc.CustomXML.registerContentControlButtonClick = function()
-	{
-		window.Asc.plugin.attachEvent("onContentControlButtonClick", async function(obj) {
-			if (Asc.CustomXML.ContentControlButtonsEvents[obj.type])
-				Asc.CustomXML.ContentControlButtonsEvents[obj.type](obj);
+			if (!stringifyData)
+				return;
+			
+			let data = JSON.parse(stringifyData);
+			let isPicture = data.isPicture;
+			let id = data.id;
+			let xmlId = data.xmlId;
+			let prompt = data.prompt;
+			let ccType = data.ccType;
+
+			await Asc.Library.SelectContentControl(id);
+
+			let requestEngine = AI.Request.create(AI.ActionType.TextAnalyze);
+			if (!requestEngine)
+				return;
+			let result = await requestEngine.chatRequest(prompt);
+			if (!result)
+				return;
+
+			if (isPicture)
+			{
+				let urls = [
+					"https://hips.hearstapps.com/hmg-prod/images/cha-teau-de-chenonceau-1603148808.jpg",
+					"https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Panor%C3%A1mica_Oto%C3%B1o_Alc%C3%A1zar_de_Segovia.jpg/1024px-Panor%C3%A1mica_Oto%C3%B1o_Alc%C3%A1zar_de_Segovia.jpg",
+					"https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Bodiam-castle-10My8-1197.jpg/1280px-Bodiam-castle-10My8-1197.jpg",
+					"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Windsor_Castle_at_Sunset_-_Nov_2006.jpg/1280px-Windsor_Castle_at_Sunset_-_Nov_2006.jpg",
+					"https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Baba_Vida_Klearchos_1.jpg/1920px-Baba_Vida_Klearchos_1.jpg",
+					"https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Raseborg_06042008_Innenhof_01.JPG/1024px-Raseborg_06042008_Innenhof_01.JPG",
+					"https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Hunyad_Castle_TB1.jpg/1280px-Hunyad_Castle_TB1.jpg"
+				];
+				let i = Math.floor(Math.random() * urls.length);
+				let r = urls[i];
+
+				Asc.scope.url = r;
+				Asc.scope.id = id;
+				await Asc.Editor.callCommand(function() {
+					let doc	= Api.GetDocument();
+					let contentControl = doc.GetContentControl(Asc.scope.id);
+					contentControl.SetPicture(Asc.scope.url);
+				});
+			}
+			else
+			{
+				await Asc.Library.ClearContentControl(id);
+			
+				if (ccType === "inlineLvlSdt")
+					result = result.replace(/(\r\n|\n|\r)/gm, "").trim();
+
+				await Asc.Library.PasteText(result);
+			}
+			await Asc.Library.SetCurrentContentControl(xmlId, id);
 		});
+		// button.addChecker(async function() {
+		// 	return await Asc.Editor.callCommand(function() {
+		// 		let doc = Api.GetDocument();
+		// 		let xmlManager = doc.GetCustomXmlParts();
+		// 		let contentControl = doc.GetContentControl();
+		// 		if (!contentControl)
+		// 			return false;
+		// 		let dataBinding = contentControl.GetDataBinding();
+		// 		if (!dataBinding)
+		// 			return false;
+		
+		// 		let id = dataBinding.GetItemId();
+		// 		let xPath = dataBinding.GetXPath();
+		
+		// 		let xml = xmlManager.GetById(id);
+		// 		if (!xml)
+		// 			return false;
+		
+		// 		let currentContentNodes = xml.GetNodes(xPath);
+		// 		if (!currentContentNodes.length)
+		// 			return false;
+				
+		// 		let currentContentNode = currentContentNodes[0];
+		// 		if (currentContentNode.baseName !== 'currentContent')
+		// 			return false;
+		
+		// 		let parentNode = currentContentNode.GetParent();
+		// 		if (parentNode.baseName !== 'ooAI')
+		// 			return false;
+		
+		// 		return parentNode.GetAttribute('text-generation') === "true";
+		// 	});
+		// });
+
+		button = new Asc.ButtonContentControl();
+		button.icons = '/resources/icons/light/chevron-down.png';
+		button.attachOnClick(async function(){
+			Asc.plugin.callCommand(function () {
+				let doc		= Api.GetDocument();
+				let oCCPr	= Api.asc_GetContentControlProperties();
+				let id		= oCCPr.InternalId;
+
+				let xmlManager = doc.GetCustomXmlParts();
+				let contentControl = doc.GetContentControl(id);
+
+				let dataBinding = contentControl.GetDataBinding();
+				let xmlid = dataBinding.GetItemId();
+
+				let xml = xmlManager.GetById(xmlid);
+				xml.Delete();
+
+				Api.asc_RemoveContentControlWrapper(id);
+			});
+		});
+		// button.addChecker(function(){
+		// 	return Asc.Editor.callCommand(function() {
+		// 	let doc = Api.GetDocument();
+		// 	let xmlManager = doc.GetCustomXmlParts();
+		// 	let contentControl = doc.GetContentControl();
+		// 	if (!contentControl)
+		// 		return false;
+
+		// 	let dataBinding = contentControl.GetDataBinding();
+		// 	if (!dataBinding)
+		// 		return false;
+
+		// 	let id = dataBinding.GetItemId();
+		// 	let xPath = dataBinding.GetXPath();
+		// 	let xml = xmlManager.GetById(id);
+		// 	if (!xml)
+		// 		return false;
+
+		// 	let currentContentNode;
+		// 	let currentContentNodes = xml.GetNodes(xPath);
+		// 	if (!currentContentNodes.length)
+		// 		return false;
+			
+		// 	currentContentNode = currentContentNodes[0];
+		// 	if (currentContentNode.baseName !== 'currentContent')
+		// 		return false;
+
+		// 	let parentNode = currentContentNode.GetParent();
+		// 	if (parentNode.baseName !== 'ooAI')
+		// 		return false;
+
+		// 	return true;
+		// })});
+
+		button = new Asc.ButtonContentControl();
+		button.icons = '/resources/icons/light/close.png';
+		button.attachOnClick(async function(){
+			await Asc.Editor.callCommand(function () {
+				debugger
+				let doc		= Api.GetDocument();
+				let oCCPr	= Api.asc_GetContentControlProperties();
+				let id		= oCCPr.InternalId;
+
+				let xmlManager = doc.GetCustomXmlParts();
+				let contentControl = doc.GetContentControl(id);
+
+				let dataBinding = contentControl.GetDataBinding();
+				let xmlid = dataBinding.GetItemId();
+
+				let xml = xmlManager.GetById(xmlid);
+
+				let nodeDefault = xml.GetNodes('/ooAI/defaultContent')[0];
+				let defaultText = nodeDefault.GetText();
+				let nodeCurrent = xml.GetNodes('/ooAI/currentContent')[0];
+				nodeCurrent.SetText(defaultText);
+
+				contentControl.LoadFromDataBinding();
+				xml.Delete();
+			});
+		});
+		// button.addChecker(async function(){
+		// 	await Asc.plugin.callCommand(function() {
+		// 	let doc = Api.GetDocument();
+		// 	let xmlManager = doc.GetCustomXmlParts();
+		// 	let contentControl = doc.GetContentControl();
+		// 	if (!contentControl)
+		// 		return false;
+
+		// 	let dataBinding = contentControl.GetDataBinding();
+
+		// 	if (!dataBinding)
+		// 		return false;
+
+		// 	let id = dataBinding.GetItemId();
+		// 	let xPath = dataBinding.GetXPath();
+
+		// 	let xml = xmlManager.GetById(id);
+		// 	if (!xml)
+		// 		return false;
+
+		// 	let currentContentNode;
+		// 	let currentContentNodes = xml.GetNodes(xPath);
+		// 	if (!currentContentNodes.length)
+		// 		return false;
+			
+		// 	currentContentNode = currentContentNodes[0];
+		// 	if (currentContentNode.baseName !== 'currentContent')
+		// 		return false;
+
+		// 	let parentNode = currentContentNode.GetParent();
+		// 	if (parentNode.baseName !== 'ooAI')
+		// 		return false;
+
+		// 	return true;
+		// })});
+
+
+		button = new Asc.ButtonContentControl();
+		button.icons = '/resources/icons/light/error.png';
+		button.attachOnClick(async function(){
+			onOpenPromptChangeModal();
+		});
+		// button.addChecker(async function(){
+		// 	await Asc.plugin.callCommand(function() {
+		// 	let doc = Api.GetDocument();
+		// 	let xmlManager = doc.GetCustomXmlParts();
+		// 	let contentControl = doc.GetContentControl();
+		// 	if (!contentControl)
+		// 		return false;
+
+		// 	let dataBinding = contentControl.GetDataBinding();
+
+		// 	if (!dataBinding)
+		// 		return false;
+
+		// 	let id = dataBinding.GetItemId();
+		// 	let xPath = dataBinding.GetXPath();
+
+		// 	let xml = xmlManager.GetById(id);
+		// 	if (!xml)
+		// 		return false;
+
+		// 	let currentContentNode;
+		// 	let currentContentNodes = xml.GetNodes(xPath);
+		// 	if (!currentContentNodes.length)
+		// 		return false;
+			
+		// 	currentContentNode = currentContentNodes[0];
+		// 	if (currentContentNode.baseName !== 'currentContent')
+		// 		return false;
+
+		// 	let parentNode = currentContentNode.GetParent();
+		// 	if (parentNode.baseName !== 'ooAI')
+		// 		return false;
+
+		// 	return true;
+		// })});
 	};
-	
+
 	Asc.Buttons.registerContextMenu = function()
 	{
 		window.Asc.plugin.attachEvent("onContextMenuShow", function(options) {
@@ -98,6 +325,7 @@
 				window.Asc.plugin.executeMethod("AddContextMenuItem", [items]);
 		});
 	};
+
 	Asc.Buttons.registerToolbarMenu = function()
 	{
 		let items = {
@@ -111,6 +339,14 @@
 			if (button.parent === null)
 			{
 				button.toToolbar(items);
+			}
+
+			if (!!button.menu) {
+				for (item of button.menu) {
+					if (!!item.onclick) {
+						window.Asc.plugin.attachToolbarMenuClickEvent(item.id, item.onclick);
+					}
+				}
 			}
 		}
 
@@ -126,8 +362,7 @@
 	var ItemType = {
 		None : 0,
 		ContextMenu : 1,
-		Toolbar : 2,
-		ContentControl: 3,
+		Toolbar : 2
 	};
 
 	function Button(parent, id)
@@ -189,6 +424,15 @@
 
 		if (this.itemType === ItemType.Toolbar)
 			item.type = this.type;
+
+		if (this.menu)
+			item.items = this.menu.map(function(menuItem) {
+				menuItem.text = translateItem(menuItem.text);
+				return menuItem;
+			});
+
+		if (this.split)
+			item.split = true;
 
 		return item;
 	};
@@ -355,39 +599,7 @@
 		}
 	};
 
-	function ContentControlButtons(parent, id)
-	{
-		Button.call(this, parent, id);
-
-		this.itemType = ItemType.ContentControl;
-		this.showOnOptionsType = [];
-		this.type = null;
-		this.typeId = null;
-
-		Asc.CustomXML.ContentControlButtons.push(this);
-	}
-	ContentControlButtons.prototype = Object.create(Button.prototype);
-	ContentControlButtons.prototype.constructor = ContentControlButtons;
-
-	ContentControlButtons.prototype.attachOnClick = function(handler)
-	{
-		window.Asc.plugin.attachContextMenuClickEvent(this.id, handler);  
-	};
-	ContentControlButtons.prototype.registerType = function(type)
-	{	
-		//let oThis = this;
-		//this.type = type;
-
-		Asc.CustomXML.registerCCButtonType(type, this);
-	};
-	ContentControlButtons.prototype.attachOnClick = function(handler)
-	{
-		Asc.CustomXML.ContentControlButtonsEvents[this.id] = handler;
-	};
-
 	Asc.ToolbarButtonType = ToolbarButtonType;
 	Asc.ButtonContextMenu = ButtonContextMenu;
 	Asc.ButtonToolbar = ButtonToolbar;
-	Asc.ContentControlButtons = ContentControlButtons;
-
 })(window);

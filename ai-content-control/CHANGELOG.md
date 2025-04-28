@@ -62,3 +62,23 @@
 
 ## 2.2.0
 * Refactoring
+
+## 2.2.1
+* Bug fix
+
+## 2.2.2
+* Add xAI as internal provider.
+
+## 2.2.3
+* Fix translations.
+
+## 2.2.4
+* Refactoring chat. Add docked mode for chat window.
+
+## 2.2.5
+* Bug fix
+
+## 2.2.6
+* Add interface for system role detection.
+* Fixed the work of providers antropic and gemini when working with a system role.
+* Fix bug with custom functions in spreadsheets editor.

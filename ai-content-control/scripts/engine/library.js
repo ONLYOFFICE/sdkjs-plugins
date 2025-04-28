@@ -34,6 +34,29 @@
 
 	function Library() {}
 
+	function decodeHtmlText(text) {
+		return text
+			.replace(/&quot;/g, '"')
+			.replace(/&apos;/g, "'")
+			.replace(/&amp;/g, '&')
+			.replace(/&lt;/g, '<')
+			.replace(/&gt;/g, '>')			
+			.replace(/&nbsp;/g, ' ');
+	}
+
+	Library.prototype.GetEditorVersion = async function()
+	{
+		let version = await Editor.callMethod("GetVersion");
+		if ("develop" == version)
+			version = "99.99.99";
+
+		let arrVer = version.split(".");
+		while (3 > arrVer.length)
+			arrVer.push("0");
+
+		return 1000000 * parseInt(arrVer[0]) +  1000 * parseInt(arrVer[1]) + parseInt(arrVer[2]);
+	};
+
 	Library.prototype.GetCurrentWord = async function()
 	{
 		return await Editor.callMethod("GetCurrentWord");
@@ -54,108 +77,106 @@
 		return await Editor.callMethod("SelectContentControl", [id]);
 	};
 
-	Library.prototype.AddContentControl = async function(txt, buttons, type)
-	{
-		Asc.scope.text			= txt || "";
-		Asc.scope.prefix		= Asc.CustomXML.prefix;
-		Asc.scope.storeItemID	= Asc.CustomXML.uid;
-		Asc.scope.xpath			= Asc.CustomXML.xPath;
-		Asc.scope.type			= type;
-		Asc.scope.arrIdButtons	= buttons.map(button => {return button.id});
-		Asc.scope.content		= Asc.CustomXML.content;
+	Library.prototype.AddContentControl = async function(type, prompt, isTextGeneration, result) {
+		Asc.scope.prompt = prompt.replace(/(\r\n|\n|\r)/gm, "").trim();
+		Asc.scope.text_gen = !!(isTextGeneration);
+		Asc.scope.type = type;
+		Asc.scope.result = result.trim();
 
-		if (!await Asc.Editor.callMethod("IsCustomXmlExist", [Asc.CustomXML.uid]))
-		{
-			Asc.scope.storeItemID = Asc.CustomXML.uid = await Asc.Editor.callCommand(function () {
-				let Doc				= Api.GetDocument();
-				let CustomXmlParts 	= Doc.GetCustomXmlParts();
-				let xml 			= CustomXmlParts.Add(Asc.scope.content, Asc.scope.prefix);
-				return xml.itemId;
-			});
-		}
+		await Editor.callCommand(function () {
 		
-		let ContentControlType;
-		if (type === "Picture")
-		{
-			let CC = await Asc.Editor.callCommand(function() {
-				let Doc	= Api.GetDocument();
-				return Doc.GetContentControlById(Asc.scope.InternalId);
-			});
+			let prContentControl = Api.asc_AddContentControl(Asc.scope.type, {Text: true});
+			let id = prContentControl.InternalId;
+			let doc = Api.GetDocument();
+			let contentControl = doc.GetContentControl(id);
+			let xmlManager = doc.GetCustomXmlParts();
+			let defaultText = xmlManager.GetDataFromContentControl(contentControl);
 
-			// select text
-			if (CC === null || CC === undefined)
-			{
-				let CC = await Editor.callMethod("AddContentControl", [2]);
-				Asc.scope.InternalId = CC.InternalId;
-				Asc.scope.DefaultContent = await Asc.Editor.callCommand(function() {
-					let Doc			= Api.GetDocument();
-					let CC			= Doc.GetContentControlById(Asc.scope.InternalId);
-					CC.Delete();
-					return CC.GetCustomXMLText();
-				});		
-				ContentControlType = await Editor.callMethod("AddContentControlPicture", [{"AI": true}])
-			}
-			else // select existed content control
-			{
-				Asc.scope.InternalId = CC.InternalId;
-				Asc.scope.DefaultContent = await Asc.Editor.callCommand(function() {
-					let Doc			= Api.GetDocument();
-					let CC			= Doc.GetContentControlById(Asc.scope.InternalId);
-					return CC.GetCustomXMLText();
-				});
-				ContentControlType = await Editor.callMethod("AddContentControlPicture", [{"AI": true}])	
-			}
-		}
-		else
-		{
-			ContentControlType = await Editor.callMethod("AddContentControl", [Asc.scope.type, {"AI": true}]);
-		}
-
-		Asc.scope.InternalId = ContentControlType.InternalId;
-		Library.prototype.SelectContentControl(ContentControlType.InternalId);
-		await Library.prototype.ConfigureContentControl();
-
-		if (type === "Picture")
-			Asc.CustomXML.ContentControlButtonsEvents['33fb8c66-e900-58ad-5133-0e693c0fba01']();
-	};
-	
-	Library.prototype.ConfigureContentControl = async function()
-	{
-		await Asc.Editor.callCommand(function() {
-			let Doc			= Api.GetDocument();
-			let CC			= Doc.GetContentControlById(Asc.scope.InternalId);
-
-			let DefaultStr	= Asc.scope.DefaultContent
-				? Asc.scope.DefaultContent
-				: CC.GetCustomXMLText();
-
-			let DataBinding = Api.CreateDataBinding(
-				Asc.scope.prefix,
-				Asc.scope.storeItemID,
-				Asc.scope.xpath + "/id" + Asc.scope.InternalId
-			);
-
-			CC.SetDataBinding(DataBinding);
-
-			let CustomXmlParts 	= Doc.GetCustomXmlParts();
-			let CustomXmlPart	= CustomXmlParts.GetById(Asc.scope.storeItemID);
+			contentControl.RemoveAllElements();
+			contentControl.AddText(Asc.scope.result);
+			let currentContent = xmlManager.GetDataFromContentControl(contentControl);
 			
-			CustomXmlPart.Change(function (){
-				let CustomXMLNode		= CustomXmlPart.GetNodes("/promptData");
-				let CCNode				= CustomXMLNode.Add('id' + Asc.scope.InternalId);
+			let xml = xmlManager.Add(`<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+			<ooAI text-generation="${Asc.scope.text_gen}" xmlns="onlyoffice:ai-content-control">
+				<prompt>${Asc.scope.prompt}</prompt>
+				<currentContent>${currentContent}</currentContent>
+				<defaultContent>${defaultText}</defaultContent>
+			</ooAI>`);
 
-				let CustomXMLCCPrompt	= CCNode.Add('prompt');
-				CustomXMLCCPrompt.SetText(Asc.scope.text);
-				
-				let CustomXMLCCButtons	= CCNode.Add('buttons');
-				CustomXMLCCButtons.SetText(Asc.scope.arrIdButtons.toString())
-				
-				let CustomXMLCCDefault	= CCNode.Add('defaultContent')
-				CustomXMLCCDefault.SetText(DefaultStr);
-			});
+			let dataBinding = Api.CreateDataBinding("onlyoffice:ai-content-control", xml.id, '/ooAI/currentContent');
+			contentControl.SetDataBinding(dataBinding);
+			contentControl.Select();
 		});
 	};
+
+	Library.prototype.SetCurrentContentControl = function(xmlId, id){
+		Asc.scope.xmlId = xmlId;
+		Asc.scope.id = id;
+		Asc.plugin.callCommand(function () {
+			let doc	= Api.GetDocument();
+			let contentControl = doc.GetContentControl(Asc.scope.id);
+			let xmlManager = doc.GetCustomXmlParts();
+			let current = xmlManager.GetDataFromContentControl(contentControl);
+			let xml = xmlManager.GetById(Asc.scope.xmlId);
+			let currentNode = xml.GetNodes('/ooAI/currentContent')[0];
+			currentNode.SetText(current);
+		});
+	};
+
+	Library.prototype.PasteImage = async function(url)
+	{
+		return await Editor.callMethod("PasteImageUrl", [url]);
+	};
 	
+	Library.prototype.ClearContentControl = async function(sId)
+	{
+		return await Editor.callMethod("ClearContentControl ", [sId]);
+	};
+
+	Library.prototype.SaveNewContent = async function(xmlId)
+	{
+		await Asc.Editor.callCommand(function() {
+			let doc				= Api.GetDocument();
+			let xmlManager		= doc.GetCustomXmlParts();
+			let contentControl	= doc.GetContentControl(Asc.scope.id);
+			let currentText		= xmlManager.GetDataFromContentControl(contentControl);
+			let xml				= xmlManager.GetById(Asc.scope.xmlId);
+			let currentContent	= xml.GetNodes('/ooAI/currentContent')[0];
+			currentContent.SetText(currentText);
+
+			let dataBinding = Api.CreateDataBinding('onlyoffice:ai-content-control', Asc.scope.xmlId, "/ooAI/currentContent")
+			contentControl.SetDataBinding(dataBinding);
+		});
+	}
+
+	Library.prototype.CreateAiContentControl = async function(){
+		let result = await Asc.Editor.callCommand(function() {
+			let doc					= Api.GetDocument();
+			let customXMLManager	= doc.GetCustomXmlParts();
+			let oCCPr				= Api.asc_AddContentControl(Asc.scope.type, {"AI": true});
+			let defaultContent		= customXMLManager.GetTextContentToWrite(oCCPr.CC);
+			let db					= new AscWord.DataBinding(
+				Asc.scope.prefix,
+				Asc.scope.storeItemID,
+				Asc.scope.xpath + "/id" + oCCPr.InternalId
+			);
+
+			oCCPr.CC.setDataBinding(db);
+			oCCPr.CC.SelectContentControl();
+			return [oCCPr.InternalId, defaultContent];
+		});
+
+		let id				= result[0];
+		let defaultContent	= result[1];
+		
+		await Asc.Library.AddContentToCustomXML(
+			Asc.CustomXML.uid,
+			Asc.CustomXML.prefix,
+			Asc.CustomXML.xPath,
+			CreateDataToFillCustomXML(id, Asc.scope, defaultContent)
+		);
+	};
+
 	Library.prototype.InsertAsText = async function(text)
 	{
 		Asc.scope.data = (text || "").split("\n\n");
@@ -194,7 +215,7 @@
 	{
 		return await Editor.callMethod("AddComment", [{
 			UserName : "AI",
-			Text : text,
+			Text : decodeHtmlText(text),
 			Time: Date.now(),
 			Solver: false
 		}]);
@@ -240,17 +261,6 @@
 	{
 		return await Editor.callMethod("PasteText", [text]);
 	};
-	
-	Library.prototype.ClearContentControl = async function(sId)
-	{
-		return await Editor.callMethod("ClearContentControl ", [sId]);
-	};
-	
-	Library.prototype.PasteImage = async function(url)
-	{
-		return await Editor.callMethod("PasteImageUrl", [url]);
-	};
-	
 
 	Library.prototype.SendError = async function(text, errorLevel)
 	{

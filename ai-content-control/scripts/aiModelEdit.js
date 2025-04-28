@@ -58,6 +58,10 @@ var modelNameValidator = new ValidatorWrapper({
 $(modelNameCmbEl).select2({width: '100%'});
 
 
+$('#custom-providers-button label').click(function(e) {
+	window.Asc.plugin.sendToPlugin("onOpenCustomProvidersModal");
+});
+
 var updateModelsLoader = null;
 var updateModelsErrorTip = new Tooltip(updateModelsErrorEl, {
 	xAnchor: 'right',
@@ -168,6 +172,7 @@ window.Asc.plugin.init = function() {
 	window.Asc.plugin.attachEvent("onThemeChanged", onThemeChanged);
 	window.Asc.plugin.attachEvent("onModelInfo", onModelInfo);
 	window.Asc.plugin.attachEvent("onSubmit", onSubmit);
+	window.Asc.plugin.attachEvent("onProvidersUpdate", onProvidersUpdate);
 	window.Asc.plugin.attachEvent("onGetModels", function(data) {
 		if(data.error == 1) {
 			rejectModels && rejectModels(data.message);
@@ -213,7 +218,7 @@ function onThemeChanged(theme) {
 	});
 	document.body.classList.add(theme.name);
 	document.body.classList.add('theme-type-' + themeType);
-	$('.toggle-button img').each(function() {
+	$('img.icon').each(function() {
 		var src = $(this).attr('src');
 		var newSrc = src.replace(/(icons\/)([^\/]+)(\/)/, '$1' + themeType + '$3');
 		$(this).attr('src', newSrc);
@@ -244,6 +249,22 @@ function onResize () {
 		srcParts.push(newFileName);
 		el.attr('src', srcParts.join('/'));
 	});
+}
+
+function onProvidersUpdate(info) {
+	providersList = [];
+
+	for (let i = 0, len = info.providers.length; i < len; i++) {
+		let srcProvider = info.providers[i];
+		providersList.push({
+			id : srcProvider.name,
+			name : srcProvider.name,
+			url : srcProvider.url,
+			key : srcProvider.key,
+		});
+	}
+
+	updateProviderComboBox(false);
 }
 
 function onModelInfo(info) {
@@ -522,7 +543,7 @@ function ValidatorWrapper(options) {
 			validator: function(value) {
 				return value.trim().length > 1 ? '' : window.Asc.plugin.tr('This field is required');
 			}, 	
-			errorIconSrc: 'resources/icons/error-small/error.png'
+			errorIconSrc: 'resources/icons/light/error.png'
 		};
 		// Merge user options with defaults
 		this.options = Object.assign({}, defaults, options);
@@ -541,7 +562,10 @@ function ValidatorWrapper(options) {
 
 		this.errorIconEl = document.createElement('img');
 		this.errorIconEl.src = this.options.errorIconSrc;
+		this.errorIconEl.className = 'icon';
 		this.errorIconEl.style.position = 'absolute';
+		this.errorIconEl.style.width = '20px';
+		this.errorIconEl.style.height = '20px';
 		this.errorIconEl.style.top = '1px';
 		this.errorIconEl.style.right = '0px';
 		this.errorIconEl.style.display = 'none';
@@ -605,73 +629,6 @@ function ValidatorWrapper(options) {
 	this._init();
 }
 
-//Tooltip component
-function Tooltip(targetEl, options) {
-	this._init = function() {
-		var self = this;
-		var defaults = {
-			text: '',
-			xAnchor: 'center',
-			yAnchor: 'bottom',
-			align: 'center'
-		};
-		this.options = Object.assign({}, defaults, options);
-
-		this.tooltipEl = document.createElement("div");
-		this.tooltipEl.className = "tooltip";
-		this.tooltipEl.innerText = this.options.text;
-		document.body.appendChild(this.tooltipEl);
-		$(this.tooltipEl).hide();
-
-		targetEl.addEventListener('mouseover', function(e) {
-			$(self.tooltipEl).show();
-			self._updatePosition();
-		});
-		targetEl.addEventListener('mouseleave', function(e) {
-			$(self.tooltipEl).hide();
-		});
-	};
-
-	this._updatePosition = function() {
-		var rectTooltip = this.tooltipEl.getBoundingClientRect();
-		var rectEl = targetEl.getBoundingClientRect();
-		var yOffset = 3;
-		var xOffset = 0;
-		if(this.options.align == 'right') {
-			xOffset = -rectTooltip.width;
-		} else if(this.options.align == 'center') {
-			xOffset = -rectTooltip.width / 2;
-		}
-
-
-		if(this.options.xAnchor == 'right') {
-			this.tooltipEl.style.left = rectEl.right + xOffset + 'px';
-		} else if(this.options.xAnchor == 'center') {
-			this.tooltipEl.style.left = rectEl.left + rectEl.width/2 + xOffset + 'px';
-		}
-
-
-		if(this.options.yAnchor == 'bottom') {
-			this.tooltipEl.style.top = rectEl.bottom  + yOffset + 'px';
-		} else if(this.options.yAnchor == 'top') {
-			this.tooltipEl.style.top = rectEl.top  - yOffset - rectTooltip.height + 'px';
-		}
-	};
-
-	this.getText = function() {
-		return this.options.text;
-	};
-
-	this.setText = function(text) {
-		this.options.text = text;
-		this.tooltipEl.innerText = text;
-		this._updatePosition();
-	};
-
-	this._init();
-}
-
-
 //Toggle button component
 function ToggleButton(options) {
 	this._init = function() {
@@ -695,6 +652,7 @@ function ToggleButton(options) {
 		this.buttonEl.className = "toggle-button";
 
 		this.iconEl = document.createElement("img");
+		this.iconEl.className = "icon";
 		this.iconEl.src = this.options.icon;
 
 		this.buttonEl.appendChild(this.iconEl);

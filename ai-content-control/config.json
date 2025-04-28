@@ -16,7 +16,7 @@
 	},
 
 	"guid" : "asc.{9DC93CDB-B576-4F0C-B55E-FCC9C48DD007}",
-	"version": "2.2.0",
+	"version": "2.2.6",
 	"minVersion" : "8.2.0",
 
 	"variations" : [
@@ -46,7 +46,7 @@
 			"type"                : "background",
 			"initDataType"        : "none",
 			"buttons"             : [],
-			"events"			  : ["onContextMenuShow", "onContextMenuClick", "onToolbarMenuClick", "onContentControlButtonClick"],
+			"events"			  : ["onContextMenuShow", "onContextMenuClick", "onToolbarMenuClick"],
 
 			"store": {
 				"background": {

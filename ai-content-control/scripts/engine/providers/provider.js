@@ -209,7 +209,7 @@
 			if (choice.message && choice.message.content)
 				result.content.push(choice.message.content);
 			if (choice.text)
-				result.content.push(choice.message.text);
+				result.content.push(choice.text);
 			if (choice.content) {
 				if (typeof(choice.content) === "string")
 					result.content.push(choice.content);
@@ -258,6 +258,28 @@
 				modelUI.capabilities = this.checkModelCapability(model);
 				this.modelsUI.push(modelUI);
 			}
+		}
+
+		getSystemMessage(message, isRemove) {
+			let messages = message.messages;
+			let isFound = false;
+			if (!messages)
+				return "";
+			let result = "";
+			for (let i = 0; i < messages.length; ++i) {
+				if (messages[i].role === "system") {
+					if (isFound) {
+						messages.splice(i, 1);
+					} else {
+						isFound = true;
+						result = messages[i].content;
+						if (isRemove === true) {
+							messages.splice(i, 1);
+						}
+					}
+				}
+			}
+			return result;
 		}
 	}
 	
