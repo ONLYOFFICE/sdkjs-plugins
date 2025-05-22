@@ -230,9 +230,9 @@ function onOpenPromptChangeModal() {
 		let prompt = await Asc.Editor.callCommand(function () {
 			let doc	= Api.GetDocument();
 			let xmlManager = doc.GetCustomXmlParts();
-			let contentControl = doc.GetContentControl();
+			let contentControl = doc.GetCurrentContentControl();
 			let dataBinding = contentControl.GetDataBinding();
-			let id = dataBinding.GetItemId();
+			let id = dataBinding.storeItemID;
 			let xml = xmlManager.GetById(id);
 			let currentNode = xml.GetNodes('/ooAI/prompt')[0];
 			return currentNode.GetText();
@@ -245,9 +245,9 @@ function onOpenPromptChangeModal() {
 		await Asc.Editor.callCommand(function () {
 			let doc	= Api.GetDocument();
 			let xmlManager = doc.GetCustomXmlParts();
-			let contentControl = doc.GetContentControl();
+			let contentControl = doc.GetCurrentContentControl();
 			let dataBinding = contentControl.GetDataBinding();
-			let id = dataBinding.GetItemId();
+			let id = dataBinding.storeItemID;
 			let xml = xmlManager.GetById(id);
 			let currentNode = xml.GetNodes('/ooAI/prompt')[0];
 			currentNode.SetText(Asc.scope.prompt);

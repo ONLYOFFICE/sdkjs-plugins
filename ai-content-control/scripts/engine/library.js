@@ -84,17 +84,16 @@
 		Asc.scope.result = result.trim();
 
 		await Editor.callCommand(function () {
-		
 			let prContentControl = Api.asc_AddContentControl(Asc.scope.type, {Text: true});
 			let id = prContentControl.InternalId;
 			let doc = Api.GetDocument();
-			let contentControl = doc.GetContentControl(id);
+			let contentControl = doc.GetContentControlById(id);
 			let xmlManager = doc.GetCustomXmlParts();
-			let defaultText = xmlManager.GetDataFromContentControl(contentControl);
+			let defaultText = contentControl.GetDataForXmlMapping();
 
 			contentControl.RemoveAllElements();
 			contentControl.AddText(Asc.scope.result);
-			let currentContent = xmlManager.GetDataFromContentControl(contentControl);
+			let currentContent = contentControl.GetDataForXmlMapping();
 			
 			let xml = xmlManager.Add(`<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 			<ooAI text-generation="${Asc.scope.text_gen}" xmlns="onlyoffice:ai-content-control">
@@ -102,9 +101,14 @@
 				<currentContent>${currentContent}</currentContent>
 				<defaultContent>${defaultText}</defaultContent>
 			</ooAI>`);
+			let xmlId = xml.GetId();
 
-			let dataBinding = Api.CreateDataBinding("onlyoffice:ai-content-control", xml.id, '/ooAI/currentContent');
-			contentControl.SetDataBinding(dataBinding);
+			contentControl.SetDataBinding({
+				prefixMapping:	"onlyoffice:ai-content-control",
+				storeItemID:	xmlId,
+				xpath:			'/ooAI/currentContent'
+			});
+
 			contentControl.Select();
 		});
 	};
@@ -114,9 +118,9 @@
 		Asc.scope.id = id;
 		Asc.plugin.callCommand(function () {
 			let doc	= Api.GetDocument();
-			let contentControl = doc.GetContentControl(Asc.scope.id);
+			let contentControl = doc.GetContentControlById(Asc.scope.id);
 			let xmlManager = doc.GetCustomXmlParts();
-			let current = xmlManager.GetDataFromContentControl(contentControl);
+			let current = contentControl.GetDataForXmlMapping();
 			let xml = xmlManager.GetById(Asc.scope.xmlId);
 			let currentNode = xml.GetNodes('/ooAI/currentContent')[0];
 			currentNode.SetText(current);
@@ -131,50 +135,6 @@
 	Library.prototype.ClearContentControl = async function(sId)
 	{
 		return await Editor.callMethod("ClearContentControl ", [sId]);
-	};
-
-	Library.prototype.SaveNewContent = async function(xmlId)
-	{
-		await Asc.Editor.callCommand(function() {
-			let doc				= Api.GetDocument();
-			let xmlManager		= doc.GetCustomXmlParts();
-			let contentControl	= doc.GetContentControl(Asc.scope.id);
-			let currentText		= xmlManager.GetDataFromContentControl(contentControl);
-			let xml				= xmlManager.GetById(Asc.scope.xmlId);
-			let currentContent	= xml.GetNodes('/ooAI/currentContent')[0];
-			currentContent.SetText(currentText);
-
-			let dataBinding = Api.CreateDataBinding('onlyoffice:ai-content-control', Asc.scope.xmlId, "/ooAI/currentContent")
-			contentControl.SetDataBinding(dataBinding);
-		});
-	}
-
-	Library.prototype.CreateAiContentControl = async function(){
-		let result = await Asc.Editor.callCommand(function() {
-			let doc					= Api.GetDocument();
-			let customXMLManager	= doc.GetCustomXmlParts();
-			let oCCPr				= Api.asc_AddContentControl(Asc.scope.type, {"AI": true});
-			let defaultContent		= customXMLManager.GetTextContentToWrite(oCCPr.CC);
-			let db					= new AscWord.DataBinding(
-				Asc.scope.prefix,
-				Asc.scope.storeItemID,
-				Asc.scope.xpath + "/id" + oCCPr.InternalId
-			);
-
-			oCCPr.CC.setDataBinding(db);
-			oCCPr.CC.SelectContentControl();
-			return [oCCPr.InternalId, defaultContent];
-		});
-
-		let id				= result[0];
-		let defaultContent	= result[1];
-		
-		await Asc.Library.AddContentToCustomXML(
-			Asc.CustomXML.uid,
-			Asc.CustomXML.prefix,
-			Asc.CustomXML.xPath,
-			CreateDataToFillCustomXML(id, Asc.scope, defaultContent)
-		);
 	};
 
 	Library.prototype.InsertAsText = async function(text)

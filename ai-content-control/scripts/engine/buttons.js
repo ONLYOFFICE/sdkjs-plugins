@@ -33,15 +33,60 @@
 
 	Asc.Buttons.registerContentControlButtons = function()
 	{
+		function getChecker(isAttribute)
+		{
+			return async function() {
+				Asc.scope.isAttribute = isAttribute;
+				return await Asc.Editor.callCommand(function() {
+
+					let doc = Api.GetDocument();
+					let xmlManager = doc.GetCustomXmlParts();
+					let contentControl = doc.GetCurrentContentControl();
+					if (!contentControl)
+						return false;
+	
+					let dataBinding = contentControl.GetDataBinding();
+					if (!dataBinding)
+						return false;
+	
+					let id = dataBinding.storeItemID;
+					let xPath = dataBinding.xpath;
+					let xml = xmlManager.GetById(id);
+					if (!xml)
+						return false;
+	
+					let currentContentNode;
+					let currentContentNodes = xml.GetNodes(xPath);
+					if (!currentContentNodes.length)
+						return false;
+					
+					currentContentNode = currentContentNodes[0];
+					let currentNodeName = currentContentNode.GetNodeName();
+					if (currentNodeName !== 'currentContent')
+						return false;
+	
+					let parentNode = currentContentNode.GetParent();
+					let parentNodeName = parentNode.GetNodeName();
+					if (parentNodeName !== 'ooAI')
+						return false;
+
+					if (Asc.scope.isAttribute)
+						return parentNode.GetAttribute('text-generation') === "true";
+	
+					return true;
+				})
+			};
+		}
+		
 		let button = new Asc.ButtonContentControl();
 		button.icons = '/resources/icons/light/btn-update.png';
 		button.attachOnClick(async function(){
 			let stringifyData = await Asc.Editor.callCommand(function() {
 				let doc	= Api.GetDocument();
-				let contentControl = doc.GetContentControl();
+				let contentControl = doc.GetCurrentContentControl();
 				let contentControlId = contentControl.GetInternalId();
 				let dataBinding = contentControl.GetDataBinding();
-				let xmlId = dataBinding.GetItemId();
+				let xmlId = dataBinding.storeItemID;
 
 				let xmlManager = doc.GetCustomXmlParts();
 				let xml = xmlManager.GetById(xmlId);
@@ -95,7 +140,7 @@
 				Asc.scope.id = id;
 				await Asc.Editor.callCommand(function() {
 					let doc	= Api.GetDocument();
-					let contentControl = doc.GetContentControl(Asc.scope.id);
+					let contentControl = doc.GetContentControlById(Asc.scope.id);
 					contentControl.SetPicture(Asc.scope.url);
 				});
 			}
@@ -110,39 +155,7 @@
 			}
 			await Asc.Library.SetCurrentContentControl(xmlId, id);
 		});
-		// button.addChecker(async function() {
-		// 	return await Asc.Editor.callCommand(function() {
-		// 		let doc = Api.GetDocument();
-		// 		let xmlManager = doc.GetCustomXmlParts();
-		// 		let contentControl = doc.GetContentControl();
-		// 		if (!contentControl)
-		// 			return false;
-		// 		let dataBinding = contentControl.GetDataBinding();
-		// 		if (!dataBinding)
-		// 			return false;
-		
-		// 		let id = dataBinding.GetItemId();
-		// 		let xPath = dataBinding.GetXPath();
-		
-		// 		let xml = xmlManager.GetById(id);
-		// 		if (!xml)
-		// 			return false;
-		
-		// 		let currentContentNodes = xml.GetNodes(xPath);
-		// 		if (!currentContentNodes.length)
-		// 			return false;
-				
-		// 		let currentContentNode = currentContentNodes[0];
-		// 		if (currentContentNode.baseName !== 'currentContent')
-		// 			return false;
-		
-		// 		let parentNode = currentContentNode.GetParent();
-		// 		if (parentNode.baseName !== 'ooAI')
-		// 			return false;
-		
-		// 		return parentNode.GetAttribute('text-generation') === "true";
-		// 	});
-		// });
+		//button.addChecker(getChecker(true));
 
 		button = new Asc.ButtonContentControl();
 		button.icons = '/resources/icons/light/chevron-down.png';
@@ -153,154 +166,61 @@
 				let id		= oCCPr.InternalId;
 
 				let xmlManager = doc.GetCustomXmlParts();
-				let contentControl = doc.GetContentControl(id);
+				let contentControl = doc.GetContentControlById(id);
 
 				let dataBinding = contentControl.GetDataBinding();
-				let xmlid = dataBinding.GetItemId();
+				let xmlid = dataBinding.storeItemID;
 
 				let xml = xmlManager.GetById(xmlid);
-				xml.Delete();
+				if (!xml)
+					return;
 
+				xml.Delete();
 				Api.asc_RemoveContentControlWrapper(id);
 			});
 		});
-		// button.addChecker(function(){
-		// 	return Asc.Editor.callCommand(function() {
-		// 	let doc = Api.GetDocument();
-		// 	let xmlManager = doc.GetCustomXmlParts();
-		// 	let contentControl = doc.GetContentControl();
-		// 	if (!contentControl)
-		// 		return false;
-
-		// 	let dataBinding = contentControl.GetDataBinding();
-		// 	if (!dataBinding)
-		// 		return false;
-
-		// 	let id = dataBinding.GetItemId();
-		// 	let xPath = dataBinding.GetXPath();
-		// 	let xml = xmlManager.GetById(id);
-		// 	if (!xml)
-		// 		return false;
-
-		// 	let currentContentNode;
-		// 	let currentContentNodes = xml.GetNodes(xPath);
-		// 	if (!currentContentNodes.length)
-		// 		return false;
-			
-		// 	currentContentNode = currentContentNodes[0];
-		// 	if (currentContentNode.baseName !== 'currentContent')
-		// 		return false;
-
-		// 	let parentNode = currentContentNode.GetParent();
-		// 	if (parentNode.baseName !== 'ooAI')
-		// 		return false;
-
-		// 	return true;
-		// })});
+		//button.addChecker(getChecker());
 
 		button = new Asc.ButtonContentControl();
 		button.icons = '/resources/icons/light/close.png';
 		button.attachOnClick(async function(){
 			await Asc.Editor.callCommand(function () {
-				debugger
 				let doc		= Api.GetDocument();
 				let oCCPr	= Api.asc_GetContentControlProperties();
 				let id		= oCCPr.InternalId;
 
 				let xmlManager = doc.GetCustomXmlParts();
-				let contentControl = doc.GetContentControl(id);
+				let contentControl = doc.GetContentControlById(id);
 
 				let dataBinding = contentControl.GetDataBinding();
-				let xmlid = dataBinding.GetItemId();
+
+				if (!dataBinding)
+					return false;
+
+				let xmlid = dataBinding.storeItemID;
 
 				let xml = xmlManager.GetById(xmlid);
+				if (!xml)
+					return;
 
 				let nodeDefault = xml.GetNodes('/ooAI/defaultContent')[0];
 				let defaultText = nodeDefault.GetText();
 				let nodeCurrent = xml.GetNodes('/ooAI/currentContent')[0];
 				nodeCurrent.SetText(defaultText);
 
-				contentControl.LoadFromDataBinding();
+				contentControl.UpdateFromXmlMapping();
 				xml.Delete();
+				Api.asc_RemoveContentControlWrapper(id);
 			});
 		});
-		// button.addChecker(async function(){
-		// 	await Asc.plugin.callCommand(function() {
-		// 	let doc = Api.GetDocument();
-		// 	let xmlManager = doc.GetCustomXmlParts();
-		// 	let contentControl = doc.GetContentControl();
-		// 	if (!contentControl)
-		// 		return false;
-
-		// 	let dataBinding = contentControl.GetDataBinding();
-
-		// 	if (!dataBinding)
-		// 		return false;
-
-		// 	let id = dataBinding.GetItemId();
-		// 	let xPath = dataBinding.GetXPath();
-
-		// 	let xml = xmlManager.GetById(id);
-		// 	if (!xml)
-		// 		return false;
-
-		// 	let currentContentNode;
-		// 	let currentContentNodes = xml.GetNodes(xPath);
-		// 	if (!currentContentNodes.length)
-		// 		return false;
-			
-		// 	currentContentNode = currentContentNodes[0];
-		// 	if (currentContentNode.baseName !== 'currentContent')
-		// 		return false;
-
-		// 	let parentNode = currentContentNode.GetParent();
-		// 	if (parentNode.baseName !== 'ooAI')
-		// 		return false;
-
-		// 	return true;
-		// })});
-
+		//button.addChecker(getChecker());
 
 		button = new Asc.ButtonContentControl();
 		button.icons = '/resources/icons/light/error.png';
 		button.attachOnClick(async function(){
 			onOpenPromptChangeModal();
 		});
-		// button.addChecker(async function(){
-		// 	await Asc.plugin.callCommand(function() {
-		// 	let doc = Api.GetDocument();
-		// 	let xmlManager = doc.GetCustomXmlParts();
-		// 	let contentControl = doc.GetContentControl();
-		// 	if (!contentControl)
-		// 		return false;
-
-		// 	let dataBinding = contentControl.GetDataBinding();
-
-		// 	if (!dataBinding)
-		// 		return false;
-
-		// 	let id = dataBinding.GetItemId();
-		// 	let xPath = dataBinding.GetXPath();
-
-		// 	let xml = xmlManager.GetById(id);
-		// 	if (!xml)
-		// 		return false;
-
-		// 	let currentContentNode;
-		// 	let currentContentNodes = xml.GetNodes(xPath);
-		// 	if (!currentContentNodes.length)
-		// 		return false;
-			
-		// 	currentContentNode = currentContentNodes[0];
-		// 	if (currentContentNode.baseName !== 'currentContent')
-		// 		return false;
-
-		// 	let parentNode = currentContentNode.GetParent();
-		// 	if (parentNode.baseName !== 'ooAI')
-		// 		return false;
-
-		// 	return true;
-		// })});
+		//button.addChecker(getChecker());
 	};
 
 	Asc.Buttons.registerContextMenu = function()
