@@ -108,7 +108,7 @@
 		await Editor.callCommand(() => {
 			let Doc			= Api.GetDocument();
 			let XmlManager	= Doc.GetCustomXmlParts();
-			let xml = XmlManager.GetById(Asc.scope.id);
+			let xml			= XmlManager.GetById(Asc.scope.id);
 			xml.Delete();
 		});
 
@@ -121,15 +121,12 @@
 			let XmlManager	= Doc.GetCustomXmlParts();
 			let xmls		= XmlManager.GetAll();
 
-			return xmls.map(xml => {
-				return {
-					text: xml.GetXml(),
-					id	: xml.id
-				}
-			});
+			let result		= [];
+			xmls.forEach(xml => result.push({text: xml.GetXml(), id : xml.GetId()}));
+			return result;
 		});
 
-		if (xmlData.length)
+		if (xmlData && xmlData.length)
 			createListOfXmls(xmlData);
 	}
 	
@@ -145,7 +142,6 @@
 			listWrapper.appendChild(oButton);
 		});
 
-		// select default loaded xml
 		loadXmlTextAndStructure();
 	}
 
@@ -168,13 +164,14 @@
 		oStructure.innerHTML = '';
 
 		Asc.scope.id = id;
-		let data = await Editor.callCommand(() => {
+		let data = await Editor.callCommand(function() {
 			function GenerateDataFromNode (node, data)
 			{
-				if (node.baseName)
+				let nodeName = node.GetNodeName();
+				if (nodeName)
 				{
 					let nodeData = {
-						name: node.baseName,
+						name: nodeName,
 						attributes: [],
 						child: [],
 						xPath: node.GetXPath()
@@ -200,6 +197,7 @@
 						childnodes.forEach((cnode => {GenerateDataFromNode(cnode, data)}))
 				}
 			}
+
 			function GetFirstTagName(xmlText) {
 				const parser = new DOMParser();
 				const xmlDoc = parser.parseFromString(xmlText, "application/xml");
@@ -224,9 +222,14 @@
 				let node	= rootNodes[0];
 				let data	= [];
 				GenerateDataFromNode(node, data);
-				return data;
+				return JSON.stringify(data);
 			}
 		});
+
+		if (!data)
+			return;
+
+		data = JSON.parse(data);
 
 		function selectLi(el)
 		{
@@ -306,37 +309,60 @@
 		return data;
 	}
 
-	function prettifyXml(sourceXml)
-	{
-		// Save declaration
-		var xmlDeclaration = '';
+	function prettifyXml(sourceXml) {
+		// Save daclaration
+		let xmlDeclaration = '';
 		if (sourceXml.startsWith('<?xml')) {
 			const match = sourceXml.match(/^<\?xml.*?\?>/);
 			if (match) {
 				xmlDeclaration = match[0] + '\n';
 			}
 		}
-
-		var xmlDoc	= new DOMParser().parseFromString(sourceXml, 'application/xml');
-		var xsltDoc	= new DOMParser().parseFromString([
-			'<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform">',
-			'  <xsl:strip-space elements="*"/>',
-			'  <xsl:template match="para[content-style][not(text())]">',
-			'    <xsl:value-of select="normalize-space(.)"/>',
-			'  </xsl:template>',
-			'  <xsl:template match="node()|@*">',
-			'    <xsl:copy><xsl:apply-templates select="node()|@*"/></xsl:copy>',
-			'  </xsl:template>',
-			'  <xsl:output indent="yes"/>',
-			'</xsl:stylesheet>',
-		].join('\n'), 'application/xml');
-
-		var xsltProcessor = new XSLTProcessor();    
+	
+		// Parse xml
+		const xmlDoc = new DOMParser().parseFromString(sourceXml, 'application/xml');
+		const parsererror = xmlDoc.getElementsByTagName('parsererror');
+		if (parsererror.length > 0) {
+			throw new Error('XML parsing error: ' + parsererror[0].textContent);
+		}
+	
+		// Minimal XSLT for formating
+		const xsltString = `
+			<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+				<xsl:output method="xml" indent="yes"/>
+				<xsl:strip-space elements="*"/>
+				<xsl:template match="node()|@*">
+					<xsl:copy>
+						<xsl:apply-templates select="node()|@*"/>
+					</xsl:copy>
+				</xsl:template>
+			</xsl:stylesheet>
+		`;
+		const xsltDoc = new DOMParser().parseFromString(xsltString, 'application/xml');
+	
+		// Apply  XSLT
+		const xsltProcessor = new XSLTProcessor();
 		xsltProcessor.importStylesheet(xsltDoc);
-		var resultDoc = xsltProcessor.transformToDocument(xmlDoc);
-		var resultXml = new XMLSerializer().serializeToString(resultDoc);
+		const resultDoc = xsltProcessor.transformToDocument(xmlDoc);
+	
+		// Serialize and format
+		const rawXml = new XMLSerializer().serializeToString(resultDoc);
+		return xmlDeclaration + formatXml(rawXml);
+	}
 
-		return xmlDeclaration + resultXml;
+	// Simple tab formatting
+	function formatXml(xml) {
+		const PADDING = '  ';
+		let formatted = '';
+		let pad = 0;
+
+		xml.replace(/(>)(<)(\/*)/g, '$1\n$2$3').split('\n').forEach((node) => {
+			if (node.match(/^<\/\w/)) pad--;
+			formatted += PADDING.repeat(pad) + node + '\n';
+			if (node.match(/^<[^!?\/][^>]*[^\/]>$/)) pad++;
+		});
+
+		return formatted.trim();
 	}
 
 	function getSelectedItemXPath()
@@ -357,9 +383,9 @@
 			for (let i = 0; i < Asc.scope.controls.length; i++)
 			{
 				let ccId	= Asc.scope.controls[i];
-				let cc		= Doc.GetContentControl(ccId.InternalId);
+				let cc		= Doc.GetContentControlById(ccId.InternalId);
 				if (cc)
-					cc.LoadFromDataBinding();
+					cc.UpdateFromXmlMapping();
 			}
 		});
 	}
@@ -391,11 +417,11 @@
 		document.getElementById("reloadContentOfXml").onclick = getXmls;
 
 		document.getElementById("updateContentOfXml").onclick = async function(e) {
-			let id		= getCurrentXmlId()
+			let id = getCurrentXmlId()
 			if (!id)
 				return;
+
 			let text	= codeEditor.getValue();
-			
 			await updateXmlText(id, text);
 			await createStrucOfXml(id);
 		};
@@ -404,9 +430,9 @@
 			let id = await Editor.callCommand(() => {
 				let Doc				= Api.GetDocument();
 				let XmlManager		= Doc.GetCustomXmlParts();
-				let xmlDefaultText	= '<?xml version="1.0" encoding="UTF-8"?><defaultContent xmlns="http://example.com/picture">1</defaultContent>';
-
-				return XmlManager.Add(xmlDefaultText).id;
+				let xmlDefaultText	= `<?xml version="1.0" encoding="UTF-8"?><defalut>text</defalut>`;
+				let xml = XmlManager.Add(xmlDefaultText);
+				return xml.GetId();
 			});
 
 			let listWrapper		= document.getElementById("xmlList");
@@ -437,9 +463,8 @@
 
 				await Editor.callCommand(() => {
 					let Doc			= Api.GetDocument();
-					let DataBinding = Api.CreateDataBinding("", Asc.scope.xmlId, Asc.scope.xPath)
-					let cc			= Doc.GetContentControl(Asc.scope.id);
-					cc.SetDataBinding(DataBinding);
+					let cc			= Doc.GetContentControlById(Asc.scope.id);
+					cc.SetDataBinding({prefixMapping: "", storeItemID: Asc.scope.xmlId, xpath: Asc.scope.xPath});
 				});
 			}
 		}
@@ -464,9 +489,8 @@
 					let doc = Api.GetDocument();
 					let sdt			= Api.CreateBlockLvlSdt();
 					doc.InsertContent([sdt]);
-					let DataBinding = Api.CreateDataBinding("", Asc.scope.xmlId, Asc.scope.xPath)
-					sdt.SetDataBinding(DataBinding);
 
+					sdt.SetDataBinding({prefixMapping: "", storeItemID: Asc.scope.xmlId, xpath: Asc.scope.xPath});
 				});
 			}
 			else if (value === 'inline')
@@ -476,9 +500,8 @@
 					let sdt			= Api.CreateInlineLvlSdt();
 					let oParagraph  = Api.CreateParagraph();
 					oParagraph.AddElement(sdt, 0);
-					let DataBinding = Api.CreateDataBinding("", Asc.scope.xmlId, Asc.scope.xPath);
-
-					sdt.SetDataBinding(DataBinding);
+	
+					sdt.SetDataBinding({prefixMapping: "", storeItemID: Asc.scope.xmlId, xpath: Asc.scope.xPath});
 					doc.InsertContent([oParagraph]);
 				});
 			}
@@ -487,8 +510,8 @@
 				await Editor.callCommand(() => {
 					let doc			= Api.GetDocument();
 					let sdt			= doc.AddCheckBoxContentControl();
-					let DataBinding = Api.CreateDataBinding("", Asc.scope.xmlId, Asc.scope.xPath);
-					sdt.SetDataBinding(DataBinding);
+
+					sdt.SetDataBinding({prefixMapping: "", storeItemID: Asc.scope.xmlId, xpath: Asc.scope.xPath});
 				});
 			}
 			else if (value === 'picture')
@@ -496,8 +519,8 @@
 				await Editor.callCommand(() => {
 					let doc			= Api.GetDocument();
 					let sdt			= doc.AddPictureContentControl();
-					let DataBinding = Api.CreateDataBinding("", Asc.scope.xmlId, Asc.scope.xPath);
-					sdt.SetDataBinding(DataBinding);
+					
+					sdt.SetDataBinding({prefixMapping: "", storeItemID: Asc.scope.xmlId, xpath: Asc.scope.xPath});
 				});
 			}
 			else if (value === 'combobox' || value === 'dropdownlist')
@@ -508,8 +531,8 @@
 					let sdt			= (Asc.scope.name === 'combobox')
 						? doc.AddComboBoxContentControl()
 						: doc.AddDropDownListContentControl();
-					let DataBinding = Api.CreateDataBinding("", Asc.scope.xmlId, Asc.scope.xPath);
-					sdt.SetDataBinding(DataBinding);
+
+					sdt.SetDataBinding({prefixMapping: "", storeItemID: Asc.scope.xmlId, xpath: Asc.scope.xPath});
 				});
 			}
 			else if (value === 'date')
@@ -517,8 +540,8 @@
 				await Editor.callCommand(() => {
 					let doc			= Api.GetDocument();
 					let sdt			= doc.AddDatePickerContentControl();
-					let DataBinding = Api.CreateDataBinding("", Asc.scope.xmlId, Asc.scope.xPath);
-					sdt.SetDataBinding(DataBinding);
+
+					sdt.SetDataBinding({prefixMapping: "", storeItemID: Asc.scope.xmlId, xpath: Asc.scope.xPath});
 				});
 			}
 		}
