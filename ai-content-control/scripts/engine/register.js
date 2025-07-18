@@ -34,6 +34,13 @@ function registerButtons(window, undefined)
 {
 	window.AI = window.AI || {};
 	var AI = window.AI;
+
+	// #CONTENT-CONTROL-AI#
+	const SdtType = {
+		BlockLevel: 1,
+		InlineLevel: 2
+	}
+	// #CONTENT-CONTROL-AI#
 	
 	function getToolBarButtonIcons(icon) {
 		return "resources/icons/%theme-type%(light|dark)/big/" + icon + "%scale%(default).png";
@@ -778,6 +785,7 @@ function registerButtons(window, undefined)
 		});
 		//button.addChecker(getChecker());
 	}
+	// #CONTENT-CONTROL-AI#
 
 	// register actions
 

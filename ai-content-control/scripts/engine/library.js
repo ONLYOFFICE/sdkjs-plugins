@@ -262,6 +262,7 @@
 	{
 		return await Editor.callMethod("ClearContentControl ", [sId]);
 	};
+	// #CONTENT-CONTROL-AI#
 
 	Library.prototype.InsertAsText = async function(text)
 	{
