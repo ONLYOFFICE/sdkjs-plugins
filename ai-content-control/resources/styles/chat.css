@@ -122,8 +122,10 @@ input {
 	display: flex;
 	align-items: stretch;
 	margin-bottom: 8px;
+	background-color: #fff;
 	background-color: var(--background-normal);
 	padding: 6px 8px;
+	border: 1px solid #e1e1e1;
 	border: 1px solid var(--border-regular-control);
 	border-radius: 2px;
 }
@@ -176,6 +178,7 @@ input {
 
 .message_content_error_desc {
 	margin-top: 4px;
+	color: rgba(0, 0, 0, 0.6);
 	color: var(--text-secondary);
 	line-height: 14px;
 }
@@ -221,12 +224,43 @@ input {
 	white-space: normal;
 }
 
+.span_message h1,
+.span_message h2,
+.span_message h3,
+.span_message h4,
+.span_message h5,
+.span_message h6 {
+	line-height: 1.3;
+	margin-left: 0;
+	margin-right: 0;
+}
+
+.span_message h1  {
+	font-size: 1.8em;
+}
+.span_message h2  {
+	font-size: 1.7em;
+}
+.span_message h3  {
+	font-size: 1.5em;
+}
+.span_message h4  {
+	font-size: 1.3em;
+}
+.span_message h5  {
+	font-size: 1.15em;
+}
+.span_message h6  {
+	font-size: 1em;
+}
+
 .span_message p {
 	margin: 0;
 }
 
 #loading .span_message {
 	padding: 0;
+	color: rgba(0, 0, 0, 0.4);
 	color: var(--text-tertiary);
 }
 
@@ -275,6 +309,7 @@ input {
 }
 
 .user_message .message_content {
+	background-color: #fff;
 	background-color: var(--background-toolbar);
 	/* background-color: var(--highlight-button-hover); */
 }
@@ -327,9 +362,11 @@ input {
 
 #attached_text_wrapper {
 	padding: 6px 8px;
+	background-color: #fff;
 	background-color: var(--background-toolbar);
 	border-top-left-radius: 2px;
 	border-top-right-radius: 2px;
+	border: 1px solid #e1e1e1;
 	border: 1px solid var(--border-regular-control);
 	margin-bottom: -1px;
 	display: flex;
@@ -357,13 +394,16 @@ input {
 
 #input_message_wrapper {
 	display: flex;
+	background-color: #fff;
 	background-color: var(--background-normal);
 	border-radius: 2px;
+	border: 1px solid #e1e1e1;
 	border: 1px solid var(--border-regular-control);
 	position: relative;
 }
 
 #input_message_wrapper.focused {
+	border-color: #4A87E7;
 	border-color: var(--border-control-focus);
 }
 
